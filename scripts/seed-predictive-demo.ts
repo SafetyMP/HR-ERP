@@ -44,6 +44,7 @@ function embed(skillSeed: string, dim = 8): number[] {
 
 async function main() {
   let icRoleIdForDemo = "";
+  let skippedExistingSeed = false;
 
   await prisma.$transaction(
     async (tx) => {
@@ -65,12 +66,26 @@ async function main() {
         update: { name: "Predictive HR Demo Org" },
       });
 
-      const dept = await tx.department.create({
-        data: {
+      const seededJordan = await tx.employee.findFirst({
+        where: { id: DEMO_EMPLOYEE_JORDAN_ID, tenantId: DEMO_ORG_ID },
+        select: { jobRoleId: true },
+      });
+      if (seededJordan?.jobRoleId) {
+        icRoleIdForDemo = seededJordan.jobRoleId;
+        skippedExistingSeed = true;
+        return;
+      }
+
+      const dept = await tx.department.upsert({
+        where: {
+          tenantId_code: { tenantId: DEMO_ORG_ID, code: "ENG" },
+        },
+        create: {
           tenantId: DEMO_ORG_ID,
           name: "Engineering",
           code: "ENG",
         },
+        update: { name: "Engineering" },
       });
 
       const roleIc = await tx.jobRole.create({
@@ -624,6 +639,12 @@ async function main() {
     },
     { timeout: 60_000 },
   );
+
+  if (skippedExistingSeed) {
+    console.info(
+      "Predictive HR demo seed skipped — demo employee (Jordan) already exists for this tenant.",
+    );
+  }
 
   console.info(
     `Predictive HR demo data ready. Add to .env (dev): DEMO_TENANT_ID=${DEMO_ORG_ID} and ANALYTICS_DEMO_MODE=1 for /analytics/* pages.`,

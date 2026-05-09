@@ -2,6 +2,9 @@ import { API_VERSION } from "@/lib/backend/stack-manifest";
 import { NextResponse } from "next/server";
 
 import { toPublicError, type ApiErrorPayload } from "@/lib/api/v1/errors";
+import type { AuthContext } from "@/lib/security/auth-context";
+import { readCorrelationId } from "@/lib/security/correlation-id";
+import { requireBearerAuth } from "@/lib/security/request-auth";
 
 export type V1SuccessBody<T> = {
   apiVersion: typeof API_VERSION;
@@ -58,4 +61,16 @@ export async function safeRoute<T>(
     }
     return jsonV1Error(status, payload, correlationId);
   }
+}
+
+/** Bearer auth + handler — keeps `ApiError` from auth inside `safeRoute` so clients always get JSON envelopes. */
+export async function safeRouteAuth<T>(
+  request: Request,
+  run: (auth: AuthContext) => Promise<NextResponse<V1SuccessBody<T>>>,
+): Promise<NextResponse<V1SuccessBody<T> | V1ErrorBody>> {
+  const correlationId = readCorrelationId(request);
+  return safeRoute(correlationId, async () => {
+    const auth = await requireBearerAuth(request);
+    return run(auth);
+  });
 }

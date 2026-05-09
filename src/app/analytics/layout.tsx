@@ -4,5 +4,9 @@ import type { ReactNode } from "react";
 export const dynamic = "force-dynamic";
 
 export default function AnalyticsLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <div className="min-h-full bg-background text-foreground antialiased selection:bg-primary/25 selection:text-foreground">
+      {children}
+    </div>
+  );
 }

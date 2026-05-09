@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  clearDevBearerTokenFromSession,
+  readDevBearerTokenFromSession,
+  writeDevBearerTokenToSession,
+} from "@/lib/auth/dev-bearer-session";
+
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +18,6 @@ import {
 } from "@/components/ui/card";
 import { BENEFIT_CATEGORY_SORT_ORDER } from "@/lib/benefits/category-order";
 
-const STORAGE_KEY = "hrerp_bearer_token";
 
 export type BenefitEnrollmentApiItem = {
   category: string;
@@ -83,12 +88,12 @@ export function BenefitsClient({ initialBearerToken }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     startTransition(() => {
-      const fromStorage = sessionStorage.getItem(STORAGE_KEY)?.trim();
+      const fromStorage = readDevBearerTokenFromSession();
       if (fromStorage) {
         setTokenState(fromStorage);
       } else if (initialBearerToken?.trim()) {
-        sessionStorage.setItem(STORAGE_KEY, initialBearerToken.trim());
-        setTokenState(initialBearerToken.trim());
+        const t = writeDevBearerTokenToSession(initialBearerToken);
+        if (t) setTokenState(t);
       }
     });
   }, [initialBearerToken]);
@@ -192,11 +197,8 @@ export function BenefitsClient({ initialBearerToken }: Props) {
             rows={3}
             placeholder="Bearer token from scripts/issue-dev-jwt.mjs"
             onChange={(e) => {
-              const v = e.target.value.trim();
-              if (v && typeof window !== "undefined") {
-                sessionStorage.setItem(STORAGE_KEY, v);
-                setTokenState(v);
-              }
+              const t = writeDevBearerTokenToSession(e.target.value);
+              if (t) setTokenState(t);
             }}
           />
           {devHint}
@@ -236,7 +238,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
           type="button"
           variant="outline"
           onClick={() => {
-            sessionStorage.removeItem(STORAGE_KEY);
+            clearDevBearerTokenFromSession();
             setTokenState(null);
             setLoadError(null);
             setSummary(undefined);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,17 +13,20 @@ import {
 const examples = [
   {
     title: "Jurisdiction-driven payroll intake",
-    description: "Select a locality — additional fields hydrate from `/api/mock/jurisdiction-fields`.",
+    description:
+      "Select a locality — additional fields hydrate from `/api/mock/jurisdiction-fields`.",
     href: "/examples/jurisdiction",
   },
   {
     title: "Onboarding wizard state",
-    description: "Zustand-managed steps with React Query remaining the future system of record.",
+    description:
+      "Zustand-managed steps with React Query remaining the future system of record.",
     href: "/examples/onboarding",
   },
   {
     title: "Org hierarchy explorer",
-    description: "JSON tree mapped to disclosure-based navigation tuned for keyboards and SRs.",
+    description:
+      "JSON tree mapped to disclosure-based navigation tuned for keyboards and screen readers.",
     href: "/examples/org",
   },
   {
@@ -32,116 +36,209 @@ const examples = [
   },
 ];
 
-export default function Home() {
+type DemoLink = { href: string; label: string; emphasis?: boolean };
+
+function WorkflowSection({
+  id,
+  title,
+  description,
+  links,
+}: {
+  id: string;
+  title: string;
+  description: string;
+  links: DemoLink[];
+}) {
   return (
-    <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-black">
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-900 dark:bg-zinc-950">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">HR ERP Frontend</p>
-          <div className="space-y-4">
-            <h1 className="text-4xl font-semibold text-zinc-950 dark:text-white">Hide the complexity.</h1>
-            <p className="max-w-2xl text-lg text-zinc-600 dark:text-zinc-300">
-              This UI layer renders what the payroll and HR platforms authorize—never re-deriving statutes, taxes, or
-              jurisdictional outcomes in the browser.
+    <section
+      aria-labelledby={id}
+      className="rounded-2xl border-2 border-border bg-card p-6 shadow-sm"
+    >
+      <div className="mb-5 border-l-4 border-primary pl-4">
+        <h2 id={id} className="text-lg font-semibold tracking-tight text-card-foreground">
+          {title}
+        </h2>
+        <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{description}</p>
+      </div>
+      <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3" role="list">
+        {links.map((link) => (
+          <li key={link.href} className="list-none">
+            <Button
+              asChild
+              variant={link.emphasis ? "default" : "outline"}
+              size="lg"
+              className="w-full justify-center sm:w-auto"
+            >
+              <Link href={link.href}>{link.label}</Link>
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export default function Home() {
+  const employeeSelfService: DemoLink[] = [
+    { href: "/employee/time", label: "Time & attendance", emphasis: true },
+    { href: "/employee/paystub", label: "Current earnings statement", emphasis: true },
+    { href: "/employee/paystub/history", label: "Pay history" },
+    { href: "/employee/benefits", label: "Benefits summary" },
+    { href: "/employee/pto", label: "PTO" },
+    { href: "/employee/benefits/election-change", label: "Benefits change intent" },
+    { href: "/employee/profile", label: "My profile" },
+    { href: "/employee/organization", label: "Organization context" },
+    { href: "/employee/onboarding", label: "Onboarding tasks" },
+    { href: "/employee/tax-documents", label: "Tax documents" },
+    { href: "/employee/hr-request", label: "HR request" },
+    { href: "/employee/leaving", label: "Leaving checklist" },
+  ];
+
+  const manager: DemoLink[] = [
+    { href: "/manager/team-attendance", label: "Team attendance today", emphasis: true },
+    { href: "/manager/team-leave", label: "Team leave decisions" },
+    { href: "/manager/punch-corrections", label: "Punch correction proposals" },
+  ];
+
+  const hrOps: DemoLink[] = [
+    { href: "/hr/review-queue", label: "HR review queue", emphasis: true },
+    { href: "/hr/onboarding-templates", label: "Onboarding templates" },
+  ];
+
+  const analytics: DemoLink[] = [
+    { href: "/analytics/churn", label: "Flight risk (churn)" },
+    { href: "/analytics/skills", label: "Skills match" },
+    { href: "/analytics/benchmarks", label: "Market benchmarks" },
+    { href: "/global-l10n/profile", label: "Global L10n lab" },
+  ];
+
+  const bootstrapHint: ReactNode = (
+    <>
+      Run{" "}
+      <code className="rounded-md bg-primary-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
+        npm run demo:bootstrap
+      </code>{" "}
+      first so analytics routes have seed data.
+    </>
+  );
+
+  return (
+    <div className="flex flex-col flex-1 bg-background">
+      <header className="border-b-2 border-border bg-card">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:py-14">
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+              HR ERP · local demo shell
             </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild>
-              <Link href="/employee/time">Time</Link>
-            </Button>
-            <Button asChild variant="secondary">
-              <Link href="/employee/paystub">Earnings statement</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/benefits">Benefits</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/profile">My profile</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/pto">PTO</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/paystub/history">Pay history</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/onboarding">Onboarding</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/hr-request">HR request</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/tax-documents">Tax documents</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/organization">Org context</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/benefits/election-change">Benefits intent</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/employee/leaving">Leaving checklist</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/manager/team-attendance">Team attendance</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/manager/team-leave">Team leave</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/manager/punch-corrections">Punch corrections</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/hr/review-queue">HR review queue</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/hr/onboarding-templates">Onboarding templates</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/examples/jurisdiction">Start with payroll fields</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/examples/reporting">View data visualization</Link>
-            </Button>
-            <Button asChild variant="ghost">
-              <Link href="/qa-lab">Open QA Lab</Link>
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-2 border-t border-zinc-200 pt-6 dark:border-zinc-800">
-            <p className="w-full text-xs font-semibold uppercase tracking-wide text-zinc-500">
-              Data-backed demos (run <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">npm run demo:bootstrap</code>)
+            <h1 className="text-4xl font-bold tracking-tight text-card-foreground md:text-5xl">
+              Task-first navigation
+            </h1>
+            <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Flows are grouped by role so you can scan less and act faster. Primary paths use solid buttons; everything
+              else stays outlined for visual hierarchy—not color alone.
             </p>
-            <Button asChild size="sm" variant="outline">
-              <Link href="/analytics/churn">Churn</Link>
-            </Button>
-            <Button asChild size="sm" variant="outline">
-              <Link href="/analytics/skills">Skills match</Link>
-            </Button>
-            <Button asChild size="sm" variant="outline">
-              <Link href="/analytics/benchmarks">Benchmarks</Link>
-            </Button>
-            <Button asChild size="sm" variant="outline">
-              <Link href="/global-l10n/profile">Global L10n lab</Link>
-            </Button>
+            <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground md:text-sm">
+              <strong className="font-semibold text-card-foreground">Color blind–friendly palette:</strong> blue primary
+              actions, orange destructive accents elsewhere in the system, and neutral chrome—avoiding red-vs-green as
+              the only signal.
+            </p>
           </div>
         </div>
       </header>
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-12">
-        <section aria-labelledby="examples-heading">
-          <h2 id="examples-heading" className="text-2xl font-semibold text-zinc-950 dark:text-white">
-            Pattern library & demos
+
+      <main
+        id="main-content"
+        className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-12 md:gap-14 md:py-16"
+        tabIndex={-1}
+      >
+        <nav aria-label="Demo workflows by role" className="flex flex-col gap-8">
+          <WorkflowSection
+            id="nav-employee"
+            title="Employee self-service"
+            description="Pay, time off, profile, and lifecycle tasks most employees open weekly."
+            links={employeeSelfService}
+          />
+          <WorkflowSection
+            id="nav-manager"
+            title="Manager"
+            description="Team attendance, leave decisions, and escalation paths."
+            links={manager}
+          />
+          <WorkflowSection
+            id="nav-hr"
+            title="HR operations"
+            description="Queues and templates for people teams."
+            links={hrOps}
+          />
+
+          <section
+            aria-labelledby="nav-analytics"
+            className="rounded-2xl border-2 border-border bg-card p-6 shadow-sm"
+          >
+            <div className="mb-5 border-l-4 border-primary pl-4">
+              <h2 id="nav-analytics" className="text-lg font-semibold tracking-tight text-card-foreground">
+                Analytics &amp; experiments
+              </h2>
+              <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
+                Read-only dashboards backed by Postgres seeds. {bootstrapHint}
+              </p>
+            </div>
+            <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3" role="list">
+              {analytics.map((link) => (
+                <li key={link.href} className="list-none">
+                  <Button asChild variant="secondary" size="lg" className="w-full justify-center sm:w-auto">
+                    <Link href={link.href}>{link.label}</Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section aria-labelledby="nav-examples-quick" className="rounded-2xl border-2 border-dashed border-border bg-primary-muted/60 p-6 dark:bg-primary-muted/25">
+            <h2 id="nav-examples-quick" className="text-lg font-semibold text-card-foreground">
+              Quick jumps (examples)
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Shortcut entry points into interactive demos and tooling.
+            </p>
+            <ul className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3" role="list">
+              <li className="list-none">
+                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Link href="/examples/jurisdiction">Payroll locality fields</Link>
+                </Button>
+              </li>
+              <li className="list-none">
+                <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Link href="/examples/reporting">Reporting sample</Link>
+                </Button>
+              </li>
+              <li className="list-none">
+                <Button asChild variant="ghost" size="lg" className="w-full sm:w-auto">
+                  <Link href="/qa-lab">QA Lab</Link>
+                </Button>
+              </li>
+            </ul>
+          </section>
+        </nav>
+
+        <section aria-labelledby="examples-heading" className="border-t-2 border-border pt-12">
+          <h2 id="examples-heading" className="text-2xl font-bold tracking-tight text-foreground">
+            Pattern library
           </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Deeper UI experiments—same contrast rules as the rest of the shell.
+          </p>
           <ul className="mt-8 grid gap-6 sm:grid-cols-2" role="list">
             {examples.map((demo) => (
               <li key={demo.href} className="list-none">
-                <Card className="h-full shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                <Card className="h-full transition-shadow hover:shadow-md">
                   <CardHeader>
                     <CardTitle>{demo.title}</CardTitle>
                     <CardDescription>{demo.description}</CardDescription>
                   </CardHeader>
                   <CardFooter>
                     <Button asChild variant="secondary">
-                      <Link href={demo.href}>Open</Link>
+                      <Link href={demo.href}>Open pattern</Link>
                     </Button>
                   </CardFooter>
                 </Card>

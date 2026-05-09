@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  clearDevBearerTokenFromSession,
+  readDevBearerTokenFromSession,
+  writeDevBearerTokenToSession,
+} from "@/lib/auth/dev-bearer-session";
+
 import { startTransition, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,7 +17,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const STORAGE_KEY = "hrerp_bearer_token";
 
 type Tpl = { id: string; title: string; itemCount: number };
 
@@ -30,11 +35,11 @@ export function HrOnboardingTemplatesClient({ initialBearerToken }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     startTransition(() => {
-      const fromStorage = sessionStorage.getItem(STORAGE_KEY)?.trim();
+      const fromStorage = readDevBearerTokenFromSession();
       if (fromStorage) setTokenState(fromStorage);
       else if (initialBearerToken?.trim()) {
-        sessionStorage.setItem(STORAGE_KEY, initialBearerToken.trim());
-        setTokenState(initialBearerToken.trim());
+        const t = writeDevBearerTokenToSession(initialBearerToken);
+        if (t) setTokenState(t);
       }
     });
   }, [initialBearerToken]);

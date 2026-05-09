@@ -1,27 +1,25 @@
 import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRoute } from "@/lib/api/v1/http";
+import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import { prisma } from "@/lib/prisma";
 import {
   buildRoleTargetVector,
   cosineSimilarity,
   parseEmbedding,
 } from "@/lib/analytics/skills-match";
-import { requireBearerAuth } from "@/lib/security/request-auth";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
 export async function GET(request: Request) {
-  const auth = await requireBearerAuth(request);
-  const url = new URL(request.url);
-  const targetRoleId = url.searchParams.get("targetRoleId")?.trim();
-  if (!targetRoleId) {
-    throw new ApiError(400, {
-      code: "validation_error",
-      message: "targetRoleId query parameter required",
-    });
-  }
+  return safeRouteAuth(request, async (auth) => {
+    const url = new URL(request.url);
+    const targetRoleId = url.searchParams.get("targetRoleId")?.trim();
+    if (!targetRoleId) {
+      throw new ApiError(400, {
+        code: "validation_error",
+        message: "targetRoleId query parameter required",
+      });
+    }
 
-  return safeRoute(auth.correlationId, async () => {
     const policy = getRoutePolicy("GET", "/api/v1/analytics/skills/match");
     if (!policy) {
       throw new ApiError(404, {

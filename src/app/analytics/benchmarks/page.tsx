@@ -10,18 +10,25 @@ import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transa
 
 export const dynamic = "force-dynamic";
 
+const codeBox =
+  "rounded-md bg-zinc-200 px-1.5 py-0.5 text-[13px] font-mono text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100";
+
+const linkClass =
+  "font-semibold text-primary underline decoration-2 underline-offset-[5px] hover:brightness-125 dark:hover:brightness-125";
+
 export default async function BenchmarksPage() {
   if (!isAnalyticsDemoMode()) {
     return (
       <div className="mx-auto max-w-3xl p-8 font-sans">
-        <h1 className="text-2xl font-semibold">Compensation benchmarks</h1>
-        <p className="mt-4 text-zinc-600">
-          Enable{" "}
-          <code className="rounded bg-zinc-100 px-1">ANALYTICS_DEMO_MODE=1</code> and{" "}
-          <code className="rounded bg-zinc-100 px-1">DEMO_TENANT_ID</code>.
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+          Compensation benchmarks
+        </h1>
+        <p className="mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Enable <code className={codeBox}>ANALYTICS_DEMO_MODE=1</code> and{" "}
+          <code className={codeBox}>DEMO_TENANT_ID</code>.
         </p>
         <p className="mt-4">
-          <Link href="/" className="text-blue-600 underline">
+          <Link href="/" className={linkClass}>
             Home
           </Link>
         </p>
@@ -34,9 +41,9 @@ export default async function BenchmarksPage() {
     tenantId = requireDemoTenantId();
   } catch {
     return (
-      <div className="mx-auto max-w-3xl p-8">
-        <p>Set DEMO_TENANT_ID in .env.</p>
-        <Link href="/" className="text-blue-600 underline">
+      <div className="mx-auto max-w-3xl p-8 font-sans">
+        <p className="text-zinc-700 dark:text-zinc-300">Set DEMO_TENANT_ID in .env.</p>
+        <Link href="/" className={`mt-4 inline-block ${linkClass}`}>
           Home
         </Link>
       </div>
@@ -46,60 +53,60 @@ export default async function BenchmarksPage() {
   const data = await loadBenchmarks(tenantId);
 
   return (
-    <div className="mx-auto max-w-5xl p-8 font-sans text-zinc-900">
+    <div className="mx-auto max-w-5xl p-8 font-sans text-zinc-900 dark:text-zinc-50">
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Market benchmarks</h1>
-        <Link href="/" className="text-sm text-blue-600 underline">
+        <h1 className="text-2xl font-semibold tracking-tight">Market benchmarks</h1>
+        <Link href="/" className={`text-sm ${linkClass}`}>
           Home
         </Link>
       </div>
 
-      <h2 className="mb-2 text-lg font-medium">Latest snapshots</h2>
-      <div className="mb-8 overflow-x-auto rounded-lg border border-zinc-200">
+      <h2 className="mb-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">Latest snapshots</h2>
+      <div className="mb-8 overflow-x-auto rounded-lg border border-zinc-300 bg-card shadow-sm dark:border-zinc-600 dark:bg-card">
         <table className="min-w-full text-left text-sm">
-          <thead className="bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="bg-zinc-100 text-xs font-semibold uppercase tracking-wide text-zinc-700 dark:bg-zinc-800/90 dark:text-zinc-200">
             <tr>
-              <th className="px-3 py-2">Role</th>
-              <th className="px-3 py-2">Geo</th>
-              <th className="px-3 py-2">p50</th>
-              <th className="px-3 py-2">p75</th>
-              <th className="px-3 py-2">Provider</th>
+              <th className="px-4 py-3">Role</th>
+              <th className="px-4 py-3">Geo</th>
+              <th className="px-4 py-3">p50</th>
+              <th className="px-4 py-3">p75</th>
+              <th className="px-4 py-3">Provider</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-600">
             {data.benchmarks.map((b) => (
-              <tr key={b.id} className="border-t border-zinc-100">
-                <td className="px-3 py-2">
+              <tr key={b.id} className="bg-white dark:bg-zinc-900/40">
+                <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-50">
                   {b.jobRole?.canonicalTitle ?? b.jobRole?.title ?? "—"}
                 </td>
-                <td className="px-3 py-2">{b.geoCode}</td>
-                <td className="px-3 py-2 font-mono">
+                <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">{b.geoCode}</td>
+                <td className="px-4 py-3 font-mono tabular-nums text-zinc-800 dark:text-zinc-200">
                   {b.p50Annual?.toString() ?? "—"}
                 </td>
-                <td className="px-3 py-2 font-mono">
+                <td className="px-4 py-3 font-mono tabular-nums text-zinc-800 dark:text-zinc-200">
                   {b.p75Annual?.toString() ?? "—"}
                 </td>
-                <td className="px-3 py-2">{b.provider}</td>
+                <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">{b.provider}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <h2 className="mb-2 text-lg font-medium">Open alerts</h2>
-      <ul className="list-inside list-disc text-sm text-zinc-700">
+      <h2 className="mb-2 text-lg font-semibold text-zinc-950 dark:text-zinc-50">Open alerts</h2>
+      <ul className="list-inside list-disc space-y-1 text-sm leading-relaxed text-zinc-800 dark:text-zinc-200">
         {data.alerts.map((a) => (
           <li key={a.id}>
-            <span className="font-mono text-xs">{a.severity}</span> — {a.message}
+            <span className="font-mono text-xs text-zinc-600 dark:text-zinc-400">{a.severity}</span> — {a.message}
           </li>
         ))}
       </ul>
 
-      <h2 className="mb-2 mt-8 text-lg font-medium">Title normalization</h2>
-      <ul className="list-inside list-disc text-sm text-zinc-700">
+      <h2 className="mb-2 mt-8 text-lg font-semibold text-zinc-950 dark:text-zinc-50">Title normalization</h2>
+      <ul className="list-inside list-disc space-y-1 text-sm leading-relaxed text-zinc-800 dark:text-zinc-200">
         {data.maps.map((m) => (
           <li key={m.id}>
-            <span className="font-mono">{m.internalTitleKey}</span> →{" "}
+            <span className="font-mono text-zinc-700 dark:text-zinc-300">{m.internalTitleKey}</span> →{" "}
             {m.normalizedTitle} ({m.geoCode})
           </li>
         ))}

@@ -1,10 +1,9 @@
 import { z } from "zod";
 
 import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRoute } from "@/lib/api/v1/http";
+import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import { getEmployeePublicProfile } from "@/lib/employees/public-profile";
 import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
-import { requireBearerAuth } from "@/lib/security/request-auth";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 
 const employeeIdParamSchema = z.string().uuid();
@@ -13,10 +12,9 @@ export async function GET(
   request: Request,
   context: { params: Promise<{ employeeId: string }> },
 ) {
-  const auth = await requireBearerAuth(request);
   const pathname = new URL(request.url).pathname;
 
-  return safeRoute(auth.correlationId, async () => {
+  return safeRouteAuth(request, async (auth) => {
     const policy = getRoutePolicy("GET", pathname);
     if (!policy) {
       throw new ApiError(404, {

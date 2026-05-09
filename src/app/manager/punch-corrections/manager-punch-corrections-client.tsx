@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  clearDevBearerTokenFromSession,
+  readDevBearerTokenFromSession,
+  writeDevBearerTokenToSession,
+} from "@/lib/auth/dev-bearer-session";
+
 import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
@@ -12,7 +18,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const STORAGE_KEY = "hrerp_bearer_token";
 
 type Props = {
   initialBearerToken?: string;
@@ -30,17 +35,23 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     startTransition(() => {
-      const fromStorage = sessionStorage.getItem(STORAGE_KEY)?.trim();
+      const fromStorage = readDevBearerTokenFromSession();
       if (fromStorage) setTokenState(fromStorage);
       else if (initialBearerToken?.trim()) {
-        sessionStorage.setItem(STORAGE_KEY, initialBearerToken.trim());
-        setTokenState(initialBearerToken.trim());
+        const t = writeDevBearerTokenToSession(initialBearerToken);
+        if (t) setTokenState(t);
       }
     });
   }, [initialBearerToken]);
 
   const submit = async () => {
     if (!token) return;
+    const occurredRaw = requestedOccurredAt.trim();
+    const occurredAt = new Date(occurredRaw);
+    if (!occurredRaw || Number.isNaN(occurredAt.getTime())) {
+      setMsg("Pick a valid date and time for the punch.");
+      return;
+    }
     setBusy(true);
     setMsg(null);
     try {
@@ -54,7 +65,7 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
         body: JSON.stringify({
           employeeId: employeeId.trim(),
           punchKind,
-          requestedOccurredAt: new Date(requestedOccurredAt).toISOString(),
+          requestedOccurredAt: occurredAt.toISOString(),
           reason,
         }),
       });
@@ -135,7 +146,16 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
         </div>
         {msg ? <p className="text-zinc-700 dark:text-zinc-300">{msg}</p> : null}
         <div className="flex flex-wrap gap-2">
-          <Button type="button" disabled={busy || reason.trim().length < 8 || !employeeId.trim()} onClick={() => void submit()}>
+          <Button
+            type="button"
+            disabled={
+              busy ||
+              reason.trim().length < 8 ||
+              !employeeId.trim() ||
+              !requestedOccurredAt.trim()
+            }
+            onClick={() => void submit()}
+          >
             {busy ? "Sending…" : "Submit proposal"}
           </Button>
           <Button asChild variant="outline" type="button">

@@ -1,6 +1,5 @@
 import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRoute } from "@/lib/api/v1/http";
-import { requireBearerAuth } from "@/lib/security/request-auth";
+import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 import {
   assertAbac,
@@ -12,9 +11,7 @@ const ML_SERVING_URL =
   process.env.ML_SERVING_URL?.replace(/\/$/, "") ?? "http://127.0.0.1:8090";
 
 export async function POST(request: Request) {
-  const auth = await requireBearerAuth(request);
-
-  return safeRoute(auth.correlationId, async () => {
+  return safeRouteAuth(request, async (auth) => {
     const policy = getRoutePolicy("POST", "/api/v1/ml/churn/score");
     if (!policy) {
       throw new ApiError(404, {

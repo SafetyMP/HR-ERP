@@ -1,31 +1,58 @@
 #!/usr/bin/env node
+/**
+ * Mint HS256 JWT for local `/api/v1/*`. Loads `.env` from cwd so `JWT_SECRET`
+ * matches `npm run dev` (avoid signing with a different secret).
+ *
+ *   npm run jwt:dev
+ *
+ * Manager demo (Alex): DEV_ROLES=manager DEV_SUBJECT_EMPLOYEE_ID=b0000001-0001-4000-8000-000000000020 npm run jwt:dev
+ *
+ * Omit employee claim (rare): DEV_OMIT_SUBJECT_EMPLOYEE_ID=1 npm run jwt:dev
+ */
+import "dotenv/config";
+
 import { SignJWT } from "jose";
 
 const secret = process.env.JWT_SECRET;
 if (!secret || secret.length < 16) {
-  console.error("JWT_SECRET must be set (min 16 chars).");
+  console.error(
+    "JWT_SECRET must be set (min 16 chars). Use the same `.env` as Next.js (`npm run dev`). Example: `npm run jwt:dev` loads `.env` automatically.",
+  );
   process.exit(1);
 }
 
 const key = new TextEncoder().encode(secret);
 
 const tenantId =
-  process.env.DEV_TENANT_ID ?? "11111111-1111-1111-1111-111111111111";
-const subject =
-  process.env.DEV_SUBJECT_ID ?? "22222222-2222-2222-2222-222222222222";
+  process.env.DEV_TENANT_ID?.trim() ||
+  process.env.DEMO_TENANT_ID?.trim() ||
+  process.env.NEXT_PUBLIC_DEMO_TENANT_ID?.trim() ||
+  "default-tenant";
 
-const roles = (process.env.DEV_ROLES ?? "hr_admin")
+const subject =
+  process.env.DEV_SUBJECT_ID?.trim() || "22222222-2222-2222-2222-222222222222";
+
+const roles = (process.env.DEV_ROLES ?? "employee")
   .split(",")
   .map((r) => r.trim())
   .filter(Boolean);
 
-const subjectEmployeeId = process.env.DEV_SUBJECT_EMPLOYEE_ID?.trim();
+const defaultJordan =
+  process.env.DEMO_PAYSTUB_EMPLOYEE_ID?.trim() ||
+  "b0000001-0001-4000-8000-000000000011";
+
+const subjectEmployeeId =
+  process.env.DEV_SUBJECT_EMPLOYEE_ID?.trim() || defaultJordan;
+
+const omitEmployee =
+  process.env.DEV_OMIT_SUBJECT_EMPLOYEE_ID === "1" ||
+  process.env.DEV_OMIT_SUBJECT_EMPLOYEE_ID === "true";
 
 const payload = {
   tenant_id: tenantId,
   roles,
   mfa_level: "standard",
-  ...(subjectEmployeeId ? { subject_employee_id: subjectEmployeeId } : {}),
+  ...(omitEmployee ? {} : { subject_employee_id: subjectEmployeeId }),
 };
 
 const token = await new SignJWT(payload)
@@ -34,5 +61,9 @@ const token = await new SignJWT(payload)
   .setIssuedAt()
   .setExpirationTime("2h")
   .sign(key);
+
+console.warn(
+  `[issue-dev-jwt] tenant=${tenantId} roles=${roles.join(",")}${omitEmployee ? "" : ` subject_employee_id=${subjectEmployeeId}`} → paste the next line into Profile (dev)`,
+);
 
 console.log(token);

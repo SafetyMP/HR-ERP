@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
+/*
+ * Color-blind–friendly palette (Okabe–Ito–style-inspired):
+ * — Primary actions: strong blue (not confused with red/green status pairs).
+ * — Destructive: vermillion / orange-red (#D55E00), not pure “traffic green/red”.
+ * — Neutrals for chrome; never rely on hue alone — pair with labels, weight, borders.
+ * `.dark` is set by next-themes on <html>.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --background: #f3f6f9;
+  --foreground: #0d1b2a;
+  --muted-foreground: #3d5166;
+  --border: #c5d0dc;
+  --card: #ffffff;
+  --card-foreground: #0d1b2a;
+  /* Blue primary — distinguishable from vermillion destructive for protan / deutan */
+  --primary: #0072b2;
+  --primary-foreground: #ffffff;
+  --primary-muted: #e8f2fa;
+  /* Vermillion (Okabe–Ito) — high luminance contrast vs blue */
+  --destructive: #d55e00;
+  --destructive-foreground: #ffffff;
+  --ring: #0072b2;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0d1118;
+  --foreground: #eef2f7;
+  --muted-foreground: #b8c5d4;
+  --border: #5c6b7d;
+  --card: #161d27;
+  --card-foreground: #eef2f7;
+  --primary: #56b4e9;
+  --primary-foreground: #051018;
+  --primary-muted: #1a2836;
+  --destructive: #e69f00;
+  --destructive-foreground: #051018;
+  --ring: #56b4e9;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-muted: var(--primary-muted);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,11 +1,10 @@
 import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRoute } from "@/lib/api/v1/http";
+import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import {
   createManagerAttendanceCorrection,
   listManagerAttendanceCorrections,
 } from "@/lib/attendance/attendance-correction-requests-service";
 import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
-import { requireBearerAuth } from "@/lib/security/request-auth";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 import { z } from "zod";
 
@@ -17,10 +16,9 @@ const postSchema = z.object({
 });
 
 export async function GET(request: Request) {
-  const auth = await requireBearerAuth(request);
   const pathname = new URL(request.url).pathname;
 
-  return safeRoute(auth.correlationId, async () => {
+  return safeRouteAuth(request, async (auth) => {
     const policy = getRoutePolicy("GET", pathname);
     if (!policy) {
       throw new ApiError(404, {
@@ -37,10 +35,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const auth = await requireBearerAuth(request);
   const pathname = new URL(request.url).pathname;
 
-  return safeRoute(auth.correlationId, async () => {
+  return safeRouteAuth(request, async (auth) => {
     const policy = getRoutePolicy("POST", pathname);
     if (!policy) {
       throw new ApiError(404, {

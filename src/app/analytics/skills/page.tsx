@@ -15,6 +15,12 @@ import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transa
 
 export const dynamic = "force-dynamic";
 
+const codeBox =
+  "rounded-md bg-zinc-200 px-1.5 py-0.5 text-[13px] font-mono text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100";
+
+const linkClass =
+  "font-semibold text-primary underline decoration-2 underline-offset-[5px] hover:brightness-125 dark:hover:brightness-125";
+
 export default async function SkillsMatchPage({
   searchParams,
 }: {
@@ -23,14 +29,15 @@ export default async function SkillsMatchPage({
   if (!isAnalyticsDemoMode()) {
     return (
       <div className="mx-auto max-w-3xl p-8 font-sans">
-        <h1 className="text-2xl font-semibold">Internal mobility (skills)</h1>
-        <p className="mt-4 text-zinc-600">
-          Enable{" "}
-          <code className="rounded bg-zinc-100 px-1">ANALYTICS_DEMO_MODE=1</code> and{" "}
-          <code className="rounded bg-zinc-100 px-1">DEMO_TENANT_ID</code> for this demo UI.
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+          Internal mobility (skills)
+        </h1>
+        <p className="mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Enable <code className={codeBox}>ANALYTICS_DEMO_MODE=1</code> and{" "}
+          <code className={codeBox}>DEMO_TENANT_ID</code> for this demo UI.
         </p>
         <p className="mt-4">
-          <Link href="/" className="text-blue-600 underline">
+          <Link href="/" className={linkClass}>
             Home
           </Link>
         </p>
@@ -43,9 +50,9 @@ export default async function SkillsMatchPage({
     tenantId = requireDemoTenantId();
   } catch {
     return (
-      <div className="mx-auto max-w-3xl p-8">
-        <p>Set DEMO_TENANT_ID in .env.</p>
-        <Link href="/" className="text-blue-600 underline">
+      <div className="mx-auto max-w-3xl p-8 font-sans">
+        <p className="text-zinc-700 dark:text-zinc-300">Set DEMO_TENANT_ID in .env.</p>
+        <Link href="/" className={`mt-4 inline-block ${linkClass}`}>
           Home
         </Link>
       </div>
@@ -59,15 +66,13 @@ export default async function SkillsMatchPage({
   if (!roleId) {
     return (
       <div className="mx-auto max-w-3xl p-8 font-sans">
-        <h1 className="text-2xl font-semibold">Skills match</h1>
-        <p className="mt-4 text-zinc-600">
-          Add <code className="rounded bg-zinc-100 px-1">?targetRoleId=</code> (a{" "}
-          <code className="rounded bg-zinc-100 px-1">job_roles.id</code>) or set{" "}
-          <code className="rounded bg-zinc-100 px-1">DEMO_TARGET_ROLE_ID</code> in
-          .env.
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Skills match</h1>
+        <p className="mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Add <code className={codeBox}>?targetRoleId=</code> (a <code className={codeBox}>job_roles.id</code>) or set{" "}
+          <code className={codeBox}>DEMO_TARGET_ROLE_ID</code> in .env.
         </p>
         <p className="mt-4">
-          <Link href="/" className="text-blue-600 underline">
+          <Link href="/" className={linkClass}>
             Home
           </Link>
         </p>
@@ -78,35 +83,34 @@ export default async function SkillsMatchPage({
   const ranked = await rankInternalCandidates(tenantId, roleId);
 
   return (
-    <div className="mx-auto max-w-5xl p-8 font-sans text-zinc-900">
+    <div className="mx-auto max-w-5xl p-8 font-sans text-zinc-900 dark:text-zinc-50">
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Internal candidates</h1>
-        <Link href="/" className="text-sm text-blue-600 underline">
+        <h1 className="text-2xl font-semibold tracking-tight">Internal candidates</h1>
+        <Link href="/" className={`text-sm ${linkClass}`}>
           Home
         </Link>
       </div>
-      <p className="mb-2 text-sm text-zinc-600">
-        Target role: <span className="font-medium">{ranked.roleTitle}</span>
+      <p className="mb-2 text-sm text-zinc-700 dark:text-zinc-300">
+        Target role: <span className="font-semibold text-zinc-900 dark:text-zinc-100">{ranked.roleTitle}</span>
       </p>
-      <div className="overflow-x-auto rounded-lg border border-zinc-200">
+      <div className="overflow-x-auto rounded-lg border border-zinc-300 bg-card shadow-sm dark:border-zinc-600 dark:bg-card">
         <table className="min-w-full text-left text-sm">
-          <thead className="bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="bg-zinc-100 text-xs font-semibold uppercase tracking-wide text-zinc-700 dark:bg-zinc-800/90 dark:text-zinc-200">
             <tr>
-              <th className="px-3 py-2">Employee</th>
-              <th className="px-3 py-2">Match</th>
-              <th className="px-3 py-2">Skill vectors</th>
+              <th className="px-4 py-3">Employee</th>
+              <th className="px-4 py-3">Match</th>
+              <th className="px-4 py-3">Skill vectors</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-600">
             {ranked.rows.map((r) => (
-              <tr key={r.employeeId} className="border-t border-zinc-100">
-                <td className="px-3 py-2">
-                  {r.name} <span className="text-zinc-500">({r.email})</span>
+              <tr key={r.employeeId} className="bg-white dark:bg-zinc-900/40">
+                <td className="px-4 py-3 font-medium">
+                  {r.name}{" "}
+                  <span className="font-normal text-zinc-600 dark:text-zinc-400">({r.email})</span>
                 </td>
-                <td className="px-3 py-2 font-mono">
-                  {r.matchScore.toFixed(3)}
-                </td>
-                <td className="px-3 py-2">{r.skillsWithEmbeddings}</td>
+                <td className="px-4 py-3 font-mono tabular-nums">{r.matchScore.toFixed(3)}</td>
+                <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">{r.skillsWithEmbeddings}</td>
               </tr>
             ))}
           </tbody>

@@ -74,7 +74,7 @@ export default async function GlobalProfilePage() {
         </button>
         <Link
           href="/global-l10n/scheduling"
-          className="text-sm text-blue-600 underline dark:text-blue-400"
+          className="text-sm font-semibold text-primary underline decoration-2 underline-offset-4 hover:brightness-125"
         >
           Next: async scheduling
         </Link>
