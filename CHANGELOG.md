@@ -1,3 +1,9 @@
+## [2.0.7](https://github.com/SafetyMP/HR-ERP/compare/v2.0.6...v2.0.7) (2026-05-09)
+
+### Bug Fixes
+
+* read JWT_SECRET at runtime for Vercel (avoid build-time inlining) ([b4039ab](https://github.com/SafetyMP/HR-ERP/commit/b4039ab130af29e2e104b92bfc0ef917ee32b6fd))
+
 ## [2.0.6](https://github.com/SafetyMP/HR-ERP/compare/v2.0.5...v2.0.6) (2026-05-09)
 
 ### Bug Fixes
