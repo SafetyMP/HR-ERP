@@ -1,3 +1,13 @@
+## [2.0.0](https://github.com/SafetyMP/HR-ERP/compare/v1.1.0...v2.0.0) (2026-05-09)
+
+### ⚠ BREAKING CHANGES
+
+* **security:** remove HTTP JWT mint endpoint and bearer issuer
+
+### Bug Fixes
+
+* **security:** remove HTTP JWT mint endpoint and bearer issuer ([7914996](https://github.com/SafetyMP/HR-ERP/commit/7914996f77481f0bf408f81115494c9c2ca82a41))
+
 ## [1.1.0](https://github.com/SafetyMP/HR-ERP/compare/v1.0.0...v1.1.0) (2026-05-09)
 
 ### Features
