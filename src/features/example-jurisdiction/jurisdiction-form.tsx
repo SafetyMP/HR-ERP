@@ -55,7 +55,7 @@ const SUBDIVISIONS = [
 function buildSchema(fields: FieldSpec[]) {
   return z
     .object({
-      dynamic: z.record(z.string(), z.coerce.string()),
+      dynamic: z.record(z.string(), z.string()),
     })
     .superRefine((val, ctx) => {
       for (const field of fields) {
