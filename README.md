@@ -86,7 +86,14 @@ See **`package.json`** for the complete list.
 ## Releases & container publishing
 
 - **SemVer + changelog automation:** [`.github/workflows/release-please.yml`](.github/workflows/release-please.yml) opens/updates the release merge train on `main` / `master` using [`CHANGELOG.md`](CHANGELOG.md).
-- **GHCR image:** Publishing a **[GitHub Release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)** runs [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml), which publishes `ghcr.io/<lowercased-github-owner>/<lowercased-repo-name>:<version>` plus `:latest` on release events. Manual smoke builds use **`workflow_dispatch`** with a scratch tag.
+- **GHCR image:** Publishing a **[GitHub Release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)** runs [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml), which builds **multi-arch** (`linux/amd64`, `linux/arm64`) images, attaches **SBOM** and **SLSA-style provenance** attestations, pushes `ghcr.io/<lowercased-github-owner>/<lowercased-repo-name>:<version>` plus `:latest`, and **Cosign-signs** the image digest (keyless via GitHub OIDC). Manual smoke builds use **`workflow_dispatch`** with a scratch tag.
+- **Supply-chain policy:** [`specs/alignment/decisions/0003-container-supply-chain.md`](specs/alignment/decisions/0003-container-supply-chain.md). **Verify** a pulled digest (replace `OWNER`, `REPO`, and `DIGEST`):
+
+```bash
+cosign verify "ghcr.io/OWNER/REPO@sha256:DIGEST" \
+  --certificate-identity-regexp '^https://github.com/OWNER/REPO/\.github/workflows/publish-ghcr\.yml@.*' \
+  --certificate-oidc-issuer-regexp '^https://token.actions.githubusercontent.com$'
+```
 
 ```bash
 docker build -t hr-erp:local .

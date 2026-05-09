@@ -1,6 +1,9 @@
-FROM node:22-alpine AS base
-RUN apk add --no-cache libc6-compat openssl
+# Builder uses Debian Bookworm (glibc) so Prisma engines match the distroless Debian 12 runtime.
+FROM node:22-bookworm-slim AS base
 WORKDIR /app
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM base AS deps
 COPY package.json package-lock.json ./
@@ -18,21 +21,20 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
 RUN npx prisma generate
 RUN npm run build
 
-FROM base AS runner
+# Distroless: no shell or package manager; nonroot UID/GID 65532
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
+WORKDIR /app
 ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1
-RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-
-USER nextjs
-EXPOSE 3000
-ENV PORT=3000 \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
     HOSTNAME=0.0.0.0
 
-CMD ["node", "server.js"]
+COPY --from=builder --chown=65532:65532 /app/public ./public
+COPY --from=builder --chown=65532:65532 /app/.next/standalone ./
+COPY --from=builder --chown=65532:65532 /app/.next/static ./.next/static
+COPY --from=builder --chown=65532:65532 /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=65532:65532 /app/node_modules/@prisma ./node_modules/@prisma
+
+EXPOSE 3000
+
+CMD ["server.js"]
