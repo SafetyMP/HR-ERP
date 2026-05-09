@@ -1,3 +1,9 @@
+## [2.1.3](https://github.com/SafetyMP/HR-ERP/compare/v2.1.2...v2.1.3) (2026-05-09)
+
+### Bug Fixes
+
+* **jwt:** collapse to single Vercel-dashboard source of truth and remove standalone bake ([2031119](https://github.com/SafetyMP/HR-ERP/commit/2031119542e34fc9e5db0408c4385134f5665c64))
+
 ## [2.1.2](https://github.com/SafetyMP/HR-ERP/compare/v2.1.1...v2.1.2) (2026-05-09)
 
 ### Bug Fixes
