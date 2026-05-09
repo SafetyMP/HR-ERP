@@ -45,7 +45,7 @@ Start here to navigate human-written docs. Cursor agent orchestration and skills
 | --- | --- |
 | [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | How Feature briefs and UAC work |
 | [product/feature-brief-template.md](./product/feature-brief-template.md) | Template for shippable capabilities |
-| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | How to measure completion (UAC / phase gates); Feature 001 primary gap; canonical **repo** agent skills (`§2a`) vs global Cursor marketplace skills; payroll/ML orchestration bundles (`§2b`); Feature 001 UAC audit |
+| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); **§2c** platform inventory + diagram; **§2d** 15-repo skills gap lens; Feature 001 backlog **§2e** / audit **§3**; **§2a–§2b** skills vs marketplace & orchestration bundles |
 
 ## Operations
 
