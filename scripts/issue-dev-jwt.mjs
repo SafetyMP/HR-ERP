@@ -5,8 +5,7 @@
  *
  *   npm run jwt:dev
  *
- * For deployed environments, mint with POST /api/auth/token using HR_ERP_BEARER_ISSUER_SECRET
- * (see .env.example). Do not expose the issuer secret in browsers.
+ * For deployed environments: `npm run jwt:production` (needs HR_ERP_BEARER_ISSUER_SECRET + HR_ERP_MINT_BASE_URL in `.env`).
  * Manager demo (Alex): DEV_ROLES=manager DEV_SUBJECT_EMPLOYEE_ID=b0000001-0001-4000-8000-000000000020 npm run jwt:dev
  *
  * Omit employee claim (rare): DEV_OMIT_SUBJECT_EMPLOYEE_ID=1 npm run jwt:dev

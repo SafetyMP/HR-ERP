@@ -27,6 +27,7 @@
     "db:seed:predictive": "tsx scripts/seed-predictive-demo.ts",
     "demo:bootstrap": "tsx scripts/bootstrap-local-demo.ts",
     "jwt:dev": "node scripts/issue-dev-jwt.mjs",
+    "jwt:production": "node scripts/issue-production-jwt.mjs",
     "db:verify": "tsx scripts/db-verify-migration.ts",
     "db:load:fixtures": "tsx scripts/db-load-employee-scenarios.ts",
     "test": "vitest run",
