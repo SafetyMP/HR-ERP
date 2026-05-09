@@ -66,13 +66,14 @@ jobs:
       - run: npm run security:scan
 
       # Link-style deploy: VERCEL_* env picks project/org (no committed `.vercel` directory required).
+      # Do not set JWT_SECRET here. `vercel build` inlines Edge middleware env at compile time;
+      # a CI placeholder would ship in the bundle and break real tokens (dashboard secret ignored).
       - name: Vercel production deploy (prebuilt)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
-          JWT_SECRET: ci-local-jwt-secret-change-me-32chars-minimum-xx
         run: |
           npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"

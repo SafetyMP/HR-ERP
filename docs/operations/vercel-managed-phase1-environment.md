@@ -12,8 +12,13 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 | Variable | Purpose |
 |----------|---------|
 | `DATABASE_URL` | Neon (or compatible) Postgres connection string with **SSL**; pooled URL recommended for serverless (`?pgbouncer=` / `neon` pooler if applicable). |
-| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). |
+| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). **Must** be present for the target Vercel environment when `vercel build` runs — Next.js Edge middleware inlines it at compile time. Do **not** override `JWT_SECRET` in CI for prebuilt production deploys; use `vercel pull --environment=production` so the build picks up the dashboard value (see [deploy workflow](../../.github/workflows/deploy.yml)). |
 | `DIRECT_URL` | Optional: direct (non-pooled) URL for Prisma migrations if your host requires it. |
+
+### JWT / bearer troubleshooting
+
+- Tokens from `npm run jwt:dev` only validate on Vercel when **`JWT_SECRET` matches** that environment **and** the deployment was **built** with that secret (redeploy after changing it).
+- If production was built with a **dummy** `JWT_SECRET` in CI, middleware verifies against that dummy value and responses show `invalid_token` until the workflow is fixed and you redeploy.
 
 ## Redis / BullMQ (optional in Phase 1)
 
