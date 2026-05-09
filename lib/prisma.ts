@@ -29,8 +29,29 @@ function createPrismaClient(): PrismaClient {
   return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+let prismaSingleton: PrismaClient | undefined;
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+function getPrisma(): PrismaClient {
+  if (!prismaSingleton) {
+    prismaSingleton = createPrismaClient();
+    if (process.env.NODE_ENV !== "production") {
+      globalForPrisma.prisma = prismaSingleton;
+    }
+  }
+  return prismaSingleton;
 }
+
+/**
+ * Lazily connects on first use so modules can import this file during `next build`
+ * without DATABASE_URL (runtime routes and scripts still throw on first query if unset).
+ */
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop, _receiver) {
+    const client = getPrisma();
+    const value = Reflect.get(client, prop, client);
+    if (typeof value === "function") {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
