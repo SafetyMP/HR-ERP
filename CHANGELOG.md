@@ -1,3 +1,9 @@
+## [2.0.8](https://github.com/SafetyMP/HR-ERP/compare/v2.0.7...v2.0.8) (2026-05-09)
+
+### Bug Fixes
+
+* load JWT_SECRET via dynamic Function to defeat Next env inlining ([2e1c4be](https://github.com/SafetyMP/HR-ERP/commit/2e1c4becffcf077da8af18f1210a75bbec7c1899))
+
 ## [2.0.7](https://github.com/SafetyMP/HR-ERP/compare/v2.0.6...v2.0.7) (2026-05-09)
 
 ### Bug Fixes
