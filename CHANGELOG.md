@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/SafetyMP/HR-ERP/compare/v2.0.0...v2.0.1) (2026-05-09)
+
+### Bug Fixes
+
+* **deploy:** use Vercel JWT_SECRET in prebuilt Edge middleware ([bec2ec8](https://github.com/SafetyMP/HR-ERP/commit/bec2ec89f865e7422cf4a120f3f4ffba7beb54f4))
+
 ## [2.0.0](https://github.com/SafetyMP/HR-ERP/compare/v1.1.0...v2.0.0) (2026-05-09)
 
 ### ⚠ BREAKING CHANGES
