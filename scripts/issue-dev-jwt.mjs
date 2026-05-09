@@ -5,19 +5,27 @@
  *
  *   npm run jwt:dev
  *
- * For hosted APIs, sign with the same JWT_SECRET as that deployment (or use your IdP’s token exchange when wired).
+ * For **Vercel Production**, use the same signing secret as the deployment:
+ *   npm run jwt:dev:vercel
+ *   (runs `vercel env run -e production` so encrypted secrets are injected; `env pull` omits them in the file.)
+ *
  * Manager demo (Alex): DEV_ROLES=manager DEV_SUBJECT_EMPLOYEE_ID=b0000001-0001-4000-8000-000000000020 npm run jwt:dev
  *
  * Omit employee claim (rare): DEV_OMIT_SUBJECT_EMPLOYEE_ID=1 npm run jwt:dev
  */
-import "dotenv/config";
+import dotenv from "dotenv";
+
+dotenv.config();
+if (process.env.JWT_DEV_ENV_FILE?.trim()) {
+  dotenv.config({ path: process.env.JWT_DEV_ENV_FILE.trim(), override: true });
+}
 
 import { SignJWT } from "jose";
 
 const secret = process.env.JWT_SECRET;
 if (!secret || secret.length < 16) {
   console.error(
-    "JWT_SECRET must be set (min 16 chars). Use the same `.env` as Next.js (`npm run dev`). Example: `npm run jwt:dev` loads `.env` automatically.",
+    "JWT_SECRET must be set (min 16 chars). For local `npm run dev`, use `.env`. For Vercel Production tokens: `npm run jwt:dev:vercel` (linked project, `vercel env run` with Production env).",
   );
   process.exit(1);
 }
