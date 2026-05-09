@@ -1,3 +1,9 @@
+## [2.0.10](https://github.com/SafetyMP/HR-ERP/compare/v2.0.9...v2.0.10) (2026-05-09)
+
+### Bug Fixes
+
+* **smoke:** align JWT mint env with vercel curl target ([92325aa](https://github.com/SafetyMP/HR-ERP/commit/92325aa90e8dca78fc4ef20a94df033458ae158a))
+
 ## [2.0.9](https://github.com/SafetyMP/HR-ERP/compare/v2.0.8...v2.0.9) (2026-05-09)
 
 ### Bug Fixes
