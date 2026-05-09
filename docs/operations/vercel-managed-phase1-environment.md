@@ -19,6 +19,8 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 
 - Tokens from `npm run jwt:dev` only validate on Vercel when **`JWT_SECRET` matches** that environment **and** the deployment was **built** with that secret (redeploy after changing it).
 - If production was built with a **dummy** `JWT_SECRET` in CI, middleware verifies against that dummy value and responses show `invalid_token` until the workflow is fixed and you redeploy.
+- **Copy/paste hygiene:** When setting `JWT_SECRET` in **Vercel** and **GitHub** (production Environment), avoid **trailing spaces or newlines**—they cause signature mismatches or, in CI, can confuse `vercel build`. Prefer a single-line value (e.g. `openssl rand -hex 32`). The deploy workflow **strips** leading/trailing whitespace from the GitHub secret before build.
+- **Git vs GitHub Actions deploy:** Pushes build on **Vercel** using **dashboard** env. The **promote-production** job builds on **GitHub** and needs **`JWT_SECRET` in the GitHub `production` Environment** so the prebuilt Edge bundle gets the real secret. Keep both values **identical** when using both paths.
 
 ## Redis / BullMQ (optional in Phase 1)
 

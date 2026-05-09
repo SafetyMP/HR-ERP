@@ -71,8 +71,10 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          if [[ -z "$JWT_SECRET" || ${#JWT_SECRET} -lt 16 ]]; then
-            echo "::error::Add JWT_SECRET to the GitHub Environment \"production\" (Settings → Environments). Use the exact same value as Vercel → Production → JWT_SECRET so prebuilt middleware can verify tokens." >&2
+          # Strip whitespace/newlines (common when pasting from Vercel or password managers).
+          trimmed="$(python3 -c "import os; print(os.environ.get('JWT_SECRET','').strip(), end='')")"
+          if [[ ${#trimmed} -lt 16 ]]; then
+            echo "::error::Add JWT_SECRET to the GitHub Environment \"production\" (min 16 chars after trim). Match Vercel → Production → JWT_SECRET exactly." >&2
             exit 1
           fi
 
@@ -86,6 +88,11 @@ jobs:
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
+          export JWT_SECRET="$(python3 -c "import os; print(os.environ['JWT_SECRET'].strip(), end='')")"
+          if [[ ${#JWT_SECRET} -lt 16 ]]; then
+            echo "::error::JWT_SECRET invalid after trim." >&2
+            exit 1
+          fi
           npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"
           npx --yes vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
