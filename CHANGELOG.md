@@ -31,3 +31,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Rel
 ## [Unreleased]
 
 - GitHub repository governance scaffolding (SECURITY, Conduct, consolidated workflows, Dependabot defaults).
+- **security:** remove `POST /api/auth/token` bearer-issuer mint flow; use local `jwt:dev` (same `JWT_SECRET` as target env) or IdP integration when added.
