@@ -1,14 +1,26 @@
-# Runs reusable CI + QA on every merge to default branches (`quality-gate` skips these branches
-# to avoid duplicate Actions minutes). Next: manual approval via the `production`
-# GitHub Environment (configure reviewers — e.g. QA Chaos + SecOps — in repo Settings).
+# Production CI gate.
 #
-# Secrets (repository or `production` environment):
-# - VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID (Vercel → Project Settings → General)
-# - JWT_SECRET — same value as Vercel → Production → JWT_SECRET (required for `vercel build`
-#   / runtime: CI `vercel pull` may not expose decrypted env; keep GitHub and Vercel aligned)
+# Deployment itself is performed by **Vercel's git integration**: every push to
+# `main` triggers a Vercel build with dashboard env (Production target). This
+# workflow runs the same CI + QA suites at the gate so a failing build keeps
+# the merge red even though Vercel has already started its own pipeline.
 #
-# Optional (repository variable recommended for non-secret URLs):
-# - PUBLIC_DEPLOY_URL — used by post-deploy smoke (e.g. https://your-app.vercel.app)
+# The previous `promote-production` job invoked
+# `vercel pull → vercel build --prebuilt → vercel deploy --prebuilt`. That
+# chain caused `vercel pull` to write `JWT_SECRET=""` (literal empty quotes)
+# into `.vercel/.env.production.local` for any sensitive Vercel env var, which
+# `next build --output standalone` then baked into `.next/standalone/.env`,
+# which then shadowed Vercel's runtime injection inside the function — see
+# `docs/operations/vercel-managed-phase1-environment.md` for the full RCA.
+# The job has been removed; production now has a single deploy path
+# (Vercel git integration) and a single source of truth for env vars
+# (Vercel dashboard).
+#
+# If a future change needs a GitHub-built artifact for production (e.g. for
+# OIDC-only deploys or custom Docker images), reintroduce a deploy step that
+# does **not** use `--prebuilt` so Vercel rebuilds with its own runtime env,
+# or migrate to a Vercel Marketplace auth provider that removes the need for
+# `JWT_SECRET` entirely.
 
 name: Deploy production
 
@@ -22,10 +34,6 @@ concurrency:
 
 permissions:
   contents: read
-  deployments: write
-  # id-token: write — add when Vercel publishes a supported GitHub→Vercel OIDC deploy path so
-  # `promote-production` can drop long-lived VERCEL_TOKEN secrets. Today the CLI still expects
-  # `VERCEL_TOKEN` (see docs/operations/vercel-managed-phase1-environment.md).
 
 jobs:
   ci:
@@ -35,108 +43,3 @@ jobs:
   qa:
     secrets: inherit
     uses: ./.github/workflows/reusable-qa.yml
-
-  promote-production:
-    needs: [ci, qa]
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    environment: production
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: npm
-
-      # Hard stop if secrets are missing — avoids ambiguous partial deploy attempts.
-      - name: Assert Vercel credentials
-        shell: bash
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [[ -z "$VERCEL_TOKEN" || -z "$VERCEL_ORG_ID" || -z "$VERCEL_PROJECT_ID" ]]; then
-            echo "::error::Configure VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID for the production deployment (repository or Environment secrets)." >&2
-            exit 1
-          fi
-
-      - run: npm ci
-
-      # SecOps-aligned gate repeats the script run from CI once more at promote time after human approval.
-      - run: npm run security:scan
-
-      - name: Assert JWT_SECRET for production build
-        env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: |
-          # Strip whitespace/newlines (common when pasting from Vercel or password managers).
-          trimmed="$(python3 -c "import os; print(os.environ.get('JWT_SECRET','').strip(), end='')")"
-          if [[ ${#trimmed} -lt 16 ]]; then
-            echo "::error::Add JWT_SECRET to the GitHub Environment \"production\" (min 16 chars after trim). Match Vercel → Production → JWT_SECRET exactly." >&2
-            exit 1
-          fi
-
-      # Link-style deploy: VERCEL_* env picks project/org (no committed `.vercel` directory required).
-      # JWT_SECRET must be the real production secret (not a CI placeholder): supplied to `vercel build`
-      # and must match Vercel Production for runtime API verification (see middleware + `requireBearerAuth`).
-      - name: Vercel production deploy (prebuilt)
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        run: |
-          export JWT_SECRET="$(python3 -c "import os; print(os.environ['JWT_SECRET'].strip(), end='')")"
-          if [[ ${#JWT_SECRET} -lt 16 ]]; then
-            echo "::error::JWT_SECRET invalid after trim." >&2
-            exit 1
-          fi
-          npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
-
-          # `vercel pull` writes `JWT_SECRET=""` (literal empty quotes) to
-          # .vercel/.env.production.local for any encrypted dashboard secret —
-          # Vercel never decrypts encrypted vars to local pulls. For
-          # `--prebuilt` deploys the pulled file becomes the function's
-          # **runtime** env (it shadows dashboard injection per-key), so
-          # without this override the deployed serverless function would read
-          # JWT_SECRET="" and reject every valid JWT with
-          # `JWSSignatureVerificationFailed`. This was the root cause of the
-          # historical `invalid_token` loop documented in
-          # docs/operations/vercel-managed-phase1-environment.md.
-          # Overwrite the placeholder with the real secret from the GitHub
-          # `production` Environment (asserted ≥16 chars upstream).
-          python3 - <<'PY'
-          import os, pathlib, re
-          secret = os.environ.get("JWT_SECRET", "").strip()
-          assert len(secret) >= 16, "JWT_SECRET unexpectedly empty/short after earlier guard"
-          p = pathlib.Path(".vercel/.env.production.local")
-          content = p.read_text() if p.exists() else ""
-          new, n = re.subn(
-              r"(?m)^JWT_SECRET=.*$",
-              f'JWT_SECRET="{secret}"',
-              content,
-          )
-          if n == 0:
-              if content and not content.endswith("\n"):
-                  content += "\n"
-              new = content + f'JWT_SECRET="{secret}"\n'
-          p.write_text(new)
-          print(f"[deploy] override JWT_SECRET in .vercel/.env.production.local (length={len(secret)}, replacements={n})")
-          PY
-
-          npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"
-          npx --yes vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
-
-      - name: Post-deploy smoke (optional)
-        env:
-          SMOKE_URL: ${{ vars.PUBLIC_DEPLOY_URL }}
-        run: |
-          if [[ -z "$SMOKE_URL" ]]; then
-            echo "PUBLIC_DEPLOY_URL not set — skipping smoke (set a repository variable to enable)."
-            exit 0
-          fi
-          echo "Smoke GET $SMOKE_URL"
-          curl -fsS --retry 3 --retry-delay 5 -o /dev/null "$SMOKE_URL"

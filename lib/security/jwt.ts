@@ -15,50 +15,38 @@ export interface HrJwtClaims extends JWTPayload {
   mfa_level?: MfaLevel;
 }
 
+// Minimum acceptable length matches `npm run security:scan` and the
+// `/docs/operations/vercel-managed-phase1-environment.md` guidance.
+const MIN_JWT_SECRET_LENGTH = 16;
+
 /**
- * Load HS256 secret at **runtime** (Vercel serverless injects env per cold start).
- * Avoid static `process.env.JWT_SECRET` / sync patterns that Next/Webpack can inline
- * at `next build`. Dynamic `import("node:process")` is not folded the same way.
+ * Load the HS256 secret at request time. Server-side `process.env.X` reads
+ * inside Node-runtime route handlers are NOT inlined by Next.js / Webpack
+ * (only `NEXT_PUBLIC_*` is). Earlier obscured access patterns (dynamic
+ * `import("node:process")` + array-joined keys) were chasing a phantom and
+ * masked the real failure mode — an empty Vercel dashboard value baked into
+ * `.next/standalone/.env`. Direct access keeps the failure loud.
  */
-async function requireJwtSecret(): Promise<string> {
-  const { env } = await import("node:process");
-  const envKey = ["JWT", "SECRET"].join("_") as "JWT_SECRET";
-  const v = env[envKey];
-  if (!v) throw new Error("JWT_SECRET is not set");
-  const t = v.trim();
-  if (!t) throw new Error("JWT_SECRET is not set");
-  return t;
+function requireJwtSecret(): string {
+  const raw = process.env.JWT_SECRET ?? "";
+  const trimmed = raw.trim();
+  if (trimmed.length < MIN_JWT_SECRET_LENGTH) {
+    throw new Error(
+      `JWT_SECRET must be set (min ${MIN_JWT_SECRET_LENGTH} chars after trim); ` +
+        `received length=${trimmed.length}. Set it on Vercel ` +
+        "(Production + Preview + Development) and locally in .env.",
+    );
+  }
+  return trimmed;
 }
 
 export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
-  const secret = await requireJwtSecret();
+  const secret = requireJwtSecret();
   const key = new TextEncoder().encode(secret);
   const { payload } = await jwtVerify(token, key, {
     algorithms: ["HS256"],
   });
   return payload as HrJwtClaims;
-}
-
-/**
- * Returns SHA-256 + length + a 4-char mask of `JWT_SECRET` as it is **actually
- * read** by this serverless function at request time — through the same
- * `requireJwtSecret` accessor used by `verifyHrJwt` and `signHrAccessToken`.
- *
- * For the temporary `/api/v1/_debug/jwt-introspect` route only. The raw secret
- * is never returned. SHA-256 is irreversible; the 4-char mask
- * (e.g. `"ab…cd"`) is for visual sanity vs the mint-side hash and leaks
- * negligible entropy for a 64-hex secret.
- */
-export async function inspectJwtSecret(): Promise<{
-  sha256: string;
-  length: number;
-  mask: string;
-}> {
-  const secret = await requireJwtSecret();
-  const { createHash } = await import("node:crypto");
-  const sha256 = createHash("sha256").update(secret).digest("hex");
-  const mask = `${secret.slice(0, 2)}…${secret.slice(-2)}`;
-  return { sha256, length: secret.length, mask };
 }
 
 export async function signHrAccessToken(params: {
@@ -72,7 +60,7 @@ export async function signHrAccessToken(params: {
   /** jose-supported exp, e.g. `3600s`, `1h` */
   expiresIn: string;
 }): Promise<string> {
-  const secret = await requireJwtSecret();
+  const secret = requireJwtSecret();
   const key = new TextEncoder().encode(secret);
 
   const payload: Record<string, unknown> = {
