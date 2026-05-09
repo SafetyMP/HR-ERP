@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package hr.payroll.v1;
+
+option go_package = "github.com/hr-erp/contracts/gen/go/hr/payroll/v1;payrollv1";
+
+message PayRunOpened {
+  string pay_run_id = 1;
+  string tenant_id = 2;
+  string payroll_period_id = 3;
+  string opened_at_rfc3339 = 4;
+}

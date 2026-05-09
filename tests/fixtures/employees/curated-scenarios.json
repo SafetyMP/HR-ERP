@@ -1,0 +1,14 @@
+[
+  {
+    "scenarioId": "curated_ny_work_nj_live_fmla_equity",
+    "tenantId": "tenant_curated_demo",
+    "tags": ["njNyCommuter", "fmlaContinuous", "retroEquityGrantInClosedQuarter"],
+    "notes": "NY/NJ sourcing stub + FMLA continuous + retro grant in closed quarter — reconciliation-heavy."
+  },
+  {
+    "scenarioId": "curated_dup_hris_exempt_conflict",
+    "tenantId": "tenant_curated_demo",
+    "tags": ["exemptNonExemptSourceConflict"],
+    "notes": "Dual HRIS feeds disagree within 1ms wall gap — ordering-sensitive ingestion."
+  }
+]

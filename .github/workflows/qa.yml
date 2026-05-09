@@ -1,0 +1,10 @@
+name: QA
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  qa:
+    uses: ./.github/workflows/reusable-qa.yml

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,7 +19,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/lib/*": ["./lib/*", "./src/lib/*"],
+      "@/app/*": ["./src/app/*"],
+      "@/*": ["./src/*"],
+      "@/tests/*": ["./tests/*"],
+      "@hr-erp/payroll-calc": ["./packages/payroll-calc/src/index.ts"],
+      "@hr-erp/payroll-calc/*": ["./packages/payroll-calc/src/*"]
     }
   },
   "include": [

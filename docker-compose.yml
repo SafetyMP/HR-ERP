@@ -1,0 +1,115 @@
+# Local development only — do not use these credentials in production.
+#
+# Default: Redis + single Postgres (`hr_erp`) for the Next.js app / Prisma.
+# Bounded-context infra (Kafka, schema registry, extra Postgres DBs): docker compose --profile architecture up -d
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: hr_erp
+      POSTGRES_PASSWORD: hr_erp_dev_password
+      POSTGRES_DB: hr_erp
+    volumes:
+      - hr_erp_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hr_erp -d hr_erp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  zookeeper:
+    profiles: ["architecture"]
+    image: confluentinc/cp-zookeeper:7.6.1
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    profiles: ["architecture"]
+    image: confluentinc/cp-kafka:7.6.1
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+
+  schema-registry:
+    profiles: ["architecture"]
+    image: confluentinc/cp-schema-registry:7.6.1
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+
+  postgres-core-hr:
+    profiles: ["architecture"]
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: core_hr
+      POSTGRES_PASSWORD: core_hr_dev_password
+      POSTGRES_DB: core_hr
+    volumes:
+      - hr_erp_core_hr_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U core_hr -d core_hr"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres-payroll:
+    profiles: ["architecture"]
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: payroll
+      POSTGRES_PASSWORD: payroll_dev_password
+      POSTGRES_DB: payroll
+    volumes:
+      - hr_erp_payroll_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payroll -d payroll"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  hr_erp_postgres_data:
+  hr_erp_core_hr_data:
+  hr_erp_payroll_data:

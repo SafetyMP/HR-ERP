@@ -1,0 +1,87 @@
+# Runs the same reusable CI + QA gates as `.github/workflows/ci.yml` and `qa.yml` on every
+# merge to default branches, then requires manual approval via the `production`
+# GitHub Environment (configure reviewers — e.g. QA Chaos + SecOps — in repo Settings).
+#
+# Secrets (repository or `production` environment):
+# - VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID (Vercel → Project Settings → General)
+#
+# Optional (repository variable recommended for non-secret URLs):
+# - PUBLIC_DEPLOY_URL — used by post-deploy smoke (e.g. https://your-app.vercel.app)
+
+name: Deploy production
+
+on:
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: deploy-production-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  ci:
+    secrets: inherit
+    uses: ./.github/workflows/reusable-ci.yml
+
+  qa:
+    secrets: inherit
+    uses: ./.github/workflows/reusable-qa.yml
+
+  promote-production:
+    needs: [ci, qa]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # Hard stop if secrets are missing — avoids ambiguous partial deploy attempts.
+      - name: Assert Vercel credentials
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [[ -z "$VERCEL_TOKEN" || -z "$VERCEL_ORG_ID" || -z "$VERCEL_PROJECT_ID" ]]; then
+            echo "::error::Configure VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID for the production deployment (repository or Environment secrets)." >&2
+            exit 1
+          fi
+
+      - run: npm ci
+
+      # SecOps-aligned gate repeats the script run from CI once more at promote time after human approval.
+      - run: npm run security:scan
+
+      # Link-style deploy: VERCEL_* env picks project/org (no committed `.vercel` directory required).
+      - name: Vercel production deploy (prebuilt)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          JWT_SECRET: ci-local-jwt-secret-change-me-32chars-minimum-xx
+        run: |
+          npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"
+          npx --yes vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+
+      - name: Post-deploy smoke (optional)
+        env:
+          SMOKE_URL: ${{ vars.PUBLIC_DEPLOY_URL }}
+        run: |
+          if [[ -z "$SMOKE_URL" ]]; then
+            echo "PUBLIC_DEPLOY_URL not set — skipping smoke (set a repository variable to enable)."
+            exit 0
+          fi
+          echo "Smoke GET $SMOKE_URL"
+          curl -fsS --retry 3 --retry-delay 5 -o /dev/null "$SMOKE_URL"

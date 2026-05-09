@@ -1,0 +1,993 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Core tenant & people ---
+
+model Organization {
+  id                      String  @id
+  name                    String
+  jurisdictionCountry     String? @map("jurisdiction_country")
+  jurisdictionSubdivision String? @map("jurisdiction_subdivision")
+  reportingCurrency       String? @map("reporting_currency")
+  payoutSplitMode         PayoutSplitMode @default(PERCENT_BASIS_POINTS) @map("payout_split_mode")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  employees            Employee[]
+  holidayCalendars     HolidayCalendar[]
+  meetingProposals     MeetingProposal[]
+  payrollPeriods       PayrollPeriod[]
+  paymentInstructions  PaymentInstruction[]
+  sprints              Sprint[]
+
+  @@map("organizations")
+}
+
+/// Core HR employee — tenant key matches Organization.id
+model Employee {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  email     String
+  firstName String?  @map("first_name")
+  lastName  String?  @map("last_name")
+
+  managerId    String? @map("manager_id")
+  departmentId String? @map("department_id")
+  jobRoleId    String? @map("job_role_id")
+
+  status            EmployeeStatus @default(ACTIVE)
+  hireDate          DateTime?      @map("hire_date")
+  terminationDate   DateTime?      @map("termination_date")
+  anonymizedPseudonym String?      @map("anonymized_pseudonym")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+
+  manager       Employee?  @relation("EmployeeManager", fields: [managerId], references: [id], onDelete: SetNull)
+  directReports Employee[] @relation("EmployeeManager")
+  department    Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  jobRole       JobRole?    @relation(fields: [jobRoleId], references: [id], onDelete: SetNull)
+
+  onboardingTasks        OnboardingTask[]
+  vendorLinks            EmployeeVendorLink[]
+  workContext            EmployeeWorkContext?
+  schedulingPreference   SchedulingPreference?
+  holidayRegions         EmployeeHolidayRegion[]
+  meetingProposalsOrg    MeetingProposal[]            @relation("MeetingOrganizer")
+  meetingParticipations  MeetingProposalParticipant[]
+  paymentInstructions    PaymentInstruction[]
+  capacityAdjustments    CapacityAdjustment[]
+  sprintCapacityRows     SprintCapacitySummary[]
+  attendancePunches      AttendancePunch[]
+  ptoRequests            PtoRequest[]
+  compensationRecords    CompensationRecord[]
+  ptoBalances            PtoBalance[]
+  performanceReviews     PerformanceReview[]
+  employmentEvents       EmploymentEvent[]
+  employeeSkills         EmployeeSkill[]
+  userAccounts           UserAccount[]
+  analyticsFeatureSnapshots AnalyticsFeatureSnapshot[]
+  churnScores              ChurnScore[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([tenantId, managerId])
+  @@index([tenantId, jobRoleId])
+  @@map("employees")
+}
+
+/// QA / chaos PTO request row (one per employee calendar day per tenant) — see `add_pto_requests` migration.
+model PtoRequest {
+  id             String   @id @default(uuid())
+  tenantId       String   @map("tenant_id")
+  employeeId     String   @map("employee_id")
+  requestDate    DateTime @map("request_date") @db.Date
+  idempotencyKey String?  @map("idempotency_key")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, employeeId, requestDate])
+  @@index([tenantId, employeeId])
+  @@map("pto_requests")
+}
+
+model Department {
+  id       String @id @default(uuid())
+  tenantId String @map("tenant_id")
+  name     String
+  code     String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employees Employee[]
+  jobRoles  JobRole[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@map("departments")
+}
+
+model JobRole {
+  id       String @id @default(uuid())
+  tenantId String @map("tenant_id")
+  title    String
+  level    String?
+  departmentId String? @map("department_id")
+  canonicalTitle String? @map("canonical_title")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  department       Department?       @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  employees        Employee[]
+  roleSkillTargets RoleSkillTarget[]
+  marketBenchmarks MarketBenchmark[]
+  benchmarkAlerts  BenchmarkAlert[]
+  jobTitleMaps     JobTitleMap[]
+
+  @@index([tenantId])
+  @@index([tenantId, title])
+  @@map("job_roles")
+}
+
+model CompensationRecord {
+  id         String   @id @default(uuid())
+  employeeId String   @map("employee_id")
+  baseAmount Decimal  @map("base_amount") @db.Decimal(14, 2)
+  currency   String   @default("USD")
+  effectiveFrom DateTime @map("effective_from")
+  bandPosition    Float?   @map("band_position")
+  internalBandCode String? @map("internal_band_code")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, effectiveFrom])
+  @@map("compensation_records")
+}
+
+model PtoBalance {
+  id         String   @id @default(uuid())
+  employeeId String   @map("employee_id")
+  balanceHours Decimal @map("balance_hours") @db.Decimal(10, 2)
+  asOfDate   DateTime @map("as_of_date")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, asOfDate])
+  @@map("pto_balances")
+}
+
+model PerformanceReview {
+  id         String   @id @default(uuid())
+  employeeId String   @map("employee_id")
+  periodStart DateTime @map("period_start")
+  periodEnd   DateTime @map("period_end")
+  overallRating  Float? @map("overall_rating")
+  sentimentScore Float? @map("sentiment_score")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@map("performance_reviews")
+}
+
+model EmploymentEvent {
+  id         String @id @default(uuid())
+  employeeId String @map("employee_id")
+  eventType  EmploymentEventType @map("event_type")
+  occurredAt DateTime @map("occurred_at")
+  metadata   Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, occurredAt])
+  @@index([eventType])
+  @@map("employment_events")
+}
+
+model Skill {
+  id       String @id @default(uuid())
+  tenantId String @map("tenant_id")
+  name     String
+  slug     String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employeeSkills   EmployeeSkill[]
+  roleSkillTargets RoleSkillTarget[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@map("skills")
+}
+
+model EmployeeSkill {
+  id         String @id @default(uuid())
+  employeeId String @map("employee_id")
+  skillId    String @map("skill_id")
+  proficiency Int
+  embedding  Json?
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skill    Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, skillId])
+  @@index([skillId])
+  @@map("employee_skills")
+}
+
+model RoleSkillTarget {
+  jobRoleId  String @map("job_role_id")
+  skillId    String @map("skill_id")
+  importance Float  @default(1)
+
+  jobRole JobRole @relation(fields: [jobRoleId], references: [id], onDelete: Cascade)
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([jobRoleId, skillId])
+  @@map("role_skill_targets")
+}
+
+model UserAccount {
+  id         String @id @default(uuid())
+  tenantId   String @map("tenant_id")
+  email      String
+  employeeId String? @map("employee_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  roles    UserRoleAssignment[]
+  auditLogsAsActor AuditLog[] @relation("AuditActor")
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@map("user_accounts")
+}
+
+model UserRoleAssignment {
+  userId String @map("user_id")
+  role   AppRole
+
+  user UserAccount @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, role])
+  @@map("user_role_assignments")
+}
+
+model AuditLog {
+  id          String @id @default(uuid())
+  tenantId    String @map("tenant_id")
+  actorUserId String? @map("actor_user_id")
+  action      String
+  resourceType String @map("resource_type")
+  resourceId   String @map("resource_id")
+  details     Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  actor UserAccount? @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@index([resourceType, resourceId])
+  @@map("audit_logs")
+}
+
+model AnalyticsFeatureSnapshot {
+  id           String   @id @default(uuid())
+  tenantId     String   @map("tenant_id")
+  employeeId   String   @map("employee_id")
+  snapshotDate DateTime @map("snapshot_date")
+  features       Json
+  churnedWithin180d Boolean? @map("churned_within_180d")
+  etlVersion     String? @map("etl_version")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, snapshotDate])
+  @@index([employeeId])
+  @@map("analytics_feature_snapshots")
+}
+
+model ChurnScore {
+  id         String @id @default(uuid())
+  tenantId   String @map("tenant_id")
+  employeeId String @map("employee_id")
+  score      Float
+  drivers    Json
+  modelVersion String @map("model_version")
+
+  scoredAt DateTime @default(now()) @map("scored_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, scoredAt])
+  @@index([employeeId])
+  @@map("churn_scores")
+}
+
+model ModelRegistry {
+  id           String @id @default(uuid())
+  modelType    String @map("model_type")
+  version      String
+  artifactUri  String @map("artifact_uri")
+  metrics      Json?
+  isProduction Boolean @default(false) @map("is_production")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([modelType, version])
+  @@index([modelType, isProduction])
+  @@map("model_registry")
+}
+
+model MarketBenchmark {
+  id       String @id @default(uuid())
+  tenantId String @map("tenant_id")
+  jobRoleId String? @map("job_role_id")
+  geoCode  String @map("geo_code")
+  currency String @default("EUR")
+  provider String @default("mock_provider")
+  p50Annual Decimal? @map("p50_annual") @db.Decimal(14, 2)
+  p75Annual Decimal? @map("p75_annual") @db.Decimal(14, 2)
+  p90Annual Decimal? @map("p90_annual") @db.Decimal(14, 2)
+  sampleSize Int?    @map("sample_size")
+  effectiveDate DateTime @map("effective_date")
+  rawPayload Json?   @map("raw_payload")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  jobRole JobRole? @relation(fields: [jobRoleId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, effectiveDate])
+  @@index([jobRoleId])
+  @@map("market_benchmarks")
+}
+
+model BenchmarkAlert {
+  id        String @id @default(uuid())
+  tenantId  String @map("tenant_id")
+  jobRoleId String? @map("job_role_id")
+  severity  BenchmarkAlertSeverity @default(WARN)
+  message   String
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  clearedAt DateTime? @map("cleared_at")
+
+  jobRole JobRole? @relation(fields: [jobRoleId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@map("benchmark_alerts")
+}
+
+model JobTitleMap {
+  id               String @id @default(uuid())
+  tenantId         String @map("tenant_id")
+  internalTitleKey String @map("internal_title_key")
+  geoCode          String @map("geo_code")
+  normalizedTitle  String @map("normalized_title")
+  externalOccupationCode String? @map("external_occupation_code")
+  jobRoleId        String? @map("job_role_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  jobRole JobRole? @relation(fields: [jobRoleId], references: [id], onDelete: SetNull)
+
+  @@unique([tenantId, internalTitleKey, geoCode])
+  @@index([tenantId])
+  @@map("job_title_maps")
+}
+
+model EmployeeWorkContext {
+  id                       String           @id @default(uuid())
+  employeeId               String           @unique @map("employee_id")
+  primaryTimezone          String           @map("primary_timezone")
+  locale                   String           @default("en-US")
+  preferredFirstDayOfWeek  Int?             @map("preferred_first_day_of_week")
+  calendarSystem           CalendarSystem   @default(GREGORIAN) @map("calendar_system")
+  calendarCustomNote       String?          @map("calendar_custom_note")
+  honorific                String?
+  givenName                String?          @map("given_name")
+  familyName               String?          @map("family_name")
+  additionalName           String?          @map("additional_name")
+  displayName              String?          @map("display_name")
+  nameOrderPreference      NameOrderPreference @default(GIVEN_FAMILY) @map("name_order_preference")
+  createdAt                DateTime         @default(now()) @map("created_at")
+  updatedAt                DateTime         @updatedAt @map("updated_at")
+
+  employee      Employee       @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  workIntervals WorkInterval[]
+
+  @@map("employee_work_contexts")
+}
+
+model WorkInterval {
+  id           String @id @default(uuid())
+  workContextId String @map("work_context_id")
+  /// 0 = Sunday … 6 = Saturday (locale-neutral; UI can relabel)
+  dayOfWeek    Int    @map("day_of_week")
+  /// Minutes from local midnight (in employee primary zone)
+  startMinute  Int    @map("start_minute")
+  endMinute    Int    @map("end_minute")
+
+  workContext EmployeeWorkContext @relation(fields: [workContextId], references: [id], onDelete: Cascade)
+
+  @@index([workContextId])
+  @@map("work_intervals")
+}
+
+model SchedulingPreference {
+  id                    String  @id @default(uuid())
+  employeeId            String  @unique @map("employee_id")
+  asyncFirstDefault     Boolean @default(true) @map("async_first_default")
+  overlapWindowMinutes  Int     @default(30) @map("overlap_window_minutes")
+  quietHoursStartMinute Int?    @map("quiet_hours_start_minute")
+  quietHoursEndMinute   Int?    @map("quiet_hours_end_minute")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@map("scheduling_preferences")
+}
+
+model MeetingProposal {
+  id                  String               @id @default(uuid())
+  tenantId            String               @map("tenant_id")
+  organizerEmployeeId String               @map("organizer_employee_id")
+  title               String
+  status              MeetingProposalStatus @default(DRAFT)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organizer    Employee     @relation("MeetingOrganizer", fields: [organizerEmployeeId], references: [id], onDelete: Cascade)
+  slots        MeetingProposalSlot[]
+  participants MeetingProposalParticipant[]
+
+  @@index([tenantId])
+  @@map("meeting_proposals")
+}
+
+model MeetingProposalSlot {
+  id         String   @id @default(uuid())
+  proposalId String   @map("proposal_id")
+  startUtc   DateTime @map("start_utc")
+  endUtc     DateTime @map("end_utc")
+
+  proposal MeetingProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@map("meeting_proposal_slots")
+}
+
+model MeetingProposalParticipant {
+  proposalId String @map("proposal_id")
+  employeeId String @map("employee_id")
+
+  proposal MeetingProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  employee Employee        @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@id([proposalId, employeeId])
+  @@map("meeting_proposal_participants")
+}
+
+// --- Payroll splits ---
+
+model PayrollPeriod {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  startDate DateTime @map("start_date") @db.Date
+  endDate   DateTime @map("end_date") @db.Date
+  label     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organization         Organization          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  paymentInstructions PaymentInstruction[]
+
+  @@index([tenantId])
+  @@map("payroll_periods")
+}
+
+model PaymentInstruction {
+  id                 String   @id @default(uuid())
+  tenantId           String   @map("tenant_id")
+  employeeId         String   @map("employee_id")
+  payrollPeriodId    String?  @map("payroll_period_id")
+  reportingFxSnapshotId String? @map("reporting_fx_snapshot_id")
+  memo               String?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  organization      Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee          Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  payrollPeriod     PayrollPeriod? @relation(fields: [payrollPeriodId], references: [id], onDelete: SetNull)
+  reportingFxSnapshot FxSnapshot?  @relation(fields: [reportingFxSnapshotId], references: [id], onDelete: SetNull)
+  lines             PayoutLine[]
+
+  @@index([tenantId])
+  @@index([employeeId])
+  @@map("payment_instructions")
+}
+
+model PayoutLine {
+  id                   String        @id @default(uuid())
+  paymentInstructionId String        @map("payment_instruction_id")
+  lineType             PayoutLineType @map("line_type")
+  sortOrder            Int           @default(0) @map("sort_order")
+  /// Amount in minor units when not using percent split
+  amountMinor          Int?          @map("amount_minor")
+  /// 0–10000 = 0%–100% when using percent-based split
+  allocationBasisPoints Int?         @map("allocation_basis_points")
+  currencyCode         String?       @map("currency_code")
+  cryptoAssetId        String?       @map("crypto_asset_id")
+
+  paymentInstruction PaymentInstruction @relation(fields: [paymentInstructionId], references: [id], onDelete: Cascade)
+
+  @@index([paymentInstructionId])
+  @@map("payout_lines")
+}
+
+model FxSnapshot {
+  id          String   @id @default(uuid())
+  fromCurrency String  @map("from_currency")
+  toCurrency   String  @map("to_currency")
+  rate        Decimal  @db.Decimal(20, 10)
+  quotedAt    DateTime @map("quoted_at")
+  source      String
+
+  paymentInstructions PaymentInstruction[]
+
+  @@index([fromCurrency, toCurrency, quotedAt])
+  @@map("fx_snapshots")
+}
+
+// --- Holidays & capacity ---
+
+model HolidayCalendar {
+  id                      String   @id @default(uuid())
+  tenantId                String   @map("tenant_id")
+  jurisdictionCountry     String   @map("jurisdiction_country")
+  jurisdictionSubdivision String?  @map("jurisdiction_subdivision")
+  name                    String
+  version                 Int      @default(1)
+  provider                String?  // e.g. nager_at
+  lastSyncedAt            DateTime? @map("last_synced_at")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  organization  Organization           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  observations  HolidayObservation[]
+  employeeLinks EmployeeHolidayRegion[]
+
+  @@index([tenantId])
+  @@map("holiday_calendars")
+}
+
+model HolidayObservation {
+  id                 String           @id @default(uuid())
+  holidayCalendarId  String           @map("holiday_calendar_id")
+  localNameKey       String           @map("local_name_key")
+  ruleType           HolidayRuleType  @map("rule_type")
+  fixedMonth         Int?             @map("fixed_month")
+  fixedDay           Int?             @map("fixed_day")
+  easterOffsetDays   Int?             @map("easter_offset_days")
+  externalId         String?          @map("external_id")
+  effectiveFrom      DateTime?        @map("effective_from") @db.Date
+  effectiveTo        DateTime?        @map("effective_to") @db.Date
+  source             String?
+
+  calendar HolidayCalendar @relation(fields: [holidayCalendarId], references: [id], onDelete: Cascade)
+  dates    HolidayObservationDate[]
+  capacityAdjustments CapacityAdjustment[]
+
+  @@unique([holidayCalendarId, externalId])
+  @@index([holidayCalendarId])
+  @@map("holiday_observations")
+}
+
+model HolidayObservationDate {
+  id            String   @id @default(uuid())
+  observationId String   @map("observation_id")
+  /// Civil date in the calendar’s jurisdiction (Gregorian wall date)
+  localDate     DateTime @map("local_date") @db.Date
+
+  observation HolidayObservation @relation(fields: [observationId], references: [id], onDelete: Cascade)
+
+  @@unique([observationId, localDate])
+  @@index([localDate])
+  @@map("holiday_observation_dates")
+}
+
+model EmployeeHolidayRegion {
+  id                String @id @default(uuid())
+  employeeId        String @map("employee_id")
+  holidayCalendarId String @map("holiday_calendar_id")
+  priority          Int    @default(0)
+  label             String?
+
+  employee Employee        @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  calendar HolidayCalendar @relation(fields: [holidayCalendarId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, holidayCalendarId])
+  @@index([employeeId])
+  @@map("employee_holiday_regions")
+}
+
+model Sprint {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  teamKey   String   @map("team_key")
+  name      String
+  startUtc  DateTime @map("start_utc")
+  endUtc    DateTime @map("end_utc")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  adjustments  CapacityAdjustment[]
+  summaries    SprintCapacitySummary[]
+
+  @@index([tenantId, teamKey])
+  @@map("sprints")
+}
+
+model CapacityAdjustment {
+  id                 String                   @id @default(uuid())
+  employeeId         String                   @map("employee_id")
+  sprintId           String?                  @map("sprint_id")
+  localDate          DateTime                 @map("local_date") @db.Date
+  reason             CapacityAdjustmentReason
+  minutesReduced     Int                      @map("minutes_reduced")
+  holidayObservationId String?                @map("holiday_observation_id")
+  createdAt          DateTime                 @default(now()) @map("created_at")
+
+  employee         Employee          @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  sprint           Sprint?           @relation(fields: [sprintId], references: [id], onDelete: SetNull)
+  holidayObservation HolidayObservation? @relation(fields: [holidayObservationId], references: [id], onDelete: SetNull)
+
+  @@index([employeeId, localDate])
+  @@index([sprintId])
+  @@map("capacity_adjustments")
+}
+
+model SprintCapacitySummary {
+  id                   String @id @default(uuid())
+  sprintId             String @map("sprint_id")
+  employeeId           String @map("employee_id")
+  totalMinutesBaseline Int    @map("total_minutes_baseline")
+  totalMinutesReduced  Int    @map("total_minutes_reduced")
+
+  sprint   Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([sprintId, employeeId])
+  @@map("sprint_capacity_summaries")
+}
+
+// --- Existing integration / onboarding models ---
+
+model OnboardingTask {
+  id         String           @id @default(uuid())
+  employeeId String           @map("employee_id")
+  title      String
+  status     OnboardingStatus @default(PENDING)
+  dueAt      DateTime?        @map("due_at")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@map("onboarding_tasks")
+}
+
+enum OnboardingStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+enum PunchKind {
+  CLOCK_IN
+  CLOCK_OUT
+}
+
+/// Authoritative time-punch row — server `occurredAt`; idempotent per tenant + key.
+model AttendancePunch {
+  id             String    @id @default(uuid())
+  tenantId       String    @map("tenant_id")
+  employeeId     String    @map("employee_id")
+  kind           PunchKind
+  occurredAt     DateTime  @map("occurred_at")
+  source         String    @default("api_v1")
+  idempotencyKey String    @map("idempotency_key")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, employeeId, occurredAt(sort: Desc)])
+  @@map("attendance_punches")
+}
+
+model IntegrationInstance {
+  id        String @id @default(uuid())
+  tenantId  String @map("tenant_id")
+  vendorKey String @map("vendor_key")
+
+  health IntegrationHealth @default(ACTIVE)
+
+  encryptedTokenBundle String?   @map("encrypted_token_bundle")
+  tokenExpiresAt       DateTime? @map("token_expires_at")
+  oauthScope           String?   @map("oauth_scope")
+
+  configJson Json? @map("config_json")
+
+  refreshLockUntil DateTime? @map("refresh_lock_until")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([tenantId, vendorKey])
+  @@index([tenantId])
+  @@index([tokenExpiresAt])
+  @@map("integration_instances")
+}
+
+enum IntegrationHealth {
+  ACTIVE
+  DEGRADED
+  DISABLED
+}
+
+model IntegrationOutbox {
+  id          String    @id @default(uuid())
+  tenantId    String?   @map("tenant_id")
+  jobType     String    @map("job_type")
+  payload     Json
+  createdAt   DateTime  @default(now()) @map("created_at")
+  publishedAt DateTime? @map("published_at")
+
+  @@index([publishedAt, createdAt])
+  @@map("integration_outbox")
+}
+
+model IntegrationDeadLetter {
+  id            String    @id @default(uuid())
+  tenantId      String?   @map("tenant_id")
+  vendorKey     String    @map("vendor_key")
+  jobType       String    @map("job_type")
+  payload       Json
+  failureReason String    @map("failure_reason")
+  correlationId String?   @map("correlation_id")
+  attempts      Int       @default(0)
+  replayedAt    DateTime? @map("replayed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([vendorKey, createdAt])
+  @@map("integration_dead_letters")
+}
+
+model WebhookEventDedupe {
+  id              String   @id @default(uuid())
+  vendorKey       String   @map("vendor_key")
+  tenantId        String    @map("tenant_id")
+  externalEventId String    @map("external_event_id")
+  receivedAt      DateTime @default(now()) @map("received_at")
+
+  @@unique([vendorKey, tenantId, externalEventId])
+  @@index([receivedAt])
+  @@map("webhook_event_dedupe")
+}
+
+model EmployeeVendorLink {
+  id         String @id @default(uuid())
+  tenantId   String @map("tenant_id")
+  employeeId String @map("employee_id")
+  vendorKey  String @map("vendor_key")
+  externalId String @map("external_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, vendorKey])
+  @@unique([tenantId, vendorKey, externalId])
+  @@index([employeeId])
+  @@index([tenantId])
+  @@map("employee_vendor_links")
+}
+
+// --- AI governance (HITL, XAI traceability, append-only audit) ---
+
+enum AiProposalStatus {
+  PROPOSED
+  AWAITING_REVIEW
+  APPROVED
+  REJECTED
+  EXECUTED
+}
+
+enum HighStakesActionType {
+  HIRE
+  TERMINATION
+  COMPENSATION_CHANGE
+  PIP_INITIATION
+  OTHER
+}
+
+model AiExplanationSnapshot {
+  id            String   @id @default(uuid())
+  tenantId      String   @map("tenant_id")
+  schemaVersion String   @map("schema_version")
+  payload       Json
+  contentHash   String   @map("content_hash")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  decisionProposal AiDecisionProposal?
+
+  @@index([tenantId])
+  @@map("ai_explanation_snapshots")
+}
+
+model AiDecisionProposal {
+  id                    String               @id @default(uuid())
+  tenantId              String               @map("tenant_id")
+  featureKey            String               @map("feature_key")
+  subjectType           String               @map("subject_type")
+  subjectRef            String               @map("subject_ref")
+  proposedActionType    HighStakesActionType @map("proposed_action_type")
+  status                AiProposalStatus     @default(PROPOSED)
+  modelVersion          String?              @map("model_version")
+  datasetSnapshotId     String?              @map("dataset_snapshot_id")
+  explanationSnapshotId String               @unique @map("explanation_snapshot_id")
+  proposedBySubjectId   String               @map("proposed_by_subject_id")
+  reviewedBySubjectId   String?              @map("reviewed_by_subject_id")
+  reviewedAt            DateTime?            @map("reviewed_at")
+  reviewNotes           String?              @map("review_notes")
+  executedBySubjectId   String?              @map("executed_by_subject_id")
+  executedAt            DateTime?            @map("executed_at")
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+
+  explanationSnapshot AiExplanationSnapshot @relation(fields: [explanationSnapshotId], references: [id])
+  highStakesActions   HighStakesEmploymentAction[]
+
+  @@index([tenantId, status])
+  @@map("ai_decision_proposals")
+}
+
+model GovernanceAuditEvent {
+  id             String   @id @default(uuid())
+  tenantId       String   @map("tenant_id")
+  eventType      String   @map("event_type")
+  actorSubjectId String   @map("actor_subject_id")
+  entityType     String   @map("entity_type")
+  entityId       String   @map("entity_id")
+  metadata       Json     @default("{}")
+  correlationId  String?  @map("correlation_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([tenantId, createdAt])
+  @@index([entityType, entityId])
+  @@map("governance_audit_events")
+}
+
+model HighStakesEmploymentAction {
+  id                   String               @id @default(uuid())
+  tenantId             String               @map("tenant_id")
+  proposalId           String               @map("proposal_id")
+  actionKind           HighStakesActionType @map("action_kind")
+  performedBySubjectId String               @map("performed_by_subject_id")
+  externalRef          String?              @map("external_ref")
+  createdAt            DateTime             @default(now()) @map("created_at")
+
+  proposal AiDecisionProposal @relation(fields: [proposalId], references: [id])
+
+  @@unique([proposalId])
+  @@index([tenantId, proposalId])
+  @@map("high_stakes_employment_actions")
+}
+
+// --- Enums ---
+
+enum CalendarSystem {
+  GREGORIAN
+  ISLAMIC_UMALQURA
+  HEBREW
+  PERSIAN
+  CUSTOM
+}
+
+enum NameOrderPreference {
+  GIVEN_FAMILY
+  FAMILY_GIVEN
+  LEGAL_DOCUMENT_ORDER
+}
+
+enum MeetingProposalStatus {
+  DRAFT
+  SENT
+  CONFIRMED
+  CANCELLED
+}
+
+enum PayoutLineType {
+  SALARY
+  BONUS
+  EXPENSE_REIMBURSEMENT
+  CONTRACTOR_PAY
+}
+
+enum PayoutSplitMode {
+  PERCENT_BASIS_POINTS
+  FIXED_MINOR_UNITS
+}
+
+enum HolidayRuleType {
+  FIXED_GREGORIAN
+  RULE_EASTER_OFFSET
+  IMPORTED_ANNUAL
+  LUNAR
+}
+
+enum CapacityAdjustmentReason {
+  STATUTORY_HOLIDAY
+  PTO
+  CUSTOM
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  ON_LEAVE
+  TERMINATED
+}
+
+enum EmploymentEventType {
+  HIRE
+  PROMOTION
+  TRANSFER
+  TERMINATION_VOLUNTARY
+  TERMINATION_INVOLUNTARY
+  LAYOFF
+  OTHER
+}
+
+enum AppRole {
+  employee
+  manager
+  hr_admin
+  payroll_admin
+  auditor_readonly
+}
+
+enum BenchmarkAlertSeverity {
+  INFO
+  WARN
+  CRITICAL
+}

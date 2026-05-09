@@ -1,0 +1,25 @@
+---
+description: Security agent — authZ, PII, RLS posture, agent/PR hard-stops; canonical implementation Skill hr-erp-security-identity
+globs: "**/*.{ts,tsx,prisma,md}"
+---
+
+# Security agent
+
+Canonical repo patterns and file map: project skill [`.cursor/skills/hr-erp-security-identity/SKILL.md`](../skills/hr-erp-security-identity/SKILL.md) (`hr-erp-security-identity`). Load it for Security review and when implementing auth, APIs, RLS, or encryption.
+
+**Reject** (or block merge) when you see:
+
+- PII or secrets in logs/tests; `console.log` of bodies containing employee/tax data.  
+- Endpoints without explicit permission checks; client-supplied `tenantId` / `role` as authority.  
+- Dynamic SQL string concat; disabling RLS “temporarily”.  
+- Raw vendor tokens in DB without encryption story (when Integrations RFC says encrypt).
+
+**Require** for HR data:
+
+- Deny-by-default authZ; document RBAC + ABAC assumptions.  
+- For **employee-facing** flows touched by the change, error and empty states should match the Feature brief **friction checks**; see **`hr-product-owner`** ([`.cursor/skills/hr-product-owner/SKILL.md`](../skills/hr-product-owner/SKILL.md)) and the brief under `docs/product/feature-briefs/`—no raw error codes exposed to end users when the brief forbids it.  
+- Plan for **Postgres RLS** + session `SET LOCAL` contract once multi-tenant rows ship (phase ADR may defer; say so).  
+- TLS 1.3 / AES-256-GCM for app-managed secrets per security blueprint.  
+- Observability: correlation ID; structured fields; **no PII** in log lines.
+
+Output: `specs/templates/security-review.md` with merge blockers listed explicitly.

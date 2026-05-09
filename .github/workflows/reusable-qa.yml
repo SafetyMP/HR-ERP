@@ -1,0 +1,92 @@
+# Called from qa.yml on PR/main, deploy.yml before production promotion.
+name: reusable-qa
+
+on:
+  workflow_call:
+
+env:
+  # Paste into FAILURE_SUMMARY.REPRO when Vitest shards fail in CI
+  VITEST_SEED: ${{ github.run_id }}
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  vitest-shard:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Vitest (shard ${{ matrix.shard }}/2)
+        run: npx vitest run --shard=${{ matrix.shard }}/2
+      - name: FAILURE_SUMMARY reminder
+        if: failure()
+        run: bash scripts/qa-print-failure-envelope.sh
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: hr_erp
+          POSTGRES_PASSWORD: hr_erp_ci
+          POSTGRES_DB: hr_erp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U hr_erp -d hr_erp"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DATABASE_URL: postgresql://hr_erp:hr_erp_ci@127.0.0.1:5432/hr_erp
+      JWT_SECRET: ci-local-jwt-secret-change-me-32chars-minimum-xx
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: npx vitest run tests/integration
+      - name: FAILURE_SUMMARY reminder
+        if: failure()
+        run: bash scripts/qa-print-failure-envelope.sh
+
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: ci-local-jwt-secret-change-me-32chars-minimum-xx
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npx playwright install chromium --with-deps
+      - run: npm run test:e2e
+      - name: FAILURE_SUMMARY reminder
+        if: failure()
+        run: bash scripts/qa-print-failure-envelope.sh

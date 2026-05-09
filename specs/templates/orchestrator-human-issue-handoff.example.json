@@ -1,0 +1,45 @@
+{
+  "ticketId": "gh-999-analytics-churn-empty-state",
+  "source": "https://github.com/example/hr-erp/issues/999",
+  "summary": "GET /api/v1/analytics/churn returns 200 with empty body when DEMO_TENANT_ID is unset; UI shows infinite spinner.",
+  "impact": "Demo analytics page unusable for contributors following README quickstart only.",
+  "reproduction": {
+    "steps": [
+      "Clone repo; copy .env.example to .env; omit DEMO_TENANT_ID.",
+      "npm install && npm run dev.",
+      "Open /analytics in browser with dev tools network tab.",
+      "Observe GET /api/v1/analytics/churn succeeds but response body is empty; UI never leaves loading state."
+    ]
+  },
+  "expectedVsActual": {
+    "expected": "Explicit error or empty-state message; or documented requirement to set DEMO_TENANT_ID.",
+    "actual": "Silent empty payload; client spinner hangs."
+  },
+  "environment": {
+    "os": "darwin 25.x",
+    "nodeVersion": "22.x",
+    "branch": "main",
+    "commitSha": "abc1234"
+  },
+  "suspectedPaths": [
+    "src/app/api/v1/analytics/churn/route.ts",
+    "src/app/analytics"
+  ],
+  "orchestratorHints": [
+    "API error contract vs OpenAPI",
+    "Consider hr-erp-qa-chaos for Playwright coverage of empty-state"
+  ],
+  "conditionalSkills": [
+    "hr-code-health",
+    "hr-erp-security-identity",
+    "hr-erp-qa-chaos"
+  ],
+  "failureArtifacts": {
+    "logsExcerpt": "No server exception; handler returns early when tenant scope missing.",
+    "failureSummaryBlock": ""
+  },
+  "humanReadableOriginal": "I followed the readme and the analytics dashboard just spins forever. No error.",
+  "requiresPoCheckpoint": false,
+  "advocateNotes": "Reproduced locally without DEMO_TENANT_ID. Document gap in README or return 4xx with JSON error envelope per API conventions.",
+  "reproStatus": "reproduced"
+}

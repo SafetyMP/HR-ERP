@@ -1,0 +1,143 @@
+# Jurisdiction matrix: pay premiums (regular / overtime / double-time)
+# Version: 0.1.0 — reference data for engineering; Legal must validate before production.
+# Precedence order (highest wins): cba > employer_policy > statute
+#
+# Schema notes:
+# - geo_id: stable id for rule resolution (ISO-3166-2 for states; US-FED for federal floor)
+# - workweek_hours: statutory or default contractual STANDARD for OT threshold when weekly method used (NOT assumed globally 40)
+# - daily_ot_after_hours: null if daily OT not generally mandated at state default
+# - variants: industry / wage-order hooks — match worker.classification_variant in application layer
+
+version: "0.1.0"
+capability: pay-premiums-and-allocations-v1
+
+precedence_order:
+  - cba
+  - employer_policy
+  - statute
+
+rules:
+  - geo_id: US-FED
+    effective_from: "1970-01-01"
+    effective_to: null
+    source_citation_ref: "POL-FLSA-OT-001"
+    applies_when:
+      worker_country: US
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+      # Employer-configured FLSA workweek start day/hour must be supplied by payroll; not fixed in data file
+    overtime:
+      weekly_multiplier: 1.5
+      daily_multiplier: null
+      doubletime_multiplier: null
+      consecutive_seventh_day_special: false
+    variants: []
+
+  - geo_id: US-CA
+    effective_from: "1970-01-01"
+    effective_to: null
+    source_citation_ref: "POL-CA-DIR-OT-001"
+    applies_when:
+      worker_country: US
+      work_situs_state: CA
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+      standard_hours_for_daily: 8
+    overtime:
+      weekly_multiplier: 1.5
+      daily_multiplier: 1.5
+      daily_ot_after_hours: 8
+      doubletime_multiplier: 2.0
+      doubletime_after_hours_daily: 12
+      seventh_day_hours_0_to_8_multiplier: 1.5
+      seventh_day_hours_over_8_multiplier: 2.0
+    variants:
+      - id: IWC_CUSTOM
+        description: "Worker subject to specific Industrial Welfare Commission order — Brinks-style exemptions etc."
+        employer_must_set: wage_order_code
+
+  - geo_id: US-NY
+    effective_from: "1970-01-01"
+    effective_to: null
+    source_citation_ref: "POL-NY-LL-OT-001"
+    applies_when:
+      worker_country: US
+      work_situs_state: NY
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+    overtime:
+      weekly_multiplier: 1.5
+      daily_multiplier: null
+      daily_ot_after_hours: null
+    variants:
+      - id: NY_HOSPITALITY
+        description: "Hospitality industry — spread of hours / additional provisions may apply (separate policy rows)"
+        employer_must_set: industry_profile
+
+  - geo_id: US-CO
+    effective_from: "1970-01-01"
+    effective_to: null
+    source_citation_ref: "POL-CO-COMPS-001"
+    applies_when:
+      worker_country: US
+      work_situs_state: CO
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+      standard_hours_for_daily: 12
+    overtime:
+      weekly_multiplier: 1.5
+      daily_multiplier: 1.5
+      daily_ot_after_hours: 12
+      doubletime_multiplier: null
+    variants: []
+
+  - geo_id: US-TX
+    effective_from: "1970-01-01"
+    effective_to: null
+    source_citation_ref: "POL-TX-FLSA-ALIGN-001"
+    applies_when:
+      worker_country: US
+      work_situs_state: TX
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+    overtime:
+      weekly_multiplier: 1.5
+      daily_multiplier: null
+    variants: []
+
+  # Example CBA override row — higher than statute floor
+  - geo_id: US-CA
+    effective_from: "2024-01-01"
+    effective_to: null
+    precedence: cba
+    union_agreement_id: "CBA-DEMO-LOCAL100-2024"
+    source_citation_ref: "CBA-ART12-OT"
+    applies_when:
+      worker_country: US
+      work_situs_state: CA
+      exempt_status: non_exempt
+    workweek:
+      standard_hours_for_weekly_ot: 40
+    overtime:
+      daily_ot_after_hours: 7.5
+      daily_multiplier: 1.5
+      doubletime_after_hours_daily: 11.5
+      doubletime_multiplier: 2.0
+    variants: []
+
+collision_resolution:
+  description: >
+    For each work minute, collect all candidate geo_ids from time punches (work_situs).
+    Apply **highest benefit to employee** ordering when statutes conflict unless CBA explicitly opts out
+    (Legal review required — default engine: MAXIMUM premium rate among applicable jurisdictions for that minute).
+  engine_default: max_employee_benefit_minute_allocation
+
+multi_situs_pay_period:
+  description: >
+    Split time entries by (date, situs geo). Run premium allocation per situs day bucket, then consolidate pay lines
+    for stub display with per-jurisdiction earning codes where required.

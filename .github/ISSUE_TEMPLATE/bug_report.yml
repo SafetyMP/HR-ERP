@@ -1,0 +1,66 @@
+name: Bug report
+description: Tell us what broke—we read every report with care.
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for improving the HR ERP repo. Synthetic repro steps only—no real SSNs, tax IDs, or production exports (see `CONTRIBUTING.md`).
+
+        Maintainers may append an **`orchestrator-human-issue-handoff`** JSON block (schema: `specs/templates/orchestrator-human-issue-handoff.schema.json`) to route agents without losing your original wording.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear, short description.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can we reproduce it?
+      description: Commands, URLs, clicks—minimal steps beat long stories.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node (`node -v`), branch/commit if you know them.
+      placeholder: |
+        OS:
+        Node:
+        Branch / SHA:
+    validations:
+      required: false
+  - type: textarea
+    id: extras
+    attributes:
+      label: Screenshots / logs / network traces
+      description: Omit secrets and PII. Paste `FAILURE_SUMMARY` if CI surfaced one.
+      render: markdown
+    validations:
+      required: false
+  - type: dropdown
+    id: pr-offer
+    attributes:
+      label: Are you planning to open a PR?
+      options:
+        - "Maybe"
+        - "Yes"
+        - "No"
+    validations:
+      required: false

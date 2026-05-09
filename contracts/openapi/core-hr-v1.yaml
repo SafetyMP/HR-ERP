@@ -1,0 +1,193 @@
+openapi: 3.1.0
+info:
+  title: Core HR API (Next `/api/v1`)
+  version: 1.0.0
+  description: |
+    Tenant isolation via JWT (`tenant_id` claim) + Postgres RLS (`app.tenant_id` GUC per transaction).
+    Responses always include `apiVersion`; errors never expose stack traces or DB internals.
+servers:
+  - url: /api/v1
+paths:
+  /employees/{employeeId}:
+    get:
+      operationId: getEmployeePublicProfile
+      summary: Tenant-scoped employee read (RLS); employees without `employees:list` may read self only.
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT (HS256)
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeReadEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /attendance/clock-in:
+    post:
+      operationId: clockInSelf
+      summary: Self-service clock-in (server clock); idempotent on `(tenant, idempotencyKey)`.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [idempotencyKey]
+              properties:
+                idempotencyKey:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: Accepted or idempotent replay
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClockInEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Conflict — duplicate clock-in or bad idempotency replay
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Forbidden:
+      description: RBAC / ABAC / row-scope denial
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    NotFound:
+      description: Not visible in tenant scope
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+  schemas:
+    EmployeeReadEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [employee]
+          properties:
+            employee:
+              type: object
+              required: [id, email, firstName, lastName, createdAt]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                email:
+                  type: string
+                  format: email
+                firstName:
+                  type: ["string", "null"]
+                lastName:
+                  type: ["string", "null"]
+                createdAt:
+                  type: string
+                  format: date-time
+    ClockInEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [punch]
+          properties:
+            punch:
+              type: object
+              required:
+                [id, employeeId, kind, occurredAt, idempotentReplay]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                employeeId:
+                  type: string
+                  format: uuid
+                kind:
+                  type: string
+                  enum: [CLOCK_IN]
+                occurredAt:
+                  type: string
+                  format: date-time
+                idempotentReplay:
+                  type: boolean
+    ErrorEnvelope:
+      type: object
+      required: [apiVersion, error]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              description: Validation flatten only — optional
+              nullable: true

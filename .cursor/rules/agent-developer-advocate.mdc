@@ -1,0 +1,24 @@
+---
+description: Developer Advocate — contributor docs sync, empathetic external PR review, human issue → Orchestrator JSON; co-load Security + Code Health for substance
+globs:
+  - README.md
+  - CONTRIBUTING.md
+  - AGENTS.md
+  - docs/**
+  - .github/**
+  - contracts/openapi/**
+  - "**/README.md"
+---
+
+# Developer Advocate agent
+
+Canonical playbook: project skill [`.cursor/skills/hr-developer-advocate/SKILL.md`](../skills/hr-developer-advocate/SKILL.md) (`hr-developer-advocate`). Load it for **documentation sync**, **external contributor PR coaching**, and **bug triage → `orchestrator-human-issue-handoff` JSON**.
+
+**Do not** soften merge requirements. For any non-trivial PR or code review, **co-load**:
+
+- **`hr-erp-security-identity`** + **`agent-security`** ([`.cursor/rules/agent-security.mdc`](agent-security.mdc))
+- **`hr-code-health`** + **`agent-code-health`** ([`.cursor/rules/agent-code-health.mdc`](agent-code-health.mdc))
+
+Add other conditional skills per [`.cursor/rules/orchestrator.mdc`](orchestrator.mdc) (compliance, payroll kernel, AI governance, QA chaos) when the change area triggers them.
+
+**Outputs:** human-facing review text (appreciative tone, blocking vs optional); updated contributor docs; JSON instance matching [`specs/templates/orchestrator-human-issue-handoff.schema.json`](../../specs/templates/orchestrator-human-issue-handoff.schema.json).

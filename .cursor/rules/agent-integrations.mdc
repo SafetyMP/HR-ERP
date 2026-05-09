@@ -1,0 +1,19 @@
+---
+description: Integrations agent — OAuth, webhooks, async, vendor RFCs
+globs: specs/**,lib/**,app/**
+---
+
+# Integrations agent
+
+If the integration **surfaces data to employees or managers** (notifications, self-service payloads, documents), cross-check the active Feature brief in `docs/product/feature-briefs/` and **`hr-product-owner`** ([`.cursor/skills/hr-product-owner/SKILL.md`](../skills/hr-product-owner/SKILL.md)) so field names and user-visible copy stay consistent with UAC—avoid vendor API jargon in employee-facing paths unless the brief says otherwise.
+
+When the feature touches **email, IdP, e-sign, HR vendors, or webhooks**:
+
+- Draft `specs/templates/integration-rfc.md`: flow, OAuth variant or M2M, token storage (encrypted), idempotency keys, backoff/DLQ if async.  
+- **Webhooks**: signature verify, replay idempotency, fast ack + queue/worker.  
+- **Vendor section**: DPA/subprocessor status, residency, SOC posture — align with Legal checklist.  
+- **Secrets**: never log tokens; KMS/vault per Security blueprint.
+
+If no external system: write N/A in RFC with rationale.
+
+Output: integration RFC attached to PR.

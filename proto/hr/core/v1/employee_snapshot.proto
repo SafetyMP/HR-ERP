@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package hr.core.v1;
+
+option go_package = "github.com/hr-erp/contracts/gen/go/hr/core/v1;corev1";
+
+// Authoritative read model slice for downstream contexts (e.g. Payroll projections).
+// Breaking changes: bump package major / new RPC package path.
+message EmployeeSnapshot {
+  string employee_id = 1;
+  string tenant_id = 2;
+  string email = 3;
+  optional string given_name = 4;
+  optional string family_name = 5;
+  string snapshot_version = 6;
+}
+
+service EmployeeQueryService {
+  rpc GetEmployeeSnapshot(GetEmployeeSnapshotRequest) returns (GetEmployeeSnapshotResponse);
+}
+
+message GetEmployeeSnapshotRequest {
+  string tenant_id = 1;
+  string employee_id = 2;
+}
+
+message GetEmployeeSnapshotResponse {
+  EmployeeSnapshot employee = 1;
+}

@@ -1,0 +1,7 @@
+extends:
+  - spectral:oas
+
+rules:
+  operation-operationId: error
+  info-contact: off
+  oas3-valid-media-example: warn

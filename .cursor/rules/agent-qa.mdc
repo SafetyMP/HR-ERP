@@ -1,0 +1,32 @@
+---
+description: QA agent — plans, synthetic data, a11y smoke, FAILURE_SUMMARY
+globs: specs/**,**/*test*
+---
+
+# QA agent
+
+- Load the **`hr-product-owner`** skill ([`.cursor/skills/hr-product-owner/SKILL.md`](../skills/hr-product-owner/SKILL.md); `@hr-product-owner`) when deriving cases from Feature briefs so **friction checks** and HR terminology stay aligned with PO expectations.  
+- Load **`hr-erp-qa-chaos`** ([`.cursor/skills/hr-erp-qa-chaos/SKILL.md`](../skills/hr-erp-qa-chaos/SKILL.md); `@hr-erp-qa-chaos`) for deterministic EmployeeScenario batches, temporal concurrency patterns, layered Vitest/Playwright, and **`FAILURE_SUMMARY`** handoffs — ops detail in [docs/QA.md](../../docs/QA.md). **Orchestrator** attaches **`hr-erp-qa-chaos`** on QA Tasks (see [.cursor/rules/orchestrator.mdc](../rules/orchestrator.mdc) **QA chaos & layered evidence**).  
+- When testing **pay rules, time allocation, or earnings computations**, load **`hr-backend-compliance`** ([`.cursor/skills/hr-backend-compliance/SKILL.md`](../skills/hr-backend-compliance/SKILL.md); `@hr-backend-compliance`) and assert against **golden vectors**, `COMPLIANCE_*` codes, and multi-situs cases in [docs/compliance/pay-premiums-constraints.md](../../docs/compliance/pay-premiums-constraints.md)—not a single default jurisdiction.  
+- When testing **AI-assisted screening, scoring, recommendations, or governance workflows** (HITL, explanations, audit), load **`hr-ai-data-governance`** ([`.cursor/skills/hr-ai-data-governance/SKILL.md`](../skills/hr-ai-data-governance/SKILL.md); `@hr-ai-data-governance`) and assert UAC against [docs/ai-governance/PR_CHECKLIST.md](../../docs/ai-governance/PR_CHECKLIST.md) expectations—no autonomous high-stakes actions without approval paths.  
+- Build **test plan** from PO UAC verbatim; gaps = PO defects.  
+- **Synthetic data only** — no real SSNs, no prod dumps; see CONTRIBUTING.  
+- Layers: unit (rules), integration (DB + concurrency where needed), e2e critical path + one chaotic variant if valuable.  
+- **Accessibility smoke** for employee-facing flows: focus order, labels, keyboard.  
+- **Locale vs law**: i18n ≠ compliance; call out if tests assume one jurisdiction.
+
+## Security-plane PR smoke (routing + RLS + secrets)
+
+When QA reviews or extends coverage for **`middleware.ts`**, **`lib/security/**`**, **JWT/session**, **`prisma/migrations/**` RLS**, or **`app/api/**`** / **`src/app/api/**`** tenancy boundaries (non-chore scopes), minimally assert:
+
+| Control | Verification |
+| --- | --- |
+| **RLS parity** | New tenant-scoped tables have forward migration enabling RLS aligned with [`docs/security/rls-session-contract.md`](../../docs/security/rls-session-contract.md) |
+| **Policy registry completeness** | New route handlers resolve in [`lib/security/route-policies.ts`](../../lib/security/route-policies.ts) (`getRoutePolicy`) or explicit deny-default behavior is tested |
+| **Secret hygiene** | No `JWT_SECRET`, tokens, or raw PII in logs, snapshots, or committed fixtures |
+
+Combine with **`hr-erp-security-identity`** and **agent-security** merge criteria for formal Security review.
+
+On failure, emit `FAILURE_SUMMARY` block (from `specs/templates/qa-plan.md`) in PR/issue.
+
+Output: `specs/templates/qa-plan.md` filled + links to CI artifacts.

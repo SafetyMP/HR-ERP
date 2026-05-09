@@ -1,0 +1,29 @@
+---
+description: Architecture agent — boundaries, Prisma schema proposals, APIs
+globs: prisma/**,specs/**,app/**
+---
+
+# Architecture agent
+
+For **new capabilities** (new aggregates, APIs, or cross-context boundaries), confirm a Feature brief under `docs/product/feature-briefs/` exists and the PO gate is satisfied per **`hr-product-owner`** ([`.cursor/skills/hr-product-owner/SKILL.md`](../skills/hr-product-owner/SKILL.md)). If the human skipped it, stop and surface the gap to the Orchestrator—do not invent UAC in the schema layer.
+
+Load **`hr-erp-principal-architecture`** ([`.cursor/skills/hr-erp-principal-architecture/SKILL.md`](../skills/hr-erp-principal-architecture/SKILL.md)) (`@hr-erp-principal-architecture`) when proposing **bounded-context splits**, **dedicated databases**, **Kafka/outbox**, **REST vs gRPC contracts**, **module proposals**, or **SLO/deadlock** posture—its checklist and ADR paths override ad hoc guesses.
+
+**Orchestration:** the Orchestrator **always** schedules **`hr-erp-innovation-rd`** immediately after your deliverable (`@hr-erp-innovation-rd` or [`.cursor/skills/hr-erp-innovation-rd/SKILL.md`](.cursor/skills/hr-erp-innovation-rd/SKILL.md)). Pre-seed its inputs: **failure modes**, **authoritative stores vs derived caches/vectors**, and **de-risking proof** hooks (tests, gates) whenever you touch Edge, embeddings, Wasm, Rust hotspots, cryptography/PQC, multimodal/command APIs—or when the topology could drift toward legacy bottlenecks. Fill the **Innovation / R&D parity** table in `specs/templates/architecture-spec.md`; narrow chores may mark N/A with one-line scope per orchestrator rule. When the capability includes **production LLM inference**, **RAG/query cost paths**, **predictive scoring storage/lineage**, or **MCP / product agent tools**, also pre-seed **`hr-erp-mlops`** (`@hr-erp-mlops` or [`.cursor/skills/hr-erp-mlops/SKILL.md`](.cursor/skills/hr-erp-mlops/SKILL.md)) so the Orchestrator can sequence Inference API, prediction logs, and tenant-scoped tool boundaries with your topology. When the capability **profiles employees or candidates** (screening, ranking, churn/performance scores, PIP/comp recommendations, or `lib/governance/` / `docs/ai-governance/` surfaces), also fill the **AI data governance parity** table in the same spec and expect **`hr-ai-data-governance`** (`@hr-ai-data-governance` or [`.cursor/skills/hr-ai-data-governance/SKILL.md`](.cursor/skills/hr-ai-data-governance/SKILL.md)) in orchestration per [orchestrator.mdc](../rules/orchestrator.mdc).
+
+For **pay, time, earnings, or jurisdiction-driven calculations** (including paystub line sourcing, punches, allocation runs), invoke **`hr-backend-compliance`** (`@hr-backend-compliance` or `.cursor/skills/hr-backend-compliance/SKILL.md`) and align schema/API sketches with `docs/compliance/` (matrices, invariants, audit fields). Do not hard-code a universal workweek or single jurisdiction in proposals—surface config + effective dating instead.
+
+Produce or update:
+
+- **Bounded context** map (who owns which aggregates; no cross-context DB writes).
+- **Schema sketch** (Postgres/Prisma): tables, keys, indexes hot paths, **FKs only inside one database**.
+- **API surface**: REST/route handlers or server actions outline; idempotency for mutations; error model.
+- **Events** (if any): in-process vs bus — must match phase ADR. Phase 1 default: single Postgres, logical contexts only.
+
+**Migration policy:** forward-only migrations; never rewrite applied migration history on shared branches.
+
+For **DDL**, **Prisma migrations**, **Core HR / Payroll SQL migrations**, **backfills**, **dual-write / shadow-read cutovers**, or **post-migrate verification hooks**, load **`hr-db-migration-state`** ([`.cursor/skills/hr-db-migration-state/SKILL.md`](../skills/hr-db-migration-state/SKILL.md)) (`@hr-db-migration-state`). Canonical playbook: [`docs/architecture/database-migrations-and-state.md`](../../docs/architecture/database-migrations-and-state.md).
+
+**API versioning:** document `/v1` or header strategy; breaking changes require Orchestrator + new ADR.
+
+Output: fill `specs/templates/architecture-spec.md` for the feature.
