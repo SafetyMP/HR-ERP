@@ -1,3 +1,9 @@
+## [2.0.6](https://github.com/SafetyMP/HR-ERP/compare/v2.0.5...v2.0.6) (2026-05-09)
+
+### Bug Fixes
+
+* verify API JWT in Node routes; JWT env merge and Vercel smoke ([94b5ec8](https://github.com/SafetyMP/HR-ERP/commit/94b5ec8931a992b48c63797c52aa12416aa0e78d))
+
 ## [2.0.5](https://github.com/SafetyMP/HR-ERP/compare/v2.0.4...v2.0.5) (2026-05-09)
 
 ### Bug Fixes
