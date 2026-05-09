@@ -27,6 +27,11 @@ node_modules.bak.*/
 .DS_Store
 *.pem
 
+# python (local bytecode — e.g. services/ml-serving)
+__pycache__/
+*.py[cod]
+*$py.class
+
 # debug
 npm-debug.log*
 yarn-debug.log*
