@@ -85,9 +85,17 @@ def churn_score(body: ChurnScoreIn):
     return {"flight_risk": proba, "model": "churn_v1_logreg", "drivers": explain}
 
 
-_prefix = _route_prefix()
-if _prefix:
-    app = FastAPI()
-    app.mount(_prefix.rstrip("/"), service)
-else:
-    app = service
+def _build_app() -> FastAPI:
+    """ASGI app exposed as `app` for uvicorn and Vercel (expects a top-level `app` binding)."""
+    prefix = _route_prefix()
+    if not prefix:
+        return service
+    root = FastAPI()
+    root.mount(prefix.rstrip("/"), service)
+    return root
+
+
+# Single top-level assignment so deployment tooling can detect the ASGI app without executing branches.
+app = _build_app()
+# Alias some runtimes look for (e.g. Gunicorn-style `application`).
+application = app
