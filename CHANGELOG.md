@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/SafetyMP/HR-ERP/compare/v1.0.0...v1.1.0) (2026-05-09)
+
+### Features
+
+* **auth:** POST /api/auth/token with issuer secret for access JWTs ([7458ef1](https://github.com/SafetyMP/HR-ERP/commit/7458ef100131ad0376c4272680ed5bc1453b5726))
+
 ## 1.0.0 (2026-05-09)
 
 ### Features
