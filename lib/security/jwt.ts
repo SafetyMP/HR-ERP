@@ -16,17 +16,14 @@ export interface HrJwtClaims extends JWTPayload {
 }
 
 /**
- * HS256 signing material — must read **real** runtime `process.env` on Vercel.
- * Next/Webpack may still inline `process.env[computedKey]` if the key is
- * constant-folded. `new Function` keeps the lookup opaque to static env plugins.
+ * Load HS256 secret at **runtime** (Vercel serverless injects env per cold start).
+ * Avoid static `process.env.JWT_SECRET` / sync patterns that Next/Webpack can inline
+ * at `next build`. Dynamic `import("node:process")` is not folded the same way.
  */
-function requireJwtSecret(): string {
-  const envKey = ["JWT", "SECRET"].join("_");
-  const lookup = new Function(
-    "k",
-    "return typeof process !== 'undefined' && process.env ? process.env[k] : undefined",
-  ) as (k: string) => string | undefined;
-  const v = lookup(envKey);
+async function requireJwtSecret(): Promise<string> {
+  const { env } = await import("node:process");
+  const envKey = ["JWT", "SECRET"].join("_") as "JWT_SECRET";
+  const v = env[envKey];
   if (!v) throw new Error("JWT_SECRET is not set");
   const t = v.trim();
   if (!t) throw new Error("JWT_SECRET is not set");
@@ -34,7 +31,7 @@ function requireJwtSecret(): string {
 }
 
 export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
-  const secret = requireJwtSecret();
+  const secret = await requireJwtSecret();
   const key = new TextEncoder().encode(secret);
   const { payload } = await jwtVerify(token, key, {
     algorithms: ["HS256"],
@@ -53,7 +50,7 @@ export async function signHrAccessToken(params: {
   /** jose-supported exp, e.g. `3600s`, `1h` */
   expiresIn: string;
 }): Promise<string> {
-  const secret = requireJwtSecret();
+  const secret = await requireJwtSecret();
   const key = new TextEncoder().encode(secret);
 
   const payload: Record<string, unknown> = {
