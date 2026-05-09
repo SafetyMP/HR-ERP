@@ -85,7 +85,7 @@ See **`package.json`** for the complete list.
 
 ## Releases & container publishing
 
-- **SemVer + changelog automation:** [`.github/workflows/release-please.yml`](.github/workflows/release-please.yml) opens/updates the release merge train on `main` / `master` using [`CHANGELOG.md`](CHANGELOG.md).
+- **SemVer + releases:** Bump `version` in root [`package.json`](package.json) on `main` / `master` (with [`CHANGELOG.md`](CHANGELOG.md) updated in the same PR). [`.github/workflows/release-tag.yml`](.github/workflows/release-tag.yml) creates the `v*` git tag and a **published** GitHub Release when it detects a version change (or re-run via **workflow_dispatch**). This triggers **GHCR** below without opening a release PR.
 - **GHCR image:** Publishing a **[GitHub Release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)** runs [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml), which builds **multi-arch** (`linux/amd64`, `linux/arm64`) images, attaches **SBOM** and **SLSA-style provenance** attestations, pushes `ghcr.io/<lowercased-github-owner>/<lowercased-repo-name>:<version>` plus `:latest`, and **Cosign-signs** the image digest (keyless via GitHub OIDC). Manual smoke builds use **`workflow_dispatch`** with a scratch tag.
 - **Supply-chain policy:** [`specs/alignment/decisions/0003-container-supply-chain.md`](specs/alignment/decisions/0003-container-supply-chain.md). **Verify** a pulled digest (replace `OWNER`, `REPO`, and `DIGEST`):
 

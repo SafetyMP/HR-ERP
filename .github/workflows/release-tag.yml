@@ -1,0 +1,82 @@
+# Bump `version` in root package.json on main, merge — this job creates vX.Y.Z and
+# a published GitHub Release (no bot PR). Triggers publish-ghcr.yml via release: published.
+name: Tag and GitHub release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - package.json
+  workflow_dispatch:
+
+concurrency:
+  group: release-tag-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  tag-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Decide if version changed
+        id: meta
+        run: |
+          set -euo pipefail
+          CURRENT="$(node -p "require('./package.json').version")"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${CURRENT}" >>"$GITHUB_OUTPUT"
+            echo "proceed=true" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          PREV=""
+          if git show HEAD~1:package.json > .prev-package.json 2>/dev/null; then
+            PREV="$(node -p "JSON.parse(require('fs').readFileSync('.prev-package.json','utf8')).version")"
+          fi
+          rm -f .prev-package.json
+          if [ -z "${PREV}" ]; then
+            echo "version=${CURRENT}" >>"$GITHUB_OUTPUT"
+            echo "proceed=true" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "${CURRENT}" = "${PREV}" ]; then
+            echo "proceed=false" >>"$GITHUB_OUTPUT"
+          else
+            echo "version=${CURRENT}" >>"$GITHUB_OUTPUT"
+            echo "proceed=true" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Push tag and publish release
+        if: steps.meta.outputs.proceed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.meta.outputs.version }}"
+          TAG="v${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "Tag ${TAG} already exists on remote."
+          else
+            git tag -a "${TAG}" -m "Release ${TAG}"
+            git push origin "${TAG}"
+          fi
+
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists."
+          else
+            gh release create "${TAG}" --title "${TAG}" --generate-notes
+          fi
