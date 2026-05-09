@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/SafetyMP/HR-ERP/compare/v2.1.1...v2.1.2) (2026-05-09)
+
+### Bug Fixes
+
+* **deploy:** override empty JWT_SECRET written by vercel pull (root cause of invalid_token loop) ([8e098d7](https://github.com/SafetyMP/HR-ERP/commit/8e098d7d9756f41b2b5bcd47777fd2f4bffdba0d))
+
 ## [2.1.1](https://github.com/SafetyMP/HR-ERP/compare/v2.1.0...v2.1.1) (2026-05-09)
 
 ### Bug Fixes
