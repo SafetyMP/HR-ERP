@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/SafetyMP/HR-ERP/compare/v2.1.0...v2.1.1) (2026-05-09)
+
+### Bug Fixes
+
+* **diag:** rename _debug to diag (Next.js private folder convention) ([15f8d0e](https://github.com/SafetyMP/HR-ERP/commit/15f8d0ed5cad4acd7e25d0f7e63f0774ffc73122))
+
 ## [2.1.0](https://github.com/SafetyMP/HR-ERP/compare/v2.0.10...v2.1.0) (2026-05-09)
 
 ### Features
