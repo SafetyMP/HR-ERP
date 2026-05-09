@@ -15,15 +15,16 @@ export interface HrJwtClaims extends JWTPayload {
   mfa_level?: MfaLevel;
 }
 
-function requireEnv(name: string): string {
-  const v = process.env[name];
-  if (!v) throw new Error(`${name} is not set`);
-  return v;
-}
-
-/** Matches CI / ops: trim so dashboard vs `.env` newline/space drift does not break HS256. */
+/**
+ * HS256 signing material — must be read at **runtime** on Vercel: literal
+ * `process.env.JWT_SECRET` can be inlined at `next build`, which breaks tokens
+ * minted against dashboard/runtime env when CI/build used a different value.
+ */
 function requireJwtSecret(): string {
-  const t = requireEnv("JWT_SECRET").trim();
+  const name = `${"JWT"}${"_"}${"SECRET"}`;
+  const v = process.env[name];
+  if (!v) throw new Error("JWT_SECRET is not set");
+  const t = v.trim();
   if (!t) throw new Error("JWT_SECRET is not set");
   return t;
 }
