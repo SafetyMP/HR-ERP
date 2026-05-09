@@ -1,57 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HR ERP
 
-The repo mixes human contributors and Cursor-orchestrated agents under the rules in [`AGENTS.md`](AGENTS.md).
+Human Resources **enterprise scaffold**: **Next.js** (App Router) + **PostgreSQL** (Prisma) with strong defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), **payroll calculation** (`packages/payroll-calc`), and extensive **governance docs** (compliance, AI ethics, architecture ADRs).
 
-## Contributing
+The repository is set up for **human contributors and Cursor-orchestrated agents**; workflow rules live in [`AGENTS.md`](AGENTS.md).
 
-We welcome issues and PRs from people and from automation alike. Start with **[`CONTRIBUTING.md`](CONTRIBUTING.md)** and **[`docs/community/README.md`](docs/community/README.md)** for branching, synthetic test data expectations, and how bug reports may be converted into Orchestrator-ready JSON handoffs.
+## What is in this repo
 
-## Getting Started
+- **Web app**: `src/app/` — dashboards (`/analytics`), examples, global L10n lab, governance APIs, versioned REST under `/api/v1`.
+- **Data plane**: `prisma/` — main app DB with RLS-oriented migrations; optional **bounded-context** Postgres instances via Docker profile (see [`docker-compose.yml`](docker-compose.yml)).
+- **Security**: JWT gate in [`middleware.ts`](middleware.ts) for `/api/v1/*`; transactions with tenant session GUCs via [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts).
+- **Contracts**: OpenAPI (`contracts/openapi/`) + Protobuf [`proto/`](proto/) with npm lint shortcuts.
+- **Workers**: Outbox → Kafka ([`workers/outbox-publisher/`](workers/outbox-publisher/)); BullMQ integration jobs ([`npm run worker:integrations`](package.json)).
+- **ML / analytics (optional)**: Python under [`services/`](services/) — churn training, ETL, FastAPI serving; documented in **Predictive HR** below.
 
-First, run the development server:
+## Quick start
 
 ```bash
+git clone https://github.com/SafetyMP/HR-ERP.git
+cd HR-ERP
+npm ci
+cp .env.example .env
+# Edit JWT_SECRET and any URLs if your Docker ports differ
+
+npm run db:up
+npm run db:migrate
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Full setup** (multiple databases, Kafka, workers): see **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Documentation
+
+| Resource | Description |
+| --- | --- |
+| **[`docs/README.md`](docs/README.md)** | Index of all major documentation |
+| **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)** | Local dev, scripts, repo layout, troubleshooting |
+| **[`CONTRIBUTING.md`](CONTRIBUTING.md)** | PR expectations, migrations, synthetic data |
+| **[`docs/QA.md`](docs/QA.md)** | Tests, fixtures, failure envelopes |
+| **[`FRONTEND.md`](FRONTEND.md)** | UI state, accessibility, API error handling |
+
+## Tech stack
+
+- **Runtime**: Node 20+, **Next.js 16**, **React 19**, **TypeScript**
+- **Data**: **Prisma 7**, PostgreSQL (**pgvector** image in Compose for default DB)
+- **UI**: **Tailwind CSS 4**, **Radix** primitives, **TanStack Query / Table**, **Recharts**
+- **Validation**: **Zod**, **React Hook Form**
+- **Tests**: **Vitest**, **Playwright**
+- **Tooling**: **ESLint** (Next config), **Prettier**, **Buf**, **Spectral**
+
+## npm scripts (shortlist)
+
+| Command | Use |
+| --- | --- |
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
+| `npm run test` / `npm run test:e2e` | Vitest / Playwright |
+| `npm run security:scan` | Repo security scan |
+| `npm run db:up` / `npm run db:up:arch` | Docker: default vs architecture profile |
+| `npm run db:migrate` | Prisma migrate (dev) |
+| `npm run db:studio` | Prisma Studio |
+| `npm run contracts:openapi` / `contracts:buf` | Contract lint |
+
+See **`package.json`** for the complete list.
 
 ## Security architecture
 
-Defense-in-depth defaults aligned with the security blueprint:
-
-- **Docs**: [`docs/security/stack-decision.md`](docs/security/stack-decision.md) (stack), [`docs/security/policy-catalog.md`](docs/security/policy-catalog.md) (RBAC/ABAC), [`docs/security/rls-session-contract.md`](docs/security/rls-session-contract.md) (Postgres `SET LOCAL` + RLS), [`docs/security/tls-and-data-at-rest.md`](docs/security/tls-and-data-at-rest.md) (TLS 1.3 + AES-256-GCM).
-- **Runtime**: JWT verified in [`middleware.ts`](middleware.ts) for `/api/v1/*`; handlers use [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts) so tenant GUCs are set before queries.
-- **CI**: [`npm run security:scan`](scripts/security-scan.mjs) plus ESLint bans on `$executeRawUnsafe` / `$queryRawUnsafe` (see [`eslint.config.mjs`](eslint.config.mjs)).
-- **Dev tokens**: `node scripts/issue-dev-jwt.mjs` (requires `JWT_SECRET` in `.env`).
+- **Docs**: [`docs/security/stack-decision.md`](docs/security/stack-decision.md), [`docs/security/policy-catalog.md`](docs/security/policy-catalog.md), [`docs/security/rls-session-contract.md`](docs/security/rls-session-contract.md), [`docs/security/tls-and-data-at-rest.md`](docs/security/tls-and-data-at-rest.md)
+- **CI**: [`npm run security:scan`](scripts/security-scan.mjs); ESLint bans unsafe raw SQL helpers ([`eslint.config.mjs`](eslint.config.mjs))
+- **Dev JWT**: `node scripts/issue-dev-jwt.mjs` (requires `JWT_SECRET` in `.env`)
 
 ## Predictive HR (churn, skills, benchmarks)
 
-- **Schema**: Prisma models in [`prisma/schema.prisma`](prisma/schema.prisma) (`Department`, `JobRole`, `ChurnScore`, `MarketBenchmark`, …) with migration [`prisma/migrations/20260509140000_predictive_hr_analytics`](prisma/migrations/20260509140000_predictive_hr_analytics/migration.sql).
-- **Seed**: `npm run db:seed:predictive` → set `DEMO_TENANT_ID` + `ANALYTICS_DEMO_MODE=1` for demo dashboards under [`/analytics`](src/app/analytics).
-- **APIs**: `GET/POST` under [`src/app/api/v1`](src/app/api/v1) (`analytics/churn`, `analytics/skills/match`, `analytics/benchmarks`, `ml/churn/score`).
-- **Python**: train `services/pipelines/train_churn.py`; serve with `uvicorn churn_api:app --app-dir services/ml-serving --port 8090`; ETL [`services/pipelines/etl_features.py`](services/pipelines/etl_features.py).
-- **Privacy**: [`docs/anonymization.md`](docs/anonymization.md).
+- **Schema**: [`prisma/schema.prisma`](prisma/schema.prisma) — e.g. `Department`, `JobRole`, `ChurnScore`, `MarketBenchmark`
+- **Seed**: `npm run db:seed:predictive` — set `DEMO_TENANT_ID` and `ANALYTICS_DEMO_MODE=1` for demo UIs under [`src/app/analytics`](src/app/analytics)
+- **APIs**: [`src/app/api/v1`](src/app/api/v1) — `analytics/churn`, `analytics/skills/match`, `analytics/benchmarks`, `ml/churn/score`
+- **Python**: train [`services/pipelines/train_churn.py`](services/pipelines/train_churn.py); serve with `uvicorn churn_api:app --app-dir services/ml-serving --port 8090`; ETL [`services/pipelines/etl_features.py`](services/pipelines/etl_features.py)
+- **Privacy**: [`docs/anonymization.md`](docs/anonymization.md)
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Issues and PRs welcome. Start with [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/community/README.md`](docs/community/README.md).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project includes the [`LICENSE`](LICENSE) file from the GitHub repository (Apache-2.0 unless the file states otherwise).
