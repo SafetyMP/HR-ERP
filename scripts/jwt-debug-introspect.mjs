@@ -27,7 +27,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const shell = process.platform === "win32";
 const vercelEnv = (process.env.VERCEL_JWT_VERCEL_ENV || "production").trim();
 const debugToken = (process.env.JWT_DEBUG_TOKEN || "").trim();
-const apiPath = "/api/v1/_debug/jwt-introspect";
+const apiPath = "/api/v1/diag/jwt-introspect";
 
 if (debugToken.length < 16) {
   console.error(

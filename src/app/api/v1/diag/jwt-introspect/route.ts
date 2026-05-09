@@ -1,5 +1,9 @@
 /**
- * Temporary diagnostic route — `/api/v1/_debug/jwt-introspect`.
+ * Temporary diagnostic route — `/api/v1/diag/jwt-introspect`.
+ *
+ * Folder is `diag/` (not `_diag/`): Next.js App Router treats single-
+ * underscore-prefixed folders as **private** and does not register them as
+ * routes (see `node_modules/next/dist/docs/01-app/01-getting-started/02-project-structure.md`).
  *
  * Exists ONLY to break the bundler-vs-runtime JWT failure loop documented in
  * the post-mortem audit. Once the smoke goes green, delete this file along
