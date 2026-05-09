@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/SafetyMP/HR-ERP/compare/v2.0.10...v2.1.0) (2026-05-09)
+
+### Features
+
+* **security:** instrument JWT verify failure path + guarded debug introspection ([18b91ef](https://github.com/SafetyMP/HR-ERP/commit/18b91efbd2ac41db1ec077381396752f6875e144))
+
 ## [2.0.10](https://github.com/SafetyMP/HR-ERP/compare/v2.0.9...v2.0.10) (2026-05-09)
 
 ### Bug Fixes
