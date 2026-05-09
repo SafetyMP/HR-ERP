@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 
@@ -14,7 +13,18 @@ from pydantic import BaseModel, Field
 ARTIFACT_DIR = Path(__file__).resolve().parent / "artifacts"
 DEFAULT_ARTIFACT = ARTIFACT_DIR / "churn_v1.joblib"
 
-app = FastAPI(title="HR ERP ML Serving", version="0.1.0")
+
+def _route_prefix() -> str:
+    """Path prefix when mounted behind Vercel Services (full URL path reaches the app)."""
+    explicit = os.environ.get("ML_SERVING_ROUTE_PREFIX")
+    if explicit is not None:
+        return explicit.strip()
+    if os.environ.get("VERCEL"):
+        return "/_/ml-serving"
+    return ""
+
+
+service = FastAPI(title="HR ERP ML Serving", version="0.1.0")
 
 _PIPELINE = None
 FEATURE_ORDER: list[str] = []
@@ -30,7 +40,7 @@ def load_model():
     FEATURE_ORDER = list(bundle["feature_order"])
 
 
-@app.on_event("startup")
+@service.on_event("startup")
 def _startup():
     try:
         load_model()
@@ -43,13 +53,13 @@ class ChurnScoreIn(BaseModel):
     features: dict[str, float] = Field(..., description="Named feature bundle")
 
 
-@app.get("/health")
+@service.get("/health")
 def health():
     ok = _PIPELINE is not None
     return {"status": "ok" if ok else "no_model", "features": FEATURE_ORDER}
 
 
-@app.post("/v1/churn/score")
+@service.post("/v1/churn/score")
 def churn_score(body: ChurnScoreIn):
     if _PIPELINE is None:
         raise HTTPException(503, "model not loaded; run training pipeline")
@@ -73,3 +83,11 @@ def churn_score(body: ChurnScoreIn):
     except Exception:
         explain = []
     return {"flight_risk": proba, "model": "churn_v1_logreg", "drivers": explain}
+
+
+_prefix = _route_prefix()
+if _prefix:
+    app = FastAPI()
+    app.mount(_prefix.rstrip("/"), service)
+else:
+    app = service

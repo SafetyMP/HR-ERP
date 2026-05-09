@@ -1,6 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
+  "experimentalServices": {
+    "frontend": {
+      "entrypoint": ".",
+      "routePrefix": "/",
+      "framework": "nextjs"
+    },
+    "ml-serving": {
+      "entrypoint": "services/ml-serving/churn_api.py",
+      "routePrefix": "/_/ml-serving",
+      "framework": "fastapi"
+    }
+  },
   "regions": ["iad1"],
   "headers": [
     {
