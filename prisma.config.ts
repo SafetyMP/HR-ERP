@@ -1,4 +1,5 @@
-// Prisma 7+ project config (load `.env` via your shell, Next.js, or `dotenv` in app code).
+// Prisma 7+ project config — load `.env` for CLI (`migrate`, `studio`, etc.).
+import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({

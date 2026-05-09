@@ -29,7 +29,7 @@ Copy the template and edit secrets:
 cp .env.example .env
 ```
 
-- **`DATABASE_URL`** — default matches the `postgres` service in `docker-compose.yml` (port **5432**).
+- **`DATABASE_URL`** — default matches the `postgres` service in `docker-compose.yml` (published on host port **15432** by default; override with **`HR_ERP_PG_PUBLISH`** if that port is taken).
 - **`JWT_SECRET`** — required for `/api/v1/*` (HS256). Use a long random string in production.
 - **`REDIS_URL`** — default `redis://127.0.0.1:6379` for integration workers.
 - Bounded-context vars (**`CORE_HR_DATABASE_URL`**, **`PAYROLL_DATABASE_URL`**, **`KAFKA_BROKERS`**) apply when you run the **architecture** Docker profile. See [.env.example](../.env.example) for the full list.
@@ -54,11 +54,13 @@ Wait until Postgres health checks pass (first boot can take a minute).
 
 ## 4. Database schema
 
-Apply Prisma migrations to the main app database:
+Apply Prisma migrations to the main app database (non-interactive — safe for demos and CI‑like setups):
 
 ```bash
-npm run db:migrate
+npm run db:migrate:deploy
 ```
+
+Use `npm run db:migrate` when you are authoring new migrations interactively (`prisma migrate dev`).
 
 For a throwaway local reset when you accept data loss:
 
@@ -121,6 +123,8 @@ Generated Prisma client output may appear under `src/app/generated/prisma/` afte
 | `npm run contracts:openapi` | Spectral lint on `contracts/openapi/` |
 | `npm run contracts:buf` | Buf lint on `proto/` |
 | `npm run db:studio` | Prisma Studio |
+| `npm run db:migrate:deploy` | Apply migrations (`prisma migrate deploy`) |
+| `npm run db:migrate` | Interactive migration authoring (`prisma migrate dev`) |
 | `npm run db:seed:predictive` | Seed predictive HR demo data |
 | `npm run outbox:kafka` | Run outbox publisher (needs Kafka + `OUTBOX_DATABASE_URL` / env from `.env.example`) |
 | `npm run worker:integrations` | Integration worker entry (Redis / BullMQ) |

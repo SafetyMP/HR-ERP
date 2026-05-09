@@ -20,10 +20,10 @@ git clone https://github.com/SafetyMP/HR-ERP.git
 cd HR-ERP
 npm ci
 cp .env.example .env
-# Edit JWT_SECRET and any URLs if your Docker ports differ
+# Edit JWT_SECRET. Default app DB listens on host port **15432** (`docker-compose.yml`); override with `HR_ERP_PG_PUBLISH` if needed.
 
 npm run db:up
-npm run db:migrate
+npm run db:migrate:deploy
 npm run dev
 ```
 
@@ -63,7 +63,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run test` / `npm run test:e2e` | Vitest / Playwright |
 | `npm run security:scan` | Repo security scan |
 | `npm run db:up` / `npm run db:up:arch` | Docker: default vs architecture profile |
-| `npm run db:migrate` | Prisma migrate (dev) |
+| `npm run db:migrate:deploy` | Apply migrations (demo / CI) |
+| `npm run db:migrate` | Author migrations interactively (`migrate dev`) |
 | `npm run db:studio` | Prisma Studio |
 | `npm run contracts:openapi` / `contracts:buf` | Contract lint |
 

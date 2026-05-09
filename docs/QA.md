@@ -20,8 +20,8 @@ Operational guide for **synthetic fixtures**, **layered tests**, **temporal haza
 VITEST_SEED="${GITHUB_RUN_ID:-manual}" npm run test -- --run
 
 # Integration suites skip unless DATABASE_URL is set AND migrations applied
-DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:5432/hr_erp" npx prisma migrate deploy
-DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:5432/hr_erp" npm run test -- --run tests/integration
+DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" npx prisma migrate deploy
+DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" npm run test -- --run tests/integration
 
 # E2E — Playwright starts `npm run dev` unless CI reuse rules apply
 npm run test:e2e

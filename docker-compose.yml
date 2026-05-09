@@ -18,7 +18,8 @@ services:
     image: pgvector/pgvector:pg16
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      # Host 5432 often conflicts with a local Postgres installation; override here if needed.
+      - "${HR_ERP_PG_PUBLISH:-15432}:5432"
     environment:
       POSTGRES_USER: hr_erp
       POSTGRES_PASSWORD: hr_erp_dev_password
