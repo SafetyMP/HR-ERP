@@ -1,3 +1,9 @@
+## [2.0.9](https://github.com/SafetyMP/HR-ERP/compare/v2.0.8...v2.0.9) (2026-05-09)
+
+### Bug Fixes
+
+* resolve JWT_SECRET via dynamic node:process import (Vercel runtime) ([44fd0a6](https://github.com/SafetyMP/HR-ERP/commit/44fd0a6e02604bdf2a121bdc9d9712c145e93a54))
+
 ## [2.0.8](https://github.com/SafetyMP/HR-ERP/compare/v2.0.7...v2.0.8) (2026-05-09)
 
 ### Bug Fixes
