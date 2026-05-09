@@ -16,13 +16,17 @@ export interface HrJwtClaims extends JWTPayload {
 }
 
 /**
- * HS256 signing material — must be read at **runtime** on Vercel: literal
- * `process.env.JWT_SECRET` can be inlined at `next build`, which breaks tokens
- * minted against dashboard/runtime env when CI/build used a different value.
+ * HS256 signing material — must read **real** runtime `process.env` on Vercel.
+ * Next/Webpack may still inline `process.env[computedKey]` if the key is
+ * constant-folded. `new Function` keeps the lookup opaque to static env plugins.
  */
 function requireJwtSecret(): string {
-  const name = `${"JWT"}${"_"}${"SECRET"}`;
-  const v = process.env[name];
+  const envKey = ["JWT", "SECRET"].join("_");
+  const lookup = new Function(
+    "k",
+    "return typeof process !== 'undefined' && process.env ? process.env[k] : undefined",
+  ) as (k: string) => string | undefined;
+  const v = lookup(envKey);
   if (!v) throw new Error("JWT_SECRET is not set");
   const t = v.trim();
   if (!t) throw new Error("JWT_SECRET is not set");
