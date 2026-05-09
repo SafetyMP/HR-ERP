@@ -21,8 +21,15 @@ function requireEnv(name: string): string {
   return v;
 }
 
+/** Matches CI / ops: trim so dashboard vs `.env` newline/space drift does not break HS256. */
+function requireJwtSecret(): string {
+  const t = requireEnv("JWT_SECRET").trim();
+  if (!t) throw new Error("JWT_SECRET is not set");
+  return t;
+}
+
 export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
-  const secret = requireEnv("JWT_SECRET");
+  const secret = requireJwtSecret();
   const key = new TextEncoder().encode(secret);
   const { payload } = await jwtVerify(token, key, {
     algorithms: ["HS256"],
@@ -41,7 +48,7 @@ export async function signHrAccessToken(params: {
   /** jose-supported exp, e.g. `3600s`, `1h` */
   expiresIn: string;
 }): Promise<string> {
-  const secret = requireEnv("JWT_SECRET");
+  const secret = requireJwtSecret();
   const key = new TextEncoder().encode(secret);
 
   const payload: Record<string, unknown> = {

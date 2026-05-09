@@ -13,13 +13,13 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 | Variable | Purpose |
 |----------|---------|
 | `DATABASE_URL` | Neon (or compatible) Postgres connection string with **SSL**; pooled URL recommended for serverless (`?pgbouncer=` / `neon` pooler if applicable). |
-| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). Next.js Edge middleware **inlines** this at compile time. For **[prebuilt production deploys](../../.github/workflows/deploy.yml)** from GitHub Actions, add **`JWT_SECRET`** to the GitHub **production** Environment secrets with the **same** value as Vercel Production — `vercel pull` in CI often does not supply decrypted env to `vercel build`. Never use a placeholder secret in CI. |
+| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). **`/api/v1/*` verification runs in Node route handlers** (`requireBearerAuth`), which read this at **runtime** so minted tokens match Vercel without Edge build-time drift. For **[prebuilt production deploys](../../.github/workflows/deploy.yml)** from GitHub Actions, add **`JWT_SECRET`** to the GitHub **production** Environment secrets with the **same** value as Vercel Production — `vercel pull` in CI often does not supply decrypted env to `vercel build`. Never use a placeholder secret in CI. |
 | `DIRECT_URL` | Optional: direct (non-pooled) URL for Prisma migrations if your host requires it. |
 
 ### JWT / bearer troubleshooting
 
-- Tokens from `npm run jwt:dev` only validate on Vercel when **`JWT_SECRET` matches** that environment **and** the deployment was **built** with that secret (redeploy after changing it).
-- If production was built with a **dummy** `JWT_SECRET` in CI, middleware verifies against that dummy value and responses show `invalid_token` until the workflow is fixed and you redeploy.
+- Tokens from `npm run jwt:dev` / `npm run jwt:dev:vercel` validate on Vercel when **`JWT_SECRET`** for **runtime** (dashboard / Functions) matches the signing secret. Middleware does **not** verify signatures (only Bearer presence); routes verify with **runtime** `JWT_SECRET`.
+- If **Node** handlers still return `invalid_token`, runtime `JWT_SECRET` in that environment is wrong or empty — fix dashboard (or GitHub env for the promote path), redeploy, and confirm the variable is available to **Serverless / Node**, not only build-only overrides.
 - **Copy/paste hygiene:** When setting `JWT_SECRET` in **Vercel** and **GitHub** (production Environment), avoid **trailing spaces or newlines**—they cause signature mismatches or, in CI, can confuse `vercel build`. Prefer a single-line value (e.g. `openssl rand -hex 32`). The deploy workflow **strips** leading/trailing whitespace from the GitHub secret before build.
 - **Git vs GitHub Actions deploy:** Pushes build on **Vercel** using **dashboard** env. The **promote-production** job builds on **GitHub** and needs **`JWT_SECRET` in the GitHub `production` Environment** so the prebuilt Edge bundle gets the real secret. Keep both values **identical** when using both paths.
 

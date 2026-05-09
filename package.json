@@ -28,6 +28,7 @@
     "demo:bootstrap": "tsx scripts/bootstrap-local-demo.ts",
     "jwt:dev": "node scripts/issue-dev-jwt.mjs",
     "jwt:dev:vercel": "npx --yes vercel@latest env run -e production -- node scripts/issue-dev-jwt.mjs",
+    "vercel:jwt:smoke": "node scripts/vercel-jwt-smoke.mjs",
     "db:verify": "tsx scripts/db-verify-migration.ts",
     "db:load:fixtures": "tsx scripts/db-load-employee-scenarios.ts",
     "test": "vitest run",

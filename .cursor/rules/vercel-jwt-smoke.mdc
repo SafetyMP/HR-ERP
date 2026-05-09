@@ -1,0 +1,24 @@
+---
+description: When the user asks for a dev JWT, Bearer token, or to test / hit the linked Vercel deployment API with auth — run the smoke command and report status (not the token)
+globs:
+  - scripts/issue-dev-jwt.mjs
+  - scripts/vercel-jwt-smoke.mjs
+  - middleware.ts
+  - lib/security/jwt.ts
+---
+
+# Vercel JWT smoke (mint + `vercel curl`)
+
+## Default automation
+
+When the user wants to **mint a JWT**, **Bearer token for Production**, **test an authenticated API** against Vercel, or **verify paystub / `/api/v1/*` auth**:
+
+1. From repo root, run **`npm run vercel:jwt:smoke`** (optional path: `npm run vercel:jwt:smoke -- /api/v1/me/...`).
+2. Requires **`vercel link`** for this project so `jwt:dev:vercel` and `vercel curl` resolve the right env and deployment (including protection bypass).
+3. In chat, report **HTTP status**, **error code/message** if JSON, and a **short body excerpt**. **Do not paste the full JWT** unless the user explicitly asks for it.
+4. If the response is **`invalid_token`**, **runtime** `JWT_SECRET` on the deployment does not match the signing secret — see [docs/operations/vercel-managed-phase1-environment.md](../../docs/operations/vercel-managed-phase1-environment.md) (Vercel Production env + redeploy; align GitHub `production` if using prebuilt promote).
+
+## One-offs
+
+- **Token only (user pasting into Profile / headers):** `npm run jwt:dev:vercel` (stdout last line is the token; stderr is verbose).
+- **Local API against `npm run dev`:** `npm run jwt:dev` then curl localhost with `Authorization: Bearer …`.

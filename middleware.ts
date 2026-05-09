@@ -4,8 +4,17 @@ import { NextResponse } from "next/server";
 import { API_VERSION } from "@/lib/backend/stack-manifest";
 import { readOrCreateTraceId } from "@/lib/observability/trace-id-edge";
 import { readCorrelationId } from "@/lib/security/correlation-id";
-import { verifyHrJwt } from "@/lib/security/jwt";
 
+/**
+ * `/api/v1/*` — enforce Authorization shape only.
+ *
+ * **Do not verify the JWT here.** Middleware runs on the Edge bundle where
+ * `process.env.JWT_SECRET` is resolved at **build** time; Vercel Production
+ * runtime can legitimately differ from that inlined value after secret
+ * rotation or mixed CI/dashboard deploy paths. Every v1 route uses
+ * `safeRouteAuth` → `requireBearerAuth` on the **Node** runtime, which reads
+ * `JWT_SECRET` at **request** time (aligned with `jwt:dev` / dashboard).
+ */
 export async function middleware(request: NextRequest) {
   const correlationId = readCorrelationId(request);
   const traceId = readOrCreateTraceId(request);
@@ -27,15 +36,14 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  try {
-    await verifyHrJwt(authHeader.slice("Bearer ".length).trim());
-  } catch {
+  const token = authHeader.slice("Bearer ".length).trim();
+  if (!token) {
     return NextResponse.json(
       {
         apiVersion: API_VERSION,
         error: {
           code: "unauthorized",
-          message: "invalid_token",
+          message: "missing_bearer_token",
         },
       },
       { status: 401, headers: correlationHeaders },

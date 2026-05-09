@@ -4,8 +4,8 @@
 #
 # Secrets (repository or `production` environment):
 # - VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID (Vercel → Project Settings → General)
-# - JWT_SECRET — same value as Vercel → Production → JWT_SECRET (required for prebuilt
-#   deploy: Edge middleware inlines this at `vercel build`; pull alone may not expose it in CI)
+# - JWT_SECRET — same value as Vercel → Production → JWT_SECRET (required for `vercel build`
+#   / runtime: CI `vercel pull` may not expose decrypted env; keep GitHub and Vercel aligned)
 #
 # Optional (repository variable recommended for non-secret URLs):
 # - PUBLIC_DEPLOY_URL — used by post-deploy smoke (e.g. https://your-app.vercel.app)
@@ -67,7 +67,7 @@ jobs:
       # SecOps-aligned gate repeats the script run from CI once more at promote time after human approval.
       - run: npm run security:scan
 
-      - name: Assert JWT_SECRET for prebuilt Edge bundle
+      - name: Assert JWT_SECRET for production build
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
@@ -79,7 +79,8 @@ jobs:
           fi
 
       # Link-style deploy: VERCEL_* env picks project/org (no committed `.vercel` directory required).
-      # JWT_SECRET must be the real production secret (not a CI placeholder): Next inlines it into Edge middleware at `vercel build`.
+      # JWT_SECRET must be the real production secret (not a CI placeholder): supplied to `vercel build`
+      # and must match Vercel Production for runtime API verification (see middleware + `requireBearerAuth`).
       - name: Vercel production deploy (prebuilt)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
