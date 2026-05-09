@@ -39,6 +39,28 @@ export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
   return payload as HrJwtClaims;
 }
 
+/**
+ * Returns SHA-256 + length + a 4-char mask of `JWT_SECRET` as it is **actually
+ * read** by this serverless function at request time — through the same
+ * `requireJwtSecret` accessor used by `verifyHrJwt` and `signHrAccessToken`.
+ *
+ * For the temporary `/api/v1/_debug/jwt-introspect` route only. The raw secret
+ * is never returned. SHA-256 is irreversible; the 4-char mask
+ * (e.g. `"ab…cd"`) is for visual sanity vs the mint-side hash and leaks
+ * negligible entropy for a 64-hex secret.
+ */
+export async function inspectJwtSecret(): Promise<{
+  sha256: string;
+  length: number;
+  mask: string;
+}> {
+  const secret = await requireJwtSecret();
+  const { createHash } = await import("node:crypto");
+  const sha256 = createHash("sha256").update(secret).digest("hex");
+  const mask = `${secret.slice(0, 2)}…${secret.slice(-2)}`;
+  return { sha256, length: secret.length, mask };
+}
+
 export async function signHrAccessToken(params: {
   sub: string;
   tenantId: string;
