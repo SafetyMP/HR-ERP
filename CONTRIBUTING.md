@@ -1,5 +1,10 @@
 # Contributing
 
+## Community standards & security
+
+- **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** applies to Issues, discussions, reviews, and project spaces.
+- Report **undisclosed vulnerabilities** through **[`SECURITY.md`](SECURITY.md)** (private GitHub Security advisories)—not via public issues.
+
 ## Community path (Developer Advocate)
 
 For docs-only updates, external PR coaching, or turning a filed bug into an Orchestrator-ready handoff:
@@ -53,3 +58,17 @@ Architecture contract lint (`npm run contracts:buf` / `contracts:openapi`) uses 
 ## Incidents / break-glass (placeholder)
 
 - Production key owners & rotation: **TBD** — document in runbook when live.
+
+## Dependency updates (Dependabot)
+
+- Automated PRs originate from **[`.github/dependabot.yml`](.github/dependabot.yml)**. Treat them like any other contribution: **green `quality-gate`** + **`security:scan`** on the Dependabot branch.
+- **Fully unattended merges** are discouraged for HR-adjacent surfaces; prefer **`deps:automerge`** (or equivalent label) applied by a maintainer after spot review once checks are trustworthy.
+- If a Dependabot bump changes native bindings, codegen, or Prisma majors, escalate to QA + Security review norms in [`docs/QA.md`](docs/QA.md) and `.github/pull_request_template.md`.
+
+## New modules (`packages`, `services`, `workers`)
+
+- Land a **`README.md`** with scope, scripts, owning domain (and ADR/feature link if cross-boundary)—see checklist in `.github/pull_request_template.md`.
+
+## Maintainer CI / branch checklist
+
+[`docs/community/github-branch-protection.md`](docs/community/github-branch-protection.md) captures required GitHub Rules / Environment settings for `main` (status checks tied to **`quality-gate`** + **`Deploy production`**).

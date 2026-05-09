@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 20
+    groups:
+      typescript-eslint-patch:
+        patterns:
+          - "@typescript-eslint/*"
+          - "eslint*"
+          - "prettier"
+      radix-react-patch:
+        patterns:
+          - "@radix-ui/*"
+      vitest-patch:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "@playwright/*"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly

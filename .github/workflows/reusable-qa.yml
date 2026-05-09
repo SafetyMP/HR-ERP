@@ -1,4 +1,4 @@
-# Called from qa.yml on PR/main, deploy.yml before production promotion.
+# Called from quality-gate (PR/feature branches) and deploy.yml before production promotion.
 name: reusable-qa
 
 on:
@@ -9,17 +9,6 @@ env:
   VITEST_SEED: ${{ github.run_id }}
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-
   vitest-shard:
     runs-on: ubuntu-latest
     strategy:

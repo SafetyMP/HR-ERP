@@ -42,6 +42,12 @@ If workers or BullMQ are enabled in an environment, set a managed Redis URL (e.g
 - Configure the **`production`** GitHub Environment with **required reviewers** (QA + SecOps owners).
 - Optional repository variable `PUBLIC_DEPLOY_URL` — enables the post-deploy smoke `curl` in [`deploy.yml`](../../.github/workflows/deploy.yml).
 
+### Authentication: `VERCEL_TOKEN` today, OIDC roadmap
+
+- **Current path (required):** GitHub Actions invokes the Vercel CLI with `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` scoped to the **`production`** Environment (or repo-level secrets with least privilege).
+- **Operational hygiene:** Rotate `VERCEL_TOKEN` on a predictable cadence *or* when staffing changes; never reuse personal tokens for CI—provision a **scoped automation token** with deploy rights to a single project/folder.
+- **OIDC / tokenless posture:** GitHub↔Vercel “trusted publishing” is still maturing in the ecosystem. When Vercel documents a first-class GitHub Actions federation flow for your linking model, add `permissions.id-token: write` to the promote job, remove vault-stored `VERCEL_TOKEN`, and update this section with the exact federation steps. Until then, treat `VERCEL_TOKEN` as legacy-but-required and keep it out of logs.
+
 ## Compliance note
 
 Production DB roles must follow [docs/security/stack-decision.md](../security/stack-decision.md) (non-superuser app role, RLS expectations). This document does not replace Security review or `security-review.md` on the PR.

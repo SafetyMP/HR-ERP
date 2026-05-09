@@ -1,0 +1,27 @@
+# HR ERP CODEOWNERS
+# Teams must exist under https://github.com/orgs/SafetyMP/teams or replace handles with @maintainer-usernames.
+# GitHub skips unknown owners; routing works after teams are provisioned.
+
+# Platform / pipelines (first match wins for overlapping paths unless configured otherwise)
+/.github/workflows/ @SafetyMP/hr-erp-platform
+/.github/CODEOWNERS @SafetyMP/hr-erp-platform
+
+# Payroll & compensation calculations
+/packages/payroll-calc/ @SafetyMP/hr-erp-payroll
+
+# Regulatory rule packs interpreted by backends
+/docs/compliance/ @SafetyMP/hr-erp-compliance
+
+# Security-sensitive surfaces — treat Prisma DDL + JWT gate as authoritative
+/prisma/ @SafetyMP/hr-erp-security
+/lib/security/ @SafetyMP/hr-erp-security
+/middleware.ts @SafetyMP/hr-erp-security
+/docs/security/ @SafetyMP/hr-erp-security
+/scripts/security-scan.mjs @SafetyMP/hr-erp-security
+
+# API contracts — breaking changes need explicit review
+/contracts/ @SafetyMP/hr-erp-apis
+/proto/ @SafetyMP/hr-erp-apis
+
+# Fallback for everything else once the core maintainer roster team exists
+* @SafetyMP/hr-erp-maintainers

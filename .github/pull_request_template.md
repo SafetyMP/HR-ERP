@@ -2,6 +2,10 @@
 
 <!-- 2–4 sentences -->
 
+## Module documentation
+
+- [ ] **`README.md` updated** for any new top-level **`packages/*`**, **`services/*`**, or **`workers/*`** surface (purpose, ownership pointer, local run)—or **N/A**
+
 ## Feature / ADR links
 
 - Feature brief / UAC: <!-- link -->

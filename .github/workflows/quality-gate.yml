@@ -1,0 +1,28 @@
+name: Quality gate
+
+# Runs lint/build/unit + layered QA on PRs and feature-branch pushes only.
+# Merges to main/master run CI+QA exclusively via `deploy.yml` to avoid triple billing.
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/reusable-ci.yml
+    secrets: inherit
+
+  qa:
+    uses: ./.github/workflows/reusable-qa.yml
+    secrets: inherit

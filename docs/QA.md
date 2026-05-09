@@ -40,7 +40,7 @@ Custody / migration playbook: [`architecture/database-migrations-and-state.md`](
 
 ### CI sharding (Vitest)
 
-Vitest `--shard=i/n` splits files across runners (see [`.github/workflows/qa.yml`](../.github/workflows/qa.yml)). GitHub Actions exports **`VITEST_SEED=${{ github.run_id }}`** so `REPRO` lines stay attributable — paste into [`FAILURE_SUMMARY`](#failure_summary-envelope) blocks.
+Vitest `--shard=i/n` splits files across runners (see [`.github/workflows/reusable-qa.yml`](../.github/workflows/reusable-qa.yml), invoked by [`.github/workflows/quality-gate.yml`](../.github/workflows/quality-gate.yml) and [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)). GitHub Actions exports **`VITEST_SEED=${{ github.run_id }}`** so `REPRO` lines stay attributable — paste into [`FAILURE_SUMMARY`](#failure_summary-envelope) blocks.
 
 ## Temporal / concurrency patterns
 

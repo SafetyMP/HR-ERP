@@ -2,6 +2,8 @@
 
 Thank you for investing time in this project. Whether you are fixing a typo, improving onboarding docs, or tracing a tricky bug, **your contribution matters**.
 
+Maintainers: after the first green Actions run, mirror required checks from [**`github-branch-protection.md`**](github-branch-protection.md).
+
 ## How we triage
 
 1. **Issues** — Describe what you expected, what happened, and how to reproduce. Use the [bug report](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository) template when available. We only use **synthetic** data in repros and fixtures (no real employee or tax data).

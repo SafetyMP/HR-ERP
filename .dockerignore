@@ -1,0 +1,16 @@
+**/node_modules
+.next
+coverage
+.cursor
+.idea
+.git
+.github
+**/test-results
+**/playwright-report
+.env
+.env.*
+!.env.example
+*.log
+specs/
+docs/
+notebooks/

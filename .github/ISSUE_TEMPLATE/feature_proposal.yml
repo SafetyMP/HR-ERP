@@ -1,0 +1,55 @@
+name: Feature proposal
+description: Propose measurable HR ERP capability work (maintainers attach Feature briefs / ADRs downstream).
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Product scope gates live in **`docs/product/feature-briefs/`** per the PO operating model (`AGENTS.md`). This form captures intake signal for maintainers—not a substitute for numbered UAC in a brief.
+
+        Sensitive ML / screening scenarios should link ethics notes under `docs/ai-governance/`.
+  - type: textarea
+    id: problem
+    attributes:
+      label: HR problem & persona
+      description: Pain for HRBP, Employee, Payroll, IT, Compliance, Exec sponsor—whatever applies.
+      placeholder: |
+        Persona …
+        Current workflow …
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: Desired measurable outcomes (≤120s to articulate)
+      description: Acceptance themes (time-to-complete, auditability, escalation paths).
+      placeholder: |
+        Within one pay cycle reviewers can …
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Boundary & non-goals
+      description: What is explicitly deferred (jurisdictions, payroll engines, integrations).
+    validations:
+      required: true
+  - type: textarea
+    id: integrations
+    attributes:
+      label: Dependencies / integrations
+      description: Payroll providers, SSO, MCP/LLM gateways, kafka topics — or **None**.
+    validations:
+      required: false
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      options:
+        - "Within a quarter roadmap"
+        - "Expedite / incident-driven"
+        - "Exploration / backlog"
+    validations:
+      required: false

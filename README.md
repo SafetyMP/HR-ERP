@@ -38,12 +38,15 @@ Open [http://localhost:3000](http://localhost:3000).
 | **[`docs/README.md`](docs/README.md)** | Index of all major documentation |
 | **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)** | Local dev, scripts, repo layout, troubleshooting |
 | **[`CONTRIBUTING.md`](CONTRIBUTING.md)** | PR expectations, migrations, synthetic data |
+| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** | Community norms (Contributor Covenant) |
+| **[`SECURITY.md`](SECURITY.md)** | Vulnerability disclosure (private reporting preferred) |
+| **[`CHANGELOG.md`](CHANGELOG.md)** | Release history (maintained via automation) |
 | **[`docs/QA.md`](docs/QA.md)** | Tests, fixtures, failure envelopes |
 | **[`FRONTEND.md`](FRONTEND.md)** | UI state, accessibility, API error handling |
 
 ## Tech stack
 
-- **Runtime**: Node 20+, **Next.js 16**, **React 19**, **TypeScript**
+- **Runtime**: Node **22+** (pinned in CI/Docker image; Node 20 LTS remains compatible for local-only use), **Next.js 16**, **React 19**, **TypeScript**
 - **Data**: **Prisma 7**, PostgreSQL (**pgvector** image in Compose for default DB)
 - **UI**: **Tailwind CSS 4**, **Radix** primitives, **TanStack Query / Table**, **Recharts**
 - **Validation**: **Zod**, **React Hook Form**
@@ -80,9 +83,22 @@ See **`package.json`** for the complete list.
 - **Python**: train [`services/pipelines/train_churn.py`](services/pipelines/train_churn.py); serve with `uvicorn churn_api:app --app-dir services/ml-serving --port 8090`; ETL [`services/pipelines/etl_features.py`](services/pipelines/etl_features.py)
 - **Privacy**: [`docs/anonymization.md`](docs/anonymization.md)
 
+## Releases & container publishing
+
+- **SemVer + changelog automation:** [`.github/workflows/release-please.yml`](.github/workflows/release-please.yml) opens/updates the release merge train on `main` / `master` using [`CHANGELOG.md`](CHANGELOG.md).
+- **GHCR image:** Publishing a **[GitHub Release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository)** runs [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml), which publishes `ghcr.io/<lowercased-github-owner>/<lowercased-repo-name>:<version>` plus `:latest` on release events. Manual smoke builds use **`workflow_dispatch`** with a scratch tag.
+
+```bash
+docker build -t hr-erp:local .
+docker run --rm -p 3000:3000 \
+  -e DATABASE_URL='postgresql://user:pass@host:5432/db?sslmode=require' \
+  -e JWT_SECRET='replace-with-production-secret-at-least-32-chars' \
+  hr-erp:local
+```
+
 ## Contributing
 
-Issues and PRs welcome. Start with [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/community/README.md`](docs/community/README.md).
+Issues and PRs welcome. Start with [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), [`SECURITY.md`](SECURITY.md), and [`docs/community/README.md`](docs/community/README.md). Maintainer playbook for branches and CI checks: [`docs/community/github-branch-protection.md`](docs/community/github-branch-protection.md).
 
 ## License
 

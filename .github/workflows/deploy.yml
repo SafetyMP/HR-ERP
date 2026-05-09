@@ -1,5 +1,5 @@
-# Runs the same reusable CI + QA gates as `.github/workflows/ci.yml` and `qa.yml` on every
-# merge to default branches, then requires manual approval via the `production`
+# Runs reusable CI + QA on every merge to default branches (`quality-gate` skips these branches
+# to avoid duplicate Actions minutes). Next: manual approval via the `production`
 # GitHub Environment (configure reviewers — e.g. QA Chaos + SecOps — in repo Settings).
 #
 # Secrets (repository or `production` environment):
@@ -21,6 +21,9 @@ concurrency:
 permissions:
   contents: read
   deployments: write
+  # id-token: write — add when Vercel publishes a supported GitHub→Vercel OIDC deploy path so
+  # `promote-production` can drop long-lived VERCEL_TOKEN secrets. Today the CLI still expects
+  # `VERCEL_TOKEN` (see docs/operations/vercel-managed-phase1-environment.md).
 
 jobs:
   ci:
