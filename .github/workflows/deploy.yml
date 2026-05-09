@@ -95,6 +95,38 @@ jobs:
             exit 1
           fi
           npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
+
+          # `vercel pull` writes `JWT_SECRET=""` (literal empty quotes) to
+          # .vercel/.env.production.local for any encrypted dashboard secret —
+          # Vercel never decrypts encrypted vars to local pulls. For
+          # `--prebuilt` deploys the pulled file becomes the function's
+          # **runtime** env (it shadows dashboard injection per-key), so
+          # without this override the deployed serverless function would read
+          # JWT_SECRET="" and reject every valid JWT with
+          # `JWSSignatureVerificationFailed`. This was the root cause of the
+          # historical `invalid_token` loop documented in
+          # docs/operations/vercel-managed-phase1-environment.md.
+          # Overwrite the placeholder with the real secret from the GitHub
+          # `production` Environment (asserted ≥16 chars upstream).
+          python3 - <<'PY'
+          import os, pathlib, re
+          secret = os.environ.get("JWT_SECRET", "").strip()
+          assert len(secret) >= 16, "JWT_SECRET unexpectedly empty/short after earlier guard"
+          p = pathlib.Path(".vercel/.env.production.local")
+          content = p.read_text() if p.exists() else ""
+          new, n = re.subn(
+              r"(?m)^JWT_SECRET=.*$",
+              f'JWT_SECRET="{secret}"',
+              content,
+          )
+          if n == 0:
+              if content and not content.endswith("\n"):
+                  content += "\n"
+              new = content + f'JWT_SECRET="{secret}"\n'
+          p.write_text(new)
+          print(f"[deploy] override JWT_SECRET in .vercel/.env.production.local (length={len(secret)}, replacements={n})")
+          PY
+
           npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"
           npx --yes vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
 
