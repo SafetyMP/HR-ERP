@@ -1,3 +1,9 @@
+## [2.0.5](https://github.com/SafetyMP/HR-ERP/compare/v2.0.4...v2.0.5) (2026-05-09)
+
+### Bug Fixes
+
+* use vercel env run for jwt:dev:vercel (encrypted secrets) ([bfaa51b](https://github.com/SafetyMP/HR-ERP/commit/bfaa51b863dff72a6543f99387e8205de29bc050))
+
 ## [2.0.4](https://github.com/SafetyMP/HR-ERP/compare/v2.0.3...v2.0.4) (2026-05-09)
 
 ### Bug Fixes
