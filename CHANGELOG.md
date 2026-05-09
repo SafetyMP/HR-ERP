@@ -1,3 +1,9 @@
+## [2.0.3](https://github.com/SafetyMP/HR-ERP/compare/v2.0.2...v2.0.3) (2026-05-09)
+
+### Bug Fixes
+
+* **ci:** trim JWT_SECRET before vercel build ([b6c6499](https://github.com/SafetyMP/HR-ERP/commit/b6c64990da72240fe6557926b126aee573e30a24))
+
 ## [2.0.2](https://github.com/SafetyMP/HR-ERP/compare/v2.0.1...v2.0.2) (2026-05-09)
 
 ### Bug Fixes
