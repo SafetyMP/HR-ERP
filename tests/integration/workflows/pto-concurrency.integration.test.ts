@@ -1,12 +1,21 @@
 import { randomUUID } from "node:crypto";
-import { afterAll, describe, expect, it } from "vitest";
+import type { PrismaClient } from "@/app/generated/prisma/client";
+import type { Pool } from "pg";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { parallelDuplicateBarrierSettled } from "@/lib/qa/parallel-same-instant";
 import { createIntegrationPrisma } from "@/tests/helpers/integration-prisma";
 
 const hasDb = Boolean(process.env.DATABASE_URL);
 
 describe.skipIf(!hasDb)("pto_requests DB uniqueness (integration)", () => {
-  const { prisma, pool } = createIntegrationPrisma();
+  let prisma: PrismaClient;
+  let pool: Pool;
+
+  beforeAll(() => {
+    const created = createIntegrationPrisma();
+    prisma = created.prisma;
+    pool = created.pool;
+  });
 
   afterAll(async () => {
     await prisma.$disconnect();
