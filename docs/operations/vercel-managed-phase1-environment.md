@@ -11,8 +11,9 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 
 | Variable | Purpose |
 |----------|---------|
-| `DATABASE_URL` | Neon (or compatible) Postgres connection string with **SSL**; pooled URL recommended for serverless (`?pgbouncer=true` / `neon` pooler if applicable). |
+| `DATABASE_URL` | Neon (or compatible) Postgres connection string with **SSL**; pooled URL recommended for serverless (`?pgbouncer=` / `neon` pooler if applicable). |
 | `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). |
+| `HR_ERP_BEARER_ISSUER_SECRET` | Min 32 chars. **Server-side only:** authenticates `POST /api/auth/token` to mint short-lived access JWTs (demo/operators). Never expose to browsers or client bundles. |
 | `DIRECT_URL` | Optional: direct (non-pooled) URL for Prisma migrations if your host requires it. |
 
 ## Redis / BullMQ (optional in Phase 1)

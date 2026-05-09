@@ -1,5 +1,5 @@
 import type { JWTPayload } from "jose";
-import { jwtVerify } from "jose";
+import { SignJWT, jwtVerify } from "jose";
 
 import type { AuthContext } from "@/lib/security/auth-context";
 import type { MfaLevel } from "@/lib/security/abac-attributes";
@@ -28,6 +28,43 @@ export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
     algorithms: ["HS256"],
   });
   return payload as HrJwtClaims;
+}
+
+export async function signHrAccessToken(params: {
+  sub: string;
+  tenantId: string;
+  roles: Role[];
+  subjectEmployeeId?: string;
+  managerEmployeeId?: string;
+  orgUnitId?: string;
+  mfaLevel?: MfaLevel;
+  /** jose-supported exp, e.g. `3600s`, `1h` */
+  expiresIn: string;
+}): Promise<string> {
+  const secret = requireEnv("JWT_SECRET");
+  const key = new TextEncoder().encode(secret);
+
+  const payload: Record<string, unknown> = {
+    tenant_id: params.tenantId,
+    roles: params.roles,
+    mfa_level: params.mfaLevel ?? "standard",
+  };
+  if (params.subjectEmployeeId) {
+    payload.subject_employee_id = params.subjectEmployeeId;
+  }
+  if (params.managerEmployeeId) {
+    payload.manager_employee_id = params.managerEmployeeId;
+  }
+  if (params.orgUnitId) {
+    payload.org_unit_id = params.orgUnitId;
+  }
+
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setSubject(params.sub)
+    .setIssuedAt()
+    .setExpirationTime(params.expiresIn)
+    .sign(key);
 }
 
 export function claimsToAuthContext(
