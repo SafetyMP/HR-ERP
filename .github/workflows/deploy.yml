@@ -4,6 +4,8 @@
 #
 # Secrets (repository or `production` environment):
 # - VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID (Vercel → Project Settings → General)
+# - JWT_SECRET — same value as Vercel → Production → JWT_SECRET (required for prebuilt
+#   deploy: Edge middleware inlines this at `vercel build`; pull alone may not expose it in CI)
 #
 # Optional (repository variable recommended for non-secret URLs):
 # - PUBLIC_DEPLOY_URL — used by post-deploy smoke (e.g. https://your-app.vercel.app)
@@ -65,15 +67,24 @@ jobs:
       # SecOps-aligned gate repeats the script run from CI once more at promote time after human approval.
       - run: npm run security:scan
 
+      - name: Assert JWT_SECRET for prebuilt Edge bundle
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          if [[ -z "$JWT_SECRET" || ${#JWT_SECRET} -lt 16 ]]; then
+            echo "::error::Add JWT_SECRET to the GitHub Environment \"production\" (Settings → Environments). Use the exact same value as Vercel → Production → JWT_SECRET so prebuilt middleware can verify tokens." >&2
+            exit 1
+          fi
+
       # Link-style deploy: VERCEL_* env picks project/org (no committed `.vercel` directory required).
-      # Do not set JWT_SECRET here. `vercel build` inlines Edge middleware env at compile time;
-      # a CI placeholder would ship in the bundle and break real tokens (dashboard secret ignored).
+      # JWT_SECRET must be the real production secret (not a CI placeholder): Next inlines it into Edge middleware at `vercel build`.
       - name: Vercel production deploy (prebuilt)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           npx --yes vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --token "$VERCEL_TOKEN"

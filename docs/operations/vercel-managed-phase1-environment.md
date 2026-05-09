@@ -12,7 +12,7 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 | Variable | Purpose |
 |----------|---------|
 | `DATABASE_URL` | Neon (or compatible) Postgres connection string with **SSL**; pooled URL recommended for serverless (`?pgbouncer=` / `neon` pooler if applicable). |
-| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). **Must** be present for the target Vercel environment when `vercel build` runs — Next.js Edge middleware inlines it at compile time. Do **not** override `JWT_SECRET` in CI for prebuilt production deploys; use `vercel pull --environment=production` so the build picks up the dashboard value (see [deploy workflow](../../.github/workflows/deploy.yml)). |
+| `JWT_SECRET` | HS256 secret for API JWTs (min length enforced by app; rotate via controlled release). Next.js Edge middleware **inlines** this at compile time. For **[prebuilt production deploys](../../.github/workflows/deploy.yml)** from GitHub Actions, add **`JWT_SECRET`** to the GitHub **production** Environment secrets with the **same** value as Vercel Production — `vercel pull` in CI often does not supply decrypted env to `vercel build`. Never use a placeholder secret in CI. |
 | `DIRECT_URL` | Optional: direct (non-pooled) URL for Prisma migrations if your host requires it. |
 
 ### JWT / bearer troubleshooting
