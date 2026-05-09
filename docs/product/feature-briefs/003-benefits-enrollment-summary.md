@@ -1,7 +1,7 @@
 # Feature brief: Employee self-service — benefits enrollment summary
 
 **ID:** 003-benefits-enrollment-summary  
-**Status:** PO approved  
+**Status:** Done  
 **Last updated:** 2026-05-09  
 
 ## PO gate (required before Engineering)
@@ -58,3 +58,4 @@ Benefits noise scales with headcount. A read-only enrollment summary is high emp
 ## Notes for Frontend
 
 - Prefer grouping by **Medical**, **Dental**, **Vision**, **Income protection**, **Retirement** — collapse advanced riders behind disclosure.
+- **Primary navigation term for QA (UAC 6):** use **Benefits** consistently (do not use **Coverage** as the primary employee-facing label for this feature).

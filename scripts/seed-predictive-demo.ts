@@ -143,6 +143,24 @@ async function main() {
         },
       });
 
+      await tx.employee.update({
+        where: { id: e1.id },
+        data: {
+          preferredName: "Jordy",
+          personalEmail: "jordan.chen.personal@example.demo",
+          phone: "+49 30 12345678",
+          mailingAddressLine1: "Musterstraße 12",
+          mailingAddressLine2: "Building A",
+          mailingCity: "Berlin",
+          mailingRegion: "BE",
+          mailingPostalCode: "10115",
+          mailingCountry: "DE",
+          emergencyContactName: "Sam Chen",
+          emergencyContactPhone: "+49 170 9988776",
+          emergencyContactRelationship: "Sibling",
+        },
+      });
+
       const e2 = await tx.employee.create({
         data: {
           tenantId: DEMO_ORG_ID,
@@ -230,6 +248,14 @@ async function main() {
             balanceHours: 120,
             asOfDate: new Date(),
           },
+        ],
+      });
+
+      await tx.ptoRequest.createMany({
+        data: [
+          { tenantId: DEMO_ORG_ID, employeeId: e1.id, requestDate: new Date("2026-05-02") },
+          { tenantId: DEMO_ORG_ID, employeeId: e1.id, requestDate: new Date("2026-04-18") },
+          { tenantId: DEMO_ORG_ID, employeeId: e1.id, requestDate: new Date("2026-03-10") },
         ],
       });
 
@@ -386,6 +412,140 @@ async function main() {
             ],
           },
         },
+      });
+
+      const payrollPeriodPrior = await tx.payrollPeriod.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          startDate: new Date("2026-03-16"),
+          endDate: new Date("2026-03-31"),
+          label: "2026-03-B",
+        },
+      });
+
+      await tx.paymentInstruction.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          employeeId: e1.id,
+          payrollPeriodId: payrollPeriodPrior.id,
+          memo: "Prior-period demo pay history row",
+          lines: {
+            create: [
+              {
+                lineType: "SALARY",
+                sortOrder: 10,
+                amountMinor: 440_000,
+                currencyCode: "EUR",
+              },
+              {
+                lineType: "TAX_WITHHOLDING",
+                sortOrder: 30,
+                amountMinor: 115_000,
+                currencyCode: "EUR",
+              },
+            ],
+          },
+        },
+      });
+
+      await tx.timeOffRequest.createMany({
+        data: [
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            startDate: new Date("2026-06-01"),
+            endDate: new Date("2026-06-03"),
+            status: "PENDING",
+            note: "Demo pending submission",
+          },
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            startDate: new Date("2026-04-10"),
+            endDate: new Date("2026-04-11"),
+            status: "APPROVED",
+          },
+        ],
+      });
+
+      await tx.onboardingTask.createMany({
+        data: [
+          {
+            employeeId: e1.id,
+            title: "Complete profile and emergency contacts",
+            status: "DONE",
+            dueAt: new Date("2026-05-12"),
+          },
+          {
+            employeeId: e1.id,
+            title: "Sign employee handbook acknowledgement",
+            status: "IN_PROGRESS",
+            dueAt: new Date("2026-05-18"),
+          },
+          {
+            employeeId: e1.id,
+            title: "IT equipment acceptance",
+            status: "PENDING",
+            dueAt: new Date("2026-05-22"),
+          },
+        ],
+      });
+
+      await tx.hrCaseRequest.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          employeeId: e1.id,
+          category: "PAYROLL",
+          body: "Demo seeded payroll inquiry — safe to delete after QA.",
+          status: "OPEN",
+        },
+      });
+
+      await tx.benefitEnrollment.createMany({
+        data: [
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            category: "MEDICAL",
+            planLabel: "PPO Gold — In-network preferred",
+            carrierName: "Demo Health Collective",
+            effectiveFrom: new Date("2026-01-01"),
+            dependentCount: 2,
+          },
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            category: "DENTAL",
+            planLabel: "Dental Essential Plus",
+            carrierName: "Demo Dental Network",
+            effectiveFrom: new Date("2026-01-01"),
+          },
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            category: "VISION",
+            planLabel: "Vision Essentials",
+            carrierName: "Demo Vision Partners",
+            effectiveFrom: new Date("2026-01-01"),
+          },
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            category: "INCOME_PROTECTION",
+            planLabel: "Long-term disability — 60% salary replacement",
+            carrierName: "Demo Income Shield",
+            effectiveFrom: new Date("2026-01-01"),
+          },
+          {
+            tenantId: DEMO_ORG_ID,
+            employeeId: e1.id,
+            category: "RETIREMENT",
+            planLabel: "401(k) — Traditional & Roth",
+            carrierName: "Demo Retirement Services",
+            effectiveFrom: new Date("2026-01-01"),
+            retirementDeferralBasisPoints: 600,
+          },
+        ],
       });
     },
     { timeout: 60_000 },

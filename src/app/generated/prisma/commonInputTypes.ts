@@ -169,6 +169,57 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumTimeOffRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TimeOffRequestStatus | Prisma.EnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel> | $Enums.TimeOffRequestStatus
+}
+
+export type EnumTimeOffRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TimeOffRequestStatus | Prisma.EnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTimeOffRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.TimeOffRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel>
+}
+
+export type EnumHrCaseCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseCategory | Prisma.EnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel> | $Enums.HrCaseCategory
+}
+
+export type EnumHrCaseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseStatus | Prisma.EnumHrCaseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel> | $Enums.HrCaseStatus
+}
+
+export type EnumHrCaseCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseCategory | Prisma.EnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.HrCaseCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel>
+}
+
+export type EnumHrCaseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseStatus | Prisma.EnumHrCaseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseStatusWithAggregatesFilter<$PrismaModel> | $Enums.HrCaseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel>
+}
+
 export type DecimalFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel>
@@ -646,6 +697,23 @@ export type EnumPunchKindWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPunchKindFilter<$PrismaModel>
 }
 
+export type EnumBenefitCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitCategory | Prisma.EnumBenefitCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel> | $Enums.BenefitCategory
+}
+
+export type EnumBenefitCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitCategory | Prisma.EnumBenefitCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitCategoryWithAggregatesFilter<$PrismaModel> | $Enums.BenefitCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
+}
+
 export type EnumIntegrationHealthFilter<$PrismaModel = never> = {
   equals?: $Enums.IntegrationHealth | Prisma.EnumIntegrationHealthFieldRefInput<$PrismaModel>
   in?: $Enums.IntegrationHealth[] | Prisma.ListEnumIntegrationHealthFieldRefInput<$PrismaModel>
@@ -863,6 +931,57 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumTimeOffRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TimeOffRequestStatus | Prisma.EnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel> | $Enums.TimeOffRequestStatus
+}
+
+export type NestedEnumTimeOffRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TimeOffRequestStatus | Prisma.EnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TimeOffRequestStatus[] | Prisma.ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTimeOffRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.TimeOffRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTimeOffRequestStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumHrCaseCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseCategory | Prisma.EnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel> | $Enums.HrCaseCategory
+}
+
+export type NestedEnumHrCaseStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseStatus | Prisma.EnumHrCaseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel> | $Enums.HrCaseStatus
+}
+
+export type NestedEnumHrCaseCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseCategory | Prisma.EnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseCategory[] | Prisma.ListEnumHrCaseCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseCategoryWithAggregatesFilter<$PrismaModel> | $Enums.HrCaseCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumHrCaseCategoryFilter<$PrismaModel>
+}
+
+export type NestedEnumHrCaseStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.HrCaseStatus | Prisma.EnumHrCaseStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.HrCaseStatus[] | Prisma.ListEnumHrCaseStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumHrCaseStatusWithAggregatesFilter<$PrismaModel> | $Enums.HrCaseStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumHrCaseStatusFilter<$PrismaModel>
 }
 
 export type NestedDecimalFilter<$PrismaModel = never> = {
@@ -1264,6 +1383,23 @@ export type NestedEnumPunchKindWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPunchKindFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPunchKindFilter<$PrismaModel>
+}
+
+export type NestedEnumBenefitCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitCategory | Prisma.EnumBenefitCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel> | $Enums.BenefitCategory
+}
+
+export type NestedEnumBenefitCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitCategory | Prisma.EnumBenefitCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitCategory[] | Prisma.ListEnumBenefitCategoryFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitCategoryWithAggregatesFilter<$PrismaModel> | $Enums.BenefitCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
 }
 
 export type NestedEnumIntegrationHealthFilter<$PrismaModel = never> = {

@@ -12,6 +12,15 @@ import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transa
 const EMPLOYEE_CACHE_PREFIX = "hrerp:v1:employee:";
 const EMPLOYEE_CACHE_TTL_SEC = 30;
 
+export async function invalidateEmployeePublicProfileCache(
+  tenantId: string,
+  employeeId: string,
+): Promise<void> {
+  const redis = getRedis();
+  if (!redis) return;
+  await redis.del(`${EMPLOYEE_CACHE_PREFIX}${tenantId}:${employeeId}`);
+}
+
 export type EmployeePublicPayload = {
   employee: {
     id: string;

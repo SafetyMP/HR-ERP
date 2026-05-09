@@ -1,7 +1,7 @@
 # Feature brief: Employee self-service — profile & contact information
 
 **ID:** 004-core-hr-employee-profile-self-service  
-**Status:** PO approved  
+**Status:** Done  
 **Last updated:** 2026-05-09  
 
 ## PO gate (required before Engineering)
@@ -58,3 +58,4 @@ Core HR data quality underpins payroll, benefits, and IT provisioning. Read-heav
 ## Notes for Frontend
 
 - Never surface **national IDs** in full; mask per security blueprint when displayed.
+- **Primary navigation label for QA:** **My profile** (matches home CTA and page `<h1>`).

@@ -57,6 +57,16 @@ export type Employee = Prisma.EmployeeModel
  */
 export type PtoRequest = Prisma.PtoRequestModel
 /**
+ * Model TimeOffRequest
+ * Employee-submitted multi-day time-off request (Feature 006); approval workflow out of band for v1.
+ */
+export type TimeOffRequest = Prisma.TimeOffRequestModel
+/**
+ * Model HrCaseRequest
+ * Lightweight HR / payroll intake ticket from employee self-service (Feature 010).
+ */
+export type HrCaseRequest = Prisma.HrCaseRequestModel
+/**
  * Model Department
  * 
  */
@@ -241,6 +251,11 @@ export type OnboardingTask = Prisma.OnboardingTaskModel
  * Authoritative time-punch row — server `occurredAt`; idempotent per tenant + key.
  */
 export type AttendancePunch = Prisma.AttendancePunchModel
+/**
+ * Model BenefitEnrollment
+ * Active elections snapshot for employee self-service benefits summary (Feature 003).
+ */
+export type BenefitEnrollment = Prisma.BenefitEnrollmentModel
 /**
  * Model IntegrationInstance
  * 

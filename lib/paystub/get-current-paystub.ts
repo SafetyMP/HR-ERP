@@ -1,28 +1,14 @@
-import type { PayoutLineType } from "@/app/generated/prisma/client";
-
 import { ApiError } from "@/lib/api/v1/errors";
-import { computePaystubTotals } from "@/lib/paystub/totals";
-import { payoutLineTypeLabel } from "@/lib/paystub/line-labels";
+import {
+  mapPaymentInstructionToCurrentPaystub,
+  type CurrentPaystubPayload,
+  type PaystubLinePayload,
+} from "@/lib/paystub/map-payment-instruction-row";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
-export type PaystubLinePayload = {
-  label: string;
-  amountMinor: number;
-  lineType: PayoutLineType;
-};
-
-export type CurrentPaystubPayload = {
-  payPeriodStart: string;
-  payPeriodEnd: string;
-  currencyCode: string;
-  grossPayMinor: number;
-  netPayMinor: number;
-  earnings: PaystubLinePayload[];
-  preTaxDeductions: PaystubLinePayload[];
-  taxes: PaystubLinePayload[];
-};
+export type { CurrentPaystubPayload, PaystubLinePayload };
 
 export async function getCurrentPaystub(
   auth: AuthContext,
@@ -64,58 +50,11 @@ export async function getCurrentPaystub(
         },
       });
 
-      if (!row?.payrollPeriod) {
+      if (!row) {
         return null;
       }
 
-      const currencyCode =
-        row.lines.find((l) => l.currencyCode)?.currencyCode ??
-        row.employee.organization.reportingCurrency ??
-        "USD";
-
-      const totals = computePaystubTotals(
-        row.lines.map((l) => ({
-          lineType: l.lineType,
-          amountMinor: l.amountMinor,
-        })),
-      );
-
-      const earnings: PaystubLinePayload[] = [];
-      const preTaxDeductions: PaystubLinePayload[] = [];
-      const taxes: PaystubLinePayload[] = [];
-
-      for (const line of row.lines) {
-        const amountMinor = line.amountMinor ?? 0;
-        const label = payoutLineTypeLabel(line.lineType);
-        const payload: PaystubLinePayload = {
-          label,
-          amountMinor,
-          lineType: line.lineType,
-        };
-
-        if (
-          line.lineType === "SALARY" ||
-          line.lineType === "BONUS" ||
-          line.lineType === "EXPENSE_REIMBURSEMENT"
-        ) {
-          earnings.push(payload);
-        } else if (line.lineType === "PRE_TAX_DEDUCTION") {
-          preTaxDeductions.push(payload);
-        } else if (line.lineType === "TAX_WITHHOLDING") {
-          taxes.push(payload);
-        }
-      }
-
-      return {
-        payPeriodStart: row.payrollPeriod.startDate.toISOString().slice(0, 10),
-        payPeriodEnd: row.payrollPeriod.endDate.toISOString().slice(0, 10),
-        currencyCode,
-        grossPayMinor: totals.grossPayMinor,
-        netPayMinor: totals.netPayMinor,
-        earnings,
-        preTaxDeductions,
-        taxes,
-      };
+      return mapPaymentInstructionToCurrentPaystub(row);
     },
   );
 }

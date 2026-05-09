@@ -21,6 +21,7 @@ export type PaystubApiLine = {
 };
 
 export type PaystubApiShape = {
+  paymentInstructionId?: string;
   payPeriodStart: string;
   payPeriodEnd: string;
   currencyCode: string;

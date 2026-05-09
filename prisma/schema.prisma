@@ -25,7 +25,8 @@ model Organization {
   holidayCalendars     HolidayCalendar[]
   meetingProposals     MeetingProposal[]
   payrollPeriods       PayrollPeriod[]
-  paymentInstructions  PaymentInstruction[]
+  paymentInstructions   PaymentInstruction[]
+  benefitEnrollments    BenefitEnrollment[]
   sprints              Sprint[]
 
   @@map("organizations")
@@ -38,6 +39,19 @@ model Employee {
   email     String
   firstName String?  @map("first_name")
   lastName  String?  @map("last_name")
+  /// Display / IT provisioning — distinct from legal given/family names (Feature 004).
+  preferredName              String? @map("preferred_name")
+  personalEmail              String? @map("personal_email")
+  phone                      String? @map("phone")
+  mailingAddressLine1        String? @map("mailing_address_line1")
+  mailingAddressLine2        String? @map("mailing_address_line2")
+  mailingCity                String? @map("mailing_city")
+  mailingRegion              String? @map("mailing_region")
+  mailingPostalCode          String? @map("mailing_postal_code")
+  mailingCountry             String? @map("mailing_country")
+  emergencyContactName       String? @map("emergency_contact_name")
+  emergencyContactPhone      String? @map("emergency_contact_phone")
+  emergencyContactRelationship String? @map("emergency_contact_relationship")
 
   managerId    String? @map("manager_id")
   departmentId String? @map("department_id")
@@ -78,6 +92,9 @@ model Employee {
   userAccounts           UserAccount[]
   analyticsFeatureSnapshots AnalyticsFeatureSnapshot[]
   churnScores              ChurnScore[]
+  benefitEnrollments       BenefitEnrollment[]
+  timeOffRequests          TimeOffRequest[]
+  hrCaseRequests           HrCaseRequest[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -100,6 +117,58 @@ model PtoRequest {
   @@unique([tenantId, employeeId, requestDate])
   @@index([tenantId, employeeId])
   @@map("pto_requests")
+}
+
+/// Employee-submitted multi-day time-off request (Feature 006); approval workflow out of band for v1.
+model TimeOffRequest {
+  id         String                @id @default(uuid())
+  tenantId   String                @map("tenant_id")
+  employeeId String                @map("employee_id")
+  startDate  DateTime              @map("start_date") @db.Date
+  endDate    DateTime              @map("end_date") @db.Date
+  status     TimeOffRequestStatus  @default(PENDING)
+  note       String?
+  createdAt  DateTime              @default(now()) @map("created_at")
+  updatedAt  DateTime              @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId])
+  @@map("time_off_requests")
+}
+
+enum TimeOffRequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+/// Lightweight HR / payroll intake ticket from employee self-service (Feature 010).
+model HrCaseRequest {
+  id         String          @id @default(uuid())
+  tenantId   String          @map("tenant_id")
+  employeeId String          @map("employee_id")
+  category   HrCaseCategory  @map("category")
+  body       String
+  status     HrCaseStatus    @default(OPEN)
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId])
+  @@map("hr_case_requests")
+}
+
+enum HrCaseCategory {
+  PAYROLL
+  BENEFITS
+  HR_OTHER
+}
+
+enum HrCaseStatus {
+  OPEN
+  ACKNOWLEDGED
 }
 
 model Department {
@@ -732,6 +801,37 @@ model AttendancePunch {
   @@unique([tenantId, idempotencyKey])
   @@index([tenantId, employeeId, occurredAt(sort: Desc)])
   @@map("attendance_punches")
+}
+
+enum BenefitCategory {
+  MEDICAL
+  DENTAL
+  VISION
+  INCOME_PROTECTION
+  RETIREMENT
+}
+
+/// Active elections snapshot for employee self-service benefits summary (Feature 003).
+model BenefitEnrollment {
+  id                            String          @id @default(uuid())
+  tenantId                      String          @map("tenant_id")
+  employeeId                    String          @map("employee_id")
+  category                      BenefitCategory
+  planLabel                     String          @map("plan_label")
+  carrierName                   String?         @map("carrier_name")
+  effectiveFrom                 DateTime        @map("effective_from") @db.Date
+  effectiveTo                   DateTime?       @map("effective_to") @db.Date
+  dependentCount                Int?            @map("dependent_count")
+  /// Elective deferral rate in basis points (0–10000 = 0.00%–100.00%); RETIREMENT rows only.
+  retirementDeferralBasisPoints Int?           @map("retirement_deferral_basis_points")
+  createdAt                     DateTime        @default(now()) @map("created_at")
+  updatedAt                     DateTime        @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  employee     Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId])
+  @@map("benefit_enrollments")
 }
 
 model IntegrationInstance {

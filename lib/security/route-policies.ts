@@ -50,6 +50,50 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "paystub:read",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
+  [routeKey("GET", "/api/v1/me/benefits/summary")]: {
+    permission: "benefits:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/profile")]: {
+    permission: "employees:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/me/profile")]: {
+    permission: "profile:self_update",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/pto/summary")]: {
+    permission: "pto:self_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/time-off/requests")]: {
+    permission: "leave:self_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/me/time-off/requests")]: {
+    permission: "leave:self_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/paystub/history")]: {
+    permission: "paystub:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/manager/team/attendance/today")]: {
+    permission: "manager:team_attendance",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/me/onboarding/tasks")]: {
+    permission: "onboarding:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/me/onboarding/tasks")]: {
+    permission: "onboarding:write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/me/hr-case-requests")]: {
+    permission: "case:intake_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
 };
 
 export function getRoutePolicy(

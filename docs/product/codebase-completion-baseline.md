@@ -2,7 +2,7 @@
 
 **Purpose:** Define how to answer “what percent complete?” without inventing a single orphan number. Aligns with the PO operating model (Feature briefs + numbered UAC).
 
-**Last inventory:** 2026-05-09 (Features **001** and **002** implementation verified in codebase)
+**Last inventory:** 2026-05-09 (Features **001**–**005** implementation verified in codebase)
 
 **Shippable vs platform:** **Track A (Feature UAC)** is the authoritative bar for “product shipped.” Routes, demos, kernels, and docs in tree that are **not** tied to an approved Feature brief’s numbered UAC count as **platform / scaffold / demo** capability — useful, but not closure of PO scope.
 
@@ -26,16 +26,16 @@
 
 | Source | Count |
 | --- | ---: |
-| Feature briefs in `docs/product/feature-briefs/` | **4** |
-| Total numbered UAC (sum across briefs 001–004) | **24** |
+| Feature briefs in `docs/product/feature-briefs/` | **5** |
+| Total numbered UAC (sum across briefs 001–005) | **30** |
 
-Shipped / verified UAC to date: Feature **001** — **6** / 6 · Feature **002** — **6** / 6 · Features **003–004** — not implemented.
+Shipped / verified UAC to date: Feature **001** — **6** / 6 · Feature **002** — **6** / 6 · Feature **003** — **6** / 6 · Feature **004** — **6** / 6 · Feature **005** — **6** / 6 (**30** / **30** total numbered UAC for approved portfolio briefs **001–005**).
 
-Per brief UAC counts: **001** — 6 · **002** — 6 · **003** — 6 · **004** — 6.
+Per brief UAC counts: **001** — 6 · **002** — 6 · **003** — 6 · **004** — 6 · **005** — 6.
 
 As briefs are added, update this table or derive counts from briefs in CI/docs automation later.
 
-**Primary product gap (prioritization):** **[Feature 003](./feature-briefs/003-benefits-enrollment-summary.md)** then **[004](./feature-briefs/004-core-hr-employee-profile-self-service.md)** as prioritized; **001–002** closed per **§3** / **§3b**.
+**Primary product gap (prioritization):** **None** among approved portfolio briefs **001–005** — all closed against numbered UAC in **§3**–**§3e**. Extend [`feature-briefs/`](./feature-briefs/) for net-new HR ERP slices beyond this set.
 
 ---
 
@@ -55,11 +55,14 @@ Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator.m
 
 ## 2c. Implemented capabilities today (engineering / platform inventory)
 
-Point-in-time inventory of what exists **in-repo** beneath track A — individual brief UAC closure is tracked in **§3** (Features **001**–**002**) and future audits.
+Point-in-time inventory of what exists **in-repo** beneath track A — individual brief UAC closure is tracked in **§3**–**§3e** (Features **001**–**005**).
 
 ### Web application (Next.js App Router)
 
-- **Home:** [`src/app/page.tsx`](../../src/app/page.tsx) — primary CTAs **Time** (Feature **002**) and **Earnings statement** (Feature **001**) plus examples / QA lab.
+- **Home:** [`src/app/page.tsx`](../../src/app/page.tsx) — primary CTAs **Time** (Feature **002**), **Earnings statement** (Feature **001**), **Benefits** (Feature **003**), **My profile** (Feature **004**), **PTO** (Feature **005**) plus examples / QA lab.
+- **Employee profile:** [`src/app/employee/profile/page.tsx`](../../src/app/employee/profile/page.tsx) — HR profile read / guarded self-update (`EmployeeProfileClient`).
+- **Employee benefits:** [`src/app/employee/benefits/page.tsx`](../../src/app/employee/benefits/page.tsx) — enrollment summary (`BenefitsClient`).
+- **Employee PTO:** [`src/app/employee/pto/page.tsx`](../../src/app/employee/pto/page.tsx) — read-only balance + recorded dates (`PtoClient`).
 - **Employee paystub:** [`src/app/employee/paystub/page.tsx`](../../src/app/employee/paystub/page.tsx) — current earnings statement UI (`PaystubClient`).
 - **Employee time / clock:** [`src/app/employee/time/page.tsx`](../../src/app/employee/time/page.tsx) — today’s punches + clock-in (`TimeAttendanceClient`).
 - **Examples:** [`src/app/examples/`](../../src/app/examples/) — jurisdiction, onboarding, org, reporting.
@@ -75,6 +78,9 @@ Registered in [`lib/security/route-policies.ts`](../../lib/security/route-polici
 | --- | --- |
 | Core HR-ish | `GET /employees`, `GET /employees/:employeeId` |
 | Paystub (self) | `GET /me/paystub/current` |
+| Benefits (self) | `GET /me/benefits/summary` |
+| PTO (self) | `GET /me/pto/summary` |
+| Profile (self) | `GET /me/profile`, `PATCH /me/profile` |
 | Attendance (self) | `GET /me/attendance/today`, `POST /attendance/clock-in` |
 | Analytics | `GET /analytics/churn`, `GET /analytics/skills/match`, `GET /analytics/benchmarks` |
 | ML proxy | `POST /ml/churn/score` → `ML_SERVING_URL` (default `http://127.0.0.1:8090`) |
@@ -83,7 +89,7 @@ Other surfaces (not all in route-policies): [`src/app/api/governance/proposals`]
 
 ### Data and payroll math
 
-- **Prisma app DB:** [`prisma/schema.prisma`](../../prisma/schema.prisma) — tenants, employees, churn scores, payroll period / payout lines (`PRE_TAX_DEDUCTION`, `TAX_WITHHOLDING` for earnings statements), etc.
+- **Prisma app DB:** [`prisma/schema.prisma`](../../prisma/schema.prisma) — tenants, employees (**preferred name**, mailing address, personal email, phone, emergency contact columns — Feature **004**), churn scores, payroll period / payout lines, **`BenefitEnrollment`** (Feature **003**), **`PtoBalance`** / **`PtoRequest`** (Feature **005** demo seed rows), etc.
 - **Payroll kernel package:** [`packages/payroll-calc/`](../../packages/payroll-calc/) — deterministic pipeline + tests; **not yet** the sole source for paystub lines (employee statement reads persisted `PaymentInstruction` / `PayoutLine`; kernel integration remains a future enhancement).
 
 ### Security and platform
@@ -108,11 +114,14 @@ flowchart LR
     Home[Home_and_examples]
     TimeUI[employee_time]
     Paystub[employee_paystub]
+    BenefitsUI[employee_benefits]
+    ProfileUI[employee_profile]
+    PtoUI[employee_pto]
     L10n[global-l10n_demos]
     AnalyticsUI[analytics_pages]
   end
   subgraph api [APIs]
-    V1["/api/v1_core_paystub_attendance_analytics_ml"]
+    V1["/api/v1_core_paystub_benefits_profile_pto_attendance_analytics_ml"]
     Gov["/api/governance/proposals"]
   end
   subgraph data_plane [Data_and_workers]
@@ -125,6 +134,9 @@ flowchart LR
   api --> Prisma
   V1 --> Py
   Paystub --> V1
+  BenefitsUI --> V1
+  ProfileUI --> V1
+  PtoUI --> V1
   TimeUI --> V1
   Calc -. future_kernel_link .-> Paystub
 ```
@@ -137,7 +149,7 @@ Skills live under [`.cursor/skills/*/SKILL.md`](../../.cursor/skills/). They are
 
 | Skill | Role | Present in codebase | Typical remaining work |
 | --- | --- | --- | --- |
-| [`hr-product-owner`](../../.cursor/skills/hr-product-owner/SKILL.md) | Briefs + UAC + friction | Briefs **001–004** approved | Implement **003–004** UAC; maintain friction gates |
+| [`hr-product-owner`](../../.cursor/skills/hr-product-owner/SKILL.md) | Briefs + UAC + friction | Briefs **001–005** approved · portfolio closed | Author brief **006+** / backlog slices beyond set |
 | [`hr-erp-principal-architecture`](../../.cursor/skills/hr-erp-principal-architecture/SKILL.md) | Contexts, buses, contracts | Phase 1 ADR + logical separation | Kafka/outbox extraction when ADR triggers |
 | [`hr-erp-innovation-rd`](../../.cursor/skills/hr-erp-innovation-rd/SKILL.md) | Edge/pgvector/Wasm/Rust gates | Postgres-centered MVP | Parity notes when Edge-heavy paths land |
 | [`hr-backend-compliance`](../../.cursor/skills/hr-backend-compliance/SKILL.md) | Wage/hour, `COMPLIANCE_*` | Strong **docs**; employee clock-in + **today summary** | Premium/OT + meal/break rules when briefs demand |
@@ -145,7 +157,7 @@ Skills live under [`.cursor/skills/*/SKILL.md`](../../.cursor/skills/). They are
 | [`hr-ai-data-governance`](../../.cursor/skills/hr-ai-data-governance/SKILL.md) | HITL, XAI, governance | Proposals APIs + churn surfaces | [`PR_CHECKLIST.md`](../ai-governance/PR_CHECKLIST.md) for production scoring |
 | [`hr-erp-mlops`](../../.cursor/skills/hr-erp-mlops/SKILL.md) | Inference tiering, logs, drift | Churn proxy + doc sequence | Phases in [`implementation-sequence.md`](../ml/implementation-sequence.md) |
 | [`hr-erp-security-identity`](../../.cursor/skills/hr-erp-security-identity/SKILL.md) | RBAC/ABAC, RLS, CI | Baseline wired | Cookie/session UX vs dev bearer for employee flows |
-| [`hr-erp-qa-chaos`](../../.cursor/skills/hr-erp-qa-chaos/SKILL.md) | Layered tests | QA lab + [`docs/QA.md`](../QA.md) | Expand automated UAC coverage for **003–004** |
+| [`hr-erp-qa-chaos`](../../.cursor/skills/hr-erp-qa-chaos/SKILL.md) | Layered tests | QA lab + [`docs/QA.md`](../QA.md) · timed Playwright for briefs **001–005** | Expand suites when brief **006+** lands |
 | [`hr-db-migration-state`](../../.cursor/skills/hr-db-migration-state/SKILL.md) | Safe DDL, verify | Migrations + runbooks | Applies on every schema change |
 | [`hr-code-health`](../../.cursor/skills/hr-code-health/SKILL.md) | Smell/refactor hygiene | Process skill | Runs on substantive `src`/contract edits |
 | [`hr-erp-packaging-supply-chain`](../../.cursor/skills/hr-erp-packaging-supply-chain/SKILL.md) | OCI, SBOM | CI + README | Operational release tuning |
@@ -159,9 +171,9 @@ The long global **Cursor marketplace** skill list does **not** replace the 15-re
 
 ## 2e. Primary product backlog (track A recap)
 
-**Feature 001** and **Feature 002** are **closed** against numbered UAC — see **§3** and **§3b**.
+**Features 001–005** are **closed** against numbered UAC — see **§3**, **§3b**, **§3c**, **§3d**, and **§3e**.
 
-**Next:** **[Feature 003](./feature-briefs/003-benefits-enrollment-summary.md)** (benefits summary), **[004](./feature-briefs/004-core-hr-employee-profile-self-service.md)** (profile self-service) — prioritize per PO; not implemented beyond brief approval.
+**Next:** Add **Feature 006+** briefs under [`feature-briefs/`](./feature-briefs/) when expanding HR ERP scope beyond this set.
 
 ---
 
@@ -218,6 +230,87 @@ The long global **Cursor marketplace** skill list does **not** replace the 15-re
 - **Partial:** 0  
 - **Total UAC:** 6  
 - **Completion:** **100%** for Feature **002** as of inventory date.
+
+---
+
+## 3c. Feature 003 audit — Benefits enrollment summary
+
+**Brief:** [`003-benefits-enrollment-summary.md`](./feature-briefs/003-benefits-enrollment-summary.md)  
+**Method:** Codebase verification (routes, API, UI, Prisma `BenefitEnrollment`, seed, tests). Apply migration [`20260509200000_benefit_enrollments`](../../prisma/migrations/20260509200000_benefit_enrollments/migration.sql) and run [`scripts/seed-predictive-demo.ts`](../../scripts/seed-predictive-demo.ts) for demo enrollment rows on Jordan (`DEMO_PAYSTUB_EMPLOYEE_ID` default).
+
+**Primary UX term:** **Benefits** (home link + page eyebrow); enrollment detail heading **Your enrollments** ([`src/app/employee/benefits/page.tsx`](../../src/app/employee/benefits/page.tsx)). QA documents **Benefits** as the employee-facing term (not **Coverage**).
+
+### UAC results
+
+| # | UAC (summary) | Status | Evidence |
+| --- | --- | --- | --- |
+| 1 | ≤2 navigational actions from default landing to current benefits summary | **Met** | Home → **Benefits** ([`src/app/page.tsx`](../../src/app/page.tsx)) → [`/employee/benefits`](../../src/app/employee/benefits/page.tsx). |
+| 2 | Lists active enrollments with human-readable plan/tier labels | **Met** | [`BenefitsClient`](../../src/app/employee/benefits/benefits-client.tsx) sections + [`GET /api/v1/me/benefits/summary`](../../src/app/api/v1/me/benefits/summary/route.ts) + [`lib/benefits/get-benefits-summary.ts`](../../lib/benefits/get-benefits-summary.ts) (`planLabel`, grouped categories). |
+| 3 | Effective dates visible per enrollment | **Met** | **Effective:** range with medium date formatting + **ongoing** when `effectiveTo` is null. |
+| 4 | Dedicated empty state when no enrollments | **Met** | **No enrollments on file** card with Benefits-contact guidance ([`benefits-client.tsx`](../../src/app/employee/benefits/benefits-client.tsx)). |
+| 5 | Load failures — plain-language retry; no stack traces or internal codes | **Met** | Retry + auth copy; [`employee/benefits/error.tsx`](../../src/app/employee/benefits/error.tsx). |
+| 6 | Consistent benefits wording for nav / QA | **Met** | Home **Benefits**; primary term documented here (**Benefits**); Playwright [`tests/e2e/benefits-feature-003.spec.ts`](../../tests/e2e/benefits-feature-003.spec.ts) (`HR_ERP_BENEFITS_E2E_JWT`); Vitest [`tests/benefits-is-benefit-enrollment-active.test.ts`](../../tests/benefits-is-benefit-enrollment-active.test.ts). |
+
+### Feature 003 score (track A only)
+
+- **Met:** 6  
+- **Partial:** 0  
+- **Total UAC:** 6  
+- **Completion:** **100%** for Feature **003** as of inventory date.
+
+---
+
+## 3d. Feature 004 audit — Employee profile & contact self-service
+
+**Brief:** [`004-core-hr-employee-profile-self-service.md`](./feature-briefs/004-core-hr-employee-profile-self-service.md)  
+**Method:** Codebase verification (routes, API, UI, Prisma columns on `employees`, seed, tests). Apply migration [`20260509204500_employee_profile_contact_fields`](../../prisma/migrations/20260509204500_employee_profile_contact_fields/migration.sql); demo profile slice on Jordan via [`scripts/seed-predictive-demo.ts`](../../scripts/seed-predictive-demo.ts).
+
+**Primary UX term:** **My profile** (home link + `<h1>`); eyebrow **Core HR** ([`src/app/employee/profile/page.tsx`](../../src/app/employee/profile/page.tsx)).
+
+### UAC results
+
+| # | UAC (summary) | Status | Evidence |
+| --- | --- | --- | --- |
+| 1 | ≤2 navigational actions from default landing to profile | **Met** | Home → **My profile** ([`src/app/page.tsx`](../../src/app/page.tsx)) → [`/employee/profile`](../../src/app/employee/profile/page.tsx). |
+| 2 | Shows legal name, preferred name, work/personal email, phone, mailing address with HR terminology | **Met** | [`EmployeeProfileClient`](../../src/app/employee/profile/profile-client.tsx) + [`GET /api/v1/me/profile`](../../src/app/api/v1/me/profile/route.ts) / [`lib/profile/get-my-profile.ts`](../../lib/profile/get-my-profile.ts). |
+| 3 | Non-editable fields marked HR-maintained — no fake edit controls | **Met** | Legal names + work email use disabled/read-only inputs + **Maintained by HR** copy; editable fields are normal inputs. Server exposes authoritative [`fieldPolicy`](../../lib/profile/profile-field-policy.ts) on API responses. |
+| 4 | Save confirmation plain-language; failures retry guidance — no stacks/codes in UI | **Met** | Success status banner; save/load retry copy without surfacing API codes ([`profile-client.tsx`](../../src/app/employee/profile/profile-client.tsx)); PATCH validation mapped to generic employee-safe [`invalid_profile_update`](../../src/app/api/v1/me/profile/route.ts). |
+| 5 | Emergency contact section + supportive empty state | **Met** | Dedicated card + dashed guidance when unset ([`profile-client.tsx`](../../src/app/employee/profile/profile-client.tsx)). |
+| 6 | Profile review task-time target via QA script (&lt; 90s) | **Met** | Playwright [`tests/e2e/profile-feature-004.spec.ts`](../../tests/e2e/profile-feature-004.spec.ts) (`HR_ERP_PROFILE_E2E_JWT`); Vitest [`tests/profile-patch-schema.test.ts`](../../tests/profile-patch-schema.test.ts). |
+
+### Feature 004 score (track A only)
+
+- **Met:** 6  
+- **Partial:** 0  
+- **Total UAC:** 6  
+- **Completion:** **100%** for Feature **004** as of inventory date.
+
+---
+
+## 3e. Feature 005 audit — PTO balance & recorded time off
+
+**Brief:** [`005-pto-leave-self-service.md`](./feature-briefs/005-pto-leave-self-service.md)  
+**Method:** Codebase verification (routes, API, UI, Prisma `PtoBalance` / `PtoRequest`, seed, tests). Run [`scripts/seed-predictive-demo.ts`](../../scripts/seed-predictive-demo.ts) for demo balance + Jordan **recorded** dates (`DEMO_PAYSTUB_EMPLOYEE_ID` default).
+
+**Primary UX term:** **PTO** (home link); page `<h1>` **Your PTO** with eyebrow **Time off** ([`src/app/employee/pto/page.tsx`](../../src/app/employee/pto/page.tsx)).
+
+### UAC results
+
+| # | UAC (summary) | Status | Evidence |
+| --- | --- | --- | --- |
+| 1 | ≤2 navigational actions from default landing to PTO summary | **Met** | Home → **PTO** ([`src/app/page.tsx`](../../src/app/page.tsx)) → [`/employee/pto`](../../src/app/employee/pto/page.tsx). |
+| 2 | Balance in hours + plain-language **as-of** date when a row exists | **Met** | [`PtoClient`](../../src/app/employee/pto/pto-client.tsx) + [`GET /api/v1/me/pto/summary`](../../src/app/api/v1/me/pto/summary/route.ts) + [`lib/pto/get-pto-summary.ts`](../../lib/pto/get-pto-summary.ts) (`formatBalanceHoursDisplay`, **Balance as of …**). |
+| 3 | Recent recorded time-off dates, newest first, human-readable | **Met** | API orders `requestDate` desc; UI lists medium-formatted calendar days ([`pto-client.tsx`](../../src/app/employee/pto/pto-client.tsx)). |
+| 4 | Dedicated empty state when no balance and no dates | **Met** | **No PTO data on file yet** card ([`pto-client.tsx`](../../src/app/employee/pto/pto-client.tsx)). |
+| 5 | Recoverable load failures — no stacks/codes for employee | **Met** | Retry + auth copy ([`pto-client.tsx`](../../src/app/employee/pto/pto-client.tsx)); [`employee/pto/error.tsx`](../../src/app/employee/pto/error.tsx). |
+| 6 | **PTO** wording + timed QA (&lt; 60s scan balance + recent sections) | **Met** | Playwright [`tests/e2e/pto-feature-005.spec.ts`](../../tests/e2e/pto-feature-005.spec.ts) (`HR_ERP_PTO_E2E_JWT`); Vitest [`tests/pto-format-balance-hours.test.ts`](../../tests/pto-format-balance-hours.test.ts). |
+
+### Feature 005 score (track A only)
+
+- **Met:** 6  
+- **Partial:** 0  
+- **Total UAC:** 6  
+- **Completion:** **100%** for Feature **005** as of inventory date.
 
 ---
 

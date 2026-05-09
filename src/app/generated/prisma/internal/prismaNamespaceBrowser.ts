@@ -54,6 +54,8 @@ export const ModelName = {
   Organization: 'Organization',
   Employee: 'Employee',
   PtoRequest: 'PtoRequest',
+  TimeOffRequest: 'TimeOffRequest',
+  HrCaseRequest: 'HrCaseRequest',
   Department: 'Department',
   JobRole: 'JobRole',
   CompensationRecord: 'CompensationRecord',
@@ -91,6 +93,7 @@ export const ModelName = {
   SprintCapacitySummary: 'SprintCapacitySummary',
   OnboardingTask: 'OnboardingTask',
   AttendancePunch: 'AttendancePunch',
+  BenefitEnrollment: 'BenefitEnrollment',
   IntegrationInstance: 'IntegrationInstance',
   IntegrationOutbox: 'IntegrationOutbox',
   IntegrationDeadLetter: 'IntegrationDeadLetter',
@@ -138,6 +141,18 @@ export const EmployeeScalarFieldEnum = {
   email: 'email',
   firstName: 'firstName',
   lastName: 'lastName',
+  preferredName: 'preferredName',
+  personalEmail: 'personalEmail',
+  phone: 'phone',
+  mailingAddressLine1: 'mailingAddressLine1',
+  mailingAddressLine2: 'mailingAddressLine2',
+  mailingCity: 'mailingCity',
+  mailingRegion: 'mailingRegion',
+  mailingPostalCode: 'mailingPostalCode',
+  mailingCountry: 'mailingCountry',
+  emergencyContactName: 'emergencyContactName',
+  emergencyContactPhone: 'emergencyContactPhone',
+  emergencyContactRelationship: 'emergencyContactRelationship',
   managerId: 'managerId',
   departmentId: 'departmentId',
   jobRoleId: 'jobRoleId',
@@ -162,6 +177,35 @@ export const PtoRequestScalarFieldEnum = {
 } as const
 
 export type PtoRequestScalarFieldEnum = (typeof PtoRequestScalarFieldEnum)[keyof typeof PtoRequestScalarFieldEnum]
+
+
+export const TimeOffRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffRequestScalarFieldEnum = (typeof TimeOffRequestScalarFieldEnum)[keyof typeof TimeOffRequestScalarFieldEnum]
+
+
+export const HrCaseRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  category: 'category',
+  body: 'body',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HrCaseRequestScalarFieldEnum = (typeof HrCaseRequestScalarFieldEnum)[keyof typeof HrCaseRequestScalarFieldEnum]
 
 
 export const DepartmentScalarFieldEnum = {
@@ -637,6 +681,24 @@ export const AttendancePunchScalarFieldEnum = {
 } as const
 
 export type AttendancePunchScalarFieldEnum = (typeof AttendancePunchScalarFieldEnum)[keyof typeof AttendancePunchScalarFieldEnum]
+
+
+export const BenefitEnrollmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  category: 'category',
+  planLabel: 'planLabel',
+  carrierName: 'carrierName',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  dependentCount: 'dependentCount',
+  retirementDeferralBasisPoints: 'retirementDeferralBasisPoints',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BenefitEnrollmentScalarFieldEnum = (typeof BenefitEnrollmentScalarFieldEnum)[keyof typeof BenefitEnrollmentScalarFieldEnum]
 
 
 export const IntegrationInstanceScalarFieldEnum = {

@@ -9,6 +9,32 @@
 * 🟢 You can import this file directly.
 */
 
+export const TimeOffRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  DENIED: 'DENIED'
+} as const
+
+export type TimeOffRequestStatus = (typeof TimeOffRequestStatus)[keyof typeof TimeOffRequestStatus]
+
+
+export const HrCaseCategory = {
+  PAYROLL: 'PAYROLL',
+  BENEFITS: 'BENEFITS',
+  HR_OTHER: 'HR_OTHER'
+} as const
+
+export type HrCaseCategory = (typeof HrCaseCategory)[keyof typeof HrCaseCategory]
+
+
+export const HrCaseStatus = {
+  OPEN: 'OPEN',
+  ACKNOWLEDGED: 'ACKNOWLEDGED'
+} as const
+
+export type HrCaseStatus = (typeof HrCaseStatus)[keyof typeof HrCaseStatus]
+
+
 export const OnboardingStatus = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -24,6 +50,17 @@ export const PunchKind = {
 } as const
 
 export type PunchKind = (typeof PunchKind)[keyof typeof PunchKind]
+
+
+export const BenefitCategory = {
+  MEDICAL: 'MEDICAL',
+  DENTAL: 'DENTAL',
+  VISION: 'VISION',
+  INCOME_PROTECTION: 'INCOME_PROTECTION',
+  RETIREMENT: 'RETIREMENT'
+} as const
+
+export type BenefitCategory = (typeof BenefitCategory)[keyof typeof BenefitCategory]
 
 
 export const IntegrationHealth = {

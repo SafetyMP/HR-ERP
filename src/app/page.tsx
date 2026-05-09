@@ -53,6 +53,27 @@ export default function Home() {
               <Link href="/employee/paystub">Earnings statement</Link>
             </Button>
             <Button asChild variant="outline">
+              <Link href="/employee/benefits">Benefits</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/profile">My profile</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/pto">PTO</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/paystub/history">Pay history</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/onboarding">Onboarding</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/hr-request">HR request</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/manager/team-attendance">Team attendance</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href="/examples/jurisdiction">Start with payroll fields</Link>
             </Button>
             <Button asChild variant="outline">

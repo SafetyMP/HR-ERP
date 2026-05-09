@@ -156,6 +156,141 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+  /me/benefits/summary:
+    get:
+      operationId: getBenefitsEnrollmentSummarySelf
+      summary: Active benefit enrollments for the JWT subject employee (`subject_employee_id`), UTC calendar basis.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT (HS256) with `benefits:read` and tenant claims
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — empty `enrollments` when none active
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BenefitsSummaryEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/pto/summary:
+    get:
+      operationId: getPtoSummarySelf
+      summary: PTO balance (latest posted) and recorded time-off dates for the JWT subject employee (`subject_employee_id`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT (HS256) with `pto:self_read` and tenant claims
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — null balance when HR has not posted; empty `recentTimeOff` when none recorded
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PtoSummaryEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/profile:
+    get:
+      operationId: getMyEmployeeProfileSelf
+      summary: HR profile & reachability for JWT subject (`employees:read`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `employees:read` and `subject_employee_id`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — includes server-driven field maintenance classes
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MyProfileEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    patch:
+      operationId: patchMyEmployeeProfileSelf
+      summary: Self-service updates for employee-editable profile fields (`profile:self_update`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `profile:self_update` and `subject_employee_id`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchMyProfileRequest"
+      responses:
+        "200":
+          description: OK — saved profile plus confirmation copy
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MyProfilePatchEnvelope"
+        "400":
+          description: Validation — generic employee-safe envelope (no field dumps)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
 components:
   responses:
     Unauthorized:
@@ -317,6 +452,242 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/PaystubLine"
+    BenefitsSummaryEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [benefitsSummary]
+          properties:
+            benefitsSummary:
+              type: object
+              required: [calendarBasis, enrollments]
+              properties:
+                calendarBasis:
+                  type: string
+                  enum: [UTC]
+                enrollments:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/BenefitEnrollmentItem"
+    BenefitEnrollmentItem:
+      type: object
+      required:
+        - category
+        - categoryLabel
+        - planLabel
+        - carrierName
+        - effectiveFrom
+        - effectiveTo
+        - dependentCount
+        - electiveDeferralPercent
+      properties:
+        category:
+          type: string
+          enum: [MEDICAL, DENTAL, VISION, INCOME_PROTECTION, RETIREMENT]
+        categoryLabel:
+          type: string
+        planLabel:
+          type: string
+        carrierName:
+          nullable: true
+          type: string
+        effectiveFrom:
+          type: string
+          format: date
+        effectiveTo:
+          nullable: true
+          type: string
+          format: date
+        dependentCount:
+          nullable: true
+          type: integer
+        electiveDeferralPercent:
+          nullable: true
+          type: number
+    PtoSummaryEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [ptoSummary]
+          properties:
+            ptoSummary:
+              type: object
+              required: [balanceHours, balanceAsOfDate, recentTimeOff]
+              properties:
+                balanceHours:
+                  nullable: true
+                  type: number
+                  description: Posted available hours from latest `PtoBalance` row, if any
+                balanceAsOfDate:
+                  nullable: true
+                  type: string
+                  format: date
+                recentTimeOff:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PtoRecordedDateRow"
+    PtoRecordedDateRow:
+      type: object
+      required: [requestDate]
+      properties:
+        requestDate:
+          type: string
+          format: date
+    MyProfileEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [profile, fieldPolicy]
+          properties:
+            profile:
+              $ref: "#/components/schemas/EmployeeSelfProfile"
+            fieldPolicy:
+              type: object
+              additionalProperties:
+                type: string
+                enum: [hr_maintained, self_editable]
+    MyProfilePatchEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [profile, fieldPolicy, confirmationMessage]
+          properties:
+            profile:
+              $ref: "#/components/schemas/EmployeeSelfProfile"
+            fieldPolicy:
+              type: object
+              additionalProperties:
+                type: string
+                enum: [hr_maintained, self_editable]
+            confirmationMessage:
+              type: string
+    EmployeeSelfProfile:
+      type: object
+      required:
+        - legalGivenName
+        - legalFamilyName
+        - preferredName
+        - workEmail
+        - personalEmail
+        - phone
+        - mailingAddress
+        - emergencyContact
+      properties:
+        legalGivenName:
+          nullable: true
+          type: string
+        legalFamilyName:
+          nullable: true
+          type: string
+        preferredName:
+          nullable: true
+          type: string
+        workEmail:
+          type: string
+          format: email
+        personalEmail:
+          nullable: true
+          type: string
+          format: email
+        phone:
+          nullable: true
+          type: string
+        mailingAddress:
+          type: object
+          required: [line1, line2, city, region, postalCode, country]
+          properties:
+            line1:
+              nullable: true
+              type: string
+            line2:
+              nullable: true
+              type: string
+            city:
+              nullable: true
+              type: string
+            region:
+              nullable: true
+              type: string
+            postalCode:
+              nullable: true
+              type: string
+            country:
+              nullable: true
+              type: string
+        emergencyContact:
+          type: object
+          required: [name, phone, relationship]
+          properties:
+            name:
+              nullable: true
+              type: string
+            phone:
+              nullable: true
+              type: string
+            relationship:
+              nullable: true
+              type: string
+    PatchMyProfileRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        preferredName:
+          nullable: true
+          type: string
+        personalEmail:
+          nullable: true
+          type: string
+          format: email
+        phone:
+          nullable: true
+          type: string
+        mailingAddressLine1:
+          nullable: true
+          type: string
+        mailingAddressLine2:
+          nullable: true
+          type: string
+        mailingCity:
+          nullable: true
+          type: string
+        mailingRegion:
+          nullable: true
+          type: string
+        mailingPostalCode:
+          nullable: true
+          type: string
+        mailingCountry:
+          nullable: true
+          type: string
+        emergencyContactName:
+          nullable: true
+          type: string
+        emergencyContactPhone:
+          nullable: true
+          type: string
+        emergencyContactRelationship:
+          nullable: true
+          type: string
     PaystubLine:
       type: object
       required: [label, amountMinor, lineType]

@@ -387,6 +387,8 @@ export const ModelName = {
   Organization: 'Organization',
   Employee: 'Employee',
   PtoRequest: 'PtoRequest',
+  TimeOffRequest: 'TimeOffRequest',
+  HrCaseRequest: 'HrCaseRequest',
   Department: 'Department',
   JobRole: 'JobRole',
   CompensationRecord: 'CompensationRecord',
@@ -424,6 +426,7 @@ export const ModelName = {
   SprintCapacitySummary: 'SprintCapacitySummary',
   OnboardingTask: 'OnboardingTask',
   AttendancePunch: 'AttendancePunch',
+  BenefitEnrollment: 'BenefitEnrollment',
   IntegrationInstance: 'IntegrationInstance',
   IntegrationOutbox: 'IntegrationOutbox',
   IntegrationDeadLetter: 'IntegrationDeadLetter',
@@ -448,7 +451,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "employee" | "ptoRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "attendancePunch" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction"
+    modelProps: "organization" | "employee" | "ptoRequest" | "timeOffRequest" | "hrCaseRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "attendancePunch" | "benefitEnrollment" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -671,6 +674,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PtoRequestCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PtoRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    TimeOffRequest: {
+      payload: Prisma.$TimeOffRequestPayload<ExtArgs>
+      fields: Prisma.TimeOffRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TimeOffRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TimeOffRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.TimeOffRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TimeOffRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        findMany: {
+          args: Prisma.TimeOffRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        create: {
+          args: Prisma.TimeOffRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        createMany: {
+          args: Prisma.TimeOffRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TimeOffRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.TimeOffRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        update: {
+          args: Prisma.TimeOffRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.TimeOffRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TimeOffRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TimeOffRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.TimeOffRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimeOffRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.TimeOffRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTimeOffRequest>
+        }
+        groupBy: {
+          args: Prisma.TimeOffRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TimeOffRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimeOffRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    HrCaseRequest: {
+      payload: Prisma.$HrCaseRequestPayload<ExtArgs>
+      fields: Prisma.HrCaseRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HrCaseRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HrCaseRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.HrCaseRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HrCaseRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        findMany: {
+          args: Prisma.HrCaseRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>[]
+        }
+        create: {
+          args: Prisma.HrCaseRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        createMany: {
+          args: Prisma.HrCaseRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HrCaseRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.HrCaseRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        update: {
+          args: Prisma.HrCaseRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.HrCaseRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HrCaseRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HrCaseRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.HrCaseRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HrCaseRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.HrCaseRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHrCaseRequest>
+        }
+        groupBy: {
+          args: Prisma.HrCaseRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HrCaseRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HrCaseRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HrCaseRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -3412,6 +3563,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BenefitEnrollment: {
+      payload: Prisma.$BenefitEnrollmentPayload<ExtArgs>
+      fields: Prisma.BenefitEnrollmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BenefitEnrollmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BenefitEnrollmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        findFirst: {
+          args: Prisma.BenefitEnrollmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BenefitEnrollmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        findMany: {
+          args: Prisma.BenefitEnrollmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>[]
+        }
+        create: {
+          args: Prisma.BenefitEnrollmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        createMany: {
+          args: Prisma.BenefitEnrollmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BenefitEnrollmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>[]
+        }
+        delete: {
+          args: Prisma.BenefitEnrollmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        update: {
+          args: Prisma.BenefitEnrollmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.BenefitEnrollmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BenefitEnrollmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BenefitEnrollmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.BenefitEnrollmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BenefitEnrollmentPayload>
+        }
+        aggregate: {
+          args: Prisma.BenefitEnrollmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBenefitEnrollment>
+        }
+        groupBy: {
+          args: Prisma.BenefitEnrollmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BenefitEnrollmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BenefitEnrollmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BenefitEnrollmentCountAggregateOutputType> | number
+        }
+      }
+    }
     IntegrationInstance: {
       payload: Prisma.$IntegrationInstancePayload<ExtArgs>
       fields: Prisma.IntegrationInstanceFieldRefs
@@ -4137,6 +4362,18 @@ export const EmployeeScalarFieldEnum = {
   email: 'email',
   firstName: 'firstName',
   lastName: 'lastName',
+  preferredName: 'preferredName',
+  personalEmail: 'personalEmail',
+  phone: 'phone',
+  mailingAddressLine1: 'mailingAddressLine1',
+  mailingAddressLine2: 'mailingAddressLine2',
+  mailingCity: 'mailingCity',
+  mailingRegion: 'mailingRegion',
+  mailingPostalCode: 'mailingPostalCode',
+  mailingCountry: 'mailingCountry',
+  emergencyContactName: 'emergencyContactName',
+  emergencyContactPhone: 'emergencyContactPhone',
+  emergencyContactRelationship: 'emergencyContactRelationship',
   managerId: 'managerId',
   departmentId: 'departmentId',
   jobRoleId: 'jobRoleId',
@@ -4161,6 +4398,35 @@ export const PtoRequestScalarFieldEnum = {
 } as const
 
 export type PtoRequestScalarFieldEnum = (typeof PtoRequestScalarFieldEnum)[keyof typeof PtoRequestScalarFieldEnum]
+
+
+export const TimeOffRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TimeOffRequestScalarFieldEnum = (typeof TimeOffRequestScalarFieldEnum)[keyof typeof TimeOffRequestScalarFieldEnum]
+
+
+export const HrCaseRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  category: 'category',
+  body: 'body',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HrCaseRequestScalarFieldEnum = (typeof HrCaseRequestScalarFieldEnum)[keyof typeof HrCaseRequestScalarFieldEnum]
 
 
 export const DepartmentScalarFieldEnum = {
@@ -4638,6 +4904,24 @@ export const AttendancePunchScalarFieldEnum = {
 export type AttendancePunchScalarFieldEnum = (typeof AttendancePunchScalarFieldEnum)[keyof typeof AttendancePunchScalarFieldEnum]
 
 
+export const BenefitEnrollmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  category: 'category',
+  planLabel: 'planLabel',
+  carrierName: 'carrierName',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  dependentCount: 'dependentCount',
+  retirementDeferralBasisPoints: 'retirementDeferralBasisPoints',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BenefitEnrollmentScalarFieldEnum = (typeof BenefitEnrollmentScalarFieldEnum)[keyof typeof BenefitEnrollmentScalarFieldEnum]
+
+
 export const IntegrationInstanceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -4882,6 +5166,48 @@ export type ListEnumEmployeeStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'TimeOffRequestStatus'
+ */
+export type EnumTimeOffRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TimeOffRequestStatus[]'
+ */
+export type ListEnumTimeOffRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimeOffRequestStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'HrCaseCategory'
+ */
+export type EnumHrCaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HrCaseCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'HrCaseCategory[]'
+ */
+export type ListEnumHrCaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HrCaseCategory[]'>
+    
+
+
+/**
+ * Reference to a field of type 'HrCaseStatus'
+ */
+export type EnumHrCaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HrCaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'HrCaseStatus[]'
+ */
+export type ListEnumHrCaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HrCaseStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -5099,6 +5425,20 @@ export type ListEnumPunchKindFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 
 
 /**
+ * Reference to a field of type 'BenefitCategory'
+ */
+export type EnumBenefitCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BenefitCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'BenefitCategory[]'
+ */
+export type ListEnumBenefitCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BenefitCategory[]'>
+    
+
+
+/**
  * Reference to a field of type 'IntegrationHealth'
  */
 export type EnumIntegrationHealthFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IntegrationHealth'>
@@ -5252,6 +5592,8 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   employee?: Prisma.EmployeeOmit
   ptoRequest?: Prisma.PtoRequestOmit
+  timeOffRequest?: Prisma.TimeOffRequestOmit
+  hrCaseRequest?: Prisma.HrCaseRequestOmit
   department?: Prisma.DepartmentOmit
   jobRole?: Prisma.JobRoleOmit
   compensationRecord?: Prisma.CompensationRecordOmit
@@ -5289,6 +5631,7 @@ export type GlobalOmitConfig = {
   sprintCapacitySummary?: Prisma.SprintCapacitySummaryOmit
   onboardingTask?: Prisma.OnboardingTaskOmit
   attendancePunch?: Prisma.AttendancePunchOmit
+  benefitEnrollment?: Prisma.BenefitEnrollmentOmit
   integrationInstance?: Prisma.IntegrationInstanceOmit
   integrationOutbox?: Prisma.IntegrationOutboxOmit
   integrationDeadLetter?: Prisma.IntegrationDeadLetterOmit
