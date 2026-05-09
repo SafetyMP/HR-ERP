@@ -2,11 +2,23 @@
 
 Start here to navigate human-written docs. Cursor agent orchestration and skills live under [`.cursor/`](../.cursor/).
 
+## Legal / licensing
+
+| Resource | Purpose |
+| --- | --- |
+| [../LICENSE](../LICENSE) | Apache License, Version 2.0 (full terms). |
+| [../NOTICE](../NOTICE) | Copyright and SPDX identifier; satisfies Apache 2.0 NOTICE expectations where applicable. |
+| [../package.json](../package.json) | Root package metadata (`license`: `Apache-2.0`). |
+| [../CHANGELOG.md](../CHANGELOG.md) | Release notes (semantic-release). |
+
+Dependency packages carry **their own licenses** — use npm or your SBOM tooling for a complete third-party license list.
+
 ## New contributors
 
 | Doc | Purpose |
 | --- | --- |
-| [../README.md](../README.md) | Project overview, quick start, script reference |
+| [../README.md](../README.md) | Project overview, quick start, scripts, containers, license |
+| [../AGENTS.md](../AGENTS.md) | Agent orchestration, skills, merge posture |
 | [DEVELOPMENT.md](./DEVELOPMENT.md) | Local environment, databases, workers, troubleshooting |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Branches, PR bar, synthetic data, migration rules |
 | [community/README.md](./community/README.md) | External contributors, bug → Orchestrator handoffs |
@@ -45,7 +57,7 @@ Start here to navigate human-written docs. Cursor agent orchestration and skills
 | --- | --- |
 | [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | How Feature briefs and UAC work |
 | [product/feature-brief-template.md](./product/feature-brief-template.md) | Template for shippable capabilities |
-| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); **§2c** platform inventory + diagram; **§2d** 15-repo skills gap lens; Feature 001 backlog **§2e** / audit **§3**; **§2a–§2b** skills vs marketplace & orchestration bundles |
+| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); section 2c platform inventory + diagram; section 2d skills gap lens; Feature 001 backlog / audit sections |
 
 ## Operations
 
@@ -59,3 +71,11 @@ Start here to navigate human-written docs. Cursor agent orchestration and skills
 | Doc | Purpose |
 | --- | --- |
 | [../FRONTEND.md](../FRONTEND.md) | React state, a11y, API errors, demo routes |
+
+## Containers
+
+| Resource | Purpose |
+| --- | --- |
+| [../docker/README.md](../docker/README.md) | GHCR usage, Compose overlay for the Next.js image |
+| [../Dockerfile](../Dockerfile) | Production OCI build (distroless final stage) |
+| [../specs/alignment/decisions/0003-container-supply-chain.md](../specs/alignment/decisions/0003-container-supply-chain.md) | Supply-chain ADR (SBOM, provenance, Cosign) |

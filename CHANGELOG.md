@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). After you merge a **`version` bump** in root `package.json` on `main` / `master`, [`.github/workflows/release-tag.yml`](.github/workflows/release-tag.yml) creates the **`v*` tag** and a GitHub Release (no release PR).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Releases are automated with **[`semantic-release`](https://github.com/semantic-release/semantic-release)** on **`main` / `master`** ([`.github/workflows/semantic-release.yml`](.github/workflows/semantic-release.yml)): Conventional Commits drive semver, this file, and **`v*`** GitHub Releases (which trigger [`publish-ghcr.yml`](.github/workflows/publish-ghcr.yml) for container images).
 
 ## [Unreleased]
 

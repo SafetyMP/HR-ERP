@@ -37,7 +37,8 @@ Innovation posture already limits **Wasm** to sandboxed, non-authoritative use (
 ## Implementation notes
 
 - App image: root [`Dockerfile`](../../../Dockerfile).
-- Publish workflow: [`.github/workflows/publish-ghcr.yml`](../../../.github/workflows/publish-ghcr.yml).
+- Publish workflow: [`.github/workflows/publish-ghcr.yml`](../../../.github/workflows/publish-ghcr.yml) (triggered by published GitHub Releases from [`.github/workflows/semantic-release.yml`](../../../.github/workflows/semantic-release.yml)).
+- Compose overlay for local/GHCR pulls: [`docker/compose.app.yml`](../../../docker/compose.app.yml).
 - Python CI pins: [`services/pipelines/requirements-ci.txt`](../../../services/pipelines/requirements-ci.txt).
 - **Cosign verify** — use the **`sha256:DIGEST`** of the pushed manifest (from the workflow log, GHCR UI, or `docker buildx imagetools inspect`). Adjust `OWNER/REPO` to the lower-case `github.repository` slug:
 

@@ -4,6 +4,7 @@
 
 - **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** applies to Issues, discussions, reviews, and project spaces.
 - Report **undisclosed vulnerabilities** through **[`SECURITY.md`](SECURITY.md)** (private GitHub Security advisories)—not via public issues.
+- **License:** The project is under **[Apache License 2.0](LICENSE)** with attribution in **[`NOTICE`](NOTICE)**. Contributions are expected to be licensed under the same terms unless you explicitly state otherwise.
 
 ## Community path (Developer Advocate)
 
@@ -16,6 +17,10 @@ For docs-only updates, external PR coaching, or turning a filed bug into an Orch
 ## Branches
 
 - Prefer `feat/<slug>`, `fix/<slug>`, `chore/<slug>`.
+
+## Releases & commit messages
+
+Merged commits on **`main` / `master`** should follow [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat: …`, `fix: …`, `chore: …`) so [semantic-release](https://github.com/semantic-release/semantic-release) can version [`package.json`](package.json), update [`CHANGELOG.md`](CHANGELOG.md), create **`v*`** tags and GitHub Releases, and trigger container publishing ([`.github/workflows/semantic-release.yml`](.github/workflows/semantic-release.yml), [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml)). Prefer **squash merges** with a conventional subject line.
 
 ## Agent + human workflow
 

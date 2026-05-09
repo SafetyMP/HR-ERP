@@ -1,0 +1,32 @@
+# Production-style Next.js container alongside dev dependencies from the repo root compose file.
+#
+# Local image (build):
+#   docker compose -f docker-compose.yml -f docker/compose.app.yml up -d --build app
+#
+# GitHub Container Registry (after a published GitHub Release — see publish-ghcr.yml):
+#   export HR_ERP_IMAGE="ghcr.io/$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]'):<semver>"
+#   docker compose -f docker-compose.yml -f docker/compose.app.yml pull app
+#   docker compose -f docker-compose.yml -f docker/compose.app.yml up -d app
+#
+# Required for real deployments: set JWT_SECRET (and narrow other secrets) via env or a secrets file — never commit .env.
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: ${HR_ERP_IMAGE:-hr-erp-app:local}
+    restart: unless-stopped
+    ports:
+      - "${HR_ERP_APP_PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://hr_erp:hr_erp_dev_password@postgres:5432/hr_erp?schema=public}
+      JWT_SECRET: ${JWT_SECRET:-docker-dev-jwt-secret-change-me-32chars-minimum-xx}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      INTEGRATION_SECRET_KEY: ${INTEGRATION_SECRET_KEY:-docker-dev-integration-secret-change-me}
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
