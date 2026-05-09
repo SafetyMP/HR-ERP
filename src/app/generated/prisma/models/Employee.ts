@@ -376,8 +376,15 @@ export type EmployeeWhereInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotListRelationFilter
   churnScores?: Prisma.ChurnScoreListRelationFilter
   benefitEnrollments?: Prisma.BenefitEnrollmentListRelationFilter
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestListRelationFilter
+  taxYearDocuments?: Prisma.TaxYearDocumentListRelationFilter
   timeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  timeOffDecisions?: Prisma.TimeOffRequestListRelationFilter
   hrCaseRequests?: Prisma.HrCaseRequestListRelationFilter
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskListRelationFilter
 }
 
 export type EmployeeOrderByWithRelationInput = {
@@ -433,8 +440,15 @@ export type EmployeeOrderByWithRelationInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotOrderByRelationAggregateInput
   churnScores?: Prisma.ChurnScoreOrderByRelationAggregateInput
   benefitEnrollments?: Prisma.BenefitEnrollmentOrderByRelationAggregateInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestOrderByRelationAggregateInput
+  taxYearDocuments?: Prisma.TaxYearDocumentOrderByRelationAggregateInput
   timeOffRequests?: Prisma.TimeOffRequestOrderByRelationAggregateInput
+  timeOffDecisions?: Prisma.TimeOffRequestOrderByRelationAggregateInput
   hrCaseRequests?: Prisma.HrCaseRequestOrderByRelationAggregateInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskOrderByRelationAggregateInput
 }
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -494,8 +508,15 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotListRelationFilter
   churnScores?: Prisma.ChurnScoreListRelationFilter
   benefitEnrollments?: Prisma.BenefitEnrollmentListRelationFilter
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestListRelationFilter
+  taxYearDocuments?: Prisma.TaxYearDocumentListRelationFilter
   timeOffRequests?: Prisma.TimeOffRequestListRelationFilter
+  timeOffDecisions?: Prisma.TimeOffRequestListRelationFilter
   hrCaseRequests?: Prisma.HrCaseRequestListRelationFilter
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestListRelationFilter
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskListRelationFilter
 }, "id" | "tenantId_email">
 
 export type EmployeeOrderByWithAggregationInput = {
@@ -611,8 +632,15 @@ export type EmployeeCreateInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateInput = {
@@ -664,8 +692,15 @@ export type EmployeeUncheckedCreateInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUpdateInput = {
@@ -717,8 +752,15 @@ export type EmployeeUpdateInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateInput = {
@@ -770,8 +812,15 @@ export type EmployeeUncheckedUpdateInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyInput = {
@@ -1097,12 +1146,28 @@ export type EmployeeCreateNestedOneWithoutTimeOffRequestsInput = {
   connect?: Prisma.EmployeeWhereUniqueInput
 }
 
+export type EmployeeCreateNestedOneWithoutTimeOffDecisionsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffDecisionsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutTimeOffDecisionsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
 export type EmployeeUpdateOneRequiredWithoutTimeOffRequestsNestedInput = {
   create?: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffRequestsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffRequestsInput>
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutTimeOffRequestsInput
   upsert?: Prisma.EmployeeUpsertWithoutTimeOffRequestsInput
   connect?: Prisma.EmployeeWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutTimeOffRequestsInput, Prisma.EmployeeUpdateWithoutTimeOffRequestsInput>, Prisma.EmployeeUncheckedUpdateWithoutTimeOffRequestsInput>
+}
+
+export type EmployeeUpdateOneWithoutTimeOffDecisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffDecisionsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutTimeOffDecisionsInput
+  upsert?: Prisma.EmployeeUpsertWithoutTimeOffDecisionsInput
+  disconnect?: Prisma.EmployeeWhereInput | boolean
+  delete?: Prisma.EmployeeWhereInput | boolean
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutTimeOffDecisionsInput, Prisma.EmployeeUpdateWithoutTimeOffDecisionsInput>, Prisma.EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput>
 }
 
 export type EmployeeCreateNestedOneWithoutHrCaseRequestsInput = {
@@ -1443,6 +1508,20 @@ export type EmployeeUpdateOneRequiredWithoutOnboardingTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutOnboardingTasksInput, Prisma.EmployeeUpdateWithoutOnboardingTasksInput>, Prisma.EmployeeUncheckedUpdateWithoutOnboardingTasksInput>
 }
 
+export type EmployeeCreateNestedOneWithoutEmployeeSeparationTasksInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutEmployeeSeparationTasksInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutEmployeeSeparationTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutEmployeeSeparationTasksInput
+  upsert?: Prisma.EmployeeUpsertWithoutEmployeeSeparationTasksInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUpdateWithoutEmployeeSeparationTasksInput>, Prisma.EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput>
+}
+
 export type EmployeeCreateNestedOneWithoutAttendancePunchesInput = {
   create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendancePunchesInput, Prisma.EmployeeUncheckedCreateWithoutAttendancePunchesInput>
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendancePunchesInput
@@ -1469,6 +1548,78 @@ export type EmployeeUpdateOneRequiredWithoutBenefitEnrollmentsNestedInput = {
   upsert?: Prisma.EmployeeUpsertWithoutBenefitEnrollmentsInput
   connect?: Prisma.EmployeeWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutBenefitEnrollmentsInput, Prisma.EmployeeUpdateWithoutBenefitEnrollmentsInput>, Prisma.EmployeeUncheckedUpdateWithoutBenefitEnrollmentsInput>
+}
+
+export type EmployeeCreateNestedOneWithoutTaxYearDocumentsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedCreateWithoutTaxYearDocumentsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutTaxYearDocumentsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutTaxYearDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedCreateWithoutTaxYearDocumentsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutTaxYearDocumentsInput
+  upsert?: Prisma.EmployeeUpsertWithoutTaxYearDocumentsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutTaxYearDocumentsInput, Prisma.EmployeeUpdateWithoutTaxYearDocumentsInput>, Prisma.EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput>
+}
+
+export type EmployeeCreateNestedOneWithoutBenefitElectionChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutBenefitElectionChangeRequestsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutBenefitElectionChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutBenefitElectionChangeRequestsInput
+  upsert?: Prisma.EmployeeUpsertWithoutBenefitElectionChangeRequestsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUpdateWithoutBenefitElectionChangeRequestsInput>, Prisma.EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type EmployeeCreateNestedOneWithoutAttendanceCorrectionSubjectsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionSubjectsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeCreateNestedOneWithoutAttendanceCorrectionsSubmittedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionsSubmittedInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeCreateNestedOneWithoutAttendanceCorrectionsDecidedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionsDecidedInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutAttendanceCorrectionSubjectsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionSubjectsInput
+  upsert?: Prisma.EmployeeUpsertWithoutAttendanceCorrectionSubjectsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUpdateWithoutAttendanceCorrectionSubjectsInput>, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput>
+}
+
+export type EmployeeUpdateOneRequiredWithoutAttendanceCorrectionsSubmittedNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionsSubmittedInput
+  upsert?: Prisma.EmployeeUpsertWithoutAttendanceCorrectionsSubmittedInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUpdateWithoutAttendanceCorrectionsSubmittedInput>, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput>
+}
+
+export type EmployeeUpdateOneWithoutAttendanceCorrectionsDecidedNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionsDecidedInput
+  upsert?: Prisma.EmployeeUpsertWithoutAttendanceCorrectionsDecidedInput
+  disconnect?: Prisma.EmployeeWhereInput | boolean
+  delete?: Prisma.EmployeeWhereInput | boolean
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUpdateWithoutAttendanceCorrectionsDecidedInput>, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput>
 }
 
 export type EmployeeCreateNestedOneWithoutVendorLinksInput = {
@@ -1533,8 +1684,15 @@ export type EmployeeCreateWithoutOrganizationInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutOrganizationInput = {
@@ -1585,8 +1743,15 @@ export type EmployeeUncheckedCreateWithoutOrganizationInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutOrganizationInput = {
@@ -1695,8 +1860,15 @@ export type EmployeeCreateWithoutDirectReportsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutDirectReportsInput = {
@@ -1747,8 +1919,15 @@ export type EmployeeUncheckedCreateWithoutDirectReportsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutDirectReportsInput = {
@@ -1804,8 +1983,15 @@ export type EmployeeCreateWithoutManagerInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutManagerInput = {
@@ -1856,8 +2042,15 @@ export type EmployeeUncheckedCreateWithoutManagerInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutManagerInput = {
@@ -1929,8 +2122,15 @@ export type EmployeeUpdateWithoutDirectReportsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutDirectReportsInput = {
@@ -1981,8 +2181,15 @@ export type EmployeeUncheckedUpdateWithoutDirectReportsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUpsertWithWhereUniqueWithoutManagerInput = {
@@ -2049,8 +2256,15 @@ export type EmployeeCreateWithoutPtoRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPtoRequestsInput = {
@@ -2101,8 +2315,15 @@ export type EmployeeUncheckedCreateWithoutPtoRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPtoRequestsInput = {
@@ -2169,8 +2390,15 @@ export type EmployeeUpdateWithoutPtoRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPtoRequestsInput = {
@@ -2221,8 +2449,15 @@ export type EmployeeUncheckedUpdateWithoutPtoRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutTimeOffRequestsInput = {
@@ -2274,7 +2509,14 @@ export type EmployeeCreateWithoutTimeOffRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutTimeOffRequestsInput = {
@@ -2326,12 +2568,142 @@ export type EmployeeUncheckedCreateWithoutTimeOffRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutTimeOffRequestsInput = {
   where: Prisma.EmployeeWhereUniqueInput
   create: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffRequestsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffRequestsInput>
+}
+
+export type EmployeeCreateWithoutTimeOffDecisionsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutTimeOffDecisionsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutTimeOffDecisionsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffDecisionsInput>
 }
 
 export type EmployeeUpsertWithoutTimeOffRequestsInput = {
@@ -2394,7 +2766,14 @@ export type EmployeeUpdateWithoutTimeOffRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutTimeOffRequestsInput = {
@@ -2446,7 +2825,143 @@ export type EmployeeUncheckedUpdateWithoutTimeOffRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUpsertWithoutTimeOffDecisionsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedCreateWithoutTimeOffDecisionsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutTimeOffDecisionsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutTimeOffDecisionsInput, Prisma.EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput>
+}
+
+export type EmployeeUpdateWithoutTimeOffDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutHrCaseRequestsInput = {
@@ -2498,7 +3013,14 @@ export type EmployeeCreateWithoutHrCaseRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutHrCaseRequestsInput = {
@@ -2550,7 +3072,14 @@ export type EmployeeUncheckedCreateWithoutHrCaseRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutHrCaseRequestsInput = {
@@ -2618,7 +3147,14 @@ export type EmployeeUpdateWithoutHrCaseRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutHrCaseRequestsInput = {
@@ -2670,7 +3206,14 @@ export type EmployeeUncheckedUpdateWithoutHrCaseRequestsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutDepartmentInput = {
@@ -2721,8 +3264,15 @@ export type EmployeeCreateWithoutDepartmentInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -2773,8 +3323,15 @@ export type EmployeeUncheckedCreateWithoutDepartmentInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -2851,8 +3408,15 @@ export type EmployeeCreateWithoutJobRoleInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutJobRoleInput = {
@@ -2903,8 +3467,15 @@ export type EmployeeUncheckedCreateWithoutJobRoleInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutJobRoleInput = {
@@ -2981,8 +3552,15 @@ export type EmployeeCreateWithoutCompensationRecordsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutCompensationRecordsInput = {
@@ -3033,8 +3611,15 @@ export type EmployeeUncheckedCreateWithoutCompensationRecordsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutCompensationRecordsInput = {
@@ -3101,8 +3686,15 @@ export type EmployeeUpdateWithoutCompensationRecordsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutCompensationRecordsInput = {
@@ -3153,8 +3745,15 @@ export type EmployeeUncheckedUpdateWithoutCompensationRecordsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPtoBalancesInput = {
@@ -3205,8 +3804,15 @@ export type EmployeeCreateWithoutPtoBalancesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPtoBalancesInput = {
@@ -3257,8 +3863,15 @@ export type EmployeeUncheckedCreateWithoutPtoBalancesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPtoBalancesInput = {
@@ -3325,8 +3938,15 @@ export type EmployeeUpdateWithoutPtoBalancesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPtoBalancesInput = {
@@ -3377,8 +3997,15 @@ export type EmployeeUncheckedUpdateWithoutPtoBalancesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPerformanceReviewsInput = {
@@ -3429,8 +4056,15 @@ export type EmployeeCreateWithoutPerformanceReviewsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPerformanceReviewsInput = {
@@ -3481,8 +4115,15 @@ export type EmployeeUncheckedCreateWithoutPerformanceReviewsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPerformanceReviewsInput = {
@@ -3549,8 +4190,15 @@ export type EmployeeUpdateWithoutPerformanceReviewsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPerformanceReviewsInput = {
@@ -3601,8 +4249,15 @@ export type EmployeeUncheckedUpdateWithoutPerformanceReviewsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutEmploymentEventsInput = {
@@ -3653,8 +4308,15 @@ export type EmployeeCreateWithoutEmploymentEventsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutEmploymentEventsInput = {
@@ -3705,8 +4367,15 @@ export type EmployeeUncheckedCreateWithoutEmploymentEventsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutEmploymentEventsInput = {
@@ -3773,8 +4442,15 @@ export type EmployeeUpdateWithoutEmploymentEventsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutEmploymentEventsInput = {
@@ -3825,8 +4501,15 @@ export type EmployeeUncheckedUpdateWithoutEmploymentEventsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutEmployeeSkillsInput = {
@@ -3877,8 +4560,15 @@ export type EmployeeCreateWithoutEmployeeSkillsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutEmployeeSkillsInput = {
@@ -3929,8 +4619,15 @@ export type EmployeeUncheckedCreateWithoutEmployeeSkillsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutEmployeeSkillsInput = {
@@ -3997,8 +4694,15 @@ export type EmployeeUpdateWithoutEmployeeSkillsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutEmployeeSkillsInput = {
@@ -4049,8 +4753,15 @@ export type EmployeeUncheckedUpdateWithoutEmployeeSkillsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutUserAccountsInput = {
@@ -4101,8 +4812,15 @@ export type EmployeeCreateWithoutUserAccountsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutUserAccountsInput = {
@@ -4153,8 +4871,15 @@ export type EmployeeUncheckedCreateWithoutUserAccountsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutUserAccountsInput = {
@@ -4221,8 +4946,15 @@ export type EmployeeUpdateWithoutUserAccountsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutUserAccountsInput = {
@@ -4273,8 +5005,15 @@ export type EmployeeUncheckedUpdateWithoutUserAccountsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -4325,8 +5064,15 @@ export type EmployeeCreateWithoutAnalyticsFeatureSnapshotsInput = {
   userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -4377,8 +5123,15 @@ export type EmployeeUncheckedCreateWithoutAnalyticsFeatureSnapshotsInput = {
   userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAnalyticsFeatureSnapshotsInput = {
@@ -4445,8 +5198,15 @@ export type EmployeeUpdateWithoutAnalyticsFeatureSnapshotsInput = {
   userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -4497,8 +5257,15 @@ export type EmployeeUncheckedUpdateWithoutAnalyticsFeatureSnapshotsInput = {
   userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutChurnScoresInput = {
@@ -4549,8 +5316,15 @@ export type EmployeeCreateWithoutChurnScoresInput = {
   userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutChurnScoresInput = {
@@ -4601,8 +5375,15 @@ export type EmployeeUncheckedCreateWithoutChurnScoresInput = {
   userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutChurnScoresInput = {
@@ -4669,8 +5450,15 @@ export type EmployeeUpdateWithoutChurnScoresInput = {
   userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutChurnScoresInput = {
@@ -4721,8 +5509,15 @@ export type EmployeeUncheckedUpdateWithoutChurnScoresInput = {
   userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutWorkContextInput = {
@@ -4773,8 +5568,15 @@ export type EmployeeCreateWithoutWorkContextInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutWorkContextInput = {
@@ -4825,8 +5627,15 @@ export type EmployeeUncheckedCreateWithoutWorkContextInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutWorkContextInput = {
@@ -4893,8 +5702,15 @@ export type EmployeeUpdateWithoutWorkContextInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutWorkContextInput = {
@@ -4945,8 +5761,15 @@ export type EmployeeUncheckedUpdateWithoutWorkContextInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutSchedulingPreferenceInput = {
@@ -4997,8 +5820,15 @@ export type EmployeeCreateWithoutSchedulingPreferenceInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutSchedulingPreferenceInput = {
@@ -5049,8 +5879,15 @@ export type EmployeeUncheckedCreateWithoutSchedulingPreferenceInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutSchedulingPreferenceInput = {
@@ -5117,8 +5954,15 @@ export type EmployeeUpdateWithoutSchedulingPreferenceInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutSchedulingPreferenceInput = {
@@ -5169,8 +6013,15 @@ export type EmployeeUncheckedUpdateWithoutSchedulingPreferenceInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutMeetingProposalsOrgInput = {
@@ -5221,8 +6072,15 @@ export type EmployeeCreateWithoutMeetingProposalsOrgInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutMeetingProposalsOrgInput = {
@@ -5273,8 +6131,15 @@ export type EmployeeUncheckedCreateWithoutMeetingProposalsOrgInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutMeetingProposalsOrgInput = {
@@ -5341,8 +6206,15 @@ export type EmployeeUpdateWithoutMeetingProposalsOrgInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutMeetingProposalsOrgInput = {
@@ -5393,8 +6265,15 @@ export type EmployeeUncheckedUpdateWithoutMeetingProposalsOrgInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutMeetingParticipationsInput = {
@@ -5445,8 +6324,15 @@ export type EmployeeCreateWithoutMeetingParticipationsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutMeetingParticipationsInput = {
@@ -5497,8 +6383,15 @@ export type EmployeeUncheckedCreateWithoutMeetingParticipationsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutMeetingParticipationsInput = {
@@ -5565,8 +6458,15 @@ export type EmployeeUpdateWithoutMeetingParticipationsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutMeetingParticipationsInput = {
@@ -5617,8 +6517,15 @@ export type EmployeeUncheckedUpdateWithoutMeetingParticipationsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPaymentInstructionsInput = {
@@ -5669,8 +6576,15 @@ export type EmployeeCreateWithoutPaymentInstructionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPaymentInstructionsInput = {
@@ -5721,8 +6635,15 @@ export type EmployeeUncheckedCreateWithoutPaymentInstructionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPaymentInstructionsInput = {
@@ -5789,8 +6710,15 @@ export type EmployeeUpdateWithoutPaymentInstructionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPaymentInstructionsInput = {
@@ -5841,8 +6769,15 @@ export type EmployeeUncheckedUpdateWithoutPaymentInstructionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutHolidayRegionsInput = {
@@ -5893,8 +6828,15 @@ export type EmployeeCreateWithoutHolidayRegionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutHolidayRegionsInput = {
@@ -5945,8 +6887,15 @@ export type EmployeeUncheckedCreateWithoutHolidayRegionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutHolidayRegionsInput = {
@@ -6013,8 +6962,15 @@ export type EmployeeUpdateWithoutHolidayRegionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutHolidayRegionsInput = {
@@ -6065,8 +7021,15 @@ export type EmployeeUncheckedUpdateWithoutHolidayRegionsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutCapacityAdjustmentsInput = {
@@ -6117,8 +7080,15 @@ export type EmployeeCreateWithoutCapacityAdjustmentsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutCapacityAdjustmentsInput = {
@@ -6169,8 +7139,15 @@ export type EmployeeUncheckedCreateWithoutCapacityAdjustmentsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutCapacityAdjustmentsInput = {
@@ -6237,8 +7214,15 @@ export type EmployeeUpdateWithoutCapacityAdjustmentsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutCapacityAdjustmentsInput = {
@@ -6289,8 +7273,15 @@ export type EmployeeUncheckedUpdateWithoutCapacityAdjustmentsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutSprintCapacityRowsInput = {
@@ -6341,8 +7332,15 @@ export type EmployeeCreateWithoutSprintCapacityRowsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutSprintCapacityRowsInput = {
@@ -6393,8 +7391,15 @@ export type EmployeeUncheckedCreateWithoutSprintCapacityRowsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutSprintCapacityRowsInput = {
@@ -6461,8 +7466,15 @@ export type EmployeeUpdateWithoutSprintCapacityRowsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutSprintCapacityRowsInput = {
@@ -6513,8 +7525,15 @@ export type EmployeeUncheckedUpdateWithoutSprintCapacityRowsInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutOnboardingTasksInput = {
@@ -6565,8 +7584,15 @@ export type EmployeeCreateWithoutOnboardingTasksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutOnboardingTasksInput = {
@@ -6617,8 +7643,15 @@ export type EmployeeUncheckedCreateWithoutOnboardingTasksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutOnboardingTasksInput = {
@@ -6685,8 +7718,15 @@ export type EmployeeUpdateWithoutOnboardingTasksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutOnboardingTasksInput = {
@@ -6737,8 +7777,267 @@ export type EmployeeUncheckedUpdateWithoutOnboardingTasksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutEmployeeSeparationTasksInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+}
+
+export type EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+}
+
+export type EmployeeCreateOrConnectWithoutEmployeeSeparationTasksInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput>
+}
+
+export type EmployeeUpsertWithoutEmployeeSeparationTasksInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutEmployeeSeparationTasksInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutEmployeeSeparationTasksInput, Prisma.EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput>
+}
+
+export type EmployeeUpdateWithoutEmployeeSeparationTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
 }
 
 export type EmployeeCreateWithoutAttendancePunchesInput = {
@@ -6789,8 +8088,15 @@ export type EmployeeCreateWithoutAttendancePunchesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendancePunchesInput = {
@@ -6841,8 +8147,15 @@ export type EmployeeUncheckedCreateWithoutAttendancePunchesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendancePunchesInput = {
@@ -6909,8 +8222,15 @@ export type EmployeeUpdateWithoutAttendancePunchesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendancePunchesInput = {
@@ -6961,8 +8281,15 @@ export type EmployeeUncheckedUpdateWithoutAttendancePunchesInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutBenefitEnrollmentsInput = {
@@ -7013,8 +8340,15 @@ export type EmployeeCreateWithoutBenefitEnrollmentsInput = {
   userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutBenefitEnrollmentsInput = {
@@ -7065,8 +8399,15 @@ export type EmployeeUncheckedCreateWithoutBenefitEnrollmentsInput = {
   userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutBenefitEnrollmentsInput = {
@@ -7133,8 +8474,15 @@ export type EmployeeUpdateWithoutBenefitEnrollmentsInput = {
   userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutBenefitEnrollmentsInput = {
@@ -7185,8 +8533,1275 @@ export type EmployeeUncheckedUpdateWithoutBenefitEnrollmentsInput = {
   userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutTaxYearDocumentsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutTaxYearDocumentsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutTaxYearDocumentsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedCreateWithoutTaxYearDocumentsInput>
+}
+
+export type EmployeeUpsertWithoutTaxYearDocumentsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedCreateWithoutTaxYearDocumentsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutTaxYearDocumentsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutTaxYearDocumentsInput, Prisma.EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput>
+}
+
+export type EmployeeUpdateWithoutTaxYearDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutBenefitElectionChangeRequestsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutBenefitElectionChangeRequestsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type EmployeeUpsertWithoutBenefitElectionChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutBenefitElectionChangeRequestsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type EmployeeUpdateWithoutBenefitElectionChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutAttendanceCorrectionSubjectsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutAttendanceCorrectionSubjectsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput>
+}
+
+export type EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutAttendanceCorrectionsSubmittedInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput>
+}
+
+export type EmployeeCreateWithoutAttendanceCorrectionsDecidedInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutAttendanceCorrectionsDecidedInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput>
+}
+
+export type EmployeeUpsertWithoutAttendanceCorrectionSubjectsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionSubjectsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput>
+}
+
+export type EmployeeUpdateWithoutAttendanceCorrectionSubjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUpsertWithoutAttendanceCorrectionsSubmittedInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionsSubmittedInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionsSubmittedInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput>
+}
+
+export type EmployeeUpdateWithoutAttendanceCorrectionsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUpsertWithoutAttendanceCorrectionsDecidedInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutAttendanceCorrectionsDecidedInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutAttendanceCorrectionsDecidedInput, Prisma.EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput>
+}
+
+export type EmployeeUpdateWithoutAttendanceCorrectionsDecidedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutVendorLinksInput = {
@@ -7237,8 +9852,15 @@ export type EmployeeCreateWithoutVendorLinksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutVendorLinksInput = {
@@ -7289,8 +9911,15 @@ export type EmployeeUncheckedCreateWithoutVendorLinksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
   churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutVendorLinksInput = {
@@ -7357,8 +9986,15 @@ export type EmployeeUpdateWithoutVendorLinksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutVendorLinksInput = {
@@ -7409,8 +10045,15 @@ export type EmployeeUncheckedUpdateWithoutVendorLinksInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyOrganizationInput = {
@@ -7489,8 +10132,15 @@ export type EmployeeUpdateWithoutOrganizationInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutOrganizationInput = {
@@ -7541,8 +10191,15 @@ export type EmployeeUncheckedUpdateWithoutOrganizationInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutOrganizationInput = {
@@ -7649,8 +10306,15 @@ export type EmployeeUpdateWithoutManagerInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutManagerInput = {
@@ -7701,8 +10365,15 @@ export type EmployeeUncheckedUpdateWithoutManagerInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutManagerInput = {
@@ -7809,8 +10480,15 @@ export type EmployeeUpdateWithoutDepartmentInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -7861,8 +10539,15 @@ export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -7969,8 +10654,15 @@ export type EmployeeUpdateWithoutJobRoleInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutJobRoleInput = {
@@ -8021,8 +10713,15 @@ export type EmployeeUncheckedUpdateWithoutJobRoleInput = {
   analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
   churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
   timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutJobRoleInput = {
@@ -8079,8 +10778,15 @@ export type EmployeeCountOutputType = {
   analyticsFeatureSnapshots: number
   churnScores: number
   benefitEnrollments: number
+  benefitElectionChangeRequests: number
+  taxYearDocuments: number
   timeOffRequests: number
+  timeOffDecisions: number
   hrCaseRequests: number
+  attendanceCorrectionSubjects: number
+  attendanceCorrectionsSubmitted: number
+  attendanceCorrectionsDecided: number
+  employeeSeparationTasks: number
 }
 
 export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -8104,8 +10810,15 @@ export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   analyticsFeatureSnapshots?: boolean | EmployeeCountOutputTypeCountAnalyticsFeatureSnapshotsArgs
   churnScores?: boolean | EmployeeCountOutputTypeCountChurnScoresArgs
   benefitEnrollments?: boolean | EmployeeCountOutputTypeCountBenefitEnrollmentsArgs
+  benefitElectionChangeRequests?: boolean | EmployeeCountOutputTypeCountBenefitElectionChangeRequestsArgs
+  taxYearDocuments?: boolean | EmployeeCountOutputTypeCountTaxYearDocumentsArgs
   timeOffRequests?: boolean | EmployeeCountOutputTypeCountTimeOffRequestsArgs
+  timeOffDecisions?: boolean | EmployeeCountOutputTypeCountTimeOffDecisionsArgs
   hrCaseRequests?: boolean | EmployeeCountOutputTypeCountHrCaseRequestsArgs
+  attendanceCorrectionSubjects?: boolean | EmployeeCountOutputTypeCountAttendanceCorrectionSubjectsArgs
+  attendanceCorrectionsSubmitted?: boolean | EmployeeCountOutputTypeCountAttendanceCorrectionsSubmittedArgs
+  attendanceCorrectionsDecided?: boolean | EmployeeCountOutputTypeCountAttendanceCorrectionsDecidedArgs
+  employeeSeparationTasks?: boolean | EmployeeCountOutputTypeCountEmployeeSeparationTasksArgs
 }
 
 /**
@@ -8261,7 +10974,28 @@ export type EmployeeCountOutputTypeCountBenefitEnrollmentsArgs<ExtArgs extends r
 /**
  * EmployeeCountOutputType without action
  */
+export type EmployeeCountOutputTypeCountBenefitElectionChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BenefitElectionChangeRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountTaxYearDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaxYearDocumentWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
 export type EmployeeCountOutputTypeCountTimeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimeOffRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountTimeOffDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TimeOffRequestWhereInput
 }
 
@@ -8270,6 +11004,34 @@ export type EmployeeCountOutputTypeCountTimeOffRequestsArgs<ExtArgs extends runt
  */
 export type EmployeeCountOutputTypeCountHrCaseRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.HrCaseRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountAttendanceCorrectionSubjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountAttendanceCorrectionsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountAttendanceCorrectionsDecidedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountEmployeeSeparationTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeSeparationTaskWhereInput
 }
 
 
@@ -8326,8 +11088,15 @@ export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   analyticsFeatureSnapshots?: boolean | Prisma.Employee$analyticsFeatureSnapshotsArgs<ExtArgs>
   churnScores?: boolean | Prisma.Employee$churnScoresArgs<ExtArgs>
   benefitEnrollments?: boolean | Prisma.Employee$benefitEnrollmentsArgs<ExtArgs>
+  benefitElectionChangeRequests?: boolean | Prisma.Employee$benefitElectionChangeRequestsArgs<ExtArgs>
+  taxYearDocuments?: boolean | Prisma.Employee$taxYearDocumentsArgs<ExtArgs>
   timeOffRequests?: boolean | Prisma.Employee$timeOffRequestsArgs<ExtArgs>
+  timeOffDecisions?: boolean | Prisma.Employee$timeOffDecisionsArgs<ExtArgs>
   hrCaseRequests?: boolean | Prisma.Employee$hrCaseRequestsArgs<ExtArgs>
+  attendanceCorrectionSubjects?: boolean | Prisma.Employee$attendanceCorrectionSubjectsArgs<ExtArgs>
+  attendanceCorrectionsSubmitted?: boolean | Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>
+  attendanceCorrectionsDecided?: boolean | Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>
+  employeeSeparationTasks?: boolean | Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["employee"]>
 
@@ -8454,8 +11223,15 @@ export type EmployeeInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   analyticsFeatureSnapshots?: boolean | Prisma.Employee$analyticsFeatureSnapshotsArgs<ExtArgs>
   churnScores?: boolean | Prisma.Employee$churnScoresArgs<ExtArgs>
   benefitEnrollments?: boolean | Prisma.Employee$benefitEnrollmentsArgs<ExtArgs>
+  benefitElectionChangeRequests?: boolean | Prisma.Employee$benefitElectionChangeRequestsArgs<ExtArgs>
+  taxYearDocuments?: boolean | Prisma.Employee$taxYearDocumentsArgs<ExtArgs>
   timeOffRequests?: boolean | Prisma.Employee$timeOffRequestsArgs<ExtArgs>
+  timeOffDecisions?: boolean | Prisma.Employee$timeOffDecisionsArgs<ExtArgs>
   hrCaseRequests?: boolean | Prisma.Employee$hrCaseRequestsArgs<ExtArgs>
+  attendanceCorrectionSubjects?: boolean | Prisma.Employee$attendanceCorrectionSubjectsArgs<ExtArgs>
+  attendanceCorrectionsSubmitted?: boolean | Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>
+  attendanceCorrectionsDecided?: boolean | Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>
+  employeeSeparationTasks?: boolean | Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -8500,8 +11276,15 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     analyticsFeatureSnapshots: Prisma.$AnalyticsFeatureSnapshotPayload<ExtArgs>[]
     churnScores: Prisma.$ChurnScorePayload<ExtArgs>[]
     benefitEnrollments: Prisma.$BenefitEnrollmentPayload<ExtArgs>[]
+    benefitElectionChangeRequests: Prisma.$BenefitElectionChangeRequestPayload<ExtArgs>[]
+    taxYearDocuments: Prisma.$TaxYearDocumentPayload<ExtArgs>[]
     timeOffRequests: Prisma.$TimeOffRequestPayload<ExtArgs>[]
+    timeOffDecisions: Prisma.$TimeOffRequestPayload<ExtArgs>[]
     hrCaseRequests: Prisma.$HrCaseRequestPayload<ExtArgs>[]
+    attendanceCorrectionSubjects: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
+    attendanceCorrectionsSubmitted: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
+    attendanceCorrectionsDecided: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
+    employeeSeparationTasks: Prisma.$EmployeeSeparationTaskPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -8953,8 +11736,15 @@ export interface Prisma__EmployeeClient<T, Null = never, ExtArgs extends runtime
   analyticsFeatureSnapshots<T extends Prisma.Employee$analyticsFeatureSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$analyticsFeatureSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalyticsFeatureSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   churnScores<T extends Prisma.Employee$churnScoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$churnScoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChurnScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   benefitEnrollments<T extends Prisma.Employee$benefitEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$benefitEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BenefitEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  benefitElectionChangeRequests<T extends Prisma.Employee$benefitElectionChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$benefitElectionChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BenefitElectionChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  taxYearDocuments<T extends Prisma.Employee$taxYearDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$taxYearDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaxYearDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   timeOffRequests<T extends Prisma.Employee$timeOffRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$timeOffRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeOffRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  timeOffDecisions<T extends Prisma.Employee$timeOffDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$timeOffDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeOffRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   hrCaseRequests<T extends Prisma.Employee$hrCaseRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$hrCaseRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HrCaseRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendanceCorrectionSubjects<T extends Prisma.Employee$attendanceCorrectionSubjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendanceCorrectionSubjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendanceCorrectionsSubmitted<T extends Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendanceCorrectionsDecided<T extends Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  employeeSeparationTasks<T extends Prisma.Employee$employeeSeparationTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeSeparationTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9986,9 +12776,81 @@ export type Employee$benefitEnrollmentsArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * Employee.benefitElectionChangeRequests
+ */
+export type Employee$benefitElectionChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BenefitElectionChangeRequest
+   */
+  select?: Prisma.BenefitElectionChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BenefitElectionChangeRequest
+   */
+  omit?: Prisma.BenefitElectionChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BenefitElectionChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.BenefitElectionChangeRequestWhereInput
+  orderBy?: Prisma.BenefitElectionChangeRequestOrderByWithRelationInput | Prisma.BenefitElectionChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.BenefitElectionChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BenefitElectionChangeRequestScalarFieldEnum | Prisma.BenefitElectionChangeRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.taxYearDocuments
+ */
+export type Employee$taxYearDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TaxYearDocument
+   */
+  select?: Prisma.TaxYearDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TaxYearDocument
+   */
+  omit?: Prisma.TaxYearDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaxYearDocumentInclude<ExtArgs> | null
+  where?: Prisma.TaxYearDocumentWhereInput
+  orderBy?: Prisma.TaxYearDocumentOrderByWithRelationInput | Prisma.TaxYearDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.TaxYearDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaxYearDocumentScalarFieldEnum | Prisma.TaxYearDocumentScalarFieldEnum[]
+}
+
+/**
  * Employee.timeOffRequests
  */
 export type Employee$timeOffRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimeOffRequest
+   */
+  select?: Prisma.TimeOffRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimeOffRequest
+   */
+  omit?: Prisma.TimeOffRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimeOffRequestInclude<ExtArgs> | null
+  where?: Prisma.TimeOffRequestWhereInput
+  orderBy?: Prisma.TimeOffRequestOrderByWithRelationInput | Prisma.TimeOffRequestOrderByWithRelationInput[]
+  cursor?: Prisma.TimeOffRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimeOffRequestScalarFieldEnum | Prisma.TimeOffRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.timeOffDecisions
+ */
+export type Employee$timeOffDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the TimeOffRequest
    */
@@ -10031,6 +12893,102 @@ export type Employee$hrCaseRequestsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.HrCaseRequestScalarFieldEnum | Prisma.HrCaseRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.attendanceCorrectionSubjects
+ */
+export type Employee$attendanceCorrectionSubjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttendanceCorrectionRequest
+   */
+  select?: Prisma.AttendanceCorrectionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AttendanceCorrectionRequest
+   */
+  omit?: Prisma.AttendanceCorrectionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceCorrectionRequestInclude<ExtArgs> | null
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+  orderBy?: Prisma.AttendanceCorrectionRequestOrderByWithRelationInput | Prisma.AttendanceCorrectionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceCorrectionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceCorrectionRequestScalarFieldEnum | Prisma.AttendanceCorrectionRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.attendanceCorrectionsSubmitted
+ */
+export type Employee$attendanceCorrectionsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttendanceCorrectionRequest
+   */
+  select?: Prisma.AttendanceCorrectionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AttendanceCorrectionRequest
+   */
+  omit?: Prisma.AttendanceCorrectionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceCorrectionRequestInclude<ExtArgs> | null
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+  orderBy?: Prisma.AttendanceCorrectionRequestOrderByWithRelationInput | Prisma.AttendanceCorrectionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceCorrectionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceCorrectionRequestScalarFieldEnum | Prisma.AttendanceCorrectionRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.attendanceCorrectionsDecided
+ */
+export type Employee$attendanceCorrectionsDecidedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttendanceCorrectionRequest
+   */
+  select?: Prisma.AttendanceCorrectionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AttendanceCorrectionRequest
+   */
+  omit?: Prisma.AttendanceCorrectionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceCorrectionRequestInclude<ExtArgs> | null
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+  orderBy?: Prisma.AttendanceCorrectionRequestOrderByWithRelationInput | Prisma.AttendanceCorrectionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceCorrectionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceCorrectionRequestScalarFieldEnum | Prisma.AttendanceCorrectionRequestScalarFieldEnum[]
+}
+
+/**
+ * Employee.employeeSeparationTasks
+ */
+export type Employee$employeeSeparationTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmployeeSeparationTask
+   */
+  select?: Prisma.EmployeeSeparationTaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmployeeSeparationTask
+   */
+  omit?: Prisma.EmployeeSeparationTaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeSeparationTaskInclude<ExtArgs> | null
+  where?: Prisma.EmployeeSeparationTaskWhereInput
+  orderBy?: Prisma.EmployeeSeparationTaskOrderByWithRelationInput | Prisma.EmployeeSeparationTaskOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeSeparationTaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmployeeSeparationTaskScalarFieldEnum | Prisma.EmployeeSeparationTaskScalarFieldEnum[]
 }
 
 /**

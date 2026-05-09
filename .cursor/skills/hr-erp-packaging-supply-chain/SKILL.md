@@ -11,6 +11,10 @@ disable-model-invocation: true
 
 # HR ERP packaging and supply chain (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Who must use this
 
 **Lead Packaging / platform Tasks** and **Orchestrator-owned infra PRs** should load this skill (`@hr-erp-packaging-supply-chain`) when work touches:

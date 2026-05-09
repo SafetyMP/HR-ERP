@@ -12,6 +12,8 @@ export type TimeOffRequestItemPayload = {
   status: TimeOffRequestStatus;
   note: string | null;
   createdAt: string;
+  decidedAt: string | null;
+  decisionNote: string | null;
 };
 
 function inclusiveCalendarDays(startIsoDate: string, endIsoDate: string): number {
@@ -83,6 +85,8 @@ export async function createMyTimeOffRequest(
         status: row.status,
         note: row.note,
         createdAt: row.createdAt.toISOString(),
+        decidedAt: row.decidedAt ? row.decidedAt.toISOString() : null,
+        decisionNote: row.decisionNote,
       };
     },
   );
@@ -120,6 +124,8 @@ export async function listMyTimeOffRequests(
         status: row.status,
         note: row.note,
         createdAt: row.createdAt.toISOString(),
+        decidedAt: row.decidedAt ? row.decidedAt.toISOString() : null,
+        decisionNote: row.decisionNote,
       }));
     },
   );

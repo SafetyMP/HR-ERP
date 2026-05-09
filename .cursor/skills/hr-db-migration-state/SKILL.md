@@ -13,6 +13,10 @@ description: >-
 
 # HR ERP database migration & state custody (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Canonical doc (read first)
 
 [docs/architecture/database-migrations-and-state.md](../../../docs/architecture/database-migrations-and-state.md) — surfaces, RLS, expand→migrate→contract, tooling, PR checklist.

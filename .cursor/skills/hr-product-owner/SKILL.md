@@ -13,6 +13,10 @@ description: >-
 
 # HR Product Owner (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Who must use this
 
 **Orchestrator, Architecture, QA, Legal/compliance, Integrations, Security, Engineering, and Frontend agents** (including Cursor **Task** subagents) load this skill as part of **repo orchestration**, not as an optional extra. The always-on Orchestrator ([`.cursor/rules/orchestrator.mdc`](../../rules/orchestrator.mdc)) **step 1** requires applying `hr-product-owner`, then emitting a **PO orchestration checkpoint** before Architecture. Every delegated Task in the Architecture→QA pipeline **must** include this skill + the active brief/ADR path unless step 1 is documented chore **N/A**.

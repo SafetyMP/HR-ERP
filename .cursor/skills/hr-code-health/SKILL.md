@@ -12,6 +12,10 @@ disable-model-invocation: true
 
 # HR Code Health (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Who must use this
 
 **Orchestrator sequencing:** **Code health** is a mandatory pass **after Implementation** and **before Security review** unless the issuing prompt carries the orchestrator **Code health N/A** one-line scope (typo/copy-only class). That pass uses this skill (`@hr-code-health`) together with **`agent-code-health`** (`.cursor/rules/agent-code-health.mdc`).

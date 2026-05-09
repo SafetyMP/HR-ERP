@@ -20,6 +20,8 @@ export type TimeOffRequestApiItem = {
   status: string;
   note: string | null;
   createdAt: string;
+  decidedAt: string | null;
+  decisionNote: string | null;
 };
 
 type Props = {
@@ -108,17 +110,17 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setItems(null);
+        setItems([]);
         return;
       }
       if (!result.ok && result.forbidden) {
         setLoadError("forbidden");
-        setItems(null);
+        setItems([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setItems(null);
+        setItems([]);
         return;
       }
       setItems(result.items ?? []);
@@ -140,17 +142,17 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
       const result = await fetchTimeOffRequests(token);
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setItems(null);
+        setItems([]);
         return;
       }
       if (!result.ok && result.forbidden) {
         setLoadError("forbidden");
-        setItems(null);
+        setItems([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setItems(null);
+        setItems([]);
         return;
       }
       setItems(result.items ?? []);
@@ -253,8 +255,8 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
         <CardHeader>
           <CardTitle>Request time off</CardTitle>
           <CardDescription>
-            Submit a date range (up to 14 calendar days). Managers approve outside this screen for now — you&apos;ll see status
-            updates here when HR posts them.
+            Submit a date range (up to 14 calendar days). Your manager records approve or deny decisions on{" "}
+            <span className="font-medium">Team leave decisions</span> — notes appear here when decided.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -320,6 +322,11 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
                     {formatDay(row.startDate)} — {formatDay(row.endDate)}
                   </div>
                   <div className="mt-1 text-zinc-600 dark:text-zinc-400">{statusLabel(row.status)}</div>
+                  {row.decisionNote ? (
+                    <div className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
+                      Manager note: {row.decisionNote}
+                    </div>
+                  ) : null}
                   {row.note ? (
                     <div className="mt-2 text-zinc-700 dark:text-zinc-300">&ldquo;{row.note}&rdquo;</div>
                   ) : null}

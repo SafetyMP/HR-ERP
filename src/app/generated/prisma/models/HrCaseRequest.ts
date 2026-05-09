@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model HrCaseRequest
- * Lightweight HR / payroll intake ticket from employee self-service (Feature 010).
+ * Lightweight HR / payroll intake ticket from employee self-service (Feature 010 + 012 lifecycle).
  */
 export type HrCaseRequestModel = runtime.Types.Result.DefaultSelection<Prisma.$HrCaseRequestPayload>
 
@@ -31,6 +31,7 @@ export type HrCaseRequestMinAggregateOutputType = {
   category: $Enums.HrCaseCategory | null
   body: string | null
   status: $Enums.HrCaseStatus | null
+  employeeVisibleNote: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +43,7 @@ export type HrCaseRequestMaxAggregateOutputType = {
   category: $Enums.HrCaseCategory | null
   body: string | null
   status: $Enums.HrCaseStatus | null
+  employeeVisibleNote: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,6 +55,7 @@ export type HrCaseRequestCountAggregateOutputType = {
   category: number
   body: number
   status: number
+  employeeVisibleNote: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,6 +69,7 @@ export type HrCaseRequestMinAggregateInputType = {
   category?: true
   body?: true
   status?: true
+  employeeVisibleNote?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +81,7 @@ export type HrCaseRequestMaxAggregateInputType = {
   category?: true
   body?: true
   status?: true
+  employeeVisibleNote?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type HrCaseRequestCountAggregateInputType = {
   category?: true
   body?: true
   status?: true
+  employeeVisibleNote?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +178,7 @@ export type HrCaseRequestGroupByOutputType = {
   category: $Enums.HrCaseCategory
   body: string
   status: $Enums.HrCaseStatus
+  employeeVisibleNote: string | null
   createdAt: Date
   updatedAt: Date
   _count: HrCaseRequestCountAggregateOutputType | null
@@ -204,6 +211,7 @@ export type HrCaseRequestWhereInput = {
   category?: Prisma.EnumHrCaseCategoryFilter<"HrCaseRequest"> | $Enums.HrCaseCategory
   body?: Prisma.StringFilter<"HrCaseRequest"> | string
   status?: Prisma.EnumHrCaseStatusFilter<"HrCaseRequest"> | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.StringNullableFilter<"HrCaseRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
@@ -216,6 +224,7 @@ export type HrCaseRequestOrderByWithRelationInput = {
   category?: Prisma.SortOrder
   body?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  employeeVisibleNote?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   employee?: Prisma.EmployeeOrderByWithRelationInput
@@ -231,6 +240,7 @@ export type HrCaseRequestWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.EnumHrCaseCategoryFilter<"HrCaseRequest"> | $Enums.HrCaseCategory
   body?: Prisma.StringFilter<"HrCaseRequest"> | string
   status?: Prisma.EnumHrCaseStatusFilter<"HrCaseRequest"> | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.StringNullableFilter<"HrCaseRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
@@ -243,6 +253,7 @@ export type HrCaseRequestOrderByWithAggregationInput = {
   category?: Prisma.SortOrder
   body?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  employeeVisibleNote?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.HrCaseRequestCountOrderByAggregateInput
@@ -260,6 +271,7 @@ export type HrCaseRequestScalarWhereWithAggregatesInput = {
   category?: Prisma.EnumHrCaseCategoryWithAggregatesFilter<"HrCaseRequest"> | $Enums.HrCaseCategory
   body?: Prisma.StringWithAggregatesFilter<"HrCaseRequest"> | string
   status?: Prisma.EnumHrCaseStatusWithAggregatesFilter<"HrCaseRequest"> | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.StringNullableWithAggregatesFilter<"HrCaseRequest"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"HrCaseRequest"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"HrCaseRequest"> | Date | string
 }
@@ -270,6 +282,7 @@ export type HrCaseRequestCreateInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutHrCaseRequestsInput
@@ -282,6 +295,7 @@ export type HrCaseRequestUncheckedCreateInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -292,6 +306,7 @@ export type HrCaseRequestUpdateInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutHrCaseRequestsNestedInput
@@ -304,6 +319,7 @@ export type HrCaseRequestUncheckedUpdateInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -315,6 +331,7 @@ export type HrCaseRequestCreateManyInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -325,6 +342,7 @@ export type HrCaseRequestUpdateManyMutationInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -336,6 +354,7 @@ export type HrCaseRequestUncheckedUpdateManyInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -357,6 +376,7 @@ export type HrCaseRequestCountOrderByAggregateInput = {
   category?: Prisma.SortOrder
   body?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  employeeVisibleNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -368,6 +388,7 @@ export type HrCaseRequestMaxOrderByAggregateInput = {
   category?: Prisma.SortOrder
   body?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  employeeVisibleNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -379,6 +400,7 @@ export type HrCaseRequestMinOrderByAggregateInput = {
   category?: Prisma.SortOrder
   body?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  employeeVisibleNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -439,6 +461,7 @@ export type HrCaseRequestCreateWithoutEmployeeInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -449,6 +472,7 @@ export type HrCaseRequestUncheckedCreateWithoutEmployeeInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -489,6 +513,7 @@ export type HrCaseRequestScalarWhereInput = {
   category?: Prisma.EnumHrCaseCategoryFilter<"HrCaseRequest"> | $Enums.HrCaseCategory
   body?: Prisma.StringFilter<"HrCaseRequest"> | string
   status?: Prisma.EnumHrCaseStatusFilter<"HrCaseRequest"> | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.StringNullableFilter<"HrCaseRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HrCaseRequest"> | Date | string
 }
@@ -499,6 +524,7 @@ export type HrCaseRequestCreateManyEmployeeInput = {
   category: $Enums.HrCaseCategory
   body: string
   status?: $Enums.HrCaseStatus
+  employeeVisibleNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -509,6 +535,7 @@ export type HrCaseRequestUpdateWithoutEmployeeInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -519,6 +546,7 @@ export type HrCaseRequestUncheckedUpdateWithoutEmployeeInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -529,6 +557,7 @@ export type HrCaseRequestUncheckedUpdateManyWithoutEmployeeInput = {
   category?: Prisma.EnumHrCaseCategoryFieldUpdateOperationsInput | $Enums.HrCaseCategory
   body?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumHrCaseStatusFieldUpdateOperationsInput | $Enums.HrCaseStatus
+  employeeVisibleNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -542,6 +571,7 @@ export type HrCaseRequestSelect<ExtArgs extends runtime.Types.Extensions.Interna
   category?: boolean
   body?: boolean
   status?: boolean
+  employeeVisibleNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -554,6 +584,7 @@ export type HrCaseRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   category?: boolean
   body?: boolean
   status?: boolean
+  employeeVisibleNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -566,6 +597,7 @@ export type HrCaseRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   category?: boolean
   body?: boolean
   status?: boolean
+  employeeVisibleNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -578,11 +610,12 @@ export type HrCaseRequestSelectScalar = {
   category?: boolean
   body?: boolean
   status?: boolean
+  employeeVisibleNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type HrCaseRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "category" | "body" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["hrCaseRequest"]>
+export type HrCaseRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "category" | "body" | "status" | "employeeVisibleNote" | "createdAt" | "updatedAt", ExtArgs["result"]["hrCaseRequest"]>
 export type HrCaseRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
@@ -605,6 +638,10 @@ export type $HrCaseRequestPayload<ExtArgs extends runtime.Types.Extensions.Inter
     category: $Enums.HrCaseCategory
     body: string
     status: $Enums.HrCaseStatus
+    /**
+     * Short HR-facing note surfaced to the employee on status updates (no full case-management parity).
+     */
+    employeeVisibleNote: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["hrCaseRequest"]>
@@ -1037,6 +1074,7 @@ export interface HrCaseRequestFieldRefs {
   readonly category: Prisma.FieldRef<"HrCaseRequest", 'HrCaseCategory'>
   readonly body: Prisma.FieldRef<"HrCaseRequest", 'String'>
   readonly status: Prisma.FieldRef<"HrCaseRequest", 'HrCaseStatus'>
+  readonly employeeVisibleNote: Prisma.FieldRef<"HrCaseRequest", 'String'>
   readonly createdAt: Prisma.FieldRef<"HrCaseRequest", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"HrCaseRequest", 'DateTime'>
 }

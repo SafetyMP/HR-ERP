@@ -29,7 +29,9 @@ export type HrCaseCategory = (typeof HrCaseCategory)[keyof typeof HrCaseCategory
 
 export const HrCaseStatus = {
   OPEN: 'OPEN',
-  ACKNOWLEDGED: 'ACKNOWLEDGED'
+  ACKNOWLEDGED: 'ACKNOWLEDGED',
+  NEEDS_INFO: 'NEEDS_INFO',
+  RESOLVED: 'RESOLVED'
 } as const
 
 export type HrCaseStatus = (typeof HrCaseStatus)[keyof typeof HrCaseStatus]
@@ -61,6 +63,30 @@ export const BenefitCategory = {
 } as const
 
 export type BenefitCategory = (typeof BenefitCategory)[keyof typeof BenefitCategory]
+
+
+export const TaxDocumentKind = {
+  W2_US_SUMMARY: 'W2_US_SUMMARY'
+} as const
+
+export type TaxDocumentKind = (typeof TaxDocumentKind)[keyof typeof TaxDocumentKind]
+
+
+export const BenefitElectionIntentStatus = {
+  SUBMITTED: 'SUBMITTED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type BenefitElectionIntentStatus = (typeof BenefitElectionIntentStatus)[keyof typeof BenefitElectionIntentStatus]
+
+
+export const AttendanceCorrectionStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  DENIED: 'DENIED'
+} as const
+
+export type AttendanceCorrectionStatus = (typeof AttendanceCorrectionStatus)[keyof typeof AttendanceCorrectionStatus]
 
 
 export const IntegrationHealth = {

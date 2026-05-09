@@ -94,6 +94,70 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "case:intake_submit",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
+  [routeKey("GET", "/api/v1/me/hr-case-requests")]: {
+    permission: "case:intake_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/hr/case-requests/review")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/tax-documents/summary")]: {
+    permission: "tax_documents:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/me/benefits/election-change-requests")]: {
+    permission: "benefits:election_intent_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/organization/context")]: {
+    permission: "employees:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/me/separation/tasks")]: {
+    permission: "separation:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/me/separation/tasks")]: {
+    permission: "separation:write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/manager/team/time-off/requests")]: {
+    permission: "leave:manager_decide",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/manager/team/time-off/decision")]: {
+    permission: "leave:manager_decide",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/manager/team/attendance/correction-requests")]: {
+    permission: "attendance:correction_submit",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/manager/team/attendance/correction-requests")]: {
+    permission: "attendance:correction_submit",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/hr/attendance/correction-requests/review")]: {
+    permission: "attendance:correction_review",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/hr/onboarding/templates")]: {
+    permission: "hr:onboarding_template_assign",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/hr/onboarding/apply-template")]: {
+    permission: "hr:onboarding_template_assign",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/hr/case-requests/pending")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/hr/attendance/correction-requests/pending")]: {
+    permission: "attendance:correction_review",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
 };
 
 export function getRoutePolicy(

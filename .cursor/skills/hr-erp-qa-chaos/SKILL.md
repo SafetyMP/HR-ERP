@@ -13,6 +13,10 @@ description: >-
 
 # HR ERP QA & chaos engineering (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## First read (this repository)
 
 1. [docs/QA.md](../../../docs/QA.md) — commands, layout, CI seed, RLS notes  

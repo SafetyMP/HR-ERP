@@ -714,6 +714,57 @@ export type EnumBenefitCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
 }
 
+export type EnumTaxDocumentKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaxDocumentKind | Prisma.EnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  in?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel> | $Enums.TaxDocumentKind
+}
+
+export type EnumTaxDocumentKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaxDocumentKind | Prisma.EnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  in?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaxDocumentKindWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel>
+}
+
+export type EnumBenefitElectionIntentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitElectionIntentStatus | Prisma.EnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel> | $Enums.BenefitElectionIntentStatus
+}
+
+export type EnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitElectionIntentStatus | Prisma.EnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaModel> | $Enums.BenefitElectionIntentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
+}
+
+export type EnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel> | $Enums.AttendanceCorrectionStatus
+}
+
+export type EnumAttendanceCorrectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceCorrectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceCorrectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel>
+}
+
 export type EnumIntegrationHealthFilter<$PrismaModel = never> = {
   equals?: $Enums.IntegrationHealth | Prisma.EnumIntegrationHealthFieldRefInput<$PrismaModel>
   in?: $Enums.IntegrationHealth[] | Prisma.ListEnumIntegrationHealthFieldRefInput<$PrismaModel>
@@ -1400,6 +1451,57 @@ export type NestedEnumBenefitCategoryWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumBenefitCategoryFilter<$PrismaModel>
+}
+
+export type NestedEnumTaxDocumentKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaxDocumentKind | Prisma.EnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  in?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel> | $Enums.TaxDocumentKind
+}
+
+export type NestedEnumTaxDocumentKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TaxDocumentKind | Prisma.EnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  in?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TaxDocumentKind[] | Prisma.ListEnumTaxDocumentKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTaxDocumentKindWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTaxDocumentKindFilter<$PrismaModel>
+}
+
+export type NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitElectionIntentStatus | Prisma.EnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel> | $Enums.BenefitElectionIntentStatus
+}
+
+export type NestedEnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitElectionIntentStatus | Prisma.EnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitElectionIntentStatus[] | Prisma.ListEnumBenefitElectionIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaModel> | $Enums.BenefitElectionIntentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel> | $Enums.AttendanceCorrectionStatus
+}
+
+export type NestedEnumAttendanceCorrectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAttendanceCorrectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceCorrectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumIntegrationHealthFilter<$PrismaModel = never> = {

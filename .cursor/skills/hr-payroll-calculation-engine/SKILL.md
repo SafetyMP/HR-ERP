@@ -12,6 +12,10 @@ description: >-
 
 # HR ERP payroll & compensation calculation engine (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Source of truth
 
 The **pure calculation kernel** lives in [`packages/payroll-calc`](../../../packages/payroll-calc). Orchestration (Prisma, APIs, queues) must **map DB rows → `GrossToNetPipelineInput` DTOs** and persist `inputsFingerprintSha256`, `calcSemanticVersion`, and outputs for replay—do not embed payroll math in route handlers.

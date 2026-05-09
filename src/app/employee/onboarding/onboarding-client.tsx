@@ -96,12 +96,12 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setTasks(null);
+        setTasks([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setTasks(null);
+        setTasks([]);
         return;
       }
       setTasks(result.tasks ?? []);
@@ -123,12 +123,12 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
       const result = await fetchOnboardingTasks(token);
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setTasks(null);
+        setTasks([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setTasks(null);
+        setTasks([]);
         return;
       }
       setTasks(result.tasks ?? []);

@@ -8,6 +8,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 This repository follows the **HR Product Owner operating model**. The canonical workflow is packaged as the Cursor project skill [`.cursor/skills/hr-product-owner/`](.cursor/skills/hr-product-owner/SKILL.md); load it when scoping features, writing UAC, or judging UX friction.
 
+**Workspace grounding:** Whenever you apply any project skill under [`.cursor/skills/`](.cursor/skills/), also follow [`.cursor/skills/README.md`](.cursor/skills/README.md) so paths, scripts, and framework behavior are verified against **this** checkout (not training defaults or other repos).
+
 Before writing or reviewing application code for a new capability, read:
 
 - [HR Product Owner operating model](docs/product/hr-product-owner-operating-model.md)

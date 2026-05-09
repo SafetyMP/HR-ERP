@@ -26,8 +26,12 @@ model Organization {
   meetingProposals     MeetingProposal[]
   payrollPeriods       PayrollPeriod[]
   paymentInstructions   PaymentInstruction[]
-  benefitEnrollments    BenefitEnrollment[]
-  sprints              Sprint[]
+  benefitEnrollments             BenefitEnrollment[]
+  benefitElectionChangeRequests BenefitElectionChangeRequest[]
+  taxYearDocuments               TaxYearDocument[]
+  onboardingTemplates            OnboardingTemplate[]
+  attendanceCorrectionRequests   AttendanceCorrectionRequest[]
+  sprints                        Sprint[]
 
   @@map("organizations")
 }
@@ -93,8 +97,15 @@ model Employee {
   analyticsFeatureSnapshots AnalyticsFeatureSnapshot[]
   churnScores              ChurnScore[]
   benefitEnrollments       BenefitEnrollment[]
-  timeOffRequests          TimeOffRequest[]
-  hrCaseRequests           HrCaseRequest[]
+  benefitElectionChangeRequests BenefitElectionChangeRequest[]
+  taxYearDocuments             TaxYearDocument[]
+  timeOffRequests              TimeOffRequest[]
+  timeOffDecisions             TimeOffRequest[]              @relation("TimeOffDecidedBy")
+  hrCaseRequests               HrCaseRequest[]
+  attendanceCorrectionSubjects AttendanceCorrectionRequest[] @relation("AttendanceCorrectionSubject")
+  attendanceCorrectionsSubmitted AttendanceCorrectionRequest[] @relation("AttendanceCorrectionSubmittedBy")
+  attendanceCorrectionsDecided AttendanceCorrectionRequest[] @relation("AttendanceCorrectionDecidedBy")
+  employeeSeparationTasks    EmployeeSeparationTask[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -119,7 +130,7 @@ model PtoRequest {
   @@map("pto_requests")
 }
 
-/// Employee-submitted multi-day time-off request (Feature 006); approval workflow out of band for v1.
+/// Employee-submitted multi-day time-off request (Feature 006); manager decision fields (Feature 011).
 model TimeOffRequest {
   id         String                @id @default(uuid())
   tenantId   String                @map("tenant_id")
@@ -128,12 +139,17 @@ model TimeOffRequest {
   endDate    DateTime              @map("end_date") @db.Date
   status     TimeOffRequestStatus  @default(PENDING)
   note       String?
+  decidedAt  DateTime?             @map("decided_at")
+  decidedByEmployeeId String?      @map("decided_by_employee_id")
+  decisionNote String?              @map("decision_note")
   createdAt  DateTime              @default(now()) @map("created_at")
   updatedAt  DateTime              @updatedAt @map("updated_at")
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  decidedBy Employee? @relation("TimeOffDecidedBy", fields: [decidedByEmployeeId], references: [id], onDelete: SetNull)
 
   @@index([tenantId, employeeId])
+  @@index([tenantId, status])
   @@map("time_off_requests")
 }
 
@@ -143,7 +159,7 @@ enum TimeOffRequestStatus {
   DENIED
 }
 
-/// Lightweight HR / payroll intake ticket from employee self-service (Feature 010).
+/// Lightweight HR / payroll intake ticket from employee self-service (Feature 010 + 012 lifecycle).
 model HrCaseRequest {
   id         String          @id @default(uuid())
   tenantId   String          @map("tenant_id")
@@ -151,6 +167,8 @@ model HrCaseRequest {
   category   HrCaseCategory  @map("category")
   body       String
   status     HrCaseStatus    @default(OPEN)
+  /// Short HR-facing note surfaced to the employee on status updates (no full case-management parity).
+  employeeVisibleNote String? @map("employee_visible_note")
   createdAt  DateTime        @default(now()) @map("created_at")
   updatedAt  DateTime        @updatedAt @map("updated_at")
 
@@ -169,6 +187,8 @@ enum HrCaseCategory {
 enum HrCaseStatus {
   OPEN
   ACKNOWLEDGED
+  NEEDS_INFO
+  RESOLVED
 }
 
 model Department {
@@ -774,6 +794,22 @@ model OnboardingTask {
   @@map("onboarding_tasks")
 }
 
+/// Separation / offboarding checklist tasks for departing employees (Feature 017).
+model EmployeeSeparationTask {
+  id         String           @id @default(uuid())
+  employeeId String           @map("employee_id")
+  title      String
+  status     OnboardingStatus @default(PENDING)
+  dueAt      DateTime?        @map("due_at")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+  @@map("employee_separation_tasks")
+}
+
 enum OnboardingStatus {
   PENDING
   IN_PROGRESS
@@ -832,6 +868,112 @@ model BenefitEnrollment {
 
   @@index([tenantId, employeeId])
   @@map("benefit_enrollments")
+}
+
+/// HR-defined reusable onboarding checklist template (Feature 016).
+model OnboardingTemplate {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  organization Organization             @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  items        OnboardingTemplateItem[]
+
+  @@index([tenantId])
+  @@map("onboarding_templates")
+}
+
+model OnboardingTemplateItem {
+  id         String @id @default(uuid())
+  templateId String @map("template_id")
+  title      String
+  sortOrder  Int    @default(0) @map("sort_order")
+
+  template OnboardingTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId])
+  @@map("onboarding_template_items")
+}
+
+enum TaxDocumentKind {
+  W2_US_SUMMARY
+}
+
+/// Year-end tax artifact availability row — informational until vendor feeds exist (Feature 013).
+model TaxYearDocument {
+  id               String          @id @default(uuid())
+  tenantId         String          @map("tenant_id")
+  employeeId       String          @map("employee_id")
+  taxYear          Int             @map("tax_year")
+  documentKind     TaxDocumentKind @map("document_kind")
+  title            String
+  availabilityNote String?         @map("availability_note")
+  issuedAt         DateTime?       @map("issued_at")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  employee     Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId])
+  @@map("tax_year_documents")
+}
+
+enum BenefitElectionIntentStatus {
+  SUBMITTED
+  CLOSED
+}
+
+/// Employee intent to change a benefit election — routed out-of-band to admins (Feature 014).
+model BenefitElectionChangeRequest {
+  id         String                      @id @default(uuid())
+  tenantId   String                      @map("tenant_id")
+  employeeId String                      @map("employee_id")
+  category   BenefitCategory
+  summary    String                      @db.VarChar(2000)
+  status     BenefitElectionIntentStatus @default(SUBMITTED)
+  createdAt  DateTime                    @default(now()) @map("created_at")
+  updatedAt  DateTime                    @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  employee     Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId])
+  @@map("benefit_election_change_requests")
+}
+
+enum AttendanceCorrectionStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+/// Manager-submitted punch correction proposal reviewed by HR/Payroll (Feature 015).
+model AttendanceCorrectionRequest {
+  id                    String                     @id @default(uuid())
+  tenantId              String                     @map("tenant_id")
+  employeeId            String                     @map("employee_id")
+  submittedByEmployeeId String                     @map("submitted_by_employee_id")
+  punchKind             PunchKind                  @map("punch_kind")
+  requestedOccurredAt   DateTime                   @map("requested_occurred_at")
+  reason                String                     @db.VarChar(2000)
+  status                AttendanceCorrectionStatus @default(PENDING)
+  decidedAt             DateTime?                  @map("decided_at")
+  decidedByEmployeeId   String?                    @map("decided_by_employee_id")
+  decisionNote          String?                    @map("decision_note")
+  createdAt             DateTime                   @default(now()) @map("created_at")
+  updatedAt             DateTime                   @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
+  employee     Employee     @relation("AttendanceCorrectionSubject", fields: [employeeId], references: [id], onDelete: Cascade)
+  submittedBy  Employee     @relation("AttendanceCorrectionSubmittedBy", fields: [submittedByEmployeeId], references: [id], onDelete: Restrict)
+  decidedBy    Employee?    @relation("AttendanceCorrectionDecidedBy", fields: [decidedByEmployeeId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, employeeId])
+  @@index([tenantId, submittedByEmployeeId])
+  @@map("attendance_correction_requests")
 }
 
 model IntegrationInstance {

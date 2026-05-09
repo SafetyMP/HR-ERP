@@ -8,7 +8,6 @@ async function main() {
   const year = Number(process.env.HOLIDAY_SYNC_YEAR ?? process.argv[3]);
 
   if (!calendarId || !Number.isFinite(year)) {
-    // eslint-disable-next-line no-console
     console.error(
       "Usage: HOLIDAY_CALENDAR_ID=... HOLIDAY_SYNC_YEAR=2026 tsx scripts/sync-holidays.ts\n   or tsx scripts/sync-holidays.ts <calendarId> <year>",
     );
@@ -24,12 +23,10 @@ async function main() {
     async (tx) => syncNagerCalendarYear(tx, calendarId!, year),
   );
 
-  // eslint-disable-next-line no-console
   console.log("Holiday sync OK:", stats);
 }
 
 main().catch((e) => {
-  // eslint-disable-next-line no-console
   console.error(e);
   process.exit(1);
 });

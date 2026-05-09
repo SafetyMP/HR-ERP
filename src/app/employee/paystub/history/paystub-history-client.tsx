@@ -83,12 +83,12 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setRows(null);
+        setRows([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setRows(null);
+        setRows([]);
         return;
       }
       setRows(result.rows ?? []);
@@ -110,12 +110,12 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
       const result = await fetchPaystubHistory(token);
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setRows(null);
+        setRows([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setRows(null);
+        setRows([]);
         return;
       }
       setRows(result.rows ?? []);

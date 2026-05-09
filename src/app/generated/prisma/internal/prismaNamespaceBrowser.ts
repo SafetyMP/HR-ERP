@@ -92,8 +92,14 @@ export const ModelName = {
   CapacityAdjustment: 'CapacityAdjustment',
   SprintCapacitySummary: 'SprintCapacitySummary',
   OnboardingTask: 'OnboardingTask',
+  EmployeeSeparationTask: 'EmployeeSeparationTask',
   AttendancePunch: 'AttendancePunch',
   BenefitEnrollment: 'BenefitEnrollment',
+  OnboardingTemplate: 'OnboardingTemplate',
+  OnboardingTemplateItem: 'OnboardingTemplateItem',
+  TaxYearDocument: 'TaxYearDocument',
+  BenefitElectionChangeRequest: 'BenefitElectionChangeRequest',
+  AttendanceCorrectionRequest: 'AttendanceCorrectionRequest',
   IntegrationInstance: 'IntegrationInstance',
   IntegrationOutbox: 'IntegrationOutbox',
   IntegrationDeadLetter: 'IntegrationDeadLetter',
@@ -187,6 +193,9 @@ export const TimeOffRequestScalarFieldEnum = {
   endDate: 'endDate',
   status: 'status',
   note: 'note',
+  decidedAt: 'decidedAt',
+  decidedByEmployeeId: 'decidedByEmployeeId',
+  decisionNote: 'decisionNote',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -201,6 +210,7 @@ export const HrCaseRequestScalarFieldEnum = {
   category: 'category',
   body: 'body',
   status: 'status',
+  employeeVisibleNote: 'employeeVisibleNote',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -669,6 +679,19 @@ export const OnboardingTaskScalarFieldEnum = {
 export type OnboardingTaskScalarFieldEnum = (typeof OnboardingTaskScalarFieldEnum)[keyof typeof OnboardingTaskScalarFieldEnum]
 
 
+export const EmployeeSeparationTaskScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  title: 'title',
+  status: 'status',
+  dueAt: 'dueAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EmployeeSeparationTaskScalarFieldEnum = (typeof EmployeeSeparationTaskScalarFieldEnum)[keyof typeof EmployeeSeparationTaskScalarFieldEnum]
+
+
 export const AttendancePunchScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -699,6 +722,76 @@ export const BenefitEnrollmentScalarFieldEnum = {
 } as const
 
 export type BenefitEnrollmentScalarFieldEnum = (typeof BenefitEnrollmentScalarFieldEnum)[keyof typeof BenefitEnrollmentScalarFieldEnum]
+
+
+export const OnboardingTemplateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnboardingTemplateScalarFieldEnum = (typeof OnboardingTemplateScalarFieldEnum)[keyof typeof OnboardingTemplateScalarFieldEnum]
+
+
+export const OnboardingTemplateItemScalarFieldEnum = {
+  id: 'id',
+  templateId: 'templateId',
+  title: 'title',
+  sortOrder: 'sortOrder'
+} as const
+
+export type OnboardingTemplateItemScalarFieldEnum = (typeof OnboardingTemplateItemScalarFieldEnum)[keyof typeof OnboardingTemplateItemScalarFieldEnum]
+
+
+export const TaxYearDocumentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  taxYear: 'taxYear',
+  documentKind: 'documentKind',
+  title: 'title',
+  availabilityNote: 'availabilityNote',
+  issuedAt: 'issuedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaxYearDocumentScalarFieldEnum = (typeof TaxYearDocumentScalarFieldEnum)[keyof typeof TaxYearDocumentScalarFieldEnum]
+
+
+export const BenefitElectionChangeRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  category: 'category',
+  summary: 'summary',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BenefitElectionChangeRequestScalarFieldEnum = (typeof BenefitElectionChangeRequestScalarFieldEnum)[keyof typeof BenefitElectionChangeRequestScalarFieldEnum]
+
+
+export const AttendanceCorrectionRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  submittedByEmployeeId: 'submittedByEmployeeId',
+  punchKind: 'punchKind',
+  requestedOccurredAt: 'requestedOccurredAt',
+  reason: 'reason',
+  status: 'status',
+  decidedAt: 'decidedAt',
+  decidedByEmployeeId: 'decidedByEmployeeId',
+  decisionNote: 'decisionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceCorrectionRequestScalarFieldEnum = (typeof AttendanceCorrectionRequestScalarFieldEnum)[keyof typeof AttendanceCorrectionRequestScalarFieldEnum]
 
 
 export const IntegrationInstanceScalarFieldEnum = {

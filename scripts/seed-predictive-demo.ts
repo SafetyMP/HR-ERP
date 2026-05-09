@@ -23,6 +23,11 @@ const DEMO_MANAGER_ALEX_ID =
   process.env.DEMO_MANAGER_EMPLOYEE_ID?.trim() ??
   "b0000001-0001-4000-8000-000000000020";
 
+/** Stable onboarding template id for HR apply-template demos / QA. */
+const DEMO_ONBOARDING_TEMPLATE_ID =
+  process.env.DEMO_ONBOARDING_TEMPLATE_ID?.trim() ??
+  "b0000001-0001-4000-8000-000000000030";
+
 function embed(skillSeed: string, dim = 8): number[] {
   const out = new Array(dim).fill(0);
   let h = 0;
@@ -505,6 +510,69 @@ async function main() {
           body: "Demo seeded payroll inquiry — safe to delete after QA.",
           status: "OPEN",
         },
+      });
+
+      await tx.taxYearDocument.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          employeeId: e1.id,
+          taxYear: 2025,
+          documentKind: "W2_US_SUMMARY",
+          title: "Form W-2 (summary)",
+          availabilityNote:
+            "Official PDF appears after payroll finalizes year-end totals — demo informational row only.",
+        },
+      });
+
+      await tx.onboardingTemplate.create({
+        data: {
+          id: DEMO_ONBOARDING_TEMPLATE_ID,
+          tenantId: DEMO_ORG_ID,
+          title: "Demo IC onboarding pack",
+          items: {
+            create: [
+              { title: "Security badge pickup", sortOrder: 10 },
+              { title: "VPN enrollment confirmation", sortOrder: 20 },
+            ],
+          },
+        },
+      });
+
+      await tx.attendanceCorrectionRequest.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          employeeId: e1.id,
+          submittedByEmployeeId: mgr.id,
+          punchKind: "CLOCK_IN",
+          requestedOccurredAt: new Date("2026-05-09T09:05:00.000Z"),
+          reason:
+            "Demo punch correction proposal — employee missed kiosk swipe near shift start (seed data).",
+        },
+      });
+
+      await tx.employee.update({
+        where: { id: e2.id },
+        data: {
+          status: "TERMINATED",
+          terminationDate: new Date("2026-05-01"),
+        },
+      });
+
+      await tx.employeeSeparationTask.createMany({
+        data: [
+          {
+            employeeId: e2.id,
+            title: "Return laptop and building badge",
+            status: "IN_PROGRESS",
+            dueAt: new Date("2026-05-05"),
+          },
+          {
+            employeeId: e2.id,
+            title: "Finalize expense reimbursement",
+            status: "PENDING",
+            dueAt: new Date("2026-05-08"),
+          },
+        ],
       });
 
       await tx.benefitEnrollment.createMany({

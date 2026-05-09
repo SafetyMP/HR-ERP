@@ -13,6 +13,10 @@ description: >-
 
 # HR ERP — Security & Identity (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 Operating assumption: **external and internal attackers**. Design fails closed at **policy + database** when application code slips.
 
 ## Load first (source of truth)

@@ -71,7 +71,31 @@ export default function Home() {
               <Link href="/employee/hr-request">HR request</Link>
             </Button>
             <Button asChild variant="outline">
+              <Link href="/employee/tax-documents">Tax documents</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/organization">Org context</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/benefits/election-change">Benefits intent</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/employee/leaving">Leaving checklist</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href="/manager/team-attendance">Team attendance</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/manager/team-leave">Team leave</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/manager/punch-corrections">Punch corrections</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/hr/review-queue">HR review queue</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/hr/onboarding-templates">Onboarding templates</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/examples/jurisdiction">Start with payroll fields</Link>

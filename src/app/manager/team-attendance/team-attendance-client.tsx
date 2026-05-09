@@ -90,17 +90,17 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       if (!result.ok && result.forbidden) {
         setLoadError("forbidden");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       setMembers(result.members ?? []);
@@ -122,17 +122,17 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
       const result = await fetchTeamAttendance(token);
       if (!result.ok && result.auth) {
         setLoadError("auth");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       if (!result.ok && result.forbidden) {
         setLoadError("forbidden");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       if (!result.ok) {
         setLoadError("recoverable");
-        setMembers(null);
+        setMembers([]);
         return;
       }
       setMembers(result.members ?? []);

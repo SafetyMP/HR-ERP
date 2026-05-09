@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model TimeOffRequest
- * Employee-submitted multi-day time-off request (Feature 006); approval workflow out of band for v1.
+ * Employee-submitted multi-day time-off request (Feature 006); manager decision fields (Feature 011).
  */
 export type TimeOffRequestModel = runtime.Types.Result.DefaultSelection<Prisma.$TimeOffRequestPayload>
 
@@ -32,6 +32,9 @@ export type TimeOffRequestMinAggregateOutputType = {
   endDate: Date | null
   status: $Enums.TimeOffRequestStatus | null
   note: string | null
+  decidedAt: Date | null
+  decidedByEmployeeId: string | null
+  decisionNote: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +47,9 @@ export type TimeOffRequestMaxAggregateOutputType = {
   endDate: Date | null
   status: $Enums.TimeOffRequestStatus | null
   note: string | null
+  decidedAt: Date | null
+  decidedByEmployeeId: string | null
+  decisionNote: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +62,9 @@ export type TimeOffRequestCountAggregateOutputType = {
   endDate: number
   status: number
   note: number
+  decidedAt: number
+  decidedByEmployeeId: number
+  decisionNote: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +79,9 @@ export type TimeOffRequestMinAggregateInputType = {
   endDate?: true
   status?: true
   note?: true
+  decidedAt?: true
+  decidedByEmployeeId?: true
+  decisionNote?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +94,9 @@ export type TimeOffRequestMaxAggregateInputType = {
   endDate?: true
   status?: true
   note?: true
+  decidedAt?: true
+  decidedByEmployeeId?: true
+  decisionNote?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +109,9 @@ export type TimeOffRequestCountAggregateInputType = {
   endDate?: true
   status?: true
   note?: true
+  decidedAt?: true
+  decidedByEmployeeId?: true
+  decisionNote?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +197,9 @@ export type TimeOffRequestGroupByOutputType = {
   endDate: Date
   status: $Enums.TimeOffRequestStatus
   note: string | null
+  decidedAt: Date | null
+  decidedByEmployeeId: string | null
+  decisionNote: string | null
   createdAt: Date
   updatedAt: Date
   _count: TimeOffRequestCountAggregateOutputType | null
@@ -212,9 +233,13 @@ export type TimeOffRequestWhereInput = {
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFilter<"TimeOffRequest"> | $Enums.TimeOffRequestStatus
   note?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decidedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
+  decidedByEmployeeId?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decisionNote?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  decidedBy?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
 }
 
 export type TimeOffRequestOrderByWithRelationInput = {
@@ -225,9 +250,13 @@ export type TimeOffRequestOrderByWithRelationInput = {
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
+  decidedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  decidedByEmployeeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  decisionNote?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   employee?: Prisma.EmployeeOrderByWithRelationInput
+  decidedBy?: Prisma.EmployeeOrderByWithRelationInput
 }
 
 export type TimeOffRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -241,9 +270,13 @@ export type TimeOffRequestWhereUniqueInput = Prisma.AtLeast<{
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFilter<"TimeOffRequest"> | $Enums.TimeOffRequestStatus
   note?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decidedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
+  decidedByEmployeeId?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decisionNote?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  decidedBy?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.EmployeeWhereInput> | null
 }, "id">
 
 export type TimeOffRequestOrderByWithAggregationInput = {
@@ -254,6 +287,9 @@ export type TimeOffRequestOrderByWithAggregationInput = {
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
+  decidedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  decidedByEmployeeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  decisionNote?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TimeOffRequestCountOrderByAggregateInput
@@ -272,6 +308,9 @@ export type TimeOffRequestScalarWhereWithAggregatesInput = {
   endDate?: Prisma.DateTimeWithAggregatesFilter<"TimeOffRequest"> | Date | string
   status?: Prisma.EnumTimeOffRequestStatusWithAggregatesFilter<"TimeOffRequest"> | $Enums.TimeOffRequestStatus
   note?: Prisma.StringNullableWithAggregatesFilter<"TimeOffRequest"> | string | null
+  decidedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TimeOffRequest"> | Date | string | null
+  decidedByEmployeeId?: Prisma.StringNullableWithAggregatesFilter<"TimeOffRequest"> | string | null
+  decisionNote?: Prisma.StringNullableWithAggregatesFilter<"TimeOffRequest"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TimeOffRequest"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TimeOffRequest"> | Date | string
 }
@@ -283,9 +322,12 @@ export type TimeOffRequestCreateInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutTimeOffRequestsInput
+  decidedBy?: Prisma.EmployeeCreateNestedOneWithoutTimeOffDecisionsInput
 }
 
 export type TimeOffRequestUncheckedCreateInput = {
@@ -296,6 +338,9 @@ export type TimeOffRequestUncheckedCreateInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decidedByEmployeeId?: string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -307,9 +352,12 @@ export type TimeOffRequestUpdateInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutTimeOffRequestsNestedInput
+  decidedBy?: Prisma.EmployeeUpdateOneWithoutTimeOffDecisionsNestedInput
 }
 
 export type TimeOffRequestUncheckedUpdateInput = {
@@ -320,6 +368,9 @@ export type TimeOffRequestUncheckedUpdateInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decidedByEmployeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,6 +383,9 @@ export type TimeOffRequestCreateManyInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decidedByEmployeeId?: string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,6 +397,8 @@ export type TimeOffRequestUpdateManyMutationInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,6 +411,9 @@ export type TimeOffRequestUncheckedUpdateManyInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decidedByEmployeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -377,6 +436,9 @@ export type TimeOffRequestCountOrderByAggregateInput = {
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  decidedAt?: Prisma.SortOrder
+  decidedByEmployeeId?: Prisma.SortOrder
+  decisionNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -389,6 +451,9 @@ export type TimeOffRequestMaxOrderByAggregateInput = {
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  decidedAt?: Prisma.SortOrder
+  decidedByEmployeeId?: Prisma.SortOrder
+  decisionNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -401,6 +466,9 @@ export type TimeOffRequestMinOrderByAggregateInput = {
   endDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  decidedAt?: Prisma.SortOrder
+  decidedByEmployeeId?: Prisma.SortOrder
+  decisionNote?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -412,10 +480,24 @@ export type TimeOffRequestCreateNestedManyWithoutEmployeeInput = {
   connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
 }
 
+export type TimeOffRequestCreateNestedManyWithoutDecidedByInput = {
+  create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput> | Prisma.TimeOffRequestCreateWithoutDecidedByInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput[]
+  connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput | Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput[]
+  createMany?: Prisma.TimeOffRequestCreateManyDecidedByInputEnvelope
+  connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+}
+
 export type TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput = {
   create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutEmployeeInput, Prisma.TimeOffRequestUncheckedCreateWithoutEmployeeInput> | Prisma.TimeOffRequestCreateWithoutEmployeeInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutEmployeeInput[]
   connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutEmployeeInput | Prisma.TimeOffRequestCreateOrConnectWithoutEmployeeInput[]
   createMany?: Prisma.TimeOffRequestCreateManyEmployeeInputEnvelope
+  connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+}
+
+export type TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput = {
+  create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput> | Prisma.TimeOffRequestCreateWithoutDecidedByInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput[]
+  connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput | Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput[]
+  createMany?: Prisma.TimeOffRequestCreateManyDecidedByInputEnvelope
   connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
 }
 
@@ -433,6 +515,20 @@ export type TimeOffRequestUpdateManyWithoutEmployeeNestedInput = {
   deleteMany?: Prisma.TimeOffRequestScalarWhereInput | Prisma.TimeOffRequestScalarWhereInput[]
 }
 
+export type TimeOffRequestUpdateManyWithoutDecidedByNestedInput = {
+  create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput> | Prisma.TimeOffRequestCreateWithoutDecidedByInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput[]
+  connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput | Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput[]
+  upsert?: Prisma.TimeOffRequestUpsertWithWhereUniqueWithoutDecidedByInput | Prisma.TimeOffRequestUpsertWithWhereUniqueWithoutDecidedByInput[]
+  createMany?: Prisma.TimeOffRequestCreateManyDecidedByInputEnvelope
+  set?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  disconnect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  delete?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  update?: Prisma.TimeOffRequestUpdateWithWhereUniqueWithoutDecidedByInput | Prisma.TimeOffRequestUpdateWithWhereUniqueWithoutDecidedByInput[]
+  updateMany?: Prisma.TimeOffRequestUpdateManyWithWhereWithoutDecidedByInput | Prisma.TimeOffRequestUpdateManyWithWhereWithoutDecidedByInput[]
+  deleteMany?: Prisma.TimeOffRequestScalarWhereInput | Prisma.TimeOffRequestScalarWhereInput[]
+}
+
 export type TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput = {
   create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutEmployeeInput, Prisma.TimeOffRequestUncheckedCreateWithoutEmployeeInput> | Prisma.TimeOffRequestCreateWithoutEmployeeInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutEmployeeInput[]
   connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutEmployeeInput | Prisma.TimeOffRequestCreateOrConnectWithoutEmployeeInput[]
@@ -447,6 +543,20 @@ export type TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput = {
   deleteMany?: Prisma.TimeOffRequestScalarWhereInput | Prisma.TimeOffRequestScalarWhereInput[]
 }
 
+export type TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput = {
+  create?: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput> | Prisma.TimeOffRequestCreateWithoutDecidedByInput[] | Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput[]
+  connectOrCreate?: Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput | Prisma.TimeOffRequestCreateOrConnectWithoutDecidedByInput[]
+  upsert?: Prisma.TimeOffRequestUpsertWithWhereUniqueWithoutDecidedByInput | Prisma.TimeOffRequestUpsertWithWhereUniqueWithoutDecidedByInput[]
+  createMany?: Prisma.TimeOffRequestCreateManyDecidedByInputEnvelope
+  set?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  disconnect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  delete?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  connect?: Prisma.TimeOffRequestWhereUniqueInput | Prisma.TimeOffRequestWhereUniqueInput[]
+  update?: Prisma.TimeOffRequestUpdateWithWhereUniqueWithoutDecidedByInput | Prisma.TimeOffRequestUpdateWithWhereUniqueWithoutDecidedByInput[]
+  updateMany?: Prisma.TimeOffRequestUpdateManyWithWhereWithoutDecidedByInput | Prisma.TimeOffRequestUpdateManyWithWhereWithoutDecidedByInput[]
+  deleteMany?: Prisma.TimeOffRequestScalarWhereInput | Prisma.TimeOffRequestScalarWhereInput[]
+}
+
 export type EnumTimeOffRequestStatusFieldUpdateOperationsInput = {
   set?: $Enums.TimeOffRequestStatus
 }
@@ -458,8 +568,11 @@ export type TimeOffRequestCreateWithoutEmployeeInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  decidedBy?: Prisma.EmployeeCreateNestedOneWithoutTimeOffDecisionsInput
 }
 
 export type TimeOffRequestUncheckedCreateWithoutEmployeeInput = {
@@ -469,6 +582,9 @@ export type TimeOffRequestUncheckedCreateWithoutEmployeeInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decidedByEmployeeId?: string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -480,6 +596,44 @@ export type TimeOffRequestCreateOrConnectWithoutEmployeeInput = {
 
 export type TimeOffRequestCreateManyEmployeeInputEnvelope = {
   data: Prisma.TimeOffRequestCreateManyEmployeeInput | Prisma.TimeOffRequestCreateManyEmployeeInput[]
+  skipDuplicates?: boolean
+}
+
+export type TimeOffRequestCreateWithoutDecidedByInput = {
+  id?: string
+  tenantId: string
+  startDate: Date | string
+  endDate: Date | string
+  status?: $Enums.TimeOffRequestStatus
+  note?: string | null
+  decidedAt?: Date | string | null
+  decisionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employee: Prisma.EmployeeCreateNestedOneWithoutTimeOffRequestsInput
+}
+
+export type TimeOffRequestUncheckedCreateWithoutDecidedByInput = {
+  id?: string
+  tenantId: string
+  employeeId: string
+  startDate: Date | string
+  endDate: Date | string
+  status?: $Enums.TimeOffRequestStatus
+  note?: string | null
+  decidedAt?: Date | string | null
+  decisionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TimeOffRequestCreateOrConnectWithoutDecidedByInput = {
+  where: Prisma.TimeOffRequestWhereUniqueInput
+  create: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput>
+}
+
+export type TimeOffRequestCreateManyDecidedByInputEnvelope = {
+  data: Prisma.TimeOffRequestCreateManyDecidedByInput | Prisma.TimeOffRequestCreateManyDecidedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -510,8 +664,27 @@ export type TimeOffRequestScalarWhereInput = {
   endDate?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFilter<"TimeOffRequest"> | $Enums.TimeOffRequestStatus
   note?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decidedAt?: Prisma.DateTimeNullableFilter<"TimeOffRequest"> | Date | string | null
+  decidedByEmployeeId?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
+  decisionNote?: Prisma.StringNullableFilter<"TimeOffRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TimeOffRequest"> | Date | string
+}
+
+export type TimeOffRequestUpsertWithWhereUniqueWithoutDecidedByInput = {
+  where: Prisma.TimeOffRequestWhereUniqueInput
+  update: Prisma.XOR<Prisma.TimeOffRequestUpdateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedUpdateWithoutDecidedByInput>
+  create: Prisma.XOR<Prisma.TimeOffRequestCreateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedCreateWithoutDecidedByInput>
+}
+
+export type TimeOffRequestUpdateWithWhereUniqueWithoutDecidedByInput = {
+  where: Prisma.TimeOffRequestWhereUniqueInput
+  data: Prisma.XOR<Prisma.TimeOffRequestUpdateWithoutDecidedByInput, Prisma.TimeOffRequestUncheckedUpdateWithoutDecidedByInput>
+}
+
+export type TimeOffRequestUpdateManyWithWhereWithoutDecidedByInput = {
+  where: Prisma.TimeOffRequestScalarWhereInput
+  data: Prisma.XOR<Prisma.TimeOffRequestUpdateManyMutationInput, Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByInput>
 }
 
 export type TimeOffRequestCreateManyEmployeeInput = {
@@ -521,6 +694,23 @@ export type TimeOffRequestCreateManyEmployeeInput = {
   endDate: Date | string
   status?: $Enums.TimeOffRequestStatus
   note?: string | null
+  decidedAt?: Date | string | null
+  decidedByEmployeeId?: string | null
+  decisionNote?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TimeOffRequestCreateManyDecidedByInput = {
+  id?: string
+  tenantId: string
+  employeeId: string
+  startDate: Date | string
+  endDate: Date | string
+  status?: $Enums.TimeOffRequestStatus
+  note?: string | null
+  decidedAt?: Date | string | null
+  decisionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -532,8 +722,11 @@ export type TimeOffRequestUpdateWithoutEmployeeInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  decidedBy?: Prisma.EmployeeUpdateOneWithoutTimeOffDecisionsNestedInput
 }
 
 export type TimeOffRequestUncheckedUpdateWithoutEmployeeInput = {
@@ -543,6 +736,9 @@ export type TimeOffRequestUncheckedUpdateWithoutEmployeeInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decidedByEmployeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -554,6 +750,51 @@ export type TimeOffRequestUncheckedUpdateManyWithoutEmployeeInput = {
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decidedByEmployeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TimeOffRequestUpdateWithoutDecidedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee?: Prisma.EmployeeUpdateOneRequiredWithoutTimeOffRequestsNestedInput
+}
+
+export type TimeOffRequestUncheckedUpdateWithoutDecidedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TimeOffRequestUncheckedUpdateManyWithoutDecidedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumTimeOffRequestStatusFieldUpdateOperationsInput | $Enums.TimeOffRequestStatus
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decisionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -568,9 +809,13 @@ export type TimeOffRequestSelect<ExtArgs extends runtime.Types.Extensions.Intern
   endDate?: boolean
   status?: boolean
   note?: boolean
+  decidedAt?: boolean
+  decidedByEmployeeId?: boolean
+  decisionNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }, ExtArgs["result"]["timeOffRequest"]>
 
 export type TimeOffRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -581,9 +826,13 @@ export type TimeOffRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   endDate?: boolean
   status?: boolean
   note?: boolean
+  decidedAt?: boolean
+  decidedByEmployeeId?: boolean
+  decisionNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }, ExtArgs["result"]["timeOffRequest"]>
 
 export type TimeOffRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -594,9 +843,13 @@ export type TimeOffRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   endDate?: boolean
   status?: boolean
   note?: boolean
+  decidedAt?: boolean
+  decidedByEmployeeId?: boolean
+  decisionNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }, ExtArgs["result"]["timeOffRequest"]>
 
 export type TimeOffRequestSelectScalar = {
@@ -607,25 +860,32 @@ export type TimeOffRequestSelectScalar = {
   endDate?: boolean
   status?: boolean
   note?: boolean
+  decidedAt?: boolean
+  decidedByEmployeeId?: boolean
+  decisionNote?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TimeOffRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "startDate" | "endDate" | "status" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["timeOffRequest"]>
+export type TimeOffRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "startDate" | "endDate" | "status" | "note" | "decidedAt" | "decidedByEmployeeId" | "decisionNote" | "createdAt" | "updatedAt", ExtArgs["result"]["timeOffRequest"]>
 export type TimeOffRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }
 export type TimeOffRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }
 export type TimeOffRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  decidedBy?: boolean | Prisma.TimeOffRequest$decidedByArgs<ExtArgs>
 }
 
 export type $TimeOffRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TimeOffRequest"
   objects: {
     employee: Prisma.$EmployeePayload<ExtArgs>
+    decidedBy: Prisma.$EmployeePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -635,6 +895,9 @@ export type $TimeOffRequestPayload<ExtArgs extends runtime.Types.Extensions.Inte
     endDate: Date
     status: $Enums.TimeOffRequestStatus
     note: string | null
+    decidedAt: Date | null
+    decidedByEmployeeId: string | null
+    decisionNote: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["timeOffRequest"]>
@@ -1032,6 +1295,7 @@ readonly fields: TimeOffRequestFieldRefs;
 export interface Prisma__TimeOffRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  decidedBy<T extends Prisma.TimeOffRequest$decidedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeOffRequest$decidedByArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1068,6 +1332,9 @@ export interface TimeOffRequestFieldRefs {
   readonly endDate: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
   readonly status: Prisma.FieldRef<"TimeOffRequest", 'TimeOffRequestStatus'>
   readonly note: Prisma.FieldRef<"TimeOffRequest", 'String'>
+  readonly decidedAt: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
+  readonly decidedByEmployeeId: Prisma.FieldRef<"TimeOffRequest", 'String'>
+  readonly decisionNote: Prisma.FieldRef<"TimeOffRequest", 'String'>
   readonly createdAt: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TimeOffRequest", 'DateTime'>
 }
@@ -1468,6 +1735,25 @@ export type TimeOffRequestDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many TimeOffRequests to delete.
    */
   limit?: number
+}
+
+/**
+ * TimeOffRequest.decidedBy
+ */
+export type TimeOffRequest$decidedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Employee
+   */
+  select?: Prisma.EmployeeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Employee
+   */
+  omit?: Prisma.EmployeeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeInclude<ExtArgs> | null
+  where?: Prisma.EmployeeWhereInput
 }
 
 /**

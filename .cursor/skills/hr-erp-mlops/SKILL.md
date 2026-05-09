@@ -12,6 +12,10 @@ disable-model-invocation: false
 
 # HR ERP MLOps and AI infrastructure
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## When to load
 
 Apply this skill for **production AI** in **multi-tenant HR** contexts: generative assistants, predictive analytics (attrition/flight risk, engagement), and **multi-agent** tool use (MCP, HRIS, DB).

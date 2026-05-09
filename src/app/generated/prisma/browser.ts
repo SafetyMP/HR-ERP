@@ -34,12 +34,12 @@ export type Employee = Prisma.EmployeeModel
 export type PtoRequest = Prisma.PtoRequestModel
 /**
  * Model TimeOffRequest
- * Employee-submitted multi-day time-off request (Feature 006); approval workflow out of band for v1.
+ * Employee-submitted multi-day time-off request (Feature 006); manager decision fields (Feature 011).
  */
 export type TimeOffRequest = Prisma.TimeOffRequestModel
 /**
  * Model HrCaseRequest
- * Lightweight HR / payroll intake ticket from employee self-service (Feature 010).
+ * Lightweight HR / payroll intake ticket from employee self-service (Feature 010 + 012 lifecycle).
  */
 export type HrCaseRequest = Prisma.HrCaseRequestModel
 /**
@@ -223,6 +223,11 @@ export type SprintCapacitySummary = Prisma.SprintCapacitySummaryModel
  */
 export type OnboardingTask = Prisma.OnboardingTaskModel
 /**
+ * Model EmployeeSeparationTask
+ * Separation / offboarding checklist tasks for departing employees (Feature 017).
+ */
+export type EmployeeSeparationTask = Prisma.EmployeeSeparationTaskModel
+/**
  * Model AttendancePunch
  * Authoritative time-punch row — server `occurredAt`; idempotent per tenant + key.
  */
@@ -232,6 +237,31 @@ export type AttendancePunch = Prisma.AttendancePunchModel
  * Active elections snapshot for employee self-service benefits summary (Feature 003).
  */
 export type BenefitEnrollment = Prisma.BenefitEnrollmentModel
+/**
+ * Model OnboardingTemplate
+ * HR-defined reusable onboarding checklist template (Feature 016).
+ */
+export type OnboardingTemplate = Prisma.OnboardingTemplateModel
+/**
+ * Model OnboardingTemplateItem
+ * 
+ */
+export type OnboardingTemplateItem = Prisma.OnboardingTemplateItemModel
+/**
+ * Model TaxYearDocument
+ * Year-end tax artifact availability row — informational until vendor feeds exist (Feature 013).
+ */
+export type TaxYearDocument = Prisma.TaxYearDocumentModel
+/**
+ * Model BenefitElectionChangeRequest
+ * Employee intent to change a benefit election — routed out-of-band to admins (Feature 014).
+ */
+export type BenefitElectionChangeRequest = Prisma.BenefitElectionChangeRequestModel
+/**
+ * Model AttendanceCorrectionRequest
+ * Manager-submitted punch correction proposal reviewed by HR/Payroll (Feature 015).
+ */
+export type AttendanceCorrectionRequest = Prisma.AttendanceCorrectionRequestModel
 /**
  * Model IntegrationInstance
  * 

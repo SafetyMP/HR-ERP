@@ -13,6 +13,10 @@ description: >-
 
 # HR ERP backend compliance (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## First read (source of truth)
 
 Load these in order before changing pay, time, or compliance logic:

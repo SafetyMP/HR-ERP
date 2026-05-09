@@ -212,6 +212,10 @@ export type OrganizationWhereInput = {
   payrollPeriods?: Prisma.PayrollPeriodListRelationFilter
   paymentInstructions?: Prisma.PaymentInstructionListRelationFilter
   benefitEnrollments?: Prisma.BenefitEnrollmentListRelationFilter
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestListRelationFilter
+  taxYearDocuments?: Prisma.TaxYearDocumentListRelationFilter
+  onboardingTemplates?: Prisma.OnboardingTemplateListRelationFilter
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestListRelationFilter
   sprints?: Prisma.SprintListRelationFilter
 }
 
@@ -230,6 +234,10 @@ export type OrganizationOrderByWithRelationInput = {
   payrollPeriods?: Prisma.PayrollPeriodOrderByRelationAggregateInput
   paymentInstructions?: Prisma.PaymentInstructionOrderByRelationAggregateInput
   benefitEnrollments?: Prisma.BenefitEnrollmentOrderByRelationAggregateInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestOrderByRelationAggregateInput
+  taxYearDocuments?: Prisma.TaxYearDocumentOrderByRelationAggregateInput
+  onboardingTemplates?: Prisma.OnboardingTemplateOrderByRelationAggregateInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
   sprints?: Prisma.SprintOrderByRelationAggregateInput
 }
 
@@ -251,6 +259,10 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   payrollPeriods?: Prisma.PayrollPeriodListRelationFilter
   paymentInstructions?: Prisma.PaymentInstructionListRelationFilter
   benefitEnrollments?: Prisma.BenefitEnrollmentListRelationFilter
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestListRelationFilter
+  taxYearDocuments?: Prisma.TaxYearDocumentListRelationFilter
+  onboardingTemplates?: Prisma.OnboardingTemplateListRelationFilter
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestListRelationFilter
   sprints?: Prisma.SprintListRelationFilter
 }, "id">
 
@@ -297,6 +309,10 @@ export type OrganizationCreateInput = {
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -315,6 +331,10 @@ export type OrganizationUncheckedCreateInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -333,6 +353,10 @@ export type OrganizationUpdateInput = {
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -351,6 +375,10 @@ export type OrganizationUncheckedUpdateInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -539,6 +567,62 @@ export type OrganizationUpdateOneRequiredWithoutBenefitEnrollmentsNestedInput = 
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutBenefitEnrollmentsInput, Prisma.OrganizationUpdateWithoutBenefitEnrollmentsInput>, Prisma.OrganizationUncheckedUpdateWithoutBenefitEnrollmentsInput>
 }
 
+export type OrganizationCreateNestedOneWithoutOnboardingTemplatesInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingTemplatesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutOnboardingTemplatesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutOnboardingTemplatesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingTemplatesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutOnboardingTemplatesInput
+  upsert?: Prisma.OrganizationUpsertWithoutOnboardingTemplatesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutOnboardingTemplatesInput, Prisma.OrganizationUpdateWithoutOnboardingTemplatesInput>, Prisma.OrganizationUncheckedUpdateWithoutOnboardingTemplatesInput>
+}
+
+export type OrganizationCreateNestedOneWithoutTaxYearDocumentsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedCreateWithoutTaxYearDocumentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutTaxYearDocumentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutTaxYearDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedCreateWithoutTaxYearDocumentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutTaxYearDocumentsInput
+  upsert?: Prisma.OrganizationUpsertWithoutTaxYearDocumentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutTaxYearDocumentsInput, Prisma.OrganizationUpdateWithoutTaxYearDocumentsInput>, Prisma.OrganizationUncheckedUpdateWithoutTaxYearDocumentsInput>
+}
+
+export type OrganizationCreateNestedOneWithoutBenefitElectionChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutBenefitElectionChangeRequestsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutBenefitElectionChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutBenefitElectionChangeRequestsInput
+  upsert?: Prisma.OrganizationUpsertWithoutBenefitElectionChangeRequestsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUpdateWithoutBenefitElectionChangeRequestsInput>, Prisma.OrganizationUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type OrganizationCreateNestedOneWithoutAttendanceCorrectionRequestsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedCreateWithoutAttendanceCorrectionRequestsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAttendanceCorrectionRequestsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutAttendanceCorrectionRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedCreateWithoutAttendanceCorrectionRequestsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutAttendanceCorrectionRequestsInput
+  upsert?: Prisma.OrganizationUpsertWithoutAttendanceCorrectionRequestsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUpdateWithoutAttendanceCorrectionRequestsInput>, Prisma.OrganizationUncheckedUpdateWithoutAttendanceCorrectionRequestsInput>
+}
+
 export type OrganizationCreateWithoutEmployeesInput = {
   id: string
   name: string
@@ -553,6 +637,10 @@ export type OrganizationCreateWithoutEmployeesInput = {
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -570,6 +658,10 @@ export type OrganizationUncheckedCreateWithoutEmployeesInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -603,6 +695,10 @@ export type OrganizationUpdateWithoutEmployeesInput = {
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -620,6 +716,10 @@ export type OrganizationUncheckedUpdateWithoutEmployeesInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -637,6 +737,10 @@ export type OrganizationCreateWithoutMeetingProposalsInput = {
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -654,6 +758,10 @@ export type OrganizationUncheckedCreateWithoutMeetingProposalsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -687,6 +795,10 @@ export type OrganizationUpdateWithoutMeetingProposalsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -704,6 +816,10 @@ export type OrganizationUncheckedUpdateWithoutMeetingProposalsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -721,6 +837,10 @@ export type OrganizationCreateWithoutPayrollPeriodsInput = {
   meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -738,6 +858,10 @@ export type OrganizationUncheckedCreateWithoutPayrollPeriodsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -771,6 +895,10 @@ export type OrganizationUpdateWithoutPayrollPeriodsInput = {
   meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -788,6 +916,10 @@ export type OrganizationUncheckedUpdateWithoutPayrollPeriodsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -805,6 +937,10 @@ export type OrganizationCreateWithoutPaymentInstructionsInput = {
   meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -822,6 +958,10 @@ export type OrganizationUncheckedCreateWithoutPaymentInstructionsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -855,6 +995,10 @@ export type OrganizationUpdateWithoutPaymentInstructionsInput = {
   meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -872,6 +1016,10 @@ export type OrganizationUncheckedUpdateWithoutPaymentInstructionsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -889,6 +1037,10 @@ export type OrganizationCreateWithoutHolidayCalendarsInput = {
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -906,6 +1058,10 @@ export type OrganizationUncheckedCreateWithoutHolidayCalendarsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -939,6 +1095,10 @@ export type OrganizationUpdateWithoutHolidayCalendarsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -956,6 +1116,10 @@ export type OrganizationUncheckedUpdateWithoutHolidayCalendarsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -974,6 +1138,10 @@ export type OrganizationCreateWithoutSprintsInput = {
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSprintsInput = {
@@ -991,6 +1159,10 @@ export type OrganizationUncheckedCreateWithoutSprintsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSprintsInput = {
@@ -1024,6 +1196,10 @@ export type OrganizationUpdateWithoutSprintsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSprintsInput = {
@@ -1041,6 +1217,10 @@ export type OrganizationUncheckedUpdateWithoutSprintsInput = {
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
   benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutBenefitEnrollmentsInput = {
@@ -1057,6 +1237,10 @@ export type OrganizationCreateWithoutBenefitEnrollmentsInput = {
   meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
   payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
 }
 
@@ -1074,6 +1258,10 @@ export type OrganizationUncheckedCreateWithoutBenefitEnrollmentsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
   payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
   sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
@@ -1107,6 +1295,10 @@ export type OrganizationUpdateWithoutBenefitEnrollmentsInput = {
   meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
   payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -1124,6 +1316,410 @@ export type OrganizationUncheckedUpdateWithoutBenefitEnrollmentsInput = {
   meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
   payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutOnboardingTemplatesInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutOnboardingTemplatesInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutOnboardingTemplatesInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingTemplatesInput>
+}
+
+export type OrganizationUpsertWithoutOnboardingTemplatesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedUpdateWithoutOnboardingTemplatesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedCreateWithoutOnboardingTemplatesInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutOnboardingTemplatesInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutOnboardingTemplatesInput, Prisma.OrganizationUncheckedUpdateWithoutOnboardingTemplatesInput>
+}
+
+export type OrganizationUpdateWithoutOnboardingTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutOnboardingTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutTaxYearDocumentsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutTaxYearDocumentsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutTaxYearDocumentsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedCreateWithoutTaxYearDocumentsInput>
+}
+
+export type OrganizationUpsertWithoutTaxYearDocumentsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedUpdateWithoutTaxYearDocumentsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedCreateWithoutTaxYearDocumentsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutTaxYearDocumentsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutTaxYearDocumentsInput, Prisma.OrganizationUncheckedUpdateWithoutTaxYearDocumentsInput>
+}
+
+export type OrganizationUpdateWithoutTaxYearDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutTaxYearDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutBenefitElectionChangeRequestsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutBenefitElectionChangeRequestsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutBenefitElectionChangeRequestsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type OrganizationUpsertWithoutBenefitElectionChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedCreateWithoutBenefitElectionChangeRequestsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutBenefitElectionChangeRequestsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutBenefitElectionChangeRequestsInput, Prisma.OrganizationUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
+}
+
+export type OrganizationUpdateWithoutBenefitElectionChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutBenefitElectionChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  attendanceCorrectionRequests?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutAttendanceCorrectionRequestsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutAttendanceCorrectionRequestsInput = {
+  id: string
+  name: string
+  jurisdictionCountry?: string | null
+  jurisdictionSubdivision?: string | null
+  reportingCurrency?: string | null
+  payoutSplitMode?: $Enums.PayoutSplitMode
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutOrganizationInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedCreateNestedManyWithoutOrganizationInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizationInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedCreateNestedManyWithoutOrganizationInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutOrganizationInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutOrganizationInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutOrganizationInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  sprints?: Prisma.SprintUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutAttendanceCorrectionRequestsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedCreateWithoutAttendanceCorrectionRequestsInput>
+}
+
+export type OrganizationUpsertWithoutAttendanceCorrectionRequestsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedUpdateWithoutAttendanceCorrectionRequestsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedCreateWithoutAttendanceCorrectionRequestsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutAttendanceCorrectionRequestsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutAttendanceCorrectionRequestsInput, Prisma.OrganizationUncheckedUpdateWithoutAttendanceCorrectionRequestsInput>
+}
+
+export type OrganizationUpdateWithoutAttendanceCorrectionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUpdateManyWithoutOrganizationNestedInput
+  sprints?: Prisma.SprintUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutAttendanceCorrectionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  jurisdictionCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jurisdictionSubdivision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportingCurrency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutSplitMode?: Prisma.EnumPayoutSplitModeFieldUpdateOperationsInput | $Enums.PayoutSplitMode
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutOrganizationNestedInput
+  holidayCalendars?: Prisma.HolidayCalendarUncheckedUpdateManyWithoutOrganizationNestedInput
+  meetingProposals?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizationNestedInput
+  payrollPeriods?: Prisma.PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutOrganizationNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutOrganizationNestedInput
+  onboardingTemplates?: Prisma.OnboardingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
   sprints?: Prisma.SprintUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -1139,6 +1735,10 @@ export type OrganizationCountOutputType = {
   payrollPeriods: number
   paymentInstructions: number
   benefitEnrollments: number
+  benefitElectionChangeRequests: number
+  taxYearDocuments: number
+  onboardingTemplates: number
+  attendanceCorrectionRequests: number
   sprints: number
 }
 
@@ -1149,6 +1749,10 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   payrollPeriods?: boolean | OrganizationCountOutputTypeCountPayrollPeriodsArgs
   paymentInstructions?: boolean | OrganizationCountOutputTypeCountPaymentInstructionsArgs
   benefitEnrollments?: boolean | OrganizationCountOutputTypeCountBenefitEnrollmentsArgs
+  benefitElectionChangeRequests?: boolean | OrganizationCountOutputTypeCountBenefitElectionChangeRequestsArgs
+  taxYearDocuments?: boolean | OrganizationCountOutputTypeCountTaxYearDocumentsArgs
+  onboardingTemplates?: boolean | OrganizationCountOutputTypeCountOnboardingTemplatesArgs
+  attendanceCorrectionRequests?: boolean | OrganizationCountOutputTypeCountAttendanceCorrectionRequestsArgs
   sprints?: boolean | OrganizationCountOutputTypeCountSprintsArgs
 }
 
@@ -1207,6 +1811,34 @@ export type OrganizationCountOutputTypeCountBenefitEnrollmentsArgs<ExtArgs exten
 /**
  * OrganizationCountOutputType without action
  */
+export type OrganizationCountOutputTypeCountBenefitElectionChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BenefitElectionChangeRequestWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountTaxYearDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaxYearDocumentWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountOnboardingTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OnboardingTemplateWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountAttendanceCorrectionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
 export type OrganizationCountOutputTypeCountSprintsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SprintWhereInput
 }
@@ -1227,6 +1859,10 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   payrollPeriods?: boolean | Prisma.Organization$payrollPeriodsArgs<ExtArgs>
   paymentInstructions?: boolean | Prisma.Organization$paymentInstructionsArgs<ExtArgs>
   benefitEnrollments?: boolean | Prisma.Organization$benefitEnrollmentsArgs<ExtArgs>
+  benefitElectionChangeRequests?: boolean | Prisma.Organization$benefitElectionChangeRequestsArgs<ExtArgs>
+  taxYearDocuments?: boolean | Prisma.Organization$taxYearDocumentsArgs<ExtArgs>
+  onboardingTemplates?: boolean | Prisma.Organization$onboardingTemplatesArgs<ExtArgs>
+  attendanceCorrectionRequests?: boolean | Prisma.Organization$attendanceCorrectionRequestsArgs<ExtArgs>
   sprints?: boolean | Prisma.Organization$sprintsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
@@ -1272,6 +1908,10 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   payrollPeriods?: boolean | Prisma.Organization$payrollPeriodsArgs<ExtArgs>
   paymentInstructions?: boolean | Prisma.Organization$paymentInstructionsArgs<ExtArgs>
   benefitEnrollments?: boolean | Prisma.Organization$benefitEnrollmentsArgs<ExtArgs>
+  benefitElectionChangeRequests?: boolean | Prisma.Organization$benefitElectionChangeRequestsArgs<ExtArgs>
+  taxYearDocuments?: boolean | Prisma.Organization$taxYearDocumentsArgs<ExtArgs>
+  onboardingTemplates?: boolean | Prisma.Organization$onboardingTemplatesArgs<ExtArgs>
+  attendanceCorrectionRequests?: boolean | Prisma.Organization$attendanceCorrectionRequestsArgs<ExtArgs>
   sprints?: boolean | Prisma.Organization$sprintsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1287,6 +1927,10 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     payrollPeriods: Prisma.$PayrollPeriodPayload<ExtArgs>[]
     paymentInstructions: Prisma.$PaymentInstructionPayload<ExtArgs>[]
     benefitEnrollments: Prisma.$BenefitEnrollmentPayload<ExtArgs>[]
+    benefitElectionChangeRequests: Prisma.$BenefitElectionChangeRequestPayload<ExtArgs>[]
+    taxYearDocuments: Prisma.$TaxYearDocumentPayload<ExtArgs>[]
+    onboardingTemplates: Prisma.$OnboardingTemplatePayload<ExtArgs>[]
+    attendanceCorrectionRequests: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
     sprints: Prisma.$SprintPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1698,6 +2342,10 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   payrollPeriods<T extends Prisma.Organization$payrollPeriodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$payrollPeriodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentInstructions<T extends Prisma.Organization$paymentInstructionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$paymentInstructionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentInstructionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   benefitEnrollments<T extends Prisma.Organization$benefitEnrollmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$benefitEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BenefitEnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  benefitElectionChangeRequests<T extends Prisma.Organization$benefitElectionChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$benefitElectionChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BenefitElectionChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  taxYearDocuments<T extends Prisma.Organization$taxYearDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$taxYearDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaxYearDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboardingTemplates<T extends Prisma.Organization$onboardingTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$onboardingTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnboardingTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attendanceCorrectionRequests<T extends Prisma.Organization$attendanceCorrectionRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$attendanceCorrectionRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sprints<T extends Prisma.Organization$sprintsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$sprintsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2270,6 +2918,102 @@ export type Organization$benefitEnrollmentsArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.BenefitEnrollmentScalarFieldEnum | Prisma.BenefitEnrollmentScalarFieldEnum[]
+}
+
+/**
+ * Organization.benefitElectionChangeRequests
+ */
+export type Organization$benefitElectionChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BenefitElectionChangeRequest
+   */
+  select?: Prisma.BenefitElectionChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BenefitElectionChangeRequest
+   */
+  omit?: Prisma.BenefitElectionChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BenefitElectionChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.BenefitElectionChangeRequestWhereInput
+  orderBy?: Prisma.BenefitElectionChangeRequestOrderByWithRelationInput | Prisma.BenefitElectionChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.BenefitElectionChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BenefitElectionChangeRequestScalarFieldEnum | Prisma.BenefitElectionChangeRequestScalarFieldEnum[]
+}
+
+/**
+ * Organization.taxYearDocuments
+ */
+export type Organization$taxYearDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TaxYearDocument
+   */
+  select?: Prisma.TaxYearDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TaxYearDocument
+   */
+  omit?: Prisma.TaxYearDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaxYearDocumentInclude<ExtArgs> | null
+  where?: Prisma.TaxYearDocumentWhereInput
+  orderBy?: Prisma.TaxYearDocumentOrderByWithRelationInput | Prisma.TaxYearDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.TaxYearDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaxYearDocumentScalarFieldEnum | Prisma.TaxYearDocumentScalarFieldEnum[]
+}
+
+/**
+ * Organization.onboardingTemplates
+ */
+export type Organization$onboardingTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OnboardingTemplate
+   */
+  select?: Prisma.OnboardingTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OnboardingTemplate
+   */
+  omit?: Prisma.OnboardingTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OnboardingTemplateInclude<ExtArgs> | null
+  where?: Prisma.OnboardingTemplateWhereInput
+  orderBy?: Prisma.OnboardingTemplateOrderByWithRelationInput | Prisma.OnboardingTemplateOrderByWithRelationInput[]
+  cursor?: Prisma.OnboardingTemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OnboardingTemplateScalarFieldEnum | Prisma.OnboardingTemplateScalarFieldEnum[]
+}
+
+/**
+ * Organization.attendanceCorrectionRequests
+ */
+export type Organization$attendanceCorrectionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttendanceCorrectionRequest
+   */
+  select?: Prisma.AttendanceCorrectionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AttendanceCorrectionRequest
+   */
+  omit?: Prisma.AttendanceCorrectionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttendanceCorrectionRequestInclude<ExtArgs> | null
+  where?: Prisma.AttendanceCorrectionRequestWhereInput
+  orderBy?: Prisma.AttendanceCorrectionRequestOrderByWithRelationInput | Prisma.AttendanceCorrectionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AttendanceCorrectionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttendanceCorrectionRequestScalarFieldEnum | Prisma.AttendanceCorrectionRequestScalarFieldEnum[]
 }
 
 /**

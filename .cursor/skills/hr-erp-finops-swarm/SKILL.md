@@ -12,6 +12,10 @@ disable-model-invocation: false
 
 # HR ERP FinOps and token efficiency (swarm / Cursor Tasks)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Who must use this
 
 | Context | Action |

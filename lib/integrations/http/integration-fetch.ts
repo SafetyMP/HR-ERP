@@ -25,7 +25,11 @@ export async function integrationFetch(
   const headers = new Headers(options.headers);
   headers.set("x-correlation-id", correlationId);
 
-  const { timeoutMs: _, correlationId: __, ...rest } = options;
+  const rest = Object.fromEntries(
+    Object.entries(options).filter(
+      ([key]) => key !== "timeoutMs" && key !== "correlationId",
+    ),
+  ) as Omit<IntegrationFetchOptions, "timeoutMs" | "correlationId">;
 
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);

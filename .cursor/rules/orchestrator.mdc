@@ -31,6 +31,8 @@ For **external contributor PR feedback** or delegating **human bug reports → I
 
 Cursor threads and delegated Tasks must avoid “heroic single-thread” merges that skip captured PO context or thrash dependencies.
 
+**Workspace grounding (repo skills)** — When a Task prompt attaches any `.cursor/skills/*/SKILL.md`, the delegate operates in **this HR ERP checkout** and must apply [.cursor/skills/README.md](../skills/README.md) (also referenced from `AGENTS.md`): verify cited paths and scripts with Read/Grep—do not substitute training-defaults for workspace facts.
+
 1. **Implementation freeze without PO checkpoint** — Do not start **extended Implementation** (more than **three** substantive application/contract files touched **or** any `package.json` / lockfile / GitHub Actions workflow / Prisma migration churn) unless the session or PR visibly records the **≤6-line PO orchestration checkpoint** plus Feature brief or spike ADR path from step **1**, or the issuing prompt carries orchestrator **step 1 chore N/A** verbatim.
 2. **Dependency churn budget** — `package.json` or lockfile edits must be **listed in the Implementation plan** approved by PO/Architecture notes. Cap terminal install retries (**two** failed `npm ci` or `npm install` attempts); then **stop** and escalate to the Human with a minimal repro (OS, Node version, excerpted error).
 3. **Traceability stub** — Non-chore PRs must paste the **`risk → control → artifact → verifier`** table from [`specs/templates/golden-thread-trace-table.md`](../../specs/templates/golden-thread-trace-table.md). Legal / compliance / UAC columns may read **N/A** with a one-line scope justification.

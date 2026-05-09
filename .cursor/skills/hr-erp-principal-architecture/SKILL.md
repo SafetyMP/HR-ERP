@@ -13,6 +13,10 @@ description: >-
 
 # HR ERP — Principal architecture (repo skill)
 
+## Workspace grounding
+
+Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [workspace grounding](../README.md) against the active checkout—use Read/Grep (or search), not training-data defaults.
+
 ## Who must use this
 
 **Orchestrator, Architecture agent, Implementation agents touching `prisma/**`, `services/**`, `workers/outbox-publisher/**`, `proto/**`, `contracts/**`, or `docker-compose.yml`** should load this skill for **non-trivial topology** (new aggregates across contexts, async boundaries, extraction toward dedicated databases). Narrow chores (copy, single-field rename in one table with no boundary change) may skip after logging **Architecture skill N/A** with one scope line in the PR or Task prompt.
