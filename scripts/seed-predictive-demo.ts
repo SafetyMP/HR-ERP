@@ -7,11 +7,16 @@
 import "dotenv/config";
 
 import { Prisma } from "@/app/generated/prisma/client";
+import { getDemoTenantId } from "@/lib/l10n/demo-tenant";
 import { prisma } from "@/lib/prisma";
 
-const DEMO_ORG_ID =
-  process.env.DEMO_TENANT_ID?.trim() ??
-  "a0000001-0001-4000-8000-000000000001";
+/** Same tenant as `/global-l10n/*` when `DEMO_TENANT_ID` is unset (see `lib/l10n/demo-tenant.ts`). */
+const DEMO_ORG_ID = getDemoTenantId();
+
+/** Stable UUID for Feature 001 QA / dev JWT (`DEV_SUBJECT_EMPLOYEE_ID`). */
+const DEMO_EMPLOYEE_JORDAN_ID =
+  process.env.DEMO_PAYSTUB_EMPLOYEE_ID?.trim() ??
+  "b0000001-0001-4000-8000-000000000011";
 
 function embed(skillSeed: string, dim = 8): number[] {
   const out = new Array(dim).fill(0);
@@ -28,6 +33,8 @@ function embed(skillSeed: string, dim = 8): number[] {
 }
 
 async function main() {
+  let icRoleIdForDemo = "";
+
   await prisma.$transaction(
     async (tx) => {
       await tx.$executeRaw(
@@ -65,6 +72,7 @@ async function main() {
           canonicalTitle: "Senior Rust Engineer",
         },
       });
+      icRoleIdForDemo = roleIc.id;
 
       const roleLead = await tx.jobRole.create({
         data: {
@@ -122,6 +130,7 @@ async function main() {
 
       const e1 = await tx.employee.create({
         data: {
+          id: DEMO_EMPLOYEE_JORDAN_ID,
           tenantId: DEMO_ORG_ID,
           email: "high-performer@predictive-hr.demo",
           firstName: "Jordan",
@@ -338,12 +347,55 @@ async function main() {
           metrics: { auc: 0.71, precision_at_10: 0.45 },
         },
       });
+
+      const payrollPeriod = await tx.payrollPeriod.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          startDate: new Date("2026-04-01"),
+          endDate: new Date("2026-04-15"),
+          label: "2026-04-A",
+        },
+      });
+
+      await tx.paymentInstruction.create({
+        data: {
+          tenantId: DEMO_ORG_ID,
+          employeeId: e1.id,
+          payrollPeriodId: payrollPeriod.id,
+          memo: "Demo employee earnings statement (Feature 001)",
+          lines: {
+            create: [
+              {
+                lineType: "SALARY",
+                sortOrder: 10,
+                amountMinor: 452_300,
+                currencyCode: "EUR",
+              },
+              {
+                lineType: "PRE_TAX_DEDUCTION",
+                sortOrder: 20,
+                amountMinor: 45_000,
+                currencyCode: "EUR",
+              },
+              {
+                lineType: "TAX_WITHHOLDING",
+                sortOrder: 30,
+                amountMinor: 120_000,
+                currencyCode: "EUR",
+              },
+            ],
+          },
+        },
+      });
     },
     { timeout: 60_000 },
   );
 
   console.info(
-    `Predictive HR demo data ready. Set DEMO_TENANT_ID=${DEMO_ORG_ID} for analytics demo pages.`,
+    `Predictive HR demo data ready. Add to .env (dev): DEMO_TENANT_ID=${DEMO_ORG_ID} and ANALYTICS_DEMO_MODE=1 for /analytics/* pages.`,
+  );
+  console.info(
+    `Skills matcher: DEMO_TARGET_ROLE_ID=${icRoleIdForDemo}  ·  Paystub employee id: ${DEMO_EMPLOYEE_JORDAN_ID}`,
   );
 }
 

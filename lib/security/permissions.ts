@@ -2,6 +2,7 @@ export const PERMISSIONS = [
   "employees:list",
   "employees:read",
   "employees:write",
+  "paystub:read",
   "attendance:clock",
   "onboarding:read",
   "onboarding:write",
@@ -27,11 +28,12 @@ export const ROLES = [
 export type Role = (typeof ROLES)[number];
 
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  employee: ["employees:read", "attendance:clock", "onboarding:read", "onboarding:write"],
+  employee: ["employees:read", "paystub:read", "attendance:clock", "onboarding:read", "onboarding:write"],
   manager: [
     "employees:list",
     "employees:read",
     "employees:write",
+    "paystub:read",
     "attendance:clock",
     "onboarding:read",
     "onboarding:write",
@@ -44,6 +46,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "employees:list",
     "employees:read",
     "employees:write",
+    "paystub:read",
     "attendance:clock",
     "onboarding:read",
     "onboarding:write",
@@ -59,6 +62,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "employees:list",
     "employees:read",
     "employees:write",
+    "paystub:read",
     "attendance:clock",
     "onboarding:read",
     "onboarding:write",

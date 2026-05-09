@@ -94,6 +94,68 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /me/attendance/today:
+    get:
+      operationId: getTodayAttendanceSelf
+      summary: Today's punches for the JWT subject employee in their attendance calendar zone.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT (HS256) with `attendance:clock` and `subject_employee_id`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodayAttendanceEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/paystub/current:
+    get:
+      operationId: getCurrentPaystubSelf
+      summary: Latest finalized paystub for the JWT subject employee (`subject_employee_id` claim).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT (HS256) with `paystub:read` and tenant claims
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — `data.paystub` is null when no finalized instruction exists
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaystubEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
 components:
   responses:
     Unauthorized:
@@ -173,6 +235,98 @@ components:
                   format: date-time
                 idempotentReplay:
                   type: boolean
+    TodayAttendanceEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [todayAttendance]
+          properties:
+            todayAttendance:
+              type: object
+              required: [calendarDate, timeZone, clockedIn, punches]
+              properties:
+                calendarDate:
+                  type: string
+                  format: date
+                timeZone:
+                  type: string
+                clockedIn:
+                  type: boolean
+                punches:
+                  type: array
+                  items:
+                    type: object
+                    required: [kind, occurredAt]
+                    properties:
+                      kind:
+                        type: string
+                        enum: [CLOCK_IN, CLOCK_OUT]
+                      occurredAt:
+                        type: string
+                        format: date-time
+    PaystubEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [paystub]
+          properties:
+            paystub:
+              nullable: true
+              type: object
+              required:
+                - payPeriodStart
+                - payPeriodEnd
+                - currencyCode
+                - grossPayMinor
+                - netPayMinor
+                - earnings
+                - preTaxDeductions
+                - taxes
+              properties:
+                payPeriodStart:
+                  type: string
+                  format: date
+                payPeriodEnd:
+                  type: string
+                  format: date
+                currencyCode:
+                  type: string
+                grossPayMinor:
+                  type: integer
+                netPayMinor:
+                  type: integer
+                earnings:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PaystubLine"
+                preTaxDeductions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PaystubLine"
+                taxes:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/PaystubLine"
+    PaystubLine:
+      type: object
+      required: [label, amountMinor, lineType]
+      properties:
+        label:
+          type: string
+        amountMinor:
+          type: integer
+        lineType:
+          type: string
     ErrorEnvelope:
       type: object
       required: [apiVersion, error]

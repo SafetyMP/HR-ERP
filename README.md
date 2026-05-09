@@ -23,9 +23,11 @@ cp .env.example .env
 # Edit JWT_SECRET. Default app DB listens on host port **15432** (`docker-compose.yml`); override with `HR_ERP_PG_PUBLISH` if needed.
 
 npm run db:up
-npm run db:migrate:deploy
+npm run demo:bootstrap
 npm run dev
 ```
+
+`demo:bootstrap` applies Prisma migrations (unless you pass `--skip-migrate`), runs predictive HR seed, global L10n demo data, and a US/JP holiday import. Set `ANALYTICS_DEMO_MODE=1` in `.env` for `/analytics/*` pages.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -64,6 +66,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run security:scan` | Repo security scan |
 | `npm run db:up` / `npm run db:up:arch` | Docker: default vs architecture profile |
 | `npm run db:migrate:deploy` | Apply migrations (demo / CI) |
+| `npm run demo:bootstrap` | One-shot local demo data (seeds + L10n + holidays) |
 | `npm run db:migrate` | Author migrations interactively (`migrate dev`) |
 | `npm run db:studio` | Prisma Studio |
 | `npm run contracts:openapi` / `contracts:buf` | Contract lint |
@@ -79,7 +82,7 @@ See **`package.json`** for the complete list.
 ## Predictive HR (churn, skills, benchmarks)
 
 - **Schema**: [`prisma/schema.prisma`](prisma/schema.prisma) — e.g. `Department`, `JobRole`, `ChurnScore`, `MarketBenchmark`
-- **Seed**: `npm run db:seed:predictive` — set `DEMO_TENANT_ID` and `ANALYTICS_DEMO_MODE=1` for demo UIs under [`src/app/analytics`](src/app/analytics)
+- **Seed**: `npm run demo:bootstrap` or `npm run db:seed:predictive` — use the same `DEMO_TENANT_ID` as [`lib/l10n/demo-tenant.ts`](lib/l10n/demo-tenant.ts) (default `default-tenant`); set `ANALYTICS_DEMO_MODE=1` for demo UIs under [`src/app/analytics`](src/app/analytics)
 - **APIs**: [`src/app/api/v1`](src/app/api/v1) — `analytics/churn`, `analytics/skills/match`, `analytics/benchmarks`, `ml/churn/score`
 - **Python**: train [`services/pipelines/train_churn.py`](services/pipelines/train_churn.py); serve with `uvicorn churn_api:app --app-dir services/ml-serving --port 8090`; ETL [`services/pipelines/etl_features.py`](services/pipelines/etl_features.py)
 - **Privacy**: [`docs/anonymization.md`](docs/anonymization.md)

@@ -47,6 +47,12 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild>
+              <Link href="/employee/time">Time</Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href="/employee/paystub">Earnings statement</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href="/examples/jurisdiction">Start with payroll fields</Link>
             </Button>
             <Button asChild variant="outline">
@@ -54,6 +60,23 @@ export default function Home() {
             </Button>
             <Button asChild variant="ghost">
               <Link href="/qa-lab">Open QA Lab</Link>
+            </Button>
+          </div>
+          <div className="flex flex-wrap gap-2 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+            <p className="w-full text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Data-backed demos (run <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">npm run demo:bootstrap</code>)
+            </p>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/analytics/churn">Churn</Link>
+            </Button>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/analytics/skills">Skills match</Link>
+            </Button>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/analytics/benchmarks">Benchmarks</Link>
+            </Button>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/global-l10n/profile">Global L10n lab</Link>
             </Button>
           </div>
         </div>

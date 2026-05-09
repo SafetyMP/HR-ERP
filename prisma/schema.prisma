@@ -942,6 +942,8 @@ enum PayoutLineType {
   BONUS
   EXPENSE_REIMBURSEMENT
   CONTRACTOR_PAY
+  PRE_TAX_DEDUCTION
+  TAX_WITHHOLDING
 }
 
 enum PayoutSplitMode {

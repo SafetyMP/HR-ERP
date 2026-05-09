@@ -20,6 +20,7 @@
     "db:up": "docker compose up -d",
     "db:up:arch": "docker compose --profile architecture up -d",
     "db:seed:predictive": "tsx scripts/seed-predictive-demo.ts",
+    "demo:bootstrap": "tsx scripts/bootstrap-local-demo.ts",
     "db:verify": "tsx scripts/db-verify-migration.ts",
     "db:load:fixtures": "tsx scripts/db-load-employee-scenarios.ts",
     "test": "vitest run",

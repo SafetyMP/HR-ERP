@@ -26,6 +26,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "attendance:clock",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("GET", "/api/v1/me/attendance/today")]: {
+    permission: "attendance:clock",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("GET", "/api/v1/analytics/churn")]: {
     permission: "analytics:churn:read",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
@@ -40,6 +44,10 @@ const ROUTES: Record<string, RoutePolicy> = {
   },
   [routeKey("POST", "/api/v1/ml/churn/score")]: {
     permission: "analytics:churn:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/paystub/current")]: {
+    permission: "paystub:read",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
 };

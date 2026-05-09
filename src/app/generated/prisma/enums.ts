@@ -91,7 +91,9 @@ export const PayoutLineType = {
   SALARY: 'SALARY',
   BONUS: 'BONUS',
   EXPENSE_REIMBURSEMENT: 'EXPENSE_REIMBURSEMENT',
-  CONTRACTOR_PAY: 'CONTRACTOR_PAY'
+  CONTRACTOR_PAY: 'CONTRACTOR_PAY',
+  PRE_TAX_DEDUCTION: 'PRE_TAX_DEDUCTION',
+  TAX_WITHHOLDING: 'TAX_WITHHOLDING'
 } as const
 
 export type PayoutLineType = (typeof PayoutLineType)[keyof typeof PayoutLineType]

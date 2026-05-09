@@ -14,11 +14,21 @@ const tenantId =
 const subject =
   process.env.DEV_SUBJECT_ID ?? "22222222-2222-2222-2222-222222222222";
 
-const token = await new SignJWT({
+const roles = (process.env.DEV_ROLES ?? "hr_admin")
+  .split(",")
+  .map((r) => r.trim())
+  .filter(Boolean);
+
+const subjectEmployeeId = process.env.DEV_SUBJECT_EMPLOYEE_ID?.trim();
+
+const payload = {
   tenant_id: tenantId,
-  roles: ["hr_admin"],
+  roles,
   mfa_level: "standard",
-})
+  ...(subjectEmployeeId ? { subject_employee_id: subjectEmployeeId } : {}),
+};
+
+const token = await new SignJWT(payload)
   .setProtectedHeader({ alg: "HS256" })
   .setSubject(subject)
   .setIssuedAt()

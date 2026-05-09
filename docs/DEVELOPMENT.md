@@ -60,6 +60,14 @@ Apply Prisma migrations to the main app database (non-interactive — safe for d
 npm run db:migrate:deploy
 ```
 
+**All-in-one demo data** (predictive HR seed, global L10n bootstrap, US/JP holiday fetch):
+
+```bash
+npm run demo:bootstrap
+```
+
+Flags: `--skip-migrate`, `--skip-predictive`, `--skip-holiday`, `--year=2026`. Set `ANALYTICS_DEMO_MODE=1` in `.env` for `/analytics/*` in dev.
+
 Use `npm run db:migrate` when you are authoring new migrations interactively (`prisma migrate dev`).
 
 For a throwaway local reset when you accept data loss:
@@ -125,6 +133,7 @@ Generated Prisma client output may appear under `src/app/generated/prisma/` afte
 | `npm run db:studio` | Prisma Studio |
 | `npm run db:migrate:deploy` | Apply migrations (`prisma migrate deploy`) |
 | `npm run db:migrate` | Interactive migration authoring (`prisma migrate dev`) |
+| `npm run demo:bootstrap` | Migrate + predictive seed + L10n + US/JP holidays (see flags in §4) |
 | `npm run db:seed:predictive` | Seed predictive HR demo data |
 | `npm run outbox:kafka` | Run outbox publisher (needs Kafka + `OUTBOX_DATABASE_URL` / env from `.env.example`) |
 | `npm run worker:integrations` | Integration worker entry (Redis / BullMQ) |
