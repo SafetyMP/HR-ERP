@@ -1,3 +1,9 @@
+## [2.0.2](https://github.com/SafetyMP/HR-ERP/compare/v2.0.1...v2.0.2) (2026-05-09)
+
+### Bug Fixes
+
+* **ci:** pass JWT_SECRET from GitHub production env for prebuilt Vercel build ([8bb51fa](https://github.com/SafetyMP/HR-ERP/commit/8bb51fa036ef6e146c90f15de8f420af687319e7))
+
 ## [2.0.1](https://github.com/SafetyMP/HR-ERP/compare/v2.0.0...v2.0.1) (2026-05-09)
 
 ### Bug Fixes
