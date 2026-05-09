@@ -18,6 +18,11 @@ const DEMO_EMPLOYEE_JORDAN_ID =
   process.env.DEMO_PAYSTUB_EMPLOYEE_ID?.trim() ??
   "b0000001-0001-4000-8000-000000000011";
 
+/** Stable UUID for manager JWT / Feature 008 E2E (`DEV_SUBJECT_EMPLOYEE_ID`). */
+const DEMO_MANAGER_ALEX_ID =
+  process.env.DEMO_MANAGER_EMPLOYEE_ID?.trim() ??
+  "b0000001-0001-4000-8000-000000000020";
+
 function embed(skillSeed: string, dim = 8): number[] {
   const out = new Array(dim).fill(0);
   let h = 0;
@@ -117,6 +122,7 @@ async function main() {
 
       const mgr = await tx.employee.create({
         data: {
+          id: DEMO_MANAGER_ALEX_ID,
           tenantId: DEMO_ORG_ID,
           email: "manager@predictive-hr.demo",
           firstName: "Alex",

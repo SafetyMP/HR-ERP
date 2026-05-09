@@ -291,6 +291,259 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+  /me/time-off/requests:
+    get:
+      operationId: listMyTimeOffRequests
+      summary: Employee-submitted multi-day leave requests with workflow status (`leave:self_submit`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `leave:self_submit` and `subject_employee_id`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — newest submissions first
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeOffRequestsListEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createMyTimeOffRequest
+      summary: Submit an inclusive date range (≤14 calendar days) for HR/manager follow-up.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTimeOffRequestBody"
+      responses:
+        "200":
+          description: OK — created row with `PENDING` status until HR updates it out-of-band
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeOffRequestSingleEnvelope"
+        "400":
+          description: Validation — invalid range or span too long
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/paystub/history:
+    get:
+      operationId: listPaystubHistorySelf
+      summary: Summarized finalized pay periods for the subject employee (gross/net only).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `paystub:read`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — empty array when only one or zero periods exist
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaystubHistoryEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /manager/team/attendance/today:
+    get:
+      operationId: getManagerTeamAttendanceToday
+      summary: Today's punch-derived clock status per direct report (`manager:team_attendance`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with manager or HR role including `manager:team_attendance`; principal must be the manager row.
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK — empty members when manager has no direct reports in Core HR
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagerTeamAttendanceEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/onboarding/tasks:
+    get:
+      operationId: listMyOnboardingTasks
+      summary: Onboarding checklist rows assigned to the subject employee.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `onboarding:read`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingTasksListEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: patchMyOnboardingTask
+      summary: Advance task status forward along `PENDING` → `IN_PROGRESS` → `DONE`.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer JWT with `onboarding:write`
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchOnboardingTaskBody"
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingTaskSingleEnvelope"
+        "400":
+          description: Invalid transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /me/hr-case-requests:
+    post:
+      operationId: createMyHrCaseRequest
+      summary: Structured HR/payroll intake note (`case:intake_submit`).
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateHrCaseRequestBody"
+      responses:
+        "200":
+          description: OK — queued as `OPEN`
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HrCaseRequestSingleEnvelope"
+        "400":
+          description: Validation — body too short or invalid category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
 components:
   responses:
     Unauthorized:
@@ -419,6 +672,7 @@ components:
               nullable: true
               type: object
               required:
+                - paymentInstructionId
                 - payPeriodStart
                 - payPeriodEnd
                 - currencyCode
@@ -428,6 +682,9 @@ components:
                 - preTaxDeductions
                 - taxes
               properties:
+                paymentInstructionId:
+                  type: string
+                  format: uuid
                 payPeriodStart:
                   type: string
                   format: date
@@ -543,6 +800,247 @@ components:
         requestDate:
           type: string
           format: date
+    TimeOffRequestItem:
+      type: object
+      required: [id, startDate, endDate, status, note, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [PENDING, APPROVED, DENIED]
+        note:
+          nullable: true
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    TimeOffRequestsListEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [timeOffRequests]
+          properties:
+            timeOffRequests:
+              type: array
+              items:
+                $ref: "#/components/schemas/TimeOffRequestItem"
+    TimeOffRequestSingleEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [timeOffRequest]
+          properties:
+            timeOffRequest:
+              $ref: "#/components/schemas/TimeOffRequestItem"
+    CreateTimeOffRequestBody:
+      type: object
+      required: [startDate, endDate]
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        note:
+          nullable: true
+          type: string
+          maxLength: 500
+    PaystubHistorySummary:
+      type: object
+      required:
+        [paymentInstructionId, payPeriodStart, payPeriodEnd, currencyCode, grossPayMinor, netPayMinor]
+      properties:
+        paymentInstructionId:
+          type: string
+          format: uuid
+        payPeriodStart:
+          type: string
+          format: date
+        payPeriodEnd:
+          type: string
+          format: date
+        currencyCode:
+          type: string
+        grossPayMinor:
+          type: integer
+        netPayMinor:
+          type: integer
+    PaystubHistoryEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [paystubHistory]
+          properties:
+            paystubHistory:
+              type: array
+              items:
+                $ref: "#/components/schemas/PaystubHistorySummary"
+    ManagerTeamMemberAttendance:
+      type: object
+      required: [employeeId, displayName, calendarDate, timeZone, clockedIn, punches]
+      properties:
+        employeeId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        calendarDate:
+          type: string
+          format: date
+        timeZone:
+          type: string
+        clockedIn:
+          type: boolean
+        punches:
+          type: array
+          items:
+            type: object
+            required: [kind, occurredAt]
+            properties:
+              kind:
+                type: string
+                enum: [CLOCK_IN, CLOCK_OUT]
+              occurredAt:
+                type: string
+                format: date-time
+    ManagerTeamAttendanceEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [managerTeamAttendance]
+          properties:
+            managerTeamAttendance:
+              type: object
+              required: [members]
+              properties:
+                members:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ManagerTeamMemberAttendance"
+    OnboardingTaskItem:
+      type: object
+      required: [id, title, status, dueAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, DONE]
+        dueAt:
+          nullable: true
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date-time
+    OnboardingTasksListEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [onboardingTasks]
+          properties:
+            onboardingTasks:
+              type: array
+              items:
+                $ref: "#/components/schemas/OnboardingTaskItem"
+    OnboardingTaskSingleEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [onboardingTask]
+          properties:
+            onboardingTask:
+              $ref: "#/components/schemas/OnboardingTaskItem"
+    PatchOnboardingTaskBody:
+      type: object
+      required: [taskId, status]
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, DONE]
+    CreateHrCaseRequestBody:
+      type: object
+      required: [category, body]
+      properties:
+        category:
+          type: string
+          enum: [PAYROLL, BENEFITS, HR_OTHER]
+        body:
+          type: string
+          minLength: 8
+          maxLength: 4000
+    HrCaseRequestSingleEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [hrCaseRequest]
+          properties:
+            hrCaseRequest:
+              type: object
+              required: [id, category, status, createdAt]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                category:
+                  type: string
+                  enum: [PAYROLL, BENEFITS, HR_OTHER]
+                status:
+                  type: string
+                  enum: [OPEN, ACKNOWLEDGED]
+                createdAt:
+                  type: string
+                  format: date-time
     MyProfileEnvelope:
       type: object
       required: [apiVersion, data]
