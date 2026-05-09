@@ -62,3 +62,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Rel
 - **security:** remove `POST /api/auth/token` bearer-issuer mint flow; use local `jwt:dev` (same `JWT_SECRET` as target env) or IdP integration when added.
 - **deploy:** production prebuilt Vercel build uses GitHub Environment `JWT_SECRET` (must match Vercel Production) so Edge middleware inlines the real secret; assert step fails fast if unset.
 - **deploy:** strip `JWT_SECRET` whitespace in CI before `vercel build` to avoid newline/paste-related failures and signature drift.
+- **vercel:** drop `experimentalServices` (Next + Python) from `vercel.json` — builds completed but **Deploying outputs** repeatedly errored; use `ML_SERVING_URL` for churn FastAPI instead.

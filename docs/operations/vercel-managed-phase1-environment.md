@@ -6,6 +6,7 @@ Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0
 
 - Link the GitHub repo in Vercel (or deploy via [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) using `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`).
 - Runtime config in repo: [`vercel.json`](../../vercel.json) (regions, baseline security headers). Prefer environment-specific overrides in the Vercel dashboard for preview vs production.
+- **Churn ML API:** The Next app proxies to **`ML_SERVING_URL`** ([`POST /api/v1/ml/churn/score`](../../src/app/api/v1/ml/churn/score/route.ts)). Co-deploying the Python FastAPI service via Vercel `experimentalServices` previously caused intermittent **“Deploying outputs…”** failures after successful `next build`; production should set **`ML_SERVING_URL`** to a reachable FastAPI base URL (separate host, container, or `vercel dev` locally) if you need churn scoring in cloud.
 
 ## Required application secrets (production / preview)
 
