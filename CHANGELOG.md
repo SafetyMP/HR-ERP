@@ -1,3 +1,9 @@
+## [2.0.4](https://github.com/SafetyMP/HR-ERP/compare/v2.0.3...v2.0.4) (2026-05-09)
+
+### Bug Fixes
+
+* **vercel:** drop experimentalServices to fix Deploying outputs failures ([ab132e7](https://github.com/SafetyMP/HR-ERP/commit/ab132e7ad7ee7780105fe42dcb6c9cac7bbb2a05))
+
 ## [2.0.3](https://github.com/SafetyMP/HR-ERP/compare/v2.0.2...v2.0.3) (2026-05-09)
 
 ### Bug Fixes
