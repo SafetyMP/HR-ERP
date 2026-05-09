@@ -75,7 +75,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "effect": "^3.17.13",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-next": "16.2.6",
     "prettier": "^3.5.3",
     "prisma": "^7.8.0",
