@@ -17,6 +17,7 @@ export function demoHrAdminAuth(
   };
 }
 
+/** Enables local-only demo UI (analytics dashboards + `/demo/capabilities` hub). Never in production. */
 export function isAnalyticsDemoMode(): boolean {
   return (
     process.env.ANALYTICS_DEMO_MODE === "1" &&

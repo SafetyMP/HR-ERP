@@ -66,7 +66,7 @@ npm run db:migrate:deploy
 npm run demo:bootstrap
 ```
 
-Flags: `--skip-migrate`, `--skip-predictive`, `--skip-holiday`, `--year=2026`. Set `ANALYTICS_DEMO_MODE=1` in `.env` for `/analytics/*` in dev.
+Flags: `--skip-migrate`, `--skip-predictive`, `--skip-holiday`, `--year=2026`. Set `ANALYTICS_DEMO_MODE=1` in `.env` for `/analytics/*` and **`/demo/capabilities`** (read-only Phase 3 seed snapshot: performance, compensation, positions, learning, workflow, engagement, webhooks, COBRA) in dev.
 
 **Where the data lands:**
 
@@ -91,7 +91,7 @@ Verify migration hygiene (orphan checks, optional advanced flows): `npm run db:v
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). With `ANALYTICS_DEMO_MODE=1` and `DEMO_TENANT_ID` set, open [http://localhost:3000/demo/capabilities](http://localhost:3000/demo/capabilities) for the Phase 3 seed snapshot (counts align after `npm run demo:bootstrap`).
 
 ### Authenticated API smoke tests
 

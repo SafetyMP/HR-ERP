@@ -19,7 +19,8 @@ export async function createPerformanceGoal(
   auth: AuthContext,
   input: CreateGoalInput,
 ) {
-  if (input.isSelf && input.employeeId !== auth.subjectId) {
+  const selfEmployeeId = auth.subjectEmployeeId ?? auth.subjectId;
+  if (input.isSelf && input.employeeId !== selfEmployeeId) {
     throw new ApiError(403, {
       code: "forbidden",
       message: "self-goal write must target the calling subject",
@@ -92,14 +93,13 @@ export async function listGoalsForEmployee(
   employeeId: string,
   cycleId?: string,
 ) {
+  const selfId = auth.subjectEmployeeId ?? auth.subjectId;
   return withAuthorizedTransaction(
     prisma,
     auth,
     {
       permission:
-        employeeId === auth.subjectId
-          ? "performance:goal_self_write"
-          : "performance:cycle_read",
+        employeeId === selfId ? "performance:goal_self_write" : "performance:cycle_read",
       resourceClassification: "internal",
     },
     async (tx) =>
@@ -112,5 +112,76 @@ export async function listGoalsForEmployee(
         orderBy: [{ createdAt: "desc" }],
         take: 200,
       }),
+  );
+}
+
+/** Goals for direct reports only — manager JWT must carry `subject_employee_id`. */
+export async function listGoalsForDirectReports(
+  auth: AuthContext,
+  cycleId?: string,
+) {
+  const managerId = auth.subjectEmployeeId;
+  if (!managerId) {
+    throw new ApiError(403, {
+      code: "forbidden",
+      message: "employee_context_required",
+    });
+  }
+
+  return withAuthorizedTransaction(
+    prisma,
+    auth,
+    {
+      permission: "performance:goal_team_write",
+      resourceClassification: "internal",
+    },
+    async (tx) => {
+      const reports = await tx.employee.findMany({
+        where: { tenantId: auth.tenantId, managerId },
+        select: { id: true },
+        orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+        take: 100,
+      });
+      const ids = reports.map((r) => r.id);
+      if (ids.length === 0) {
+        return [];
+      }
+
+      const goals = await tx.performanceGoal.findMany({
+        where: {
+          tenantId: auth.tenantId,
+          employeeId: { in: ids },
+          ...(cycleId ? { cycleId } : {}),
+        },
+        orderBy: [{ employeeId: "asc" }, { createdAt: "desc" }],
+        take: 500,
+      });
+
+      const empIds = [...new Set(goals.map((g) => g.employeeId))];
+      const employees = await tx.employee.findMany({
+        where: { tenantId: auth.tenantId, id: { in: empIds } },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          preferredName: true,
+        },
+      });
+      const byId = new Map(employees.map((e) => [e.id, e]));
+
+      return goals.map((g) => {
+        const employee = byId.get(g.employeeId);
+        return {
+          ...g,
+          employee:
+            employee ?? {
+              id: g.employeeId,
+              firstName: "",
+              lastName: "",
+              preferredName: null as string | null,
+            },
+        };
+      });
+    },
   );
 }

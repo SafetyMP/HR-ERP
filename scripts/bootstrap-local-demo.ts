@@ -99,6 +99,7 @@ Add to .env for analytics pages (local dev only):
   ANALYTICS_DEMO_MODE=1
 
 Then run: npm run dev
+  · http://localhost:3000/demo/capabilities  (Phase 3 seeded snapshot — set ANALYTICS_DEMO_MODE=1)
   · http://localhost:3000/analytics/churn
   · http://localhost:3000/analytics/skills
   · http://localhost:3000/analytics/benchmarks

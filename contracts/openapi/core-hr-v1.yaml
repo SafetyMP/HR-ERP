@@ -1522,6 +1522,29 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
   /manager/performance/goals:
+    get:
+      operationId: listTeamPerformanceGoals
+      summary: List performance goals for direct reports.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: cycleId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
     post:
       operationId: createTeamPerformanceGoal
       summary: Manager-authored team-member goal.

@@ -69,7 +69,13 @@ function WorkflowSection({
               size="lg"
               className="w-full justify-center sm:w-auto"
             >
-              <Link href={link.href}>{link.label}</Link>
+              {link.href.startsWith("http") ? (
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              ) : (
+                <Link href={link.href}>{link.label}</Link>
+              )}
             </Button>
           </li>
         ))}
@@ -81,6 +87,7 @@ function WorkflowSection({
 export default function Home() {
   const employeeSelfService: DemoLink[] = [
     { href: "/employee/time", label: "Time & attendance", emphasis: true },
+    { href: "/employee/performance/goals", label: "My performance goals", emphasis: true },
     { href: "/employee/paystub", label: "Current earnings statement", emphasis: true },
     { href: "/employee/paystub/history", label: "Pay history" },
     { href: "/employee/benefits", label: "Benefits summary" },
@@ -96,6 +103,7 @@ export default function Home() {
 
   const manager: DemoLink[] = [
     { href: "/manager/team-attendance", label: "Team attendance today", emphasis: true },
+    { href: "/manager/team-performance", label: "Team performance goals" },
     { href: "/manager/team-leave", label: "Team leave decisions" },
     { href: "/manager/punch-corrections", label: "Punch correction proposals" },
   ];
@@ -105,8 +113,16 @@ export default function Home() {
     { href: "/hr/onboarding-templates", label: "Onboarding templates" },
   ];
 
+  const platformCapabilities: DemoLink[] = [
+    { href: "/demo/capabilities", label: "Capability hub (Phase 3 snapshot)", emphasis: true },
+    {
+      href: "https://github.com/SafetyMP/HR-ERP/blob/main/contracts/openapi/core-hr-v1.yaml",
+      label: "Core HR OpenAPI spec",
+    },
+  ];
+
   const analytics: DemoLink[] = [
-    { href: "/analytics/churn", label: "Flight risk (churn)" },
+    { href: "/analytics/churn", label: "Flight risk (churn)", emphasis: true },
     { href: "/analytics/skills", label: "Skills match" },
     { href: "/analytics/benchmarks", label: "Market benchmarks" },
     { href: "/global-l10n/profile", label: "Global L10n lab" },
@@ -118,7 +134,13 @@ export default function Home() {
       <code className="rounded-md bg-primary-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
         npm run demo:bootstrap
       </code>{" "}
-      first so analytics routes have seed data.
+      for predictive HR + Phase 3 seeds; set{" "}
+      <code className="rounded-md bg-primary-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
+        ANALYTICS_DEMO_MODE=1
+      </code>{" "}
+      and <code className="rounded-md bg-primary-muted px-1.5 py-0.5 font-mono text-xs text-foreground">DEMO_TENANT_ID</code> so{" "}
+      <strong className="font-semibold text-card-foreground">/demo/capabilities</strong> and{" "}
+      <strong className="font-semibold text-card-foreground">/analytics/*</strong> can read Postgres.
     </>
   );
 
@@ -152,12 +174,25 @@ export default function Home() {
         tabIndex={-1}
       >
         <nav aria-label="Demo workflows by role" className="flex flex-col gap-8">
-          <WorkflowSection
-            id="nav-employee"
-            title="Employee self-service"
-            description="Pay, time off, profile, and lifecycle tasks most employees open weekly."
-            links={employeeSelfService}
-          />
+          <div className="flex flex-col gap-3">
+            <WorkflowSection
+              id="nav-employee"
+              title="Employee self-service"
+              description="Pay, time off, profile, and lifecycle tasks most employees open weekly."
+              links={employeeSelfService}
+            />
+            <p className="rounded-xl border border-dashed border-border bg-muted/40 px-4 py-3 text-sm leading-relaxed text-muted-foreground">
+              Learning enrollments and engagement pulse responses use{" "}
+              <code className="rounded bg-background px-1 py-0.5 font-mono text-xs">
+                /api/v1/me/*
+              </code>{" "}
+              — seed coverage is summarized on the{" "}
+              <Link href="/demo/capabilities" className="font-medium text-primary underline underline-offset-4">
+                capability hub
+              </Link>
+              .
+            </p>
+          </div>
           <WorkflowSection
             id="nav-manager"
             title="Manager"
@@ -171,16 +206,23 @@ export default function Home() {
             links={hrOps}
           />
 
+          <WorkflowSection
+            id="nav-platform-capabilities"
+            title="Platform capabilities (Phase 3)"
+            description="Cross-role snapshot of performance, compensation, positions, learning, workflow, engagement, webhooks, and COBRA seeds — not analytics dashboards."
+            links={platformCapabilities}
+          />
+
           <section
             aria-labelledby="nav-analytics"
             className="rounded-2xl border-2 border-border bg-card p-6 shadow-sm"
           >
             <div className="mb-5 border-l-4 border-primary pl-4">
               <h2 id="nav-analytics" className="text-lg font-semibold tracking-tight text-card-foreground">
-                Analytics &amp; experiments
+                Analytics &amp; global labs
               </h2>
               <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
-                Read-only dashboards backed by Postgres seeds. {bootstrapHint}
+                Predictive HR demos (churn, skills, benchmarks) and localization experiments. {bootstrapHint}
               </p>
             </div>
             <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3" role="list">

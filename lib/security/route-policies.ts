@@ -226,6 +226,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "performance:goal_self_write",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("GET", "/api/v1/manager/performance/goals")]: {
+    permission: "performance:goal_team_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("POST", "/api/v1/manager/performance/goals")]: {
     permission: "performance:goal_team_write",
     abac: { minMfa: "standard", maxDataClassification: "internal" },

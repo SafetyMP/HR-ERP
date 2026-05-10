@@ -15,7 +15,7 @@ The repo supports **human contributors and Cursor-orchestrated agents**; orchest
 
 | Area | Location |
 | --- | --- |
-| **Web app** | [`src/app/`](src/app/) — dashboards (`/analytics`), L10n lab, governance APIs, versioned REST under `/api/v1`. |
+| **Web app** | [`src/app/`](src/app/) — dashboards (`/analytics`), **Phase 3 capability hub** (`/demo/capabilities` when `ANALYTICS_DEMO_MODE=1`), L10n lab, governance APIs, versioned REST under `/api/v1`. |
 | **Data plane** | [`prisma/`](prisma/) — app DB and RLS-oriented migrations; optional **bounded-context** Postgres via Docker ([`docker-compose.yml`](docker-compose.yml)). |
 | **Security** | [`middleware.ts`](middleware.ts) for `/api/v1/*`; tenant session GUCs via [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts). |
 | **Contracts** | OpenAPI in [`contracts/openapi/`](contracts/openapi/) and Protobuf in [`proto/`](proto/) (see `npm run contracts:*`). |
@@ -49,10 +49,11 @@ npm run demo:bootstrap
 npm run dev
 ```
 
-- **`demo:bootstrap`** applies Prisma migrations (unless you pass `--skip-migrate`), predictive HR seed, global L10n demo data, and US/JP holiday import.
-- Set **`ANALYTICS_DEMO_MODE=1`** in `.env` to enable demo UI under [`src/app/analytics`](src/app/analytics).
+- **`demo:bootstrap`** applies Prisma migrations (unless you pass `--skip-migrate`), predictive HR seed, global L10n demo data, US/JP holiday import, and the **Phase 3** snapshot slice (performance, compensation, LMS, workflow, engagement, webhooks, COBRA).
+- Set **`ANALYTICS_DEMO_MODE=1`** and **`DEMO_TENANT_ID`** (must match your seeded tenant) in `.env` to enable **read-only demo Postgres surfaces**: predictive dashboards under [`src/app/analytics`](src/app/analytics) and the **[capability hub](http://localhost:3000/demo/capabilities)** (`/demo/capabilities`).
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). From home, use **Platform capabilities (Phase 3)** for the hub and **Analytics & global labs** for churn/skills/benchmarks/L10n.
+
 
 **Deeper setup** (multiple databases, Kafka, workers): [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
