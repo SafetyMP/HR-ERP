@@ -1,3 +1,9 @@
+## [2.2.0](https://github.com/SafetyMP/HR-ERP/compare/v2.1.3...v2.2.0) (2026-05-10)
+
+### Features
+
+* **hr-erp:** phase 1 + ATS scaffold from competitive-analysis roadmap ([0decc8d](https://github.com/SafetyMP/HR-ERP/commit/0decc8dac4a0b11e01223bb857493907cd9419dd))
+
 ## [2.1.3](https://github.com/SafetyMP/HR-ERP/compare/v2.1.2...v2.1.3) (2026-05-09)
 
 ### Bug Fixes
