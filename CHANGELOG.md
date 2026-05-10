@@ -1,3 +1,9 @@
+## [2.3.1](https://github.com/SafetyMP/HR-ERP/compare/v2.3.0...v2.3.1) (2026-05-10)
+
+### Bug Fixes
+
+* **payroll-calc:** extensionless relative imports for Next/webpack ([1dfd325](https://github.com/SafetyMP/HR-ERP/commit/1dfd3258308f366b64e7615773fb508a3607b577))
+
 ## [2.3.0](https://github.com/SafetyMP/HR-ERP/compare/v2.2.0...v2.3.0) (2026-05-10)
 
 ### Features
