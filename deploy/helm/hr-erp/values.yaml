@@ -1,0 +1,79 @@
+# Default values for hr-erp.
+# Override with: helm upgrade --install hr-erp ./deploy/helm/hr-erp -f my-values.yaml
+
+image:
+  repository: ghcr.io/your-org/hr-erp
+  # Pin via SHA in production. The default tag exists only to make the chart
+  # render in CI dry-runs.
+  tag: "2.1.3"
+  pullPolicy: IfNotPresent
+
+replicaCount: 3
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  hosts: []
+  tls: []
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+# Database. In production, point this at a managed Postgres (Neon / RDS /
+# Cloud SQL) and keep credentials in your secret manager — `existingSecret`
+# is the right hook.
+database:
+  host: ""
+  name: hr_erp
+  user: hr_erp_app
+  existingSecret: ""
+  existingSecretKey: DATABASE_URL
+
+# JWT — see docs/security/identity-and-jwks.md for keys / JWKS rotation.
+auth:
+  jwksUrl: ""
+  audience: hr-erp
+  issuer: ""
+  existingSecret: ""
+
+# OpenTelemetry collector endpoint (OTLP gRPC).
+telemetry:
+  otlpEndpoint: ""
+  serviceName: hr-erp
+
+# Pod security defaults — agents and reviewers should NOT loosen these
+# without a documented exception in the SOC 2 control matrix.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+networkPolicy:
+  enabled: true
+  egress:
+    # Allow Postgres + cluster DNS by default; add carriers / vendors here.
+    extraCidrs: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 75

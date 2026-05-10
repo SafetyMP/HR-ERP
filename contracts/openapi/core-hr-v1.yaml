@@ -984,6 +984,1244 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+  /recruiting/requisitions:
+    get:
+      operationId: listRecruitingRequisitions
+      summary: List job requisitions for the tenant.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [DRAFT, OPEN, ON_HOLD, CLOSED, FILLED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createRecruitingRequisition
+      summary: Create a draft job requisition.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string, minLength: 1, maxLength: 200 }
+                departmentId: { type: string, format: uuid, nullable: true }
+                jobRoleId: { type: string, format: uuid, nullable: true }
+                hiringManagerId: { type: string, format: uuid, nullable: true }
+                openings: { type: integer, minimum: 1, maximum: 1000 }
+                locationCountry: { type: string, pattern: "^[A-Z]{2}$", nullable: true }
+                employmentType:
+                  type: string
+                  enum: [FULL_TIME, PART_TIME, CONTRACT, INTERN, TEMP]
+                description: { type: string, maxLength: 20000, nullable: true }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /recruiting/requisitions/{id}:
+    patch:
+      operationId: transitionRecruitingRequisitionStatus
+      summary: Transition a requisition status (DRAFT/OPEN/ON_HOLD/CLOSED/FILLED).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [DRAFT, OPEN, ON_HOLD, CLOSED, FILLED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Requisition not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/requisitions/{id}/applications:
+    get:
+      operationId: listRecruitingRequisitionApplications
+      summary: List applications attached to a requisition.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /recruiting/applications:
+    post:
+      operationId: createRecruitingApplication
+      summary: Create or upsert a candidate + application against an OPEN requisition.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [requisitionId, candidate]
+              properties:
+                requisitionId:
+                  type: string
+                  format: uuid
+                candidate:
+                  type: object
+                  required: [fullName, email]
+                  properties:
+                    fullName: { type: string, minLength: 1, maxLength: 200 }
+                    email: { type: string, format: email, maxLength: 254 }
+                    phone: { type: string, nullable: true, maxLength: 50 }
+                    sourceChannel:
+                      type: string
+                      enum:
+                        - CAREERS_SITE
+                        - EMPLOYEE_REFERRAL
+                        - AGENCY
+                        - LINKEDIN
+                        - JOB_BOARD
+                        - EVENT
+                        - OTHER
+                note:
+                  type: string
+                  nullable: true
+                  maxLength: 2000
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Requisition not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Requisition is not OPEN
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/applications/{id}/screening-proposals:
+    post:
+      operationId: createRecruitingScreeningProposal
+      summary: |
+        Create an HITL-gated AI screening proposal for an application. The
+        proposal must be APPROVED separately (governance:ai_approve) before it
+        can authorize a HIRED stage transition or an offer extension.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rationale]
+              properties:
+                rationale: { type: string, minLength: 1, maxLength: 8000 }
+                modelVersion: { type: string, nullable: true, maxLength: 120 }
+                factors:
+                  type: array
+                  maxItems: 20
+                  items:
+                    type: object
+                    required: [label, direction]
+                    properties:
+                      label: { type: string, minLength: 1, maxLength: 120 }
+                      direction:
+                        type: string
+                        enum: [increases_score, decreases_score, neutral]
+                      detail: { type: string, maxLength: 500 }
+      responses:
+        "201":
+          description: Proposal created (status PROPOSED)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Application not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/applications/{id}/stage:
+    patch:
+      operationId: transitionRecruitingApplicationStage
+      summary: |
+        Advance an application stage. Transition to HIRED requires
+        `proposalId` referencing an APPROVED HIRE-class governance proposal.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [toStage]
+              properties:
+                toStage:
+                  type: string
+                  enum: [SCREENING, INTERVIEW, OFFER, HIRED, REJECTED, WITHDRAWN]
+                proposalId:
+                  type: string
+                  format: uuid
+                  nullable: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Application not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Invalid stage transition or governance violation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/offers:
+    post:
+      operationId: draftRecruitingOffer
+      summary: |
+        Draft an offer in PENDING_HITL_APPROVAL. Compensation is in minor
+        units; extending the offer requires governance approval.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [applicationId, baseAnnualAmountMinor, currencyCode]
+              properties:
+                applicationId:
+                  type: string
+                  format: uuid
+                baseAnnualAmountMinor:
+                  oneOf:
+                    - type: integer
+                      minimum: 1
+                    - type: string
+                      pattern: "^\\d+$"
+                  description: Annual base in ISO-4217 minor units (e.g. cents).
+                currencyCode:
+                  type: string
+                  pattern: "^[A-Z]{3}$"
+                startDate:
+                  type: string
+                  format: date
+                  nullable: true
+                expiresAt:
+                  type: string
+                  format: date-time
+                  nullable: true
+      responses:
+        "201":
+          description: Drafted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Application not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Application stage not eligible for offer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /performance/cycles:
+    get:
+      operationId: listPerformanceCycles
+      summary: List performance review cycles for the tenant.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [DRAFT, OPEN, CALIBRATION, CLOSED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createPerformanceCycle
+      summary: Create a DRAFT performance cycle.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, startDate, endDate]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 200 }
+                startDate: { type: string, format: date }
+                endDate: { type: string, format: date }
+                ratingScaleMax: { type: integer, minimum: 3, maximum: 7 }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /performance/cycles/{id}:
+    patch:
+      operationId: transitionPerformanceCycleStatus
+      summary: Transition a performance cycle (OPEN/CALIBRATION/CLOSED).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [OPEN, CALIBRATION, CLOSED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Cycle not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Invalid cycle transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /me/performance/goals:
+    get:
+      operationId: listMyPerformanceGoals
+      summary: List the calling employee's performance goals.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: cycleId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createMyPerformanceGoal
+      summary: Create a self-authored goal in an OPEN cycle.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cycleId, title]
+              properties:
+                cycleId: { type: string, format: uuid }
+                title: { type: string, minLength: 1, maxLength: 200 }
+                description: { type: string, maxLength: 4000, nullable: true }
+                weightBp: { type: integer, minimum: 0, maximum: 10000 }
+                dueDate: { type: string, format: date, nullable: true }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Cycle not open
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /manager/performance/goals:
+    post:
+      operationId: createTeamPerformanceGoal
+      summary: Manager-authored team-member goal.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cycleId, employeeId, title]
+              properties:
+                cycleId: { type: string, format: uuid }
+                employeeId: { type: string, format: uuid }
+                title: { type: string, minLength: 1, maxLength: 200 }
+                description: { type: string, maxLength: 4000, nullable: true }
+                weightBp: { type: integer, minimum: 0, maximum: 10000 }
+                dueDate: { type: string, format: date, nullable: true }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /compensation/cycles:
+    get:
+      operationId: listCompensationCycles
+      summary: List merit/bonus/equity cycles.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [DRAFT, OPEN, REVIEW, APPROVED, APPLIED, CLOSED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createCompensationCycle
+      summary: Create a DRAFT compensation cycle.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, cycleType, effectiveDate, currencyCode]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 200 }
+                cycleType: { type: string, enum: [MERIT, BONUS, EQUITY_GRANT] }
+                effectiveDate: { type: string, format: date }
+                currencyCode: { type: string, pattern: "^[A-Z]{3}$" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /compensation/cycles/{id}:
+    patch:
+      operationId: transitionCompensationCycleStatus
+      summary: Transition compensation cycle (OPEN/REVIEW/APPROVED/APPLIED/CLOSED).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [OPEN, REVIEW, APPROVED, APPLIED, CLOSED]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Cycle not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Invalid transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /compensation/recommendations:
+    post:
+      operationId: createCompensationRecommendation
+      summary: Author a draft merit/bonus/equity recommendation for an employee.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cycleId, employeeId]
+              properties:
+                cycleId: { type: string, format: uuid }
+                employeeId: { type: string, format: uuid }
+                baseIncreaseAmountMinor:
+                  oneOf:
+                    - type: integer
+                    - type: string
+                      pattern: "^-?\\d+$"
+                  nullable: true
+                bonusAmountMinor:
+                  oneOf:
+                    - type: integer
+                    - type: string
+                      pattern: "^-?\\d+$"
+                  nullable: true
+                equityGrantShares:
+                  oneOf:
+                    - type: integer
+                    - type: string
+                      pattern: "^-?\\d+$"
+                  nullable: true
+                justification:
+                  type: string
+                  maxLength: 8000
+                  nullable: true
+      responses:
+        "201":
+          description: Drafted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Cycle not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Cycle not in OPEN/REVIEW
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /compensation/recommendations/{id}/apply:
+    post:
+      operationId: applyCompensationRecommendation
+      summary: |
+        Apply a recommendation using an APPROVED COMPENSATION_CHANGE-class
+        governance proposal that references this recommendation.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [authorizingProposalId]
+              properties:
+                authorizingProposalId:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: Applied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Recommendation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Recommendation already applied/rejected, or governance violation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /learning/courses:
+    post:
+      operationId: createLearningCourse
+      summary: Create a DRAFT learning course in the tenant catalog.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code, title]
+              properties:
+                code: { type: string, minLength: 1, maxLength: 80 }
+                title: { type: string, minLength: 1, maxLength: 200 }
+                description: { type: string, maxLength: 8000, nullable: true }
+                mandatoryDueDays:
+                  type: integer
+                  minimum: 1
+                  maximum: 3650
+                  nullable: true
+                estimatedDuration:
+                  type: string
+                  maxLength: 40
+                  nullable: true
+                externalProvider: { type: string, maxLength: 120, nullable: true }
+                externalContentRef: { type: string, maxLength: 500, nullable: true }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /learning/courses/{id}/assignments:
+    post:
+      operationId: assignLearningCourse
+      summary: Assign a PUBLISHED course to one or more employees (idempotent).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [employeeIds]
+              properties:
+                employeeIds:
+                  type: array
+                  minItems: 1
+                  maxItems: 500
+                  items: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Course not PUBLISHED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /me/learning/enrollments/{id}/complete:
+    post:
+      operationId: completeMyLearningEnrollment
+      summary: Mark the calling employee's enrollment COMPLETED.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                scoreBp: { type: integer, minimum: 0, maximum: 10000 }
+      responses:
+        "200":
+          description: Completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "403":
+          description: Not the enrollment owner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Enrollment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Enrollment in terminal state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /workflow/definitions:
+    post:
+      operationId: createWorkflowDefinition
+      summary: Register a multi-step approval workflow blueprint.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, code, name, steps]
+              properties:
+                kind:
+                  type: string
+                  enum:
+                    - TIME_OFF_APPROVAL
+                    - COMPENSATION_CHANGE
+                    - POSITION_CHANGE
+                    - TERMINATION
+                    - CUSTOM
+                    - COBRA_ELECTION
+                    - ONBOARDING
+                    - OFFBOARDING
+                code: { type: string, minLength: 1, maxLength: 80 }
+                name: { type: string, minLength: 1, maxLength: 200 }
+                description: { type: string, maxLength: 2000, nullable: true }
+                steps:
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items:
+                    type: object
+                    required: [name, approverRoles]
+                    properties:
+                      name: { type: string, minLength: 1, maxLength: 120 }
+                      approverRoles:
+                        type: array
+                        minItems: 1
+                        maxItems: 10
+                        items: { type: string }
+                      slaHours:
+                        type: integer
+                        minimum: 1
+                        maximum: 720
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+  /workflow/instances:
+    post:
+      operationId: startWorkflowInstance
+      summary: Start a workflow instance for a subject (e.g. PtoRequest UUID).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [definitionCode, subjectType, subjectRef]
+              properties:
+                definitionCode: { type: string, minLength: 1, maxLength: 80 }
+                subjectType: { type: string, minLength: 1, maxLength: 120 }
+                subjectRef: { type: string, minLength: 1, maxLength: 200 }
+                context:
+                  type: object
+                  additionalProperties: true
+      responses:
+        "201":
+          description: Started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Workflow definition not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /workflow/instances/{id}/decisions:
+    post:
+      operationId: decideWorkflowInstanceStep
+      summary: Approve or reject the current PENDING step.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision]
+              properties:
+                decision:
+                  type: string
+                  enum: [APPROVED, REJECTED]
+                note:
+                  type: string
+                  maxLength: 2000
+                  nullable: true
+      responses:
+        "200":
+          description: Decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Instance not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Instance not ACTIVE or no PENDING step
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /integrations/webhooks/subscriptions:
+    post:
+      operationId: createWebhookSubscription
+      summary: Register an HMAC-signed outbound webhook subscription.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [label, targetUrl, eventTypes, secret]
+              properties:
+                label: { type: string, minLength: 1, maxLength: 120 }
+                targetUrl:
+                  type: string
+                  format: uri
+                  description: HTTPS URL that will receive POSTs.
+                eventTypes:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  items:
+                    type: string
+                    minLength: 1
+                    maxLength: 120
+                  description: |
+                    Allowed prefixes: `domain.`, `integration.`, `compliance.`,
+                    `audit.` — keep the list small to limit fan-out.
+                secret:
+                  type: string
+                  minLength: 32
+                  maxLength: 256
+                  description: |
+                    Shared HMAC-SHA256 secret used to sign deliveries via the
+                    `X-HRERP-Signature-256` header.
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /positions:
+    post:
+      operationId: createPosition
+      summary: Register a PROPOSED position (planned headcount slot).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code, title, effectiveFrom]
+              properties:
+                code: { type: string, minLength: 1, maxLength: 80 }
+                title: { type: string, minLength: 1, maxLength: 200 }
+                jobRoleId: { type: string, format: uuid, nullable: true }
+                departmentId: { type: string, format: uuid, nullable: true }
+                parentPositionId: { type: string, format: uuid, nullable: true }
+                headcount: { type: integer, minimum: 1, maximum: 1000 }
+                fteBasisPoints: { type: integer, minimum: 1, maximum: 10000 }
+                effectiveFrom: { type: string, format: date }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /engagement/surveys:
+    post:
+      operationId: createEngagementSurvey
+      summary: Create a DRAFT engagement / eNPS / pulse survey.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, title]
+              properties:
+                kind:
+                  type: string
+                  enum: [ENPS, PULSE, ANNUAL, CUSTOM]
+                title: { type: string, minLength: 1, maxLength: 200 }
+                description: { type: string, maxLength: 2000, nullable: true }
+                anonymize: { type: boolean }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+  /me/engagement/responses:
+    post:
+      operationId: submitMyEngagementResponse
+      summary: Submit / update the calling employee's response to an OPEN survey.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [surveyId, score]
+              properties:
+                surveyId: { type: string, format: uuid }
+                score: { type: integer, minimum: 0, maximum: 10 }
+                comment: { type: string, maxLength: 4000, nullable: true }
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "404":
+          description: Survey not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Survey not OPEN
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/offers/{id}/extend:
+    post:
+      operationId: extendRecruitingOffer
+      summary: |
+        Extend an offer using an APPROVED HIRE-class governance proposal that
+        references the same JobApplication.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [authorizingProposalId]
+              properties:
+                authorizingProposalId:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: Extended
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Offer not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Offer not in PENDING_HITL_APPROVAL or governance violation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
 components:
   parameters:
     AuthorizationHeader:

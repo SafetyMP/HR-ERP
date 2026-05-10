@@ -164,7 +164,7 @@ const ROUTES: Record<string, RoutePolicy> = {
   },
   [routeKey("POST", "/api/v1/payroll/runs")]: {
     permission: "payroll:run_execute",
-    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
   },
   [routeKey("GET", "/api/v1/payroll/runs/:periodId")]: {
     permission: "payroll:run_read",
@@ -196,15 +196,99 @@ const ROUTES: Record<string, RoutePolicy> = {
   },
   [routeKey("PATCH", "/api/v1/recruiting/applications/:id/stage")]: {
     permission: "recruiting:application_write",
-    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
   },
   [routeKey("POST", "/api/v1/recruiting/offers")]: {
     permission: "recruiting:offer_write",
-    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
   },
   [routeKey("POST", "/api/v1/recruiting/offers/:id/extend")]: {
     permission: "recruiting:offer_write",
-    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/performance/cycles")]: {
+    permission: "performance:cycle_read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/performance/cycles")]: {
+    permission: "performance:cycle_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/performance/cycles/:id")]: {
+    permission: "performance:cycle_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/me/performance/goals")]: {
+    permission: "performance:goal_self_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/me/performance/goals")]: {
+    permission: "performance:goal_self_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/manager/performance/goals")]: {
+    permission: "performance:goal_team_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/compensation/cycles")]: {
+    permission: "compensation:cycle_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/compensation/cycles")]: {
+    permission: "compensation:cycle_write",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/compensation/cycles/:id")]: {
+    permission: "compensation:cycle_write",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/compensation/recommendations")]: {
+    permission: "compensation:recommend_write",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/compensation/recommendations/:id/apply")]: {
+    permission: "compensation:recommend_apply",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/learning/courses")]: {
+    permission: "learning:catalog_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/learning/courses/:id/assignments")]: {
+    permission: "learning:enrollment_assign",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/me/learning/enrollments/:id/complete")]: {
+    permission: "learning:enrollment_complete_self",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/workflow/definitions")]: {
+    permission: "workflow:definition_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/workflow/instances")]: {
+    permission: "workflow:instance_create",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/workflow/instances/:id/decisions")]: {
+    permission: "workflow:instance_decide",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/integrations/webhooks/subscriptions")]: {
+    permission: "integrations:webhook_subscription_write",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/positions")]: {
+    permission: "position:write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/engagement/surveys")]: {
+    permission: "engagement:survey_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/me/engagement/responses")]: {
+    permission: "engagement:response_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
 };
 
@@ -289,6 +373,74 @@ export function getRoutePolicy(
     verb === "POST"
   ) {
     return ROUTES[routeKey("POST", "/api/v1/recruiting/offers/:id/extend")];
+  }
+
+  const perfCycleMatch = pathname.match(
+    /^\/api\/v1\/performance\/cycles\/([^/]+)$/,
+  );
+  if (
+    perfCycleMatch &&
+    UUID_PATTERN.test(perfCycleMatch[1]!) &&
+    verb === "PATCH"
+  ) {
+    return ROUTES[routeKey("PATCH", "/api/v1/performance/cycles/:id")];
+  }
+  const compCycleMatch = pathname.match(
+    /^\/api\/v1\/compensation\/cycles\/([^/]+)$/,
+  );
+  if (
+    compCycleMatch &&
+    UUID_PATTERN.test(compCycleMatch[1]!) &&
+    verb === "PATCH"
+  ) {
+    return ROUTES[routeKey("PATCH", "/api/v1/compensation/cycles/:id")];
+  }
+  const compApplyMatch = pathname.match(
+    /^\/api\/v1\/compensation\/recommendations\/([^/]+)\/apply$/,
+  );
+  if (
+    compApplyMatch &&
+    UUID_PATTERN.test(compApplyMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[
+      routeKey("POST", "/api/v1/compensation/recommendations/:id/apply")
+    ];
+  }
+
+  const learningAssignMatch = pathname.match(
+    /^\/api\/v1\/learning\/courses\/([^/]+)\/assignments$/,
+  );
+  if (
+    learningAssignMatch &&
+    UUID_PATTERN.test(learningAssignMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[routeKey("POST", "/api/v1/learning/courses/:id/assignments")];
+  }
+  const learningCompleteMatch = pathname.match(
+    /^\/api\/v1\/me\/learning\/enrollments\/([^/]+)\/complete$/,
+  );
+  if (
+    learningCompleteMatch &&
+    UUID_PATTERN.test(learningCompleteMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[
+      routeKey("POST", "/api/v1/me/learning/enrollments/:id/complete")
+    ];
+  }
+  const workflowDecisionMatch = pathname.match(
+    /^\/api\/v1\/workflow\/instances\/([^/]+)\/decisions$/,
+  );
+  if (
+    workflowDecisionMatch &&
+    UUID_PATTERN.test(workflowDecisionMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[
+      routeKey("POST", "/api/v1/workflow/instances/:id/decisions")
+    ];
   }
 
   return undefined;

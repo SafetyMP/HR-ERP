@@ -104,7 +104,7 @@ export async function runPayroll(
     auth,
     {
       permission: "payroll:run_execute",
-      abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+      abac: { minMfa: "step_up", maxDataClassification: "confidential" },
       resourceClassification: "confidential",
       prismaTx: { isolationLevel: "Serializable", timeout: 60_000 },
     },
@@ -155,7 +155,7 @@ export async function runPayroll(
             paymentInstructionId: "",
             inputsFingerprintSha256: "",
             netPayMinor: 0,
-            currencyCode: latest?.currency ?? period.organization.reportingCurrency ?? "USD",
+            currencyCode: period.organization.reportingCurrency ?? "USD",
             status: "no_compensation",
           });
           continue;

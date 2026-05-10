@@ -181,6 +181,70 @@ export const JobOfferStatus = {
 export type JobOfferStatus = (typeof JobOfferStatus)[keyof typeof JobOfferStatus]
 
 
+export const PerformanceCycleStatus = {
+  DRAFT: 'DRAFT',
+  OPEN: 'OPEN',
+  CALIBRATION: 'CALIBRATION',
+  CLOSED: 'CLOSED'
+} as const
+
+export type PerformanceCycleStatus = (typeof PerformanceCycleStatus)[keyof typeof PerformanceCycleStatus]
+
+
+export const PerformanceGoalStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  AT_RISK: 'AT_RISK',
+  COMPLETE: 'COMPLETE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PerformanceGoalStatus = (typeof PerformanceGoalStatus)[keyof typeof PerformanceGoalStatus]
+
+
+export const PerformanceReviewStatus = {
+  DRAFT: 'DRAFT',
+  EMPLOYEE_SUBMITTED: 'EMPLOYEE_SUBMITTED',
+  MANAGER_SUBMITTED: 'MANAGER_SUBMITTED',
+  CALIBRATED: 'CALIBRATED',
+  RELEASED: 'RELEASED'
+} as const
+
+export type PerformanceReviewStatus = (typeof PerformanceReviewStatus)[keyof typeof PerformanceReviewStatus]
+
+
+export const CompensationCycleType = {
+  MERIT: 'MERIT',
+  BONUS: 'BONUS',
+  EQUITY_GRANT: 'EQUITY_GRANT'
+} as const
+
+export type CompensationCycleType = (typeof CompensationCycleType)[keyof typeof CompensationCycleType]
+
+
+export const CompensationCycleStatus = {
+  DRAFT: 'DRAFT',
+  OPEN: 'OPEN',
+  REVIEW: 'REVIEW',
+  APPROVED: 'APPROVED',
+  APPLIED: 'APPLIED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type CompensationCycleStatus = (typeof CompensationCycleStatus)[keyof typeof CompensationCycleStatus]
+
+
+export const CompensationRecommendationStatus = {
+  DRAFT: 'DRAFT',
+  AWAITING_APPROVAL: 'AWAITING_APPROVAL',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  APPLIED: 'APPLIED'
+} as const
+
+export type CompensationRecommendationStatus = (typeof CompensationRecommendationStatus)[keyof typeof CompensationRecommendationStatus]
+
+
 export const CalendarSystem = {
   GREGORIAN: 'GREGORIAN',
   ISLAMIC_UMALQURA: 'ISLAMIC_UMALQURA',
@@ -290,3 +354,124 @@ export const BenchmarkAlertSeverity = {
 } as const
 
 export type BenchmarkAlertSeverity = (typeof BenchmarkAlertSeverity)[keyof typeof BenchmarkAlertSeverity]
+
+
+export const PositionStatus = {
+  PROPOSED: 'PROPOSED',
+  APPROVED: 'APPROVED',
+  ACTIVE: 'ACTIVE',
+  FROZEN: 'FROZEN',
+  CLOSED: 'CLOSED'
+} as const
+
+export type PositionStatus = (typeof PositionStatus)[keyof typeof PositionStatus]
+
+
+export const EngagementSurveyStatus = {
+  DRAFT: 'DRAFT',
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED'
+} as const
+
+export type EngagementSurveyStatus = (typeof EngagementSurveyStatus)[keyof typeof EngagementSurveyStatus]
+
+
+export const EngagementSurveyKind = {
+  ENPS: 'ENPS',
+  PULSE: 'PULSE',
+  ANNUAL: 'ANNUAL',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type EngagementSurveyKind = (typeof EngagementSurveyKind)[keyof typeof EngagementSurveyKind]
+
+
+export const WebhookDeliveryStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  RETRY: 'RETRY',
+  FAILED: 'FAILED'
+} as const
+
+export type WebhookDeliveryStatus = (typeof WebhookDeliveryStatus)[keyof typeof WebhookDeliveryStatus]
+
+
+export const LearningCourseStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type LearningCourseStatus = (typeof LearningCourseStatus)[keyof typeof LearningCourseStatus]
+
+
+export const LearningEnrollmentStatus = {
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  WAIVED: 'WAIVED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type LearningEnrollmentStatus = (typeof LearningEnrollmentStatus)[keyof typeof LearningEnrollmentStatus]
+
+
+export const WorkflowDefinitionKind = {
+  TIME_OFF_APPROVAL: 'TIME_OFF_APPROVAL',
+  COMPENSATION_CHANGE: 'COMPENSATION_CHANGE',
+  POSITION_CHANGE: 'POSITION_CHANGE',
+  TERMINATION: 'TERMINATION',
+  CUSTOM: 'CUSTOM',
+  COBRA_ELECTION: 'COBRA_ELECTION',
+  ONBOARDING: 'ONBOARDING',
+  OFFBOARDING: 'OFFBOARDING'
+} as const
+
+export type WorkflowDefinitionKind = (typeof WorkflowDefinitionKind)[keyof typeof WorkflowDefinitionKind]
+
+
+export const WorkflowInstanceStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type WorkflowInstanceStatus = (typeof WorkflowInstanceStatus)[keyof typeof WorkflowInstanceStatus]
+
+
+export const WorkflowStepStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SKIPPED: 'SKIPPED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type WorkflowStepStatus = (typeof WorkflowStepStatus)[keyof typeof WorkflowStepStatus]
+
+
+export const CobraQualifyingEvent = {
+  TERMINATION: 'TERMINATION',
+  REDUCTION_OF_HOURS: 'REDUCTION_OF_HOURS',
+  DIVORCE_OR_LEGAL_SEPARATION: 'DIVORCE_OR_LEGAL_SEPARATION',
+  DEATH_OF_EMPLOYEE: 'DEATH_OF_EMPLOYEE',
+  DEPENDENT_AGE_OUT: 'DEPENDENT_AGE_OUT',
+  MEDICARE_ENTITLEMENT: 'MEDICARE_ENTITLEMENT',
+  OTHER: 'OTHER'
+} as const
+
+export type CobraQualifyingEvent = (typeof CobraQualifyingEvent)[keyof typeof CobraQualifyingEvent]
+
+
+export const CobraElectionStatus = {
+  PENDING_NOTICE: 'PENDING_NOTICE',
+  NOTICE_SENT: 'NOTICE_SENT',
+  ELECTED: 'ELECTED',
+  WAIVED: 'WAIVED',
+  EXPIRED: 'EXPIRED',
+  TERMINATED_FOR_NONPAYMENT: 'TERMINATED_FOR_NONPAYMENT'
+} as const
+
+export type CobraElectionStatus = (typeof CobraElectionStatus)[keyof typeof CobraElectionStatus]

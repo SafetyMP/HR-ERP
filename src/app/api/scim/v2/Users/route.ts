@@ -75,7 +75,7 @@ export async function POST(request: Request) {
         email: parsed.email,
         firstName: parsed.firstName,
         lastName: parsed.lastName,
-        status: parsed.active ? "ACTIVE" : "INACTIVE",
+        status: parsed.active ? "ACTIVE" : "TERMINATED",
       },
     });
 

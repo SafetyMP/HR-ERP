@@ -1,0 +1,16 @@
+apiVersion: v2
+name: hr-erp
+description: |
+  HR ERP — multi-tenant HR application (Next.js 16 / React 19 / TypeScript / Postgres).
+  Phase 3 scaffold — values are intentionally explicit so reviewers can audit the
+  full surface (image tag, replicas, secrets handling, network policy hooks).
+type: application
+version: 0.1.0
+appVersion: "2.1.3"
+maintainers:
+  - name: HR ERP Platform
+home: https://github.com/your-org/hr-erp
+keywords:
+  - hr
+  - payroll
+  - multi-tenant

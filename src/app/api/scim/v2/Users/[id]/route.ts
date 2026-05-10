@@ -68,7 +68,7 @@ export async function PUT(
         email: parsed.email,
         firstName: parsed.firstName,
         lastName: parsed.lastName,
-        status: parsed.active ? "ACTIVE" : "INACTIVE",
+        status: parsed.active ? "ACTIVE" : "TERMINATED",
       },
     });
     return NextResponse.json(employeeToScim(updated, baseUrlOf(request)), {
@@ -115,7 +115,7 @@ export async function PATCH(
       const path = op.path?.toLowerCase();
       if ((op.op ?? "").toLowerCase() === "replace") {
         if (path === "active" && typeof op.value === "boolean") {
-          data.status = op.value ? "ACTIVE" : "INACTIVE";
+          data.status = op.value ? "ACTIVE" : "TERMINATED";
         } else if (path === "username" && typeof op.value === "string") {
           data.email = op.value;
         } else if (
@@ -170,7 +170,7 @@ export async function DELETE(
 
     await prisma.employee.update({
       where: { id },
-      data: { status: "INACTIVE", terminationDate: new Date() },
+      data: { status: "TERMINATED", terminationDate: new Date() },
     });
     return new NextResponse(null, { status: 204 });
   } catch (err) {

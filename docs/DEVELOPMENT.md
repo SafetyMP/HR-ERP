@@ -68,6 +68,11 @@ npm run demo:bootstrap
 
 Flags: `--skip-migrate`, `--skip-predictive`, `--skip-holiday`, `--year=2026`. Set `ANALYTICS_DEMO_MODE=1` in `.env` for `/analytics/*` in dev.
 
+**Where the data lands:**
+
+- **Docker Postgres (default dev):** Keep `DATABASE_URL` aligned with `docker-compose.yml` (host port **15432** unless you set `HR_ERP_PG_PUBLISH`), then run `npm run demo:bootstrap`. The predictive seed includes an idempotent **Phase 3** slice (performance / compensation cycles, positions, engagement, LMS, workflows, webhooks, COBRA) so existing volumes pick up new tables without `migrate reset`.
+- **Neon (or other hosted Postgres):** Point `DATABASE_URL` at your connection string (use `sslmode=require` as your provider recommends). The CLI reads `DATABASE_URL` from `prisma.config.ts` for `npm run db:migrate:deploy` and the same demo scripts. If a **pooler** rejects DDL, apply migrations once using a **direct** URL in a shell override, for example `DATABASE_URL="$DIRECT_URL" npm run db:migrate:deploy`, then run `npm run demo:bootstrap` with your normal app URL. Optional `DEMO_WEBHOOK_PUBLISHER_SECRET` (32+ characters) customizes the seeded webhook subscription secret — see `.env.example`.
+
 Use `npm run db:migrate` when you are authoring new migrations interactively (`prisma migrate dev`).
 
 For a throwaway local reset when you accept data loss:

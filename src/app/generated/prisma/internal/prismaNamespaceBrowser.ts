@@ -112,7 +112,23 @@ export const ModelName = {
   JobRequisition: 'JobRequisition',
   Candidate: 'Candidate',
   JobApplication: 'JobApplication',
-  JobOffer: 'JobOffer'
+  PerformanceCycle: 'PerformanceCycle',
+  PerformanceGoal: 'PerformanceGoal',
+  PerformanceReviewV2: 'PerformanceReviewV2',
+  CompensationCycle: 'CompensationCycle',
+  CompensationRecommendation: 'CompensationRecommendation',
+  JobOffer: 'JobOffer',
+  Position: 'Position',
+  EngagementSurvey: 'EngagementSurvey',
+  EngagementResponse: 'EngagementResponse',
+  WebhookSubscription: 'WebhookSubscription',
+  WebhookDelivery: 'WebhookDelivery',
+  LearningCourse: 'LearningCourse',
+  LearningEnrollment: 'LearningEnrollment',
+  WorkflowDefinition: 'WorkflowDefinition',
+  WorkflowInstance: 'WorkflowInstance',
+  WorkflowStepInstance: 'WorkflowStepInstance',
+  CobraEvent: 'CobraEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -994,6 +1010,97 @@ export const JobApplicationScalarFieldEnum = {
 export type JobApplicationScalarFieldEnum = (typeof JobApplicationScalarFieldEnum)[keyof typeof JobApplicationScalarFieldEnum]
 
 
+export const PerformanceCycleScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  ratingScaleMax: 'ratingScaleMax',
+  closedAt: 'closedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PerformanceCycleScalarFieldEnum = (typeof PerformanceCycleScalarFieldEnum)[keyof typeof PerformanceCycleScalarFieldEnum]
+
+
+export const PerformanceGoalScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  cycleId: 'cycleId',
+  employeeId: 'employeeId',
+  title: 'title',
+  description: 'description',
+  weightBp: 'weightBp',
+  status: 'status',
+  percentCompleteBp: 'percentCompleteBp',
+  dueDate: 'dueDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PerformanceGoalScalarFieldEnum = (typeof PerformanceGoalScalarFieldEnum)[keyof typeof PerformanceGoalScalarFieldEnum]
+
+
+export const PerformanceReviewV2ScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  cycleId: 'cycleId',
+  employeeId: 'employeeId',
+  managerSubjectId: 'managerSubjectId',
+  status: 'status',
+  selfRating: 'selfRating',
+  managerRating: 'managerRating',
+  calibrationBox: 'calibrationBox',
+  releasedAt: 'releasedAt',
+  managerNote: 'managerNote',
+  selfNote: 'selfNote',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PerformanceReviewV2ScalarFieldEnum = (typeof PerformanceReviewV2ScalarFieldEnum)[keyof typeof PerformanceReviewV2ScalarFieldEnum]
+
+
+export const CompensationCycleScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  cycleType: 'cycleType',
+  effectiveDate: 'effectiveDate',
+  status: 'status',
+  currencyCode: 'currencyCode',
+  closedAt: 'closedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CompensationCycleScalarFieldEnum = (typeof CompensationCycleScalarFieldEnum)[keyof typeof CompensationCycleScalarFieldEnum]
+
+
+export const CompensationRecommendationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  cycleId: 'cycleId',
+  employeeId: 'employeeId',
+  status: 'status',
+  baseIncreaseAmountMinor: 'baseIncreaseAmountMinor',
+  bonusAmountMinor: 'bonusAmountMinor',
+  equityGrantShares: 'equityGrantShares',
+  justification: 'justification',
+  authorizingProposalId: 'authorizingProposalId',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CompensationRecommendationScalarFieldEnum = (typeof CompensationRecommendationScalarFieldEnum)[keyof typeof CompensationRecommendationScalarFieldEnum]
+
+
 export const JobOfferScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1014,6 +1121,201 @@ export const JobOfferScalarFieldEnum = {
 } as const
 
 export type JobOfferScalarFieldEnum = (typeof JobOfferScalarFieldEnum)[keyof typeof JobOfferScalarFieldEnum]
+
+
+export const PositionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  title: 'title',
+  jobRoleId: 'jobRoleId',
+  departmentId: 'departmentId',
+  parentPositionId: 'parentPositionId',
+  status: 'status',
+  headcount: 'headcount',
+  fteBasisPoints: 'fteBasisPoints',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  closedAt: 'closedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PositionScalarFieldEnum = (typeof PositionScalarFieldEnum)[keyof typeof PositionScalarFieldEnum]
+
+
+export const EngagementSurveyScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  kind: 'kind',
+  title: 'title',
+  description: 'description',
+  anonymize: 'anonymize',
+  status: 'status',
+  startedAt: 'startedAt',
+  closedAt: 'closedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EngagementSurveyScalarFieldEnum = (typeof EngagementSurveyScalarFieldEnum)[keyof typeof EngagementSurveyScalarFieldEnum]
+
+
+export const EngagementResponseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  surveyId: 'surveyId',
+  employeeId: 'employeeId',
+  score: 'score',
+  comment: 'comment',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EngagementResponseScalarFieldEnum = (typeof EngagementResponseScalarFieldEnum)[keyof typeof EngagementResponseScalarFieldEnum]
+
+
+export const WebhookSubscriptionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  label: 'label',
+  targetUrl: 'targetUrl',
+  secret: 'secret',
+  eventTypes: 'eventTypes',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebhookSubscriptionScalarFieldEnum = (typeof WebhookSubscriptionScalarFieldEnum)[keyof typeof WebhookSubscriptionScalarFieldEnum]
+
+
+export const WebhookDeliveryScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  subscriptionId: 'subscriptionId',
+  eventType: 'eventType',
+  status: 'status',
+  attempt: 'attempt',
+  lastResponseCode: 'lastResponseCode',
+  lastError: 'lastError',
+  signature: 'signature',
+  payload: 'payload',
+  scheduledAt: 'scheduledAt',
+  deliveredAt: 'deliveredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WebhookDeliveryScalarFieldEnum = (typeof WebhookDeliveryScalarFieldEnum)[keyof typeof WebhookDeliveryScalarFieldEnum]
+
+
+export const LearningCourseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  mandatoryDueDays: 'mandatoryDueDays',
+  estimatedDuration: 'estimatedDuration',
+  externalProvider: 'externalProvider',
+  externalContentRef: 'externalContentRef',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LearningCourseScalarFieldEnum = (typeof LearningCourseScalarFieldEnum)[keyof typeof LearningCourseScalarFieldEnum]
+
+
+export const LearningEnrollmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  courseId: 'courseId',
+  employeeId: 'employeeId',
+  status: 'status',
+  assignedAt: 'assignedAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  dueAt: 'dueAt',
+  scoreBp: 'scoreBp',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LearningEnrollmentScalarFieldEnum = (typeof LearningEnrollmentScalarFieldEnum)[keyof typeof LearningEnrollmentScalarFieldEnum]
+
+
+export const WorkflowDefinitionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  kind: 'kind',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  steps: 'steps',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkflowDefinitionScalarFieldEnum = (typeof WorkflowDefinitionScalarFieldEnum)[keyof typeof WorkflowDefinitionScalarFieldEnum]
+
+
+export const WorkflowInstanceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  definitionId: 'definitionId',
+  status: 'status',
+  initiatorSubjectId: 'initiatorSubjectId',
+  subjectType: 'subjectType',
+  subjectRef: 'subjectRef',
+  currentStepIndex: 'currentStepIndex',
+  context: 'context',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkflowInstanceScalarFieldEnum = (typeof WorkflowInstanceScalarFieldEnum)[keyof typeof WorkflowInstanceScalarFieldEnum]
+
+
+export const WorkflowStepInstanceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  instanceId: 'instanceId',
+  stepIndex: 'stepIndex',
+  stepName: 'stepName',
+  status: 'status',
+  approverSubjectId: 'approverSubjectId',
+  decisionNote: 'decisionNote',
+  decidedAt: 'decidedAt',
+  slaDueAt: 'slaDueAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkflowStepInstanceScalarFieldEnum = (typeof WorkflowStepInstanceScalarFieldEnum)[keyof typeof WorkflowStepInstanceScalarFieldEnum]
+
+
+export const CobraEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  qualifyingEvent: 'qualifyingEvent',
+  qualifyingDate: 'qualifyingDate',
+  electionDeadline: 'electionDeadline',
+  noticeSentAt: 'noticeSentAt',
+  electionStatus: 'electionStatus',
+  electedAt: 'electedAt',
+  payload: 'payload',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CobraEventScalarFieldEnum = (typeof CobraEventScalarFieldEnum)[keyof typeof CobraEventScalarFieldEnum]
 
 
 export const SortOrder = {

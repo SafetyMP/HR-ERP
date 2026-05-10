@@ -1294,6 +1294,179 @@ model JobApplication {
   @@map("job_applications")
 }
 
+// --- Performance management ---
+
+enum PerformanceCycleStatus {
+  DRAFT
+  OPEN
+  CALIBRATION
+  CLOSED
+}
+
+enum PerformanceGoalStatus {
+  DRAFT
+  ACTIVE
+  AT_RISK
+  COMPLETE
+  CANCELLED
+}
+
+enum PerformanceReviewStatus {
+  DRAFT
+  EMPLOYEE_SUBMITTED
+  MANAGER_SUBMITTED
+  CALIBRATED
+  RELEASED
+}
+
+/// A bounded review window across the tenant (e.g. "FY26 H1 Review"). Goals
+/// and reviews live inside one cycle; calibration freezes ratings before
+/// release.
+model PerformanceCycle {
+  id             String                 @id @default(uuid())
+  tenantId       String                 @map("tenant_id")
+  name           String
+  startDate      DateTime               @map("start_date") @db.Date
+  endDate        DateTime               @map("end_date") @db.Date
+  status         PerformanceCycleStatus @default(DRAFT)
+  /// Maximum overall rating value used by manager + calibration grids.
+  ratingScaleMax Int                    @default(5) @map("rating_scale_max")
+  closedAt       DateTime?              @map("closed_at")
+  createdAt      DateTime               @default(now()) @map("created_at")
+  updatedAt      DateTime               @updatedAt @map("updated_at")
+
+  goals   PerformanceGoal[]
+  reviews PerformanceReviewV2[]
+
+  @@index([tenantId, status])
+  @@map("performance_cycles")
+}
+
+/// Employee-owned goal scoped to a cycle. `weight` is in basis points (0–10000)
+/// for deterministic rollups; status drives the dashboard pill.
+model PerformanceGoal {
+  id                String                @id @default(uuid())
+  tenantId          String                @map("tenant_id")
+  cycleId           String                @map("cycle_id")
+  employeeId        String                @map("employee_id")
+  title             String
+  description       String?
+  weightBp          Int                   @default(0) @map("weight_bp")
+  status            PerformanceGoalStatus @default(DRAFT)
+  percentCompleteBp Int                   @default(0) @map("percent_complete_bp")
+  dueDate           DateTime?             @map("due_date") @db.Date
+  createdAt         DateTime              @default(now()) @map("created_at")
+  updatedAt         DateTime              @updatedAt @map("updated_at")
+
+  cycle PerformanceCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, employeeId, cycleId])
+  @@index([tenantId, status])
+  @@map("performance_goals")
+}
+
+/// Phase 2 performance review row. Distinct from the legacy `PerformanceReview`
+/// (kept for analytics back-compat) so we can evolve workflows without
+/// breaking the existing churn analytics fixture.
+model PerformanceReviewV2 {
+  id                 String                  @id @default(uuid())
+  tenantId           String                  @map("tenant_id")
+  cycleId            String                  @map("cycle_id")
+  employeeId         String                  @map("employee_id")
+  managerSubjectId   String?                 @map("manager_subject_id")
+  status             PerformanceReviewStatus @default(DRAFT)
+  selfRating         Int?                    @map("self_rating")
+  managerRating      Int?                    @map("manager_rating")
+  /// 9-box bucket id 1..9 (1 = top-left, 9 = bottom-right); set during CALIBRATION.
+  calibrationBox     Int?                    @map("calibration_box")
+  /// Recursive cycle release timestamp; null until status = RELEASED.
+  releasedAt         DateTime?               @map("released_at")
+  managerNote        String?                 @map("manager_note")
+  selfNote           String?                 @map("self_note")
+  /// Soft-delete + retention mixin (ADR 0004) — managers may rescind reviews.
+  deletedAt          DateTime?               @map("deleted_at")
+  retentionExpiresAt DateTime?               @map("retention_expires_at")
+  createdAt          DateTime                @default(now()) @map("created_at")
+  updatedAt          DateTime                @updatedAt @map("updated_at")
+
+  cycle PerformanceCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, cycleId, employeeId])
+  @@index([tenantId, status])
+  @@map("performance_reviews_v2")
+}
+
+// --- Compensation cycles ---
+
+enum CompensationCycleType {
+  MERIT
+  BONUS
+  EQUITY_GRANT
+}
+
+enum CompensationCycleStatus {
+  DRAFT
+  OPEN
+  REVIEW
+  APPROVED
+  APPLIED
+  CLOSED
+}
+
+enum CompensationRecommendationStatus {
+  DRAFT
+  AWAITING_APPROVAL
+  APPROVED
+  REJECTED
+  APPLIED
+}
+
+/// A merit / bonus / equity planning round. APPROVED status freezes the grid
+/// before APPLIED, which writes downstream payroll instructions.
+model CompensationCycle {
+  id            String                  @id @default(uuid())
+  tenantId      String                  @map("tenant_id")
+  name          String
+  cycleType     CompensationCycleType   @map("cycle_type")
+  effectiveDate DateTime                @map("effective_date") @db.Date
+  status        CompensationCycleStatus @default(DRAFT)
+  /// ISO 4217 currency the cycle is denominated in (recommendations may convert via FX snapshots).
+  currencyCode  String                  @map("currency_code")
+  closedAt      DateTime?               @map("closed_at")
+  createdAt     DateTime                @default(now()) @map("created_at")
+  updatedAt     DateTime                @updatedAt @map("updated_at")
+
+  recommendations CompensationRecommendation[]
+
+  @@index([tenantId, status])
+  @@map("compensation_cycles")
+}
+
+/// One row per employee per cycle. Manager-authored, HITL-gated before APPLIED.
+/// Amounts persisted in **minor units** to keep parity with payroll-calc.
+model CompensationRecommendation {
+  id                      String                           @id @default(uuid())
+  tenantId                String                           @map("tenant_id")
+  cycleId                 String                           @map("cycle_id")
+  employeeId              String                           @map("employee_id")
+  status                  CompensationRecommendationStatus @default(DRAFT)
+  baseIncreaseAmountMinor BigInt?                          @map("base_increase_amount_minor")
+  bonusAmountMinor        BigInt?                          @map("bonus_amount_minor")
+  equityGrantShares       BigInt?                          @map("equity_grant_shares")
+  justification           String?
+  /// COMPENSATION_CHANGE-class AiDecisionProposal that authorized APPLIED status.
+  authorizingProposalId   String?                          @map("authorizing_proposal_id")
+  appliedAt               DateTime?                        @map("applied_at")
+  createdAt               DateTime                         @default(now()) @map("created_at")
+  updatedAt               DateTime                         @updatedAt @map("updated_at")
+
+  cycle CompensationCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, cycleId, employeeId])
+  @@index([tenantId, status])
+  @@map("compensation_recommendations")
+}
+
 /// Offer letter intent. Compensation is stored in MINOR units to match payroll-calc.
 model JobOffer {
   id                    String         @id @default(uuid())
@@ -1400,4 +1573,382 @@ enum BenchmarkAlertSeverity {
   INFO
   WARN
   CRITICAL
+}
+
+// --- Position management (Phase 3) ---
+
+enum PositionStatus {
+  PROPOSED
+  APPROVED
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+/// A position is a planned headcount slot, distinct from an Employee. Multiple
+/// employees may hold the same position over time; org charts derive from
+/// `parentPositionId` which encodes the reporting line at the *position* level
+/// (not the person level — supports plan-vs-actual and reorgs).
+model Position {
+  id               String         @id @default(uuid())
+  tenantId         String         @map("tenant_id")
+  code             String
+  title            String
+  jobRoleId        String?        @map("job_role_id")
+  departmentId     String?        @map("department_id")
+  parentPositionId String?        @map("parent_position_id")
+  status           PositionStatus @default(PROPOSED)
+  /// Number of headcount slots this position represents (typically 1).
+  headcount        Int            @default(1)
+  /// FTE × 100 (e.g. 100 for 1.0 FTE, 50 for half-time).
+  fteBasisPoints   Int            @default(10000) @map("fte_basis_points")
+  effectiveFrom    DateTime       @map("effective_from") @db.Date
+  effectiveTo      DateTime?      @map("effective_to") @db.Date
+  closedAt         DateTime?      @map("closed_at")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  parentPosition Position?  @relation("PositionParent", fields: [parentPositionId], references: [id], onDelete: SetNull)
+  reports        Position[] @relation("PositionParent")
+
+  @@unique([tenantId, code])
+  @@index([tenantId, status])
+  @@index([tenantId, parentPositionId])
+  @@map("positions")
+}
+
+// --- Engagement / eNPS (Phase 3) ---
+
+enum EngagementSurveyStatus {
+  DRAFT
+  OPEN
+  CLOSED
+}
+
+enum EngagementSurveyKind {
+  ENPS
+  PULSE
+  ANNUAL
+  CUSTOM
+}
+
+/// Tenant-owned engagement survey. eNPS responses use a 0–10 scale; PULSE and
+/// CUSTOM surveys may carry arbitrary likert items, but we persist the eNPS
+/// score directly for fast aggregation.
+model EngagementSurvey {
+  id          String                 @id @default(uuid())
+  tenantId    String                 @map("tenant_id")
+  kind        EngagementSurveyKind
+  title       String
+  description String?
+  /// Anonymity guarantee: when true, individual responses MUST be aggregated
+  /// to ≥5-respondent buckets before being surfaced — enforced at the read
+  /// layer, never at the write layer.
+  anonymize   Boolean                @default(true)
+  status      EngagementSurveyStatus @default(DRAFT)
+  startedAt   DateTime?              @map("started_at")
+  closedAt    DateTime?              @map("closed_at")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  responses EngagementResponse[]
+
+  @@index([tenantId, status])
+  @@map("engagement_surveys")
+}
+
+/// One row per (survey, employee). The `employeeId` is stored to enforce
+/// "one response per employee per survey" and to support legal hold; reads
+/// must apply tenant + anonymity rules before returning the column to humans.
+model EngagementResponse {
+  id          String   @id @default(uuid())
+  tenantId    String   @map("tenant_id")
+  surveyId    String   @map("survey_id")
+  employeeId  String   @map("employee_id")
+  /// 0–10 eNPS-style score.
+  score       Int
+  comment     String?
+  submittedAt DateTime @default(now()) @map("submitted_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  survey EngagementSurvey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, surveyId, employeeId])
+  @@index([tenantId, surveyId])
+  @@map("engagement_responses")
+}
+
+// --- Webhook publisher / connector subscriptions ---
+
+enum WebhookDeliveryStatus {
+  PENDING
+  SUCCESS
+  RETRY
+  FAILED
+}
+
+/// Tenant-scoped webhook subscription. Secrets are stored encrypted at rest
+/// (TODO: column-level encryption — see `docs/security/identity-and-jwks.md`).
+/// `eventTypes` is a JSON array of dotted event-type strings exactly as
+/// emitted by [`enqueueEvent`](../lib/outbox/enqueue-event.ts).
+model WebhookSubscription {
+  id         String   @id @default(uuid())
+  tenantId   String   @map("tenant_id")
+  /// Human-readable label for the subscription (e.g. "Greenhouse hires").
+  label      String
+  /// HTTPS endpoint that will receive POSTs.
+  targetUrl  String   @map("target_url")
+  /// HMAC-SHA256 secret bytes — store encrypted; never logged.
+  secret     String
+  /// JSON array of event types — keep small to limit fan-out.
+  eventTypes Json     @default("[]") @map("event_types")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  deliveries WebhookDelivery[]
+
+  @@index([tenantId, isActive])
+  @@map("webhook_subscriptions")
+}
+
+/// Append-only delivery log for observability + replay.
+model WebhookDelivery {
+  id               String                @id @default(uuid())
+  tenantId         String                @map("tenant_id")
+  subscriptionId   String                @map("subscription_id")
+  eventType        String                @map("event_type")
+  status           WebhookDeliveryStatus @default(PENDING)
+  attempt          Int                   @default(0)
+  lastResponseCode Int?                  @map("last_response_code")
+  lastError        String?               @map("last_error")
+  /// Hex-encoded HMAC-SHA256 of the canonical request body — included in the
+  /// outbound `X-HRERP-Signature-256` header to allow replay verification.
+  signature        String
+  payload          Json
+  scheduledAt      DateTime              @default(now()) @map("scheduled_at")
+  deliveredAt      DateTime?             @map("delivered_at")
+  createdAt        DateTime              @default(now()) @map("created_at")
+  updatedAt        DateTime              @updatedAt @map("updated_at")
+
+  subscription WebhookSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([subscriptionId, scheduledAt])
+  @@map("webhook_deliveries")
+}
+
+// --- Learning Management System (LMS) ---
+
+enum LearningCourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum LearningEnrollmentStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  WAIVED
+  EXPIRED
+}
+
+/// Tenant-owned course definition. `mandatoryDueDays` is null for elective
+/// learning, otherwise enforces a deadline relative to enrollment for required
+/// compliance (e.g. annual harassment, security awareness).
+model LearningCourse {
+  id                 String               @id @default(uuid())
+  tenantId           String               @map("tenant_id")
+  code               String
+  title              String
+  description        String?
+  status             LearningCourseStatus @default(DRAFT)
+  mandatoryDueDays   Int?                 @map("mandatory_due_days")
+  /// ISO 8601 duration string, e.g. "PT45M". Display only — not enforced server-side.
+  estimatedDuration  String?              @map("estimated_duration")
+  externalProvider   String?              @map("external_provider")
+  externalContentRef String?              @map("external_content_ref")
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+
+  enrollments LearningEnrollment[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, status])
+  @@map("learning_courses")
+}
+
+/// One row per (course, employee). Completion timestamps are append-only via
+/// `completedAt`; status transitions through ASSIGNED → IN_PROGRESS → COMPLETED.
+/// `dueAt` is computed from `mandatoryDueDays` when the course is mandatory.
+model LearningEnrollment {
+  id          String                   @id @default(uuid())
+  tenantId    String                   @map("tenant_id")
+  courseId    String                   @map("course_id")
+  employeeId  String                   @map("employee_id")
+  status      LearningEnrollmentStatus @default(ASSIGNED)
+  assignedAt  DateTime                 @default(now()) @map("assigned_at")
+  startedAt   DateTime?                @map("started_at")
+  completedAt DateTime?                @map("completed_at")
+  dueAt       DateTime?                @map("due_at")
+  scoreBp     Int?                     @map("score_bp")
+  createdAt   DateTime                 @default(now()) @map("created_at")
+  updatedAt   DateTime                 @updatedAt @map("updated_at")
+
+  course LearningCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, courseId, employeeId])
+  @@index([tenantId, employeeId, status])
+  @@index([tenantId, dueAt])
+  @@map("learning_enrollments")
+}
+
+// --- Generic Workflow / Approval Engine ---
+
+enum WorkflowDefinitionKind {
+  TIME_OFF_APPROVAL
+  COMPENSATION_CHANGE
+  POSITION_CHANGE
+  TERMINATION
+  CUSTOM
+  COBRA_ELECTION
+  ONBOARDING
+  OFFBOARDING
+}
+
+enum WorkflowInstanceStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  REJECTED
+  EXPIRED
+}
+
+enum WorkflowStepStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SKIPPED
+  EXPIRED
+}
+
+/// Tenant-owned workflow blueprint. Steps are stored as a JSON array under
+/// `steps` so blueprints can evolve without DDL churn. Each step shape:
+///   { name: string, approverRoles: string[], slaHours?: number,
+///     ifAbacFails?: "block"|"escalate" }
+model WorkflowDefinition {
+  id          String                 @id @default(uuid())
+  tenantId    String                 @map("tenant_id")
+  kind        WorkflowDefinitionKind
+  code        String
+  name        String
+  description String?
+  /// JSON-encoded array of steps. Validated at runtime via Zod.
+  steps       Json                   @default("[]")
+  isActive    Boolean                @default(true) @map("is_active")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+
+  instances WorkflowInstance[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, kind, isActive])
+  @@map("workflow_definitions")
+}
+
+/// One running occurrence of a definition. `subjectType`/`subjectRef` link to
+/// the entity under approval (e.g. PtoRequest, CompensationRecommendation,
+/// JobOffer). `currentStepIndex` is bumped by APPROVED decisions.
+model WorkflowInstance {
+  id                 String                 @id @default(uuid())
+  tenantId           String                 @map("tenant_id")
+  definitionId       String                 @map("definition_id")
+  status             WorkflowInstanceStatus @default(ACTIVE)
+  initiatorSubjectId String                 @map("initiator_subject_id")
+  subjectType        String                 @map("subject_type")
+  subjectRef         String                 @map("subject_ref")
+  currentStepIndex   Int                    @default(0) @map("current_step_index")
+  context            Json                   @default("{}")
+  startedAt          DateTime               @default(now()) @map("started_at")
+  completedAt        DateTime?              @map("completed_at")
+  createdAt          DateTime               @default(now()) @map("created_at")
+  updatedAt          DateTime               @updatedAt @map("updated_at")
+
+  definition WorkflowDefinition     @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  steps      WorkflowStepInstance[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, subjectType, subjectRef])
+  @@map("workflow_instances")
+}
+
+/// One row per step per workflow instance. Approve/Reject decisions write
+/// here and recompute the parent instance status.
+model WorkflowStepInstance {
+  id                String             @id @default(uuid())
+  tenantId          String             @map("tenant_id")
+  instanceId        String             @map("instance_id")
+  stepIndex         Int                @map("step_index")
+  stepName          String             @map("step_name")
+  status            WorkflowStepStatus @default(PENDING)
+  approverSubjectId String?            @map("approver_subject_id")
+  decisionNote      String?            @map("decision_note")
+  decidedAt         DateTime?          @map("decided_at")
+  slaDueAt          DateTime?          @map("sla_due_at")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  instance WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  @@unique([instanceId, stepIndex])
+  @@index([tenantId, status])
+  @@map("workflow_step_instances")
+}
+
+// --- US Benefits depth: COBRA event log ---
+
+enum CobraQualifyingEvent {
+  TERMINATION
+  REDUCTION_OF_HOURS
+  DIVORCE_OR_LEGAL_SEPARATION
+  DEATH_OF_EMPLOYEE
+  DEPENDENT_AGE_OUT
+  MEDICARE_ENTITLEMENT
+  OTHER
+}
+
+enum CobraElectionStatus {
+  PENDING_NOTICE
+  NOTICE_SENT
+  ELECTED
+  WAIVED
+  EXPIRED
+  TERMINATED_FOR_NONPAYMENT
+}
+
+/// Represents a COBRA-qualifying event that triggered a 60-day election window.
+/// Used by the COBRA election workflow + 1095-C / 834 outbound feeds. Detailed
+/// beneficiary metadata stays in `payload` to keep this row immutable and
+/// auditable.
+model CobraEvent {
+  id               String               @id @default(uuid())
+  tenantId         String               @map("tenant_id")
+  employeeId       String               @map("employee_id")
+  qualifyingEvent  CobraQualifyingEvent @map("qualifying_event")
+  qualifyingDate   DateTime             @map("qualifying_date") @db.Date
+  electionDeadline DateTime             @map("election_deadline") @db.Date
+  noticeSentAt     DateTime?            @map("notice_sent_at")
+  electionStatus   CobraElectionStatus  @default(PENDING_NOTICE) @map("election_status")
+  electedAt        DateTime?            @map("elected_at")
+  /// Free-form payload for downstream connectors (834/EDI, carrier portals).
+  /// Never serialize PII into log streams without redaction (see lib/governance).
+  payload          Json                 @default("{}")
+  createdAt        DateTime             @default(now()) @map("created_at")
+  updatedAt        DateTime             @updatedAt @map("updated_at")
+
+  @@index([tenantId, employeeId])
+  @@index([tenantId, electionStatus])
+  @@map("cobra_events")
 }

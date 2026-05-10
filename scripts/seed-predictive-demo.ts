@@ -10,6 +10,8 @@ import { Prisma } from "@/app/generated/prisma/client";
 import { getDemoTenantId } from "@/lib/l10n/demo-tenant";
 import { prisma } from "@/lib/prisma";
 
+import { seedPhase3Demo } from "./seed-phase3-demo";
+
 /** Same tenant as `/global-l10n/*` when `DEMO_TENANT_ID` is unset (see `lib/l10n/demo-tenant.ts`). */
 const DEMO_ORG_ID = getDemoTenantId();
 
@@ -645,6 +647,24 @@ async function main() {
       "Predictive HR demo seed skipped — demo employee (Jordan) already exists for this tenant.",
     );
   }
+
+  console.info("[demo:predictive] Phase 3 demo slice (idempotent)…");
+  await prisma.$transaction(
+    async (tx) => {
+      await tx.$executeRaw(
+        Prisma.sql`SELECT set_config('app.tenant_id', ${DEMO_ORG_ID}, true)`,
+      );
+      await tx.$executeRaw(
+        Prisma.sql`SELECT set_config('app.subject_id', ${"seed-job-phase3"}, true)`,
+      );
+      await seedPhase3Demo(tx, {
+        tenantId: DEMO_ORG_ID,
+        jordanEmployeeId: DEMO_EMPLOYEE_JORDAN_ID,
+        managerEmployeeId: DEMO_MANAGER_ALEX_ID,
+      });
+    },
+    { timeout: 60_000 },
+  );
 
   console.info(
     `Predictive HR demo data ready. Add to .env (dev): DEMO_TENANT_ID=${DEMO_ORG_ID} and ANALYTICS_DEMO_MODE=1 for /analytics/* pages.`,

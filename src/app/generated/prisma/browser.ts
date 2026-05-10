@@ -323,7 +323,117 @@ export type Candidate = Prisma.CandidateModel
  */
 export type JobApplication = Prisma.JobApplicationModel
 /**
+ * Model PerformanceCycle
+ * A bounded review window across the tenant (e.g. "FY26 H1 Review"). Goals
+ * and reviews live inside one cycle; calibration freezes ratings before
+ * release.
+ */
+export type PerformanceCycle = Prisma.PerformanceCycleModel
+/**
+ * Model PerformanceGoal
+ * Employee-owned goal scoped to a cycle. `weight` is in basis points (0–10000)
+ * for deterministic rollups; status drives the dashboard pill.
+ */
+export type PerformanceGoal = Prisma.PerformanceGoalModel
+/**
+ * Model PerformanceReviewV2
+ * Phase 2 performance review row. Distinct from the legacy `PerformanceReview`
+ * (kept for analytics back-compat) so we can evolve workflows without
+ * breaking the existing churn analytics fixture.
+ */
+export type PerformanceReviewV2 = Prisma.PerformanceReviewV2Model
+/**
+ * Model CompensationCycle
+ * A merit / bonus / equity planning round. APPROVED status freezes the grid
+ * before APPLIED, which writes downstream payroll instructions.
+ */
+export type CompensationCycle = Prisma.CompensationCycleModel
+/**
+ * Model CompensationRecommendation
+ * One row per employee per cycle. Manager-authored, HITL-gated before APPLIED.
+ * Amounts persisted in **minor units** to keep parity with payroll-calc.
+ */
+export type CompensationRecommendation = Prisma.CompensationRecommendationModel
+/**
  * Model JobOffer
  * Offer letter intent. Compensation is stored in MINOR units to match payroll-calc.
  */
 export type JobOffer = Prisma.JobOfferModel
+/**
+ * Model Position
+ * A position is a planned headcount slot, distinct from an Employee. Multiple
+ * employees may hold the same position over time; org charts derive from
+ * `parentPositionId` which encodes the reporting line at the *position* level
+ * (not the person level — supports plan-vs-actual and reorgs).
+ */
+export type Position = Prisma.PositionModel
+/**
+ * Model EngagementSurvey
+ * Tenant-owned engagement survey. eNPS responses use a 0–10 scale; PULSE and
+ * CUSTOM surveys may carry arbitrary likert items, but we persist the eNPS
+ * score directly for fast aggregation.
+ */
+export type EngagementSurvey = Prisma.EngagementSurveyModel
+/**
+ * Model EngagementResponse
+ * One row per (survey, employee). The `employeeId` is stored to enforce
+ * "one response per employee per survey" and to support legal hold; reads
+ * must apply tenant + anonymity rules before returning the column to humans.
+ */
+export type EngagementResponse = Prisma.EngagementResponseModel
+/**
+ * Model WebhookSubscription
+ * Tenant-scoped webhook subscription. Secrets are stored encrypted at rest
+ * (TODO: column-level encryption — see `docs/security/identity-and-jwks.md`).
+ * `eventTypes` is a JSON array of dotted event-type strings exactly as
+ * emitted by [`enqueueEvent`](../lib/outbox/enqueue-event.ts).
+ */
+export type WebhookSubscription = Prisma.WebhookSubscriptionModel
+/**
+ * Model WebhookDelivery
+ * Append-only delivery log for observability + replay.
+ */
+export type WebhookDelivery = Prisma.WebhookDeliveryModel
+/**
+ * Model LearningCourse
+ * Tenant-owned course definition. `mandatoryDueDays` is null for elective
+ * learning, otherwise enforces a deadline relative to enrollment for required
+ * compliance (e.g. annual harassment, security awareness).
+ */
+export type LearningCourse = Prisma.LearningCourseModel
+/**
+ * Model LearningEnrollment
+ * One row per (course, employee). Completion timestamps are append-only via
+ * `completedAt`; status transitions through ASSIGNED → IN_PROGRESS → COMPLETED.
+ * `dueAt` is computed from `mandatoryDueDays` when the course is mandatory.
+ */
+export type LearningEnrollment = Prisma.LearningEnrollmentModel
+/**
+ * Model WorkflowDefinition
+ * Tenant-owned workflow blueprint. Steps are stored as a JSON array under
+ * `steps` so blueprints can evolve without DDL churn. Each step shape:
+ * { name: string, approverRoles: string[], slaHours?: number,
+ * ifAbacFails?: "block"|"escalate" }
+ */
+export type WorkflowDefinition = Prisma.WorkflowDefinitionModel
+/**
+ * Model WorkflowInstance
+ * One running occurrence of a definition. `subjectType`/`subjectRef` link to
+ * the entity under approval (e.g. PtoRequest, CompensationRecommendation,
+ * JobOffer). `currentStepIndex` is bumped by APPROVED decisions.
+ */
+export type WorkflowInstance = Prisma.WorkflowInstanceModel
+/**
+ * Model WorkflowStepInstance
+ * One row per step per workflow instance. Approve/Reject decisions write
+ * here and recompute the parent instance status.
+ */
+export type WorkflowStepInstance = Prisma.WorkflowStepInstanceModel
+/**
+ * Model CobraEvent
+ * Represents a COBRA-qualifying event that triggered a 60-day election window.
+ * Used by the COBRA election workflow + 1095-C / 834 outbound feeds. Detailed
+ * beneficiary metadata stays in `payload` to keep this row immutable and
+ * auditable.
+ */
+export type CobraEvent = Prisma.CobraEventModel

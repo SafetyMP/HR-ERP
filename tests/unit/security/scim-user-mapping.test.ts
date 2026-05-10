@@ -34,9 +34,9 @@ describe("employeeToScim", () => {
     );
   });
 
-  it("marks INACTIVE employees as `active=false`", () => {
+  it("marks TERMINATED employees as `active=false`", () => {
     const resource = employeeToScim(
-      { ...baseEmployee, status: EmployeeStatus.INACTIVE },
+      { ...baseEmployee, status: EmployeeStatus.TERMINATED },
       "https://hr.example.com",
     );
     expect(resource.active).toBe(false);
