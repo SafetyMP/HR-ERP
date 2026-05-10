@@ -1,3 +1,9 @@
+## [2.4.0](https://github.com/SafetyMP/HR-ERP/compare/v2.3.1...v2.4.0) (2026-05-10)
+
+### Features
+
+* **demo:** Phase 3 capability hub IA, goals UI, manager GET API ([f0fa078](https://github.com/SafetyMP/HR-ERP/commit/f0fa0781d6db55f66e42fa2f97ad0769eecda057))
+
 ## [2.3.1](https://github.com/SafetyMP/HR-ERP/compare/v2.3.0...v2.3.1) (2026-05-10)
 
 ### Bug Fixes
