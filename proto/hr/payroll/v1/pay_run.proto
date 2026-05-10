@@ -4,9 +4,152 @@ package hr.payroll.v1;
 
 option go_package = "github.com/hr-erp/contracts/gen/go/hr/payroll/v1;payrollv1";
 
+// =============================================================================
+// Domain events (Kafka outbox)
+// =============================================================================
+
 message PayRunOpened {
   string pay_run_id = 1;
   string tenant_id = 2;
   string payroll_period_id = 3;
   string opened_at_rfc3339 = 4;
+}
+
+message PayRunComputed {
+  string pay_run_id = 1;
+  string tenant_id = 2;
+  string payroll_period_id = 3;
+  string computed_at_rfc3339 = 4;
+  string calc_semantic_version = 5;
+  string policy_release_id = 6;
+  uint32 computed_employee_count = 7;
+  uint32 skipped_existing_count = 8;
+  uint32 without_compensation_count = 9;
+}
+
+message PayRunFailed {
+  string pay_run_id = 1;
+  string tenant_id = 2;
+  string payroll_period_id = 3;
+  string failed_at_rfc3339 = 4;
+  string failure_code = 5;
+  string failure_message = 6;
+}
+
+message PaymentInstructionCreated {
+  string payment_instruction_id = 1;
+  string tenant_id = 2;
+  string employee_id = 3;
+  string payroll_period_id = 4;
+  string inputs_fingerprint_sha256 = 5;
+  string currency_code = 6;
+  int64 net_pay_minor = 7;
+}
+
+// =============================================================================
+// Command service (gRPC, called from internal services + workers)
+// =============================================================================
+
+service PayrollCommandService {
+  // Opens a pay run for a payroll period and queues per-employee gross-to-net.
+  rpc OpenPayRun(OpenPayRunRequest) returns (OpenPayRunResponse);
+
+  // Triggers a synchronous deterministic kernel run.
+  // Idempotent on (tenant_id, payroll_period_id, calc_semantic_version, policy_release_id).
+  rpc ExecutePayRun(ExecutePayRunRequest) returns (ExecutePayRunResponse);
+
+  // Marks a pay run as finalized; subsequent reads cannot reissue without explicit
+  // payroll_admin override.
+  rpc FinalizePayRun(FinalizePayRunRequest) returns (FinalizePayRunResponse);
+
+  // Cancels a pay run (e.g. catastrophic input error). Drains queued tasks.
+  rpc CancelPayRun(CancelPayRunRequest) returns (CancelPayRunResponse);
+}
+
+message OpenPayRunRequest {
+  string tenant_id = 1;
+  string payroll_period_id = 2;
+  optional string requested_by_subject_id = 3;
+}
+
+message OpenPayRunResponse {
+  string pay_run_id = 1;
+}
+
+message ExecutePayRunRequest {
+  string tenant_id = 1;
+  string payroll_period_id = 2;
+  repeated string employee_ids = 3;
+  bool reissue = 4;
+  string calc_semantic_version = 5;
+  string policy_release_id = 6;
+}
+
+message ExecutePayRunResponse {
+  uint32 computed = 1;
+  uint32 skipped = 2;
+  uint32 without_compensation = 3;
+}
+
+message FinalizePayRunRequest {
+  string tenant_id = 1;
+  string pay_run_id = 2;
+}
+
+message FinalizePayRunResponse {
+  string finalized_at_rfc3339 = 1;
+}
+
+message CancelPayRunRequest {
+  string tenant_id = 1;
+  string pay_run_id = 2;
+  string reason = 3;
+}
+
+message CancelPayRunResponse {
+  string cancelled_at_rfc3339 = 1;
+}
+
+// =============================================================================
+// Read model (gRPC) — for downstream report consumers
+// =============================================================================
+
+service PayrollQueryService {
+  rpc GetPayRunSummary(GetPayRunSummaryRequest) returns (GetPayRunSummaryResponse);
+  rpc ListPaymentInstructions(ListPaymentInstructionsRequest) returns (ListPaymentInstructionsResponse);
+}
+
+message GetPayRunSummaryRequest {
+  string tenant_id = 1;
+  string pay_run_id = 2;
+}
+
+message GetPayRunSummaryResponse {
+  string pay_run_id = 1;
+  string status = 2;
+  uint32 employee_count = 3;
+  string opened_at_rfc3339 = 4;
+  optional string finalized_at_rfc3339 = 5;
+  optional string cancelled_at_rfc3339 = 6;
+}
+
+message ListPaymentInstructionsRequest {
+  string tenant_id = 1;
+  string payroll_period_id = 2;
+  uint32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListPaymentInstructionsResponse {
+  repeated PaymentInstructionRow rows = 1;
+  string next_page_token = 2;
+}
+
+message PaymentInstructionRow {
+  string payment_instruction_id = 1;
+  string employee_id = 2;
+  string currency_code = 3;
+  int64 gross_pay_minor = 4;
+  int64 net_pay_minor = 5;
+  string inputs_fingerprint_sha256 = 6;
 }

@@ -10,6 +10,12 @@ import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transa
 
 export type { CurrentPaystubPayload, PaystubLinePayload };
 
+/**
+ * Reads the latest persisted PaymentInstruction for the calling employee. Rows are written
+ * by `lib/payroll/run-payroll.ts` (POST `/api/v1/payroll/runs`), which invokes the
+ * deterministic kernel in `packages/payroll-calc` and stores the resulting earnings,
+ * pre-tax deductions, and tax withholdings as PayoutLines.
+ */
 export async function getCurrentPaystub(
   auth: AuthContext,
 ): Promise<CurrentPaystubPayload | null> {

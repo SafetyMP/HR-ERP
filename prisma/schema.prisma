@@ -12,100 +12,105 @@ datasource db {
 // --- Core tenant & people ---
 
 model Organization {
-  id                      String  @id
+  id                      String          @id
   name                    String
-  jurisdictionCountry     String? @map("jurisdiction_country")
-  jurisdictionSubdivision String? @map("jurisdiction_subdivision")
-  reportingCurrency       String? @map("reporting_currency")
+  jurisdictionCountry     String?         @map("jurisdiction_country")
+  jurisdictionSubdivision String?         @map("jurisdiction_subdivision")
+  reportingCurrency       String?         @map("reporting_currency")
   payoutSplitMode         PayoutSplitMode @default(PERCENT_BASIS_POINTS) @map("payout_split_mode")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
+  createdAt               DateTime        @default(now()) @map("created_at")
+  updatedAt               DateTime        @updatedAt @map("updated_at")
 
-  employees            Employee[]
-  holidayCalendars     HolidayCalendar[]
-  meetingProposals     MeetingProposal[]
-  payrollPeriods       PayrollPeriod[]
-  paymentInstructions   PaymentInstruction[]
-  benefitEnrollments             BenefitEnrollment[]
+  employees                     Employee[]
+  holidayCalendars              HolidayCalendar[]
+  meetingProposals              MeetingProposal[]
+  payrollPeriods                PayrollPeriod[]
+  paymentInstructions           PaymentInstruction[]
+  benefitEnrollments            BenefitEnrollment[]
   benefitElectionChangeRequests BenefitElectionChangeRequest[]
-  taxYearDocuments               TaxYearDocument[]
-  onboardingTemplates            OnboardingTemplate[]
-  attendanceCorrectionRequests   AttendanceCorrectionRequest[]
-  sprints                        Sprint[]
+  taxYearDocuments              TaxYearDocument[]
+  onboardingTemplates           OnboardingTemplate[]
+  attendanceCorrectionRequests  AttendanceCorrectionRequest[]
+  sprints                       Sprint[]
 
   @@map("organizations")
 }
 
 /// Core HR employee — tenant key matches Organization.id
 model Employee {
-  id        String   @id @default(uuid())
-  tenantId  String   @map("tenant_id")
-  email     String
-  firstName String?  @map("first_name")
-  lastName  String?  @map("last_name")
+  id                           String  @id @default(uuid())
+  tenantId                     String  @map("tenant_id")
+  email                        String
+  firstName                    String? @map("first_name")
+  lastName                     String? @map("last_name")
   /// Display / IT provisioning — distinct from legal given/family names (Feature 004).
-  preferredName              String? @map("preferred_name")
-  personalEmail              String? @map("personal_email")
-  phone                      String? @map("phone")
-  mailingAddressLine1        String? @map("mailing_address_line1")
-  mailingAddressLine2        String? @map("mailing_address_line2")
-  mailingCity                String? @map("mailing_city")
-  mailingRegion              String? @map("mailing_region")
-  mailingPostalCode          String? @map("mailing_postal_code")
-  mailingCountry             String? @map("mailing_country")
-  emergencyContactName       String? @map("emergency_contact_name")
-  emergencyContactPhone      String? @map("emergency_contact_phone")
+  preferredName                String? @map("preferred_name")
+  personalEmail                String? @map("personal_email")
+  phone                        String? @map("phone")
+  mailingAddressLine1          String? @map("mailing_address_line1")
+  mailingAddressLine2          String? @map("mailing_address_line2")
+  mailingCity                  String? @map("mailing_city")
+  mailingRegion                String? @map("mailing_region")
+  mailingPostalCode            String? @map("mailing_postal_code")
+  mailingCountry               String? @map("mailing_country")
+  emergencyContactName         String? @map("emergency_contact_name")
+  emergencyContactPhone        String? @map("emergency_contact_phone")
   emergencyContactRelationship String? @map("emergency_contact_relationship")
 
   managerId    String? @map("manager_id")
   departmentId String? @map("department_id")
   jobRoleId    String? @map("job_role_id")
 
-  status            EmployeeStatus @default(ACTIVE)
-  hireDate          DateTime?      @map("hire_date")
-  terminationDate   DateTime?      @map("termination_date")
-  anonymizedPseudonym String?      @map("anonymized_pseudonym")
+  status              EmployeeStatus @default(ACTIVE)
+  hireDate            DateTime?      @map("hire_date")
+  terminationDate     DateTime?      @map("termination_date")
+  anonymizedPseudonym String?        @map("anonymized_pseudonym")
+
+  /// Soft-delete + retention mixin (ADR 0004). `deleted_at` excludes rows from
+  /// default reads; `retention_expires_at` arms hard purge by the retention job.
+  deletedAt          DateTime? @map("deleted_at")
+  retentionExpiresAt DateTime? @map("retention_expires_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
 
-  manager       Employee?  @relation("EmployeeManager", fields: [managerId], references: [id], onDelete: SetNull)
-  directReports Employee[] @relation("EmployeeManager")
+  manager       Employee?   @relation("EmployeeManager", fields: [managerId], references: [id], onDelete: SetNull)
+  directReports Employee[]  @relation("EmployeeManager")
   department    Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
   jobRole       JobRole?    @relation(fields: [jobRoleId], references: [id], onDelete: SetNull)
 
-  onboardingTasks        OnboardingTask[]
-  vendorLinks            EmployeeVendorLink[]
-  workContext            EmployeeWorkContext?
-  schedulingPreference   SchedulingPreference?
-  holidayRegions         EmployeeHolidayRegion[]
-  meetingProposalsOrg    MeetingProposal[]            @relation("MeetingOrganizer")
-  meetingParticipations  MeetingProposalParticipant[]
-  paymentInstructions    PaymentInstruction[]
-  capacityAdjustments    CapacityAdjustment[]
-  sprintCapacityRows     SprintCapacitySummary[]
-  attendancePunches      AttendancePunch[]
-  ptoRequests            PtoRequest[]
-  compensationRecords    CompensationRecord[]
-  ptoBalances            PtoBalance[]
-  performanceReviews     PerformanceReview[]
-  employmentEvents       EmploymentEvent[]
-  employeeSkills         EmployeeSkill[]
-  userAccounts           UserAccount[]
-  analyticsFeatureSnapshots AnalyticsFeatureSnapshot[]
-  churnScores              ChurnScore[]
-  benefitEnrollments       BenefitEnrollment[]
-  benefitElectionChangeRequests BenefitElectionChangeRequest[]
-  taxYearDocuments             TaxYearDocument[]
-  timeOffRequests              TimeOffRequest[]
-  timeOffDecisions             TimeOffRequest[]              @relation("TimeOffDecidedBy")
-  hrCaseRequests               HrCaseRequest[]
-  attendanceCorrectionSubjects AttendanceCorrectionRequest[] @relation("AttendanceCorrectionSubject")
-  attendanceCorrectionsSubmitted AttendanceCorrectionRequest[] @relation("AttendanceCorrectionSubmittedBy")
-  attendanceCorrectionsDecided AttendanceCorrectionRequest[] @relation("AttendanceCorrectionDecidedBy")
-  employeeSeparationTasks    EmployeeSeparationTask[]
+  onboardingTasks                OnboardingTask[]
+  vendorLinks                    EmployeeVendorLink[]
+  workContext                    EmployeeWorkContext?
+  schedulingPreference           SchedulingPreference?
+  holidayRegions                 EmployeeHolidayRegion[]
+  meetingProposalsOrg            MeetingProposal[]              @relation("MeetingOrganizer")
+  meetingParticipations          MeetingProposalParticipant[]
+  paymentInstructions            PaymentInstruction[]
+  capacityAdjustments            CapacityAdjustment[]
+  sprintCapacityRows             SprintCapacitySummary[]
+  attendancePunches              AttendancePunch[]
+  ptoRequests                    PtoRequest[]
+  compensationRecords            CompensationRecord[]
+  ptoBalances                    PtoBalance[]
+  performanceReviews             PerformanceReview[]
+  employmentEvents               EmploymentEvent[]
+  employeeSkills                 EmployeeSkill[]
+  userAccounts                   UserAccount[]
+  analyticsFeatureSnapshots      AnalyticsFeatureSnapshot[]
+  churnScores                    ChurnScore[]
+  benefitEnrollments             BenefitEnrollment[]
+  benefitElectionChangeRequests  BenefitElectionChangeRequest[]
+  taxYearDocuments               TaxYearDocument[]
+  timeOffRequests                TimeOffRequest[]
+  timeOffDecisions               TimeOffRequest[]               @relation("TimeOffDecidedBy")
+  hrCaseRequests                 HrCaseRequest[]
+  attendanceCorrectionSubjects   AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionSubject")
+  attendanceCorrectionsSubmitted AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionSubmittedBy")
+  attendanceCorrectionsDecided   AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionDecidedBy")
+  employeeSeparationTasks        EmployeeSeparationTask[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -132,20 +137,20 @@ model PtoRequest {
 
 /// Employee-submitted multi-day time-off request (Feature 006); manager decision fields (Feature 011).
 model TimeOffRequest {
-  id         String                @id @default(uuid())
-  tenantId   String                @map("tenant_id")
-  employeeId String                @map("employee_id")
-  startDate  DateTime              @map("start_date") @db.Date
-  endDate    DateTime              @map("end_date") @db.Date
-  status     TimeOffRequestStatus  @default(PENDING)
-  note       String?
-  decidedAt  DateTime?             @map("decided_at")
-  decidedByEmployeeId String?      @map("decided_by_employee_id")
-  decisionNote String?              @map("decision_note")
-  createdAt  DateTime              @default(now()) @map("created_at")
-  updatedAt  DateTime              @updatedAt @map("updated_at")
+  id                  String               @id @default(uuid())
+  tenantId            String               @map("tenant_id")
+  employeeId          String               @map("employee_id")
+  startDate           DateTime             @map("start_date") @db.Date
+  endDate             DateTime             @map("end_date") @db.Date
+  status              TimeOffRequestStatus @default(PENDING)
+  note                String?
+  decidedAt           DateTime?            @map("decided_at")
+  decidedByEmployeeId String?              @map("decided_by_employee_id")
+  decisionNote        String?              @map("decision_note")
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
 
-  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  employee  Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   decidedBy Employee? @relation("TimeOffDecidedBy", fields: [decidedByEmployeeId], references: [id], onDelete: SetNull)
 
   @@index([tenantId, employeeId])
@@ -161,16 +166,19 @@ enum TimeOffRequestStatus {
 
 /// Lightweight HR / payroll intake ticket from employee self-service (Feature 010 + 012 lifecycle).
 model HrCaseRequest {
-  id         String          @id @default(uuid())
-  tenantId   String          @map("tenant_id")
-  employeeId String          @map("employee_id")
-  category   HrCaseCategory  @map("category")
-  body       String
-  status     HrCaseStatus    @default(OPEN)
+  id                  String         @id @default(uuid())
+  tenantId            String         @map("tenant_id")
+  employeeId          String         @map("employee_id")
+  category            HrCaseCategory @map("category")
+  body                String
+  status              HrCaseStatus   @default(OPEN)
   /// Short HR-facing note surfaced to the employee on status updates (no full case-management parity).
-  employeeVisibleNote String? @map("employee_visible_note")
-  createdAt  DateTime        @default(now()) @map("created_at")
-  updatedAt  DateTime        @updatedAt @map("updated_at")
+  employeeVisibleNote String?        @map("employee_visible_note")
+  /// Soft-delete + retention mixin (ADR 0004).
+  deletedAt           DateTime?      @map("deleted_at")
+  retentionExpiresAt  DateTime?      @map("retention_expires_at")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
@@ -192,8 +200,8 @@ enum HrCaseStatus {
 }
 
 model Department {
-  id       String @id @default(uuid())
-  tenantId String @map("tenant_id")
+  id       String  @id @default(uuid())
+  tenantId String  @map("tenant_id")
   name     String
   code     String?
 
@@ -209,11 +217,11 @@ model Department {
 }
 
 model JobRole {
-  id       String @id @default(uuid())
-  tenantId String @map("tenant_id")
-  title    String
-  level    String?
-  departmentId String? @map("department_id")
+  id             String  @id @default(uuid())
+  tenantId       String  @map("tenant_id")
+  title          String
+  level          String?
+  departmentId   String? @map("department_id")
   canonicalTitle String? @map("canonical_title")
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -232,13 +240,13 @@ model JobRole {
 }
 
 model CompensationRecord {
-  id         String   @id @default(uuid())
-  employeeId String   @map("employee_id")
-  baseAmount Decimal  @map("base_amount") @db.Decimal(14, 2)
-  currency   String   @default("USD")
-  effectiveFrom DateTime @map("effective_from")
-  bandPosition    Float?   @map("band_position")
-  internalBandCode String? @map("internal_band_code")
+  id               String   @id @default(uuid())
+  employeeId       String   @map("employee_id")
+  baseAmount       Decimal  @map("base_amount") @db.Decimal(14, 2)
+  currency         String   @default("USD")
+  effectiveFrom    DateTime @map("effective_from")
+  bandPosition     Float?   @map("band_position")
+  internalBandCode String?  @map("internal_band_code")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -249,10 +257,10 @@ model CompensationRecord {
 }
 
 model PtoBalance {
-  id         String   @id @default(uuid())
-  employeeId String   @map("employee_id")
-  balanceHours Decimal @map("balance_hours") @db.Decimal(10, 2)
-  asOfDate   DateTime @map("as_of_date")
+  id           String   @id @default(uuid())
+  employeeId   String   @map("employee_id")
+  balanceHours Decimal  @map("balance_hours") @db.Decimal(10, 2)
+  asOfDate     DateTime @map("as_of_date")
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
@@ -261,12 +269,12 @@ model PtoBalance {
 }
 
 model PerformanceReview {
-  id         String   @id @default(uuid())
-  employeeId String   @map("employee_id")
-  periodStart DateTime @map("period_start")
-  periodEnd   DateTime @map("period_end")
-  overallRating  Float? @map("overall_rating")
-  sentimentScore Float? @map("sentiment_score")
+  id             String   @id @default(uuid())
+  employeeId     String   @map("employee_id")
+  periodStart    DateTime @map("period_start")
+  periodEnd      DateTime @map("period_end")
+  overallRating  Float?   @map("overall_rating")
+  sentimentScore Float?   @map("sentiment_score")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -277,10 +285,10 @@ model PerformanceReview {
 }
 
 model EmploymentEvent {
-  id         String @id @default(uuid())
-  employeeId String @map("employee_id")
+  id         String              @id @default(uuid())
+  employeeId String              @map("employee_id")
   eventType  EmploymentEventType @map("event_type")
-  occurredAt DateTime @map("occurred_at")
+  occurredAt DateTime            @map("occurred_at")
   metadata   Json?
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -310,11 +318,11 @@ model Skill {
 }
 
 model EmployeeSkill {
-  id         String @id @default(uuid())
-  employeeId String @map("employee_id")
-  skillId    String @map("skill_id")
+  id          String @id @default(uuid())
+  employeeId  String @map("employee_id")
+  skillId     String @map("skill_id")
   proficiency Int
-  embedding  Json?
+  embedding   Json?
 
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -339,17 +347,17 @@ model RoleSkillTarget {
 }
 
 model UserAccount {
-  id         String @id @default(uuid())
-  tenantId   String @map("tenant_id")
+  id         String  @id @default(uuid())
+  tenantId   String  @map("tenant_id")
   email      String
   employeeId String? @map("employee_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  employee Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
-  roles    UserRoleAssignment[]
-  auditLogsAsActor AuditLog[] @relation("AuditActor")
+  employee         Employee?            @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  roles            UserRoleAssignment[]
+  auditLogsAsActor AuditLog[]           @relation("AuditActor")
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -357,7 +365,7 @@ model UserAccount {
 }
 
 model UserRoleAssignment {
-  userId String @map("user_id")
+  userId String  @map("user_id")
   role   AppRole
 
   user UserAccount @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -367,13 +375,13 @@ model UserRoleAssignment {
 }
 
 model AuditLog {
-  id          String @id @default(uuid())
-  tenantId    String @map("tenant_id")
-  actorUserId String? @map("actor_user_id")
-  action      String
-  resourceType String @map("resource_type")
-  resourceId   String @map("resource_id")
-  details     Json?
+  id           String  @id @default(uuid())
+  tenantId     String  @map("tenant_id")
+  actorUserId  String? @map("actor_user_id")
+  action       String
+  resourceType String  @map("resource_type")
+  resourceId   String  @map("resource_id")
+  details      Json?
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -385,13 +393,13 @@ model AuditLog {
 }
 
 model AnalyticsFeatureSnapshot {
-  id           String   @id @default(uuid())
-  tenantId     String   @map("tenant_id")
-  employeeId   String   @map("employee_id")
-  snapshotDate DateTime @map("snapshot_date")
-  features       Json
+  id                String   @id @default(uuid())
+  tenantId          String   @map("tenant_id")
+  employeeId        String   @map("employee_id")
+  snapshotDate      DateTime @map("snapshot_date")
+  features          Json
   churnedWithin180d Boolean? @map("churned_within_180d")
-  etlVersion     String? @map("etl_version")
+  etlVersion        String?  @map("etl_version")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -403,11 +411,11 @@ model AnalyticsFeatureSnapshot {
 }
 
 model ChurnScore {
-  id         String @id @default(uuid())
-  tenantId   String @map("tenant_id")
-  employeeId String @map("employee_id")
-  score      Float
-  drivers    Json
+  id           String @id @default(uuid())
+  tenantId     String @map("tenant_id")
+  employeeId   String @map("employee_id")
+  score        Float
+  drivers      Json
   modelVersion String @map("model_version")
 
   scoredAt DateTime @default(now()) @map("scored_at")
@@ -420,10 +428,10 @@ model ChurnScore {
 }
 
 model ModelRegistry {
-  id           String @id @default(uuid())
-  modelType    String @map("model_type")
+  id           String  @id @default(uuid())
+  modelType    String  @map("model_type")
   version      String
-  artifactUri  String @map("artifact_uri")
+  artifactUri  String  @map("artifact_uri")
   metrics      Json?
   isProduction Boolean @default(false) @map("is_production")
 
@@ -435,18 +443,18 @@ model ModelRegistry {
 }
 
 model MarketBenchmark {
-  id       String @id @default(uuid())
-  tenantId String @map("tenant_id")
-  jobRoleId String? @map("job_role_id")
-  geoCode  String @map("geo_code")
-  currency String @default("EUR")
-  provider String @default("mock_provider")
-  p50Annual Decimal? @map("p50_annual") @db.Decimal(14, 2)
-  p75Annual Decimal? @map("p75_annual") @db.Decimal(14, 2)
-  p90Annual Decimal? @map("p90_annual") @db.Decimal(14, 2)
-  sampleSize Int?    @map("sample_size")
+  id            String   @id @default(uuid())
+  tenantId      String   @map("tenant_id")
+  jobRoleId     String?  @map("job_role_id")
+  geoCode       String   @map("geo_code")
+  currency      String   @default("EUR")
+  provider      String   @default("mock_provider")
+  p50Annual     Decimal? @map("p50_annual") @db.Decimal(14, 2)
+  p75Annual     Decimal? @map("p75_annual") @db.Decimal(14, 2)
+  p90Annual     Decimal? @map("p90_annual") @db.Decimal(14, 2)
+  sampleSize    Int?     @map("sample_size")
   effectiveDate DateTime @map("effective_date")
-  rawPayload Json?   @map("raw_payload")
+  rawPayload    Json?    @map("raw_payload")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -458,9 +466,9 @@ model MarketBenchmark {
 }
 
 model BenchmarkAlert {
-  id        String @id @default(uuid())
-  tenantId  String @map("tenant_id")
-  jobRoleId String? @map("job_role_id")
+  id        String                 @id @default(uuid())
+  tenantId  String                 @map("tenant_id")
+  jobRoleId String?                @map("job_role_id")
   severity  BenchmarkAlertSeverity @default(WARN)
   message   String
 
@@ -474,13 +482,13 @@ model BenchmarkAlert {
 }
 
 model JobTitleMap {
-  id               String @id @default(uuid())
-  tenantId         String @map("tenant_id")
-  internalTitleKey String @map("internal_title_key")
-  geoCode          String @map("geo_code")
-  normalizedTitle  String @map("normalized_title")
+  id                     String  @id @default(uuid())
+  tenantId               String  @map("tenant_id")
+  internalTitleKey       String  @map("internal_title_key")
+  geoCode                String  @map("geo_code")
+  normalizedTitle        String  @map("normalized_title")
   externalOccupationCode String? @map("external_occupation_code")
-  jobRoleId        String? @map("job_role_id")
+  jobRoleId              String? @map("job_role_id")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -492,21 +500,21 @@ model JobTitleMap {
 }
 
 model EmployeeWorkContext {
-  id                       String           @id @default(uuid())
-  employeeId               String           @unique @map("employee_id")
-  primaryTimezone          String           @map("primary_timezone")
-  locale                   String           @default("en-US")
-  preferredFirstDayOfWeek  Int?             @map("preferred_first_day_of_week")
-  calendarSystem           CalendarSystem   @default(GREGORIAN) @map("calendar_system")
-  calendarCustomNote       String?          @map("calendar_custom_note")
-  honorific                String?
-  givenName                String?          @map("given_name")
-  familyName               String?          @map("family_name")
-  additionalName           String?          @map("additional_name")
-  displayName              String?          @map("display_name")
-  nameOrderPreference      NameOrderPreference @default(GIVEN_FAMILY) @map("name_order_preference")
-  createdAt                DateTime         @default(now()) @map("created_at")
-  updatedAt                DateTime         @updatedAt @map("updated_at")
+  id                      String              @id @default(uuid())
+  employeeId              String              @unique @map("employee_id")
+  primaryTimezone         String              @map("primary_timezone")
+  locale                  String              @default("en-US")
+  preferredFirstDayOfWeek Int?                @map("preferred_first_day_of_week")
+  calendarSystem          CalendarSystem      @default(GREGORIAN) @map("calendar_system")
+  calendarCustomNote      String?             @map("calendar_custom_note")
+  honorific               String?
+  givenName               String?             @map("given_name")
+  familyName              String?             @map("family_name")
+  additionalName          String?             @map("additional_name")
+  displayName             String?             @map("display_name")
+  nameOrderPreference     NameOrderPreference @default(GIVEN_FAMILY) @map("name_order_preference")
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
 
   employee      Employee       @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   workIntervals WorkInterval[]
@@ -515,13 +523,13 @@ model EmployeeWorkContext {
 }
 
 model WorkInterval {
-  id           String @id @default(uuid())
+  id            String @id @default(uuid())
   workContextId String @map("work_context_id")
   /// 0 = Sunday … 6 = Saturday (locale-neutral; UI can relabel)
-  dayOfWeek    Int    @map("day_of_week")
+  dayOfWeek     Int    @map("day_of_week")
   /// Minutes from local midnight (in employee primary zone)
-  startMinute  Int    @map("start_minute")
-  endMinute    Int    @map("end_minute")
+  startMinute   Int    @map("start_minute")
+  endMinute     Int    @map("end_minute")
 
   workContext EmployeeWorkContext @relation(fields: [workContextId], references: [id], onDelete: Cascade)
 
@@ -543,16 +551,16 @@ model SchedulingPreference {
 }
 
 model MeetingProposal {
-  id                  String               @id @default(uuid())
-  tenantId            String               @map("tenant_id")
-  organizerEmployeeId String               @map("organizer_employee_id")
+  id                  String                @id @default(uuid())
+  tenantId            String                @map("tenant_id")
+  organizerEmployeeId String                @map("organizer_employee_id")
   title               String
   status              MeetingProposalStatus @default(DRAFT)
-  createdAt           DateTime             @default(now()) @map("created_at")
-  updatedAt           DateTime             @updatedAt @map("updated_at")
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
 
-  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  organizer    Employee     @relation("MeetingOrganizer", fields: [organizerEmployeeId], references: [id], onDelete: Cascade)
+  organization Organization                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organizer    Employee                     @relation("MeetingOrganizer", fields: [organizerEmployeeId], references: [id], onDelete: Cascade)
   slots        MeetingProposalSlot[]
   participants MeetingProposalParticipant[]
 
@@ -594,7 +602,7 @@ model PayrollPeriod {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  organization         Organization          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organization        Organization         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   paymentInstructions PaymentInstruction[]
 
   @@index([tenantId])
@@ -602,20 +610,20 @@ model PayrollPeriod {
 }
 
 model PaymentInstruction {
-  id                 String   @id @default(uuid())
-  tenantId           String   @map("tenant_id")
-  employeeId         String   @map("employee_id")
-  payrollPeriodId    String?  @map("payroll_period_id")
-  reportingFxSnapshotId String? @map("reporting_fx_snapshot_id")
-  memo               String?
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+  id                    String   @id @default(uuid())
+  tenantId              String   @map("tenant_id")
+  employeeId            String   @map("employee_id")
+  payrollPeriodId       String?  @map("payroll_period_id")
+  reportingFxSnapshotId String?  @map("reporting_fx_snapshot_id")
+  memo                  String?
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 
-  organization      Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  employee          Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  payrollPeriod     PayrollPeriod? @relation(fields: [payrollPeriodId], references: [id], onDelete: SetNull)
-  reportingFxSnapshot FxSnapshot?  @relation(fields: [reportingFxSnapshotId], references: [id], onDelete: SetNull)
-  lines             PayoutLine[]
+  organization        Organization   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee            Employee       @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  payrollPeriod       PayrollPeriod? @relation(fields: [payrollPeriodId], references: [id], onDelete: SetNull)
+  reportingFxSnapshot FxSnapshot?    @relation(fields: [reportingFxSnapshotId], references: [id], onDelete: SetNull)
+  lines               PayoutLine[]
 
   @@index([tenantId])
   @@index([employeeId])
@@ -623,16 +631,16 @@ model PaymentInstruction {
 }
 
 model PayoutLine {
-  id                   String        @id @default(uuid())
-  paymentInstructionId String        @map("payment_instruction_id")
-  lineType             PayoutLineType @map("line_type")
-  sortOrder            Int           @default(0) @map("sort_order")
+  id                    String         @id @default(uuid())
+  paymentInstructionId  String         @map("payment_instruction_id")
+  lineType              PayoutLineType @map("line_type")
+  sortOrder             Int            @default(0) @map("sort_order")
   /// Amount in minor units when not using percent split
-  amountMinor          Int?          @map("amount_minor")
+  amountMinor           Int?           @map("amount_minor")
   /// 0–10000 = 0%–100% when using percent-based split
-  allocationBasisPoints Int?         @map("allocation_basis_points")
-  currencyCode         String?       @map("currency_code")
-  cryptoAssetId        String?       @map("crypto_asset_id")
+  allocationBasisPoints Int?           @map("allocation_basis_points")
+  currencyCode          String?        @map("currency_code")
+  cryptoAssetId         String?        @map("crypto_asset_id")
 
   paymentInstruction PaymentInstruction @relation(fields: [paymentInstructionId], references: [id], onDelete: Cascade)
 
@@ -641,12 +649,12 @@ model PayoutLine {
 }
 
 model FxSnapshot {
-  id          String   @id @default(uuid())
-  fromCurrency String  @map("from_currency")
-  toCurrency   String  @map("to_currency")
-  rate        Decimal  @db.Decimal(20, 10)
-  quotedAt    DateTime @map("quoted_at")
-  source      String
+  id           String   @id @default(uuid())
+  fromCurrency String   @map("from_currency")
+  toCurrency   String   @map("to_currency")
+  rate         Decimal  @db.Decimal(20, 10)
+  quotedAt     DateTime @map("quoted_at")
+  source       String
 
   paymentInstructions PaymentInstruction[]
 
@@ -657,18 +665,18 @@ model FxSnapshot {
 // --- Holidays & capacity ---
 
 model HolidayCalendar {
-  id                      String   @id @default(uuid())
-  tenantId                String   @map("tenant_id")
-  jurisdictionCountry     String   @map("jurisdiction_country")
-  jurisdictionSubdivision String?  @map("jurisdiction_subdivision")
+  id                      String    @id @default(uuid())
+  tenantId                String    @map("tenant_id")
+  jurisdictionCountry     String    @map("jurisdiction_country")
+  jurisdictionSubdivision String?   @map("jurisdiction_subdivision")
   name                    String
-  version                 Int      @default(1)
-  provider                String?  // e.g. nager_at
+  version                 Int       @default(1)
+  provider                String? // e.g. nager_at
   lastSyncedAt            DateTime? @map("last_synced_at")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
 
-  organization  Organization           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organization  Organization            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   observations  HolidayObservation[]
   employeeLinks EmployeeHolidayRegion[]
 
@@ -677,20 +685,20 @@ model HolidayCalendar {
 }
 
 model HolidayObservation {
-  id                 String           @id @default(uuid())
-  holidayCalendarId  String           @map("holiday_calendar_id")
-  localNameKey       String           @map("local_name_key")
-  ruleType           HolidayRuleType  @map("rule_type")
-  fixedMonth         Int?             @map("fixed_month")
-  fixedDay           Int?             @map("fixed_day")
-  easterOffsetDays   Int?             @map("easter_offset_days")
-  externalId         String?          @map("external_id")
-  effectiveFrom      DateTime?        @map("effective_from") @db.Date
-  effectiveTo        DateTime?        @map("effective_to") @db.Date
-  source             String?
+  id                String          @id @default(uuid())
+  holidayCalendarId String          @map("holiday_calendar_id")
+  localNameKey      String          @map("local_name_key")
+  ruleType          HolidayRuleType @map("rule_type")
+  fixedMonth        Int?            @map("fixed_month")
+  fixedDay          Int?            @map("fixed_day")
+  easterOffsetDays  Int?            @map("easter_offset_days")
+  externalId        String?         @map("external_id")
+  effectiveFrom     DateTime?       @map("effective_from") @db.Date
+  effectiveTo       DateTime?       @map("effective_to") @db.Date
+  source            String?
 
-  calendar HolidayCalendar @relation(fields: [holidayCalendarId], references: [id], onDelete: Cascade)
-  dates    HolidayObservationDate[]
+  calendar            HolidayCalendar          @relation(fields: [holidayCalendarId], references: [id], onDelete: Cascade)
+  dates               HolidayObservationDate[]
   capacityAdjustments CapacityAdjustment[]
 
   @@unique([holidayCalendarId, externalId])
@@ -712,10 +720,10 @@ model HolidayObservationDate {
 }
 
 model EmployeeHolidayRegion {
-  id                String @id @default(uuid())
-  employeeId        String @map("employee_id")
-  holidayCalendarId String @map("holiday_calendar_id")
-  priority          Int    @default(0)
+  id                String  @id @default(uuid())
+  employeeId        String  @map("employee_id")
+  holidayCalendarId String  @map("holiday_calendar_id")
+  priority          Int     @default(0)
   label             String?
 
   employee Employee        @relation(fields: [employeeId], references: [id], onDelete: Cascade)
@@ -736,7 +744,7 @@ model Sprint {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  organization Organization @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organization Organization            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   adjustments  CapacityAdjustment[]
   summaries    SprintCapacitySummary[]
 
@@ -745,17 +753,17 @@ model Sprint {
 }
 
 model CapacityAdjustment {
-  id                 String                   @id @default(uuid())
-  employeeId         String                   @map("employee_id")
-  sprintId           String?                  @map("sprint_id")
-  localDate          DateTime                 @map("local_date") @db.Date
-  reason             CapacityAdjustmentReason
-  minutesReduced     Int                      @map("minutes_reduced")
-  holidayObservationId String?                @map("holiday_observation_id")
-  createdAt          DateTime                 @default(now()) @map("created_at")
+  id                   String                   @id @default(uuid())
+  employeeId           String                   @map("employee_id")
+  sprintId             String?                  @map("sprint_id")
+  localDate            DateTime                 @map("local_date") @db.Date
+  reason               CapacityAdjustmentReason
+  minutesReduced       Int                      @map("minutes_reduced")
+  holidayObservationId String?                  @map("holiday_observation_id")
+  createdAt            DateTime                 @default(now()) @map("created_at")
 
-  employee         Employee          @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  sprint           Sprint?           @relation(fields: [sprintId], references: [id], onDelete: SetNull)
+  employee           Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  sprint             Sprint?             @relation(fields: [sprintId], references: [id], onDelete: SetNull)
   holidayObservation HolidayObservation? @relation(fields: [holidayObservationId], references: [id], onDelete: SetNull)
 
   @@index([employeeId, localDate])
@@ -859,7 +867,10 @@ model BenefitEnrollment {
   effectiveTo                   DateTime?       @map("effective_to") @db.Date
   dependentCount                Int?            @map("dependent_count")
   /// Elective deferral rate in basis points (0–10000 = 0.00%–100.00%); RETIREMENT rows only.
-  retirementDeferralBasisPoints Int?           @map("retirement_deferral_basis_points")
+  retirementDeferralBasisPoints Int?            @map("retirement_deferral_basis_points")
+  /// Soft-delete + retention mixin (ADR 0004).
+  deletedAt                     DateTime?       @map("deleted_at")
+  retentionExpiresAt            DateTime?       @map("retention_expires_at")
   createdAt                     DateTime        @default(now()) @map("created_at")
   updatedAt                     DateTime        @updatedAt @map("updated_at")
 
@@ -903,16 +914,19 @@ enum TaxDocumentKind {
 
 /// Year-end tax artifact availability row — informational until vendor feeds exist (Feature 013).
 model TaxYearDocument {
-  id               String          @id @default(uuid())
-  tenantId         String          @map("tenant_id")
-  employeeId       String          @map("employee_id")
-  taxYear          Int             @map("tax_year")
-  documentKind     TaxDocumentKind @map("document_kind")
-  title            String
-  availabilityNote String?         @map("availability_note")
-  issuedAt         DateTime?       @map("issued_at")
-  createdAt        DateTime        @default(now()) @map("created_at")
-  updatedAt        DateTime        @updatedAt @map("updated_at")
+  id                 String          @id @default(uuid())
+  tenantId           String          @map("tenant_id")
+  employeeId         String          @map("employee_id")
+  taxYear            Int             @map("tax_year")
+  documentKind       TaxDocumentKind @map("document_kind")
+  title              String
+  availabilityNote   String?         @map("availability_note")
+  issuedAt           DateTime?       @map("issued_at")
+  /// Soft-delete + retention mixin (ADR 0004).
+  deletedAt          DateTime?       @map("deleted_at")
+  retentionExpiresAt DateTime?       @map("retention_expires_at")
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
 
   organization Organization @relation(fields: [tenantId], references: [id], onDelete: Restrict)
   employee     Employee     @relation(fields: [employeeId], references: [id], onDelete: Cascade)
@@ -1037,8 +1051,8 @@ model IntegrationDeadLetter {
 model WebhookEventDedupe {
   id              String   @id @default(uuid())
   vendorKey       String   @map("vendor_key")
-  tenantId        String    @map("tenant_id")
-  externalEventId String    @map("external_event_id")
+  tenantId        String   @map("tenant_id")
+  externalEventId String   @map("external_event_id")
   receivedAt      DateTime @default(now()) @map("received_at")
 
   @@unique([vendorKey, tenantId, externalEventId])
@@ -1117,7 +1131,7 @@ model AiDecisionProposal {
   createdAt             DateTime             @default(now()) @map("created_at")
   updatedAt             DateTime             @updatedAt @map("updated_at")
 
-  explanationSnapshot AiExplanationSnapshot @relation(fields: [explanationSnapshotId], references: [id])
+  explanationSnapshot AiExplanationSnapshot        @relation(fields: [explanationSnapshotId], references: [id])
   highStakesActions   HighStakesEmploymentAction[]
 
   @@index([tenantId, status])
@@ -1154,6 +1168,158 @@ model HighStakesEmploymentAction {
   @@unique([proposalId])
   @@index([tenantId, proposalId])
   @@map("high_stakes_employment_actions")
+}
+
+// --- Recruiting / ATS ---
+
+enum JobRequisitionStatus {
+  DRAFT
+  OPEN
+  ON_HOLD
+  CLOSED
+  FILLED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERN
+  TEMP
+}
+
+enum CandidateSourceChannel {
+  CAREERS_SITE
+  EMPLOYEE_REFERRAL
+  AGENCY
+  LINKEDIN
+  JOB_BOARD
+  EVENT
+  OTHER
+}
+
+enum JobApplicationStage {
+  APPLIED
+  SCREENING
+  INTERVIEW
+  OFFER
+  HIRED
+  REJECTED
+  WITHDRAWN
+}
+
+enum JobOfferStatus {
+  DRAFT
+  PENDING_HITL_APPROVAL
+  EXTENDED
+  ACCEPTED
+  DECLINED
+  RESCINDED
+  EXPIRED
+}
+
+/// A posted role under a tenant. Hiring manager + department + jurisdiction govern offer authorities.
+model JobRequisition {
+  id              String               @id @default(uuid())
+  tenantId        String               @map("tenant_id")
+  title           String
+  departmentId    String?              @map("department_id")
+  jobRoleId       String?              @map("job_role_id")
+  hiringManagerId String?              @map("hiring_manager_id")
+  status          JobRequisitionStatus @default(DRAFT)
+  openings        Int                  @default(1)
+  /// ISO-3166-1 alpha-2 — used to gate jurisdiction-aware AI screening defaults.
+  locationCountry String?              @map("location_country")
+  employmentType  EmploymentType       @default(FULL_TIME)
+  /// Free-text job description; AI screening must operate on a redacted copy (see lib/recruiting/redact.ts).
+  description     String?
+  closedAt        DateTime?            @map("closed_at")
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+
+  applications JobApplication[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, hiringManagerId])
+  @@map("job_requisitions")
+}
+
+/// Candidate identity. PII root for ATS — soft-delete + retention drives GDPR right-to-be-forgotten.
+model Candidate {
+  id                  String                 @id @default(uuid())
+  tenantId            String                 @map("tenant_id")
+  fullName            String                 @map("full_name")
+  email               String
+  phone               String?
+  sourceChannel       CandidateSourceChannel @default(CAREERS_SITE) @map("source_channel")
+  /// Optional masked alternate identifier used by AI scoring snapshots.
+  anonymizedPseudonym String?                @map("anonymized_pseudonym")
+  /// Soft-delete + retention mixin (ADR 0004).
+  deletedAt           DateTime?              @map("deleted_at")
+  retentionExpiresAt  DateTime?              @map("retention_expires_at")
+  createdAt           DateTime               @default(now()) @map("created_at")
+  updatedAt           DateTime               @updatedAt @map("updated_at")
+
+  applications JobApplication[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@map("candidates")
+}
+
+/// One candidate's pursuit of one requisition. Stage transitions are HITL-gated for HIRED.
+model JobApplication {
+  id                        String              @id @default(uuid())
+  tenantId                  String              @map("tenant_id")
+  requisitionId             String              @map("requisition_id")
+  candidateId               String              @map("candidate_id")
+  stage                     JobApplicationStage @default(APPLIED)
+  /// Most recent AI screening proposal (lib/governance/proposals) used to advance the stage.
+  /// HIRED transitions REQUIRE this to point at an APPROVED HIRE-class proposal.
+  latestScreeningProposalId String?             @map("latest_screening_proposal_id")
+  /// Free-text recruiter note (no PII like SSN — enforced by application validation).
+  note                      String?
+  appliedAt                 DateTime            @default(now()) @map("applied_at")
+  rejectedAt                DateTime?           @map("rejected_at")
+  hiredAt                   DateTime?           @map("hired_at")
+  createdAt                 DateTime            @default(now()) @map("created_at")
+  updatedAt                 DateTime            @updatedAt @map("updated_at")
+
+  requisition JobRequisition @relation(fields: [requisitionId], references: [id], onDelete: Cascade)
+  candidate   Candidate      @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  offers      JobOffer[]
+
+  @@unique([tenantId, requisitionId, candidateId])
+  @@index([tenantId, stage])
+  @@map("job_applications")
+}
+
+/// Offer letter intent. Compensation is stored in MINOR units to match payroll-calc.
+model JobOffer {
+  id                    String         @id @default(uuid())
+  tenantId              String         @map("tenant_id")
+  applicationId         String         @map("application_id")
+  /// HIRE-class AiDecisionProposal that authorized this offer; required to leave PENDING_HITL_APPROVAL.
+  authorizingProposalId String?        @map("authorizing_proposal_id")
+  status                JobOfferStatus @default(DRAFT)
+  baseAnnualAmountMinor BigInt         @map("base_annual_amount_minor")
+  currencyCode          String         @map("currency_code")
+  startDate             DateTime?      @map("start_date") @db.Date
+  expiresAt             DateTime?      @map("expires_at")
+  acceptedAt            DateTime?      @map("accepted_at")
+  declinedAt            DateTime?      @map("declined_at")
+  rescindedAt           DateTime?      @map("rescinded_at")
+  /// Soft-delete + retention mixin (ADR 0004).
+  deletedAt             DateTime?      @map("deleted_at")
+  retentionExpiresAt    DateTime?      @map("retention_expires_at")
+  createdAt             DateTime       @default(now()) @map("created_at")
+  updatedAt             DateTime       @updatedAt @map("updated_at")
+
+  application JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([tenantId, applicationId])
+  @@map("job_offers")
 }
 
 // --- Enums ---

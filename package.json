@@ -38,6 +38,7 @@
     "outbox:kafka": "tsx workers/outbox-publisher/index.ts",
     "contracts:buf": "npx --yes @bufbuild/buf@1.69.0 lint proto",
     "contracts:openapi": "npx --yes @stoplight/spectral-cli@6.14.2 lint -r contracts/.spectral.yaml contracts/openapi/",
+    "contracts:drift": "node scripts/check-openapi-drift.mjs",
     "format": "prettier --write .",
     "holiday:sync": "tsx scripts/sync-holidays.ts",
     "test:e2e": "playwright test",

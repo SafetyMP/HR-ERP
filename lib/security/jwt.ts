@@ -1,5 +1,5 @@
-import type { JWTPayload } from "jose";
-import { SignJWT, jwtVerify } from "jose";
+import type { JWTPayload, JWTVerifyOptions } from "jose";
+import { SignJWT, createRemoteJWKSet, jwtVerify } from "jose";
 
 import type { AuthContext } from "@/lib/security/auth-context";
 import type { MfaLevel } from "@/lib/security/abac-attributes";
@@ -19,14 +19,65 @@ export interface HrJwtClaims extends JWTPayload {
 // `/docs/operations/vercel-managed-phase1-environment.md` guidance.
 const MIN_JWT_SECRET_LENGTH = 16;
 
+const ASYMMETRIC_ALGOS = [
+  "RS256",
+  "RS384",
+  "RS512",
+  "ES256",
+  "ES384",
+  "ES512",
+  "PS256",
+  "PS384",
+  "PS512",
+] as const;
+type AsymmetricAlg = (typeof ASYMMETRIC_ALGOS)[number];
+
+interface JwksConfig {
+  issuer?: string;
+  audience?: string;
+  jwksUri: string;
+  algorithms: readonly AsymmetricAlg[];
+}
+
+let cachedRemoteJwks: ReturnType<typeof createRemoteJWKSet> | null = null;
+let cachedRemoteJwksUri: string | null = null;
+
 /**
- * Load the HS256 secret at request time. Server-side `process.env.X` reads
- * inside Node-runtime route handlers are NOT inlined by Next.js / Webpack
- * (only `NEXT_PUBLIC_*` is). Earlier obscured access patterns (dynamic
- * `import("node:process")` + array-joined keys) were chasing a phantom and
- * masked the real failure mode — an empty Vercel dashboard value baked into
- * `.next/standalone/.env`. Direct access keeps the failure loud.
+ * Production deployments should issue tokens from an external IdP (Auth0, WorkOS, Okta,
+ * Entra, Keycloak) and configure `JWT_ISSUER_MODE=jwks` + `JWT_JWKS_URI`. The HS256 path
+ * remains available for local dev and CI, but is intentionally **not** the recommended
+ * production posture. See `docs/security/identity-and-jwks.md`.
  */
+function readJwksConfig(): JwksConfig | null {
+  const mode = (process.env.JWT_ISSUER_MODE ?? "hs256").toLowerCase();
+  if (mode !== "jwks" && mode !== "oidc") return null;
+
+  const jwksUri = (process.env.JWT_JWKS_URI ?? "").trim();
+  if (!jwksUri) {
+    throw new Error("JWT_ISSUER_MODE=jwks requires JWT_JWKS_URI to be set");
+  }
+
+  const algosRaw = (process.env.JWT_ACCEPTED_ALGS ?? "RS256")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const algorithms = algosRaw.filter((a): a is AsymmetricAlg =>
+    (ASYMMETRIC_ALGOS as readonly string[]).includes(a),
+  );
+  if (algorithms.length === 0) {
+    throw new Error(
+      `JWT_ACCEPTED_ALGS contains no supported asymmetric algorithm; allowed: ${ASYMMETRIC_ALGOS.join(",")}`,
+    );
+  }
+
+  return {
+    issuer: process.env.JWT_ISSUER?.trim() || undefined,
+    audience: process.env.JWT_AUDIENCE?.trim() || undefined,
+    jwksUri,
+    algorithms,
+  };
+}
+
 function requireJwtSecret(): string {
   const raw = process.env.JWT_SECRET ?? "";
   const trimmed = raw.trim();
@@ -40,7 +91,31 @@ function requireJwtSecret(): string {
   return trimmed;
 }
 
+function getRemoteJwks(jwksUri: string): ReturnType<typeof createRemoteJWKSet> {
+  if (cachedRemoteJwks && cachedRemoteJwksUri === jwksUri) {
+    return cachedRemoteJwks;
+  }
+  cachedRemoteJwks = createRemoteJWKSet(new URL(jwksUri), {
+    cooldownDuration: 30_000,
+    cacheMaxAge: 10 * 60_000,
+  });
+  cachedRemoteJwksUri = jwksUri;
+  return cachedRemoteJwks;
+}
+
 export async function verifyHrJwt(token: string): Promise<HrJwtClaims> {
+  const jwks = readJwksConfig();
+  if (jwks) {
+    const verifyOpts: JWTVerifyOptions = {
+      algorithms: [...jwks.algorithms],
+      ...(jwks.issuer ? { issuer: jwks.issuer } : {}),
+      ...(jwks.audience ? { audience: jwks.audience } : {}),
+    };
+    const keys = getRemoteJwks(jwks.jwksUri);
+    const { payload } = await jwtVerify(token, keys, verifyOpts);
+    return payload as HrJwtClaims;
+  }
+
   const secret = requireJwtSecret();
   const key = new TextEncoder().encode(secret);
   const { payload } = await jwtVerify(token, key, {

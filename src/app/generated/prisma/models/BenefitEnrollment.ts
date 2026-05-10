@@ -47,6 +47,8 @@ export type BenefitEnrollmentMinAggregateOutputType = {
   effectiveTo: Date | null
   dependentCount: number | null
   retirementDeferralBasisPoints: number | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +64,8 @@ export type BenefitEnrollmentMaxAggregateOutputType = {
   effectiveTo: Date | null
   dependentCount: number | null
   retirementDeferralBasisPoints: number | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -77,6 +81,8 @@ export type BenefitEnrollmentCountAggregateOutputType = {
   effectiveTo: number
   dependentCount: number
   retirementDeferralBasisPoints: number
+  deletedAt: number
+  retentionExpiresAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -104,6 +110,8 @@ export type BenefitEnrollmentMinAggregateInputType = {
   effectiveTo?: true
   dependentCount?: true
   retirementDeferralBasisPoints?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -119,6 +127,8 @@ export type BenefitEnrollmentMaxAggregateInputType = {
   effectiveTo?: true
   dependentCount?: true
   retirementDeferralBasisPoints?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -134,6 +144,8 @@ export type BenefitEnrollmentCountAggregateInputType = {
   effectiveTo?: true
   dependentCount?: true
   retirementDeferralBasisPoints?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -236,6 +248,8 @@ export type BenefitEnrollmentGroupByOutputType = {
   effectiveTo: Date | null
   dependentCount: number | null
   retirementDeferralBasisPoints: number | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: BenefitEnrollmentCountAggregateOutputType | null
@@ -274,6 +288,8 @@ export type BenefitEnrollmentWhereInput = {
   effectiveTo?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   dependentCount?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
   retirementDeferralBasisPoints?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -291,6 +307,8 @@ export type BenefitEnrollmentOrderByWithRelationInput = {
   effectiveTo?: Prisma.SortOrderInput | Prisma.SortOrder
   dependentCount?: Prisma.SortOrderInput | Prisma.SortOrder
   retirementDeferralBasisPoints?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -311,6 +329,8 @@ export type BenefitEnrollmentWhereUniqueInput = Prisma.AtLeast<{
   effectiveTo?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   dependentCount?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
   retirementDeferralBasisPoints?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -328,6 +348,8 @@ export type BenefitEnrollmentOrderByWithAggregationInput = {
   effectiveTo?: Prisma.SortOrderInput | Prisma.SortOrder
   dependentCount?: Prisma.SortOrderInput | Prisma.SortOrder
   retirementDeferralBasisPoints?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BenefitEnrollmentCountOrderByAggregateInput
@@ -351,6 +373,8 @@ export type BenefitEnrollmentScalarWhereWithAggregatesInput = {
   effectiveTo?: Prisma.DateTimeNullableWithAggregatesFilter<"BenefitEnrollment"> | Date | string | null
   dependentCount?: Prisma.IntNullableWithAggregatesFilter<"BenefitEnrollment"> | number | null
   retirementDeferralBasisPoints?: Prisma.IntNullableWithAggregatesFilter<"BenefitEnrollment"> | number | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"BenefitEnrollment"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"BenefitEnrollment"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BenefitEnrollment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BenefitEnrollment"> | Date | string
 }
@@ -364,6 +388,8 @@ export type BenefitEnrollmentCreateInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutBenefitEnrollmentsInput
@@ -381,6 +407,8 @@ export type BenefitEnrollmentUncheckedCreateInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -394,6 +422,8 @@ export type BenefitEnrollmentUpdateInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutBenefitEnrollmentsNestedInput
@@ -411,6 +441,8 @@ export type BenefitEnrollmentUncheckedUpdateInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -426,6 +458,8 @@ export type BenefitEnrollmentCreateManyInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -439,6 +473,8 @@ export type BenefitEnrollmentUpdateManyMutationInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,6 +490,8 @@ export type BenefitEnrollmentUncheckedUpdateManyInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -479,6 +517,8 @@ export type BenefitEnrollmentCountOrderByAggregateInput = {
   effectiveTo?: Prisma.SortOrder
   dependentCount?: Prisma.SortOrder
   retirementDeferralBasisPoints?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -499,6 +539,8 @@ export type BenefitEnrollmentMaxOrderByAggregateInput = {
   effectiveTo?: Prisma.SortOrder
   dependentCount?: Prisma.SortOrder
   retirementDeferralBasisPoints?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -514,6 +556,8 @@ export type BenefitEnrollmentMinOrderByAggregateInput = {
   effectiveTo?: Prisma.SortOrder
   dependentCount?: Prisma.SortOrder
   retirementDeferralBasisPoints?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -620,6 +664,8 @@ export type BenefitEnrollmentCreateWithoutOrganizationInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutBenefitEnrollmentsInput
@@ -635,6 +681,8 @@ export type BenefitEnrollmentUncheckedCreateWithoutOrganizationInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -679,6 +727,8 @@ export type BenefitEnrollmentScalarWhereInput = {
   effectiveTo?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   dependentCount?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
   retirementDeferralBasisPoints?: Prisma.IntNullableFilter<"BenefitEnrollment"> | number | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"BenefitEnrollment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitEnrollment"> | Date | string
 }
@@ -692,6 +742,8 @@ export type BenefitEnrollmentCreateWithoutEmployeeInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutBenefitEnrollmentsInput
@@ -707,6 +759,8 @@ export type BenefitEnrollmentUncheckedCreateWithoutEmployeeInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -747,6 +801,8 @@ export type BenefitEnrollmentCreateManyOrganizationInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -760,6 +816,8 @@ export type BenefitEnrollmentUpdateWithoutOrganizationInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutBenefitEnrollmentsNestedInput
@@ -775,6 +833,8 @@ export type BenefitEnrollmentUncheckedUpdateWithoutOrganizationInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -789,6 +849,8 @@ export type BenefitEnrollmentUncheckedUpdateManyWithoutOrganizationInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -803,6 +865,8 @@ export type BenefitEnrollmentCreateManyEmployeeInput = {
   effectiveTo?: Date | string | null
   dependentCount?: number | null
   retirementDeferralBasisPoints?: number | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -816,6 +880,8 @@ export type BenefitEnrollmentUpdateWithoutEmployeeInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutBenefitEnrollmentsNestedInput
@@ -831,6 +897,8 @@ export type BenefitEnrollmentUncheckedUpdateWithoutEmployeeInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -845,6 +913,8 @@ export type BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeInput = {
   effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dependentCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   retirementDeferralBasisPoints?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -862,6 +932,8 @@ export type BenefitEnrollmentSelect<ExtArgs extends runtime.Types.Extensions.Int
   effectiveTo?: boolean
   dependentCount?: boolean
   retirementDeferralBasisPoints?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -879,6 +951,8 @@ export type BenefitEnrollmentSelectCreateManyAndReturn<ExtArgs extends runtime.T
   effectiveTo?: boolean
   dependentCount?: boolean
   retirementDeferralBasisPoints?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -896,6 +970,8 @@ export type BenefitEnrollmentSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   effectiveTo?: boolean
   dependentCount?: boolean
   retirementDeferralBasisPoints?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -913,11 +989,13 @@ export type BenefitEnrollmentSelectScalar = {
   effectiveTo?: boolean
   dependentCount?: boolean
   retirementDeferralBasisPoints?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BenefitEnrollmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "category" | "planLabel" | "carrierName" | "effectiveFrom" | "effectiveTo" | "dependentCount" | "retirementDeferralBasisPoints" | "createdAt" | "updatedAt", ExtArgs["result"]["benefitEnrollment"]>
+export type BenefitEnrollmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "category" | "planLabel" | "carrierName" | "effectiveFrom" | "effectiveTo" | "dependentCount" | "retirementDeferralBasisPoints" | "deletedAt" | "retentionExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["benefitEnrollment"]>
 export type BenefitEnrollmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -951,6 +1029,11 @@ export type $BenefitEnrollmentPayload<ExtArgs extends runtime.Types.Extensions.I
      * Elective deferral rate in basis points (0–10000 = 0.00%–100.00%); RETIREMENT rows only.
      */
     retirementDeferralBasisPoints: number | null
+    /**
+     * Soft-delete + retention mixin (ADR 0004).
+     */
+    deletedAt: Date | null
+    retentionExpiresAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["benefitEnrollment"]>
@@ -1388,6 +1471,8 @@ export interface BenefitEnrollmentFieldRefs {
   readonly effectiveTo: Prisma.FieldRef<"BenefitEnrollment", 'DateTime'>
   readonly dependentCount: Prisma.FieldRef<"BenefitEnrollment", 'Int'>
   readonly retirementDeferralBasisPoints: Prisma.FieldRef<"BenefitEnrollment", 'Int'>
+  readonly deletedAt: Prisma.FieldRef<"BenefitEnrollment", 'DateTime'>
+  readonly retentionExpiresAt: Prisma.FieldRef<"BenefitEnrollment", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"BenefitEnrollment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BenefitEnrollment", 'DateTime'>
 }

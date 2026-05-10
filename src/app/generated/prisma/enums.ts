@@ -120,6 +120,67 @@ export const HighStakesActionType = {
 export type HighStakesActionType = (typeof HighStakesActionType)[keyof typeof HighStakesActionType]
 
 
+export const JobRequisitionStatus = {
+  DRAFT: 'DRAFT',
+  OPEN: 'OPEN',
+  ON_HOLD: 'ON_HOLD',
+  CLOSED: 'CLOSED',
+  FILLED: 'FILLED'
+} as const
+
+export type JobRequisitionStatus = (typeof JobRequisitionStatus)[keyof typeof JobRequisitionStatus]
+
+
+export const EmploymentType = {
+  FULL_TIME: 'FULL_TIME',
+  PART_TIME: 'PART_TIME',
+  CONTRACT: 'CONTRACT',
+  INTERN: 'INTERN',
+  TEMP: 'TEMP'
+} as const
+
+export type EmploymentType = (typeof EmploymentType)[keyof typeof EmploymentType]
+
+
+export const CandidateSourceChannel = {
+  CAREERS_SITE: 'CAREERS_SITE',
+  EMPLOYEE_REFERRAL: 'EMPLOYEE_REFERRAL',
+  AGENCY: 'AGENCY',
+  LINKEDIN: 'LINKEDIN',
+  JOB_BOARD: 'JOB_BOARD',
+  EVENT: 'EVENT',
+  OTHER: 'OTHER'
+} as const
+
+export type CandidateSourceChannel = (typeof CandidateSourceChannel)[keyof typeof CandidateSourceChannel]
+
+
+export const JobApplicationStage = {
+  APPLIED: 'APPLIED',
+  SCREENING: 'SCREENING',
+  INTERVIEW: 'INTERVIEW',
+  OFFER: 'OFFER',
+  HIRED: 'HIRED',
+  REJECTED: 'REJECTED',
+  WITHDRAWN: 'WITHDRAWN'
+} as const
+
+export type JobApplicationStage = (typeof JobApplicationStage)[keyof typeof JobApplicationStage]
+
+
+export const JobOfferStatus = {
+  DRAFT: 'DRAFT',
+  PENDING_HITL_APPROVAL: 'PENDING_HITL_APPROVAL',
+  EXTENDED: 'EXTENDED',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  RESCINDED: 'RESCINDED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type JobOfferStatus = (typeof JobOfferStatus)[keyof typeof JobOfferStatus]
+
+
 export const CalendarSystem = {
   GREGORIAN: 'GREGORIAN',
   ISLAMIC_UMALQURA: 'ISLAMIC_UMALQURA',

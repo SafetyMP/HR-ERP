@@ -502,7 +502,447 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+  /employees:
+    get:
+      operationId: listEmployees
+      summary: Tenant-scoped employee list (`employees:list`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /payroll/runs:
+    get:
+      operationId: listPayrollRuns
+      summary: List recent payroll periods with payment-instruction counts (`payroll:run_read`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayrollRunsListEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: executePayrollRun
+      summary: Execute deterministic gross-to-net for a tenant + payroll period (`payroll:run_execute`, MFA `elevated`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunPayrollRequest"
+      responses:
+        "201":
+          description: Created — kernel produced PaymentInstruction + PayoutLine rows
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunPayrollSummaryEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /payroll/runs/{periodId}:
+    get:
+      operationId: getPayrollRunDetail
+      summary: Detailed payment instructions + payout lines for a payroll period (`payroll:run_read`).
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayrollRunDetailEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /me/tax-documents/summary:
+    get:
+      operationId: getTaxDocumentsSummary
+      summary: Year-end tax document availability summary for the subject employee.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /me/benefits/election-change-requests:
+    post:
+      operationId: submitBenefitElectionChangeRequest
+      summary: Self-service benefit election change intent (`benefits:election_intent_submit`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/organization/context:
+    get:
+      operationId: getMyOrganizationContext
+      summary: Department / job role / manager context for the subject employee.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /me/separation/tasks:
+    get:
+      operationId: listMySeparationTasks
+      summary: Read offboarding checklist for the subject employee.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      operationId: patchMySeparationTask
+      summary: Advance an offboarding task forward.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /manager/team/time-off/requests:
+    get:
+      operationId: listManagerTeamTimeOffRequests
+      summary: Time-off requests pending or recent for the manager's team (`leave:manager_decide`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /manager/team/time-off/decision:
+    patch:
+      operationId: decideManagerTeamTimeOff
+      summary: Approve or deny a direct report's time-off request (`leave:manager_decide`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /manager/team/attendance/correction-requests:
+    get:
+      operationId: listManagerTeamAttendanceCorrectionRequests
+      summary: List manager-initiated attendance corrections.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createManagerTeamAttendanceCorrectionRequest
+      summary: Submit an attendance correction request for a direct report.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/attendance/correction-requests/pending:
+    get:
+      operationId: listHrPendingAttendanceCorrectionRequests
+      summary: HR review queue of pending attendance corrections.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/attendance/correction-requests/review:
+    patch:
+      operationId: reviewHrAttendanceCorrectionRequest
+      summary: Approve or deny an attendance correction (`attendance:correction_review`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/case-requests/pending:
+    get:
+      operationId: listHrPendingCaseRequests
+      summary: HR review queue of HR/payroll/benefits intake notes.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/case-requests/review:
+    patch:
+      operationId: reviewHrCaseRequest
+      summary: Acknowledge an employee HR case (`case:hr_triage`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/onboarding/templates:
+    get:
+      operationId: listHrOnboardingTemplates
+      summary: HR onboarding template catalog (`hr:onboarding_template_assign`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /hr/onboarding/apply-template:
+    post:
+      operationId: applyHrOnboardingTemplate
+      summary: Apply an onboarding template to an employee.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /analytics/churn:
+    get:
+      operationId: getAnalyticsChurn
+      summary: Read churn scores + feature snapshots (`analytics:churn:read`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /analytics/skills/match:
+    get:
+      operationId: getAnalyticsSkillsMatch
+      summary: Internal mobility skill-match scoring against a target role.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /analytics/benchmarks:
+    get:
+      operationId: getAnalyticsBenchmarks
+      summary: Compensation market benchmarks + alerts.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /ml/churn/score:
+    post:
+      operationId: scoreChurnSelf
+      summary: Proxy to ML serving for individual churn scoring (`analytics:churn:read`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
   /me/hr-case-requests:
+    get:
+      operationId: listMyHrCaseRequests
+      summary: List the subject employee's open and recent HR cases.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       operationId: createMyHrCaseRequest
       summary: Structured HR/payroll intake note (`case:intake_submit`).
@@ -545,6 +985,20 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 components:
+  parameters:
+    AuthorizationHeader:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Bearer JWT (HS256 in dev, JWKS-asymmetric in production)
+    CorrelationIdHeader:
+      name: X-Correlation-Id
+      in: header
+      required: false
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Missing or invalid bearer
@@ -1214,3 +1668,199 @@ components:
             details:
               description: Validation flatten only — optional
               nullable: true
+    GenericEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          additionalProperties: true
+    RunPayrollRequest:
+      type: object
+      required: [payrollPeriodId]
+      properties:
+        payrollPeriodId:
+          type: string
+          format: uuid
+        employeeIds:
+          type: array
+          maxItems: 10000
+          items:
+            type: string
+            format: uuid
+          description: When omitted, every employee with an effective compensation record runs.
+        reissue:
+          type: boolean
+          description: When true, replace prior PaymentInstruction rows for this period.
+    PayrollRunResult:
+      type: object
+      required:
+        - employeeId
+        - paymentInstructionId
+        - inputsFingerprintSha256
+        - netPayMinor
+        - currencyCode
+        - status
+      properties:
+        employeeId:
+          type: string
+          format: uuid
+        paymentInstructionId:
+          type: string
+        inputsFingerprintSha256:
+          type: string
+        netPayMinor:
+          type: integer
+        currencyCode:
+          type: string
+        status:
+          type: string
+          enum: [computed, skipped_existing, reissued, no_compensation]
+    RunPayrollSummary:
+      type: object
+      required:
+        - payrollPeriodId
+        - tenantId
+        - startDate
+        - endDate
+        - reissue
+        - totalEmployees
+        - computed
+        - skipped
+        - withoutCompensation
+        - results
+      properties:
+        payrollPeriodId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        reissue:
+          type: boolean
+        totalEmployees:
+          type: integer
+        computed:
+          type: integer
+        skipped:
+          type: integer
+        withoutCompensation:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayrollRunResult"
+    RunPayrollSummaryEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          $ref: "#/components/schemas/RunPayrollSummary"
+    PayrollRunListItem:
+      type: object
+      required:
+        - payrollPeriodId
+        - startDate
+        - endDate
+        - paymentInstructionCount
+      properties:
+        payrollPeriodId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        label:
+          nullable: true
+          type: string
+        paymentInstructionCount:
+          type: integer
+    PayrollRunsListEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [runs]
+          properties:
+            runs:
+              type: array
+              items:
+                $ref: "#/components/schemas/PayrollRunListItem"
+    PayrollRunDetailEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required:
+            - payrollPeriodId
+            - startDate
+            - endDate
+            - paymentInstructions
+          properties:
+            payrollPeriodId:
+              type: string
+              format: uuid
+            startDate:
+              type: string
+              format: date
+            endDate:
+              type: string
+              format: date
+            label:
+              nullable: true
+              type: string
+            paymentInstructions:
+              type: array
+              items:
+                type: object
+                required: [paymentInstructionId, employeeId, employeeName, lines]
+                properties:
+                  paymentInstructionId:
+                    type: string
+                    format: uuid
+                  employeeId:
+                    type: string
+                    format: uuid
+                  employeeName:
+                    type: string
+                  memo:
+                    nullable: true
+                    type: string
+                  lines:
+                    type: array
+                    items:
+                      type: object
+                      required: [lineType, sortOrder]
+                      properties:
+                        lineType:
+                          type: string
+                        sortOrder:
+                          type: integer
+                        amountMinor:
+                          nullable: true
+                          type: integer
+                        currencyCode:
+                          nullable: true
+                          type: string

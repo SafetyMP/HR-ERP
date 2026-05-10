@@ -158,7 +158,58 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "attendance:correction_review",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("GET", "/api/v1/payroll/runs")]: {
+    permission: "payroll:run_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/payroll/runs")]: {
+    permission: "payroll:run_execute",
+    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/payroll/runs/:periodId")]: {
+    permission: "payroll:run_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/recruiting/requisitions")]: {
+    permission: "recruiting:requisition_read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/requisitions")]: {
+    permission: "recruiting:requisition_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/recruiting/requisitions/:id")]: {
+    permission: "recruiting:requisition_write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/recruiting/requisitions/:id/applications")]: {
+    permission: "recruiting:application_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/applications")]: {
+    permission: "recruiting:application_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/applications/:id/screening-proposals")]: {
+    permission: "governance:ai_propose",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/recruiting/applications/:id/stage")]: {
+    permission: "recruiting:application_write",
+    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/offers")]: {
+    permission: "recruiting:offer_write",
+    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/offers/:id/extend")]: {
+    permission: "recruiting:offer_write",
+    abac: { minMfa: "elevated", maxDataClassification: "confidential" },
+  },
 };
+
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export function getRoutePolicy(
   method: string,
@@ -175,6 +226,69 @@ export function getRoutePolicy(
     )
   ) {
     return ROUTES[routeKey("GET", "/api/v1/employees/:employeeId")];
+  }
+
+  if (verb === "GET") {
+    const match = pathname.match(/^\/api\/v1\/payroll\/runs\/([^/]+)$/);
+    if (match && UUID_PATTERN.test(match[1]!)) {
+      return ROUTES[routeKey("GET", "/api/v1/payroll/runs/:periodId")];
+    }
+  }
+
+  // Recruiting / ATS dynamic-segment routes (`/recruiting/...`).
+  const recruitingReqMatch = pathname.match(
+    /^\/api\/v1\/recruiting\/requisitions\/([^/]+)$/,
+  );
+  if (recruitingReqMatch && UUID_PATTERN.test(recruitingReqMatch[1]!)) {
+    if (verb === "PATCH") {
+      return ROUTES[routeKey("PATCH", "/api/v1/recruiting/requisitions/:id")];
+    }
+  }
+  const recruitingReqApplicationsMatch = pathname.match(
+    /^\/api\/v1\/recruiting\/requisitions\/([^/]+)\/applications$/,
+  );
+  if (
+    recruitingReqApplicationsMatch &&
+    UUID_PATTERN.test(recruitingReqApplicationsMatch[1]!) &&
+    verb === "GET"
+  ) {
+    return ROUTES[
+      routeKey("GET", "/api/v1/recruiting/requisitions/:id/applications")
+    ];
+  }
+  const recruitingProposalMatch = pathname.match(
+    /^\/api\/v1\/recruiting\/applications\/([^/]+)\/screening-proposals$/,
+  );
+  if (
+    recruitingProposalMatch &&
+    UUID_PATTERN.test(recruitingProposalMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[
+      routeKey("POST", "/api/v1/recruiting/applications/:id/screening-proposals")
+    ];
+  }
+  const recruitingStageMatch = pathname.match(
+    /^\/api\/v1\/recruiting\/applications\/([^/]+)\/stage$/,
+  );
+  if (
+    recruitingStageMatch &&
+    UUID_PATTERN.test(recruitingStageMatch[1]!) &&
+    verb === "PATCH"
+  ) {
+    return ROUTES[
+      routeKey("PATCH", "/api/v1/recruiting/applications/:id/stage")
+    ];
+  }
+  const recruitingOfferExtendMatch = pathname.match(
+    /^\/api\/v1\/recruiting\/offers\/([^/]+)\/extend$/,
+  );
+  if (
+    recruitingOfferExtendMatch &&
+    UUID_PATTERN.test(recruitingOfferExtendMatch[1]!) &&
+    verb === "POST"
+  ) {
+    return ROUTES[routeKey("POST", "/api/v1/recruiting/offers/:id/extend")];
   }
 
   return undefined;

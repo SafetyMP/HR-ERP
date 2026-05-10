@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package hr.core.v1;
+
+option go_package = "github.com/hr-erp/contracts/gen/go/hr/core/v1;corev1";
+
+// Employee command surface used by SCIM, connector workers, and HR-admin tools.
+// Reads continue to live in employee_snapshot.proto.
+
+service EmployeeCommandService {
+  rpc ProvisionEmployee(ProvisionEmployeeRequest) returns (ProvisionEmployeeResponse);
+  rpc UpdateEmployeeProfile(UpdateEmployeeProfileRequest) returns (UpdateEmployeeProfileResponse);
+  rpc DeprovisionEmployee(DeprovisionEmployeeRequest) returns (DeprovisionEmployeeResponse);
+  rpc ReinstateEmployee(ReinstateEmployeeRequest) returns (ReinstateEmployeeResponse);
+}
+
+message ProvisionEmployeeRequest {
+  string tenant_id = 1;
+  string email = 2;
+  optional string given_name = 3;
+  optional string family_name = 4;
+  optional string preferred_name = 5;
+  optional string manager_employee_id = 6;
+  optional string department_id = 7;
+  optional string job_role_id = 8;
+  optional string hire_date_iso = 9;
+  string source_system = 10; // e.g. "scim:okta", "manual", "import:csv"
+  string idempotency_key = 11;
+}
+
+message ProvisionEmployeeResponse {
+  string employee_id = 1;
+}
+
+message UpdateEmployeeProfileRequest {
+  string tenant_id = 1;
+  string employee_id = 2;
+  optional string given_name = 3;
+  optional string family_name = 4;
+  optional string preferred_name = 5;
+  optional string manager_employee_id = 6;
+  optional string department_id = 7;
+  optional string job_role_id = 8;
+  string source_system = 9;
+}
+
+message UpdateEmployeeProfileResponse {
+  string snapshot_version = 1;
+}
+
+message DeprovisionEmployeeRequest {
+  string tenant_id = 1;
+  string employee_id = 2;
+  optional string termination_date_iso = 3;
+  string reason = 4;
+  string source_system = 5;
+}
+
+message DeprovisionEmployeeResponse {
+  string deprovisioned_at_rfc3339 = 1;
+}
+
+message ReinstateEmployeeRequest {
+  string tenant_id = 1;
+  string employee_id = 2;
+  string source_system = 3;
+}
+
+message ReinstateEmployeeResponse {
+  string reinstated_at_rfc3339 = 1;
+}

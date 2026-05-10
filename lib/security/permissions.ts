@@ -29,6 +29,16 @@ export const PERMISSIONS = [
   "analytics:churn:read",
   "analytics:skills:read",
   "analytics:benchmarks:read",
+  "payroll:run_execute",
+  "payroll:run_read",
+  "recruiting:requisition_read",
+  "recruiting:requisition_write",
+  "recruiting:candidate_read",
+  "recruiting:candidate_write",
+  "recruiting:application_read",
+  "recruiting:application_write",
+  "recruiting:offer_read",
+  "recruiting:offer_write",
 ] as const;
 
 export type Permission = (typeof PERMISSIONS)[number];
@@ -86,6 +96,12 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "analytics:churn:read",
     "analytics:skills:read",
     "analytics:benchmarks:read",
+    "recruiting:requisition_read",
+    "recruiting:requisition_write",
+    "recruiting:candidate_read",
+    "recruiting:application_read",
+    "recruiting:application_write",
+    "recruiting:offer_read",
   ],
   hr_admin: [
     "employees:list",
@@ -118,6 +134,14 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "analytics:churn:read",
     "analytics:skills:read",
     "analytics:benchmarks:read",
+    "recruiting:requisition_read",
+    "recruiting:requisition_write",
+    "recruiting:candidate_read",
+    "recruiting:candidate_write",
+    "recruiting:application_read",
+    "recruiting:application_write",
+    "recruiting:offer_read",
+    "recruiting:offer_write",
   ],
   payroll_admin: [
     "employees:list",
@@ -148,6 +172,8 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "analytics:churn:read",
     "analytics:skills:read",
     "analytics:benchmarks:read",
+    "payroll:run_execute",
+    "payroll:run_read",
   ],
   auditor_readonly: [
     "employees:list",
@@ -157,6 +183,11 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "analytics:churn:read",
     "analytics:skills:read",
     "analytics:benchmarks:read",
+    "payroll:run_read",
+    "recruiting:requisition_read",
+    "recruiting:candidate_read",
+    "recruiting:application_read",
+    "recruiting:offer_read",
   ],
 };
 

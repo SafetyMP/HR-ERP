@@ -43,6 +43,8 @@ export type TaxYearDocumentMinAggregateOutputType = {
   title: string | null
   availabilityNote: string | null
   issuedAt: Date | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,8 @@ export type TaxYearDocumentMaxAggregateOutputType = {
   title: string | null
   availabilityNote: string | null
   issuedAt: Date | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +73,8 @@ export type TaxYearDocumentCountAggregateOutputType = {
   title: number
   availabilityNote: number
   issuedAt: number
+  deletedAt: number
+  retentionExpiresAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +98,8 @@ export type TaxYearDocumentMinAggregateInputType = {
   title?: true
   availabilityNote?: true
   issuedAt?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +113,8 @@ export type TaxYearDocumentMaxAggregateInputType = {
   title?: true
   availabilityNote?: true
   issuedAt?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +128,8 @@ export type TaxYearDocumentCountAggregateInputType = {
   title?: true
   availabilityNote?: true
   issuedAt?: true
+  deletedAt?: true
+  retentionExpiresAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +230,8 @@ export type TaxYearDocumentGroupByOutputType = {
   title: string
   availabilityNote: string | null
   issuedAt: Date | null
+  deletedAt: Date | null
+  retentionExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: TaxYearDocumentCountAggregateOutputType | null
@@ -254,6 +268,8 @@ export type TaxYearDocumentWhereInput = {
   title?: Prisma.StringFilter<"TaxYearDocument"> | string
   availabilityNote?: Prisma.StringNullableFilter<"TaxYearDocument"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -269,6 +285,8 @@ export type TaxYearDocumentOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   availabilityNote?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -287,6 +305,8 @@ export type TaxYearDocumentWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"TaxYearDocument"> | string
   availabilityNote?: Prisma.StringNullableFilter<"TaxYearDocument"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -302,6 +322,8 @@ export type TaxYearDocumentOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   availabilityNote?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TaxYearDocumentCountOrderByAggregateInput
@@ -323,6 +345,8 @@ export type TaxYearDocumentScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"TaxYearDocument"> | string
   availabilityNote?: Prisma.StringNullableWithAggregatesFilter<"TaxYearDocument"> | string | null
   issuedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaxYearDocument"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaxYearDocument"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TaxYearDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TaxYearDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TaxYearDocument"> | Date | string
 }
@@ -334,6 +358,8 @@ export type TaxYearDocumentCreateInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutTaxYearDocumentsInput
@@ -349,6 +375,8 @@ export type TaxYearDocumentUncheckedCreateInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -360,6 +388,8 @@ export type TaxYearDocumentUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutTaxYearDocumentsNestedInput
@@ -375,6 +405,8 @@ export type TaxYearDocumentUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -388,6 +420,8 @@ export type TaxYearDocumentCreateManyInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -399,6 +433,8 @@ export type TaxYearDocumentUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -412,6 +448,8 @@ export type TaxYearDocumentUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -435,6 +473,8 @@ export type TaxYearDocumentCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   availabilityNote?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -452,6 +492,8 @@ export type TaxYearDocumentMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   availabilityNote?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -465,6 +507,8 @@ export type TaxYearDocumentMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   availabilityNote?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  retentionExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -568,6 +612,8 @@ export type TaxYearDocumentCreateWithoutOrganizationInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutTaxYearDocumentsInput
@@ -581,6 +627,8 @@ export type TaxYearDocumentUncheckedCreateWithoutOrganizationInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -623,6 +671,8 @@ export type TaxYearDocumentScalarWhereInput = {
   title?: Prisma.StringFilter<"TaxYearDocument"> | string
   availabilityNote?: Prisma.StringNullableFilter<"TaxYearDocument"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
+  retentionExpiresAt?: Prisma.DateTimeNullableFilter<"TaxYearDocument"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TaxYearDocument"> | Date | string
 }
@@ -634,6 +684,8 @@ export type TaxYearDocumentCreateWithoutEmployeeInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutTaxYearDocumentsInput
@@ -647,6 +699,8 @@ export type TaxYearDocumentUncheckedCreateWithoutEmployeeInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -685,6 +739,8 @@ export type TaxYearDocumentCreateManyOrganizationInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -696,6 +752,8 @@ export type TaxYearDocumentUpdateWithoutOrganizationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutTaxYearDocumentsNestedInput
@@ -709,6 +767,8 @@ export type TaxYearDocumentUncheckedUpdateWithoutOrganizationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -721,6 +781,8 @@ export type TaxYearDocumentUncheckedUpdateManyWithoutOrganizationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -733,6 +795,8 @@ export type TaxYearDocumentCreateManyEmployeeInput = {
   title: string
   availabilityNote?: string | null
   issuedAt?: Date | string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -744,6 +808,8 @@ export type TaxYearDocumentUpdateWithoutEmployeeInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutTaxYearDocumentsNestedInput
@@ -757,6 +823,8 @@ export type TaxYearDocumentUncheckedUpdateWithoutEmployeeInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -769,6 +837,8 @@ export type TaxYearDocumentUncheckedUpdateManyWithoutEmployeeInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   availabilityNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -784,6 +854,8 @@ export type TaxYearDocumentSelect<ExtArgs extends runtime.Types.Extensions.Inter
   title?: boolean
   availabilityNote?: boolean
   issuedAt?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -799,6 +871,8 @@ export type TaxYearDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   title?: boolean
   availabilityNote?: boolean
   issuedAt?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -814,6 +888,8 @@ export type TaxYearDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   title?: boolean
   availabilityNote?: boolean
   issuedAt?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -829,11 +905,13 @@ export type TaxYearDocumentSelectScalar = {
   title?: boolean
   availabilityNote?: boolean
   issuedAt?: boolean
+  deletedAt?: boolean
+  retentionExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TaxYearDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "taxYear" | "documentKind" | "title" | "availabilityNote" | "issuedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["taxYearDocument"]>
+export type TaxYearDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "taxYear" | "documentKind" | "title" | "availabilityNote" | "issuedAt" | "deletedAt" | "retentionExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["taxYearDocument"]>
 export type TaxYearDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -862,6 +940,11 @@ export type $TaxYearDocumentPayload<ExtArgs extends runtime.Types.Extensions.Int
     title: string
     availabilityNote: string | null
     issuedAt: Date | null
+    /**
+     * Soft-delete + retention mixin (ADR 0004).
+     */
+    deletedAt: Date | null
+    retentionExpiresAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["taxYearDocument"]>
@@ -1297,6 +1380,8 @@ export interface TaxYearDocumentFieldRefs {
   readonly title: Prisma.FieldRef<"TaxYearDocument", 'String'>
   readonly availabilityNote: Prisma.FieldRef<"TaxYearDocument", 'String'>
   readonly issuedAt: Prisma.FieldRef<"TaxYearDocument", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"TaxYearDocument", 'DateTime'>
+  readonly retentionExpiresAt: Prisma.FieldRef<"TaxYearDocument", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TaxYearDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TaxYearDocument", 'DateTime'>
 }

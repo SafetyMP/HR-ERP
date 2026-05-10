@@ -27,7 +27,11 @@ export async function getGovernanceAuth(request: Request): Promise<AuthContext> 
     return claimsToAuthContext(claims, correlationId);
   }
 
-  if (process.env.ALLOW_DEV_GOVERNANCE_HEADERS === "true") {
+  if (
+    process.env.ALLOW_DEV_GOVERNANCE_HEADERS === "true" &&
+    process.env.NODE_ENV !== "production" &&
+    process.env.VERCEL_ENV !== "production"
+  ) {
     const tenantId = request.headers.get("x-tenant-id") ?? "";
     const subjectId = request.headers.get("x-subject-id") ?? "";
     const rolesHeader = request.headers.get("x-roles") ?? "hr_admin";
@@ -39,6 +43,18 @@ export async function getGovernanceAuth(request: Request): Promise<AuthContext> 
       mfaLevel: "none",
       correlationId,
     };
+  }
+
+  if (process.env.ALLOW_DEV_GOVERNANCE_HEADERS === "true") {
+    console.error(
+      JSON.stringify({
+        level: "error",
+        msg: "dev_governance_headers_blocked_in_production",
+        nodeEnv: process.env.NODE_ENV,
+        vercelEnv: process.env.VERCEL_ENV,
+        correlationId,
+      }),
+    );
   }
 
   throw new Error("Missing or invalid Authorization for governance API");

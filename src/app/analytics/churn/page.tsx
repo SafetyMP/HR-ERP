@@ -8,6 +8,8 @@ import {
 import { prisma } from "@/lib/prisma";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
+import { ChurnDistributionChart } from "./churn-distribution-chart";
+
 export const dynamic = "force-dynamic";
 
 const codeBox =
@@ -69,6 +71,9 @@ export default async function ChurnAnalyticsPage() {
       <p className="mb-6 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
         Latest stored scores per employee (batch scoring via <code className={codeBox}>churn_scores</code>).
       </p>
+      <div className="mb-6">
+        <ChurnDistributionChart rows={scores.map((s) => ({ score: s.score }))} />
+      </div>
       <div className="overflow-x-auto rounded-lg border border-zinc-300 bg-card shadow-sm dark:border-zinc-600 dark:bg-card">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-zinc-100 text-xs font-semibold uppercase tracking-wide text-zinc-700 dark:bg-zinc-800/90 dark:text-zinc-200">

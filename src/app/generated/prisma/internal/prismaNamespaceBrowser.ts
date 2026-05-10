@@ -108,7 +108,11 @@ export const ModelName = {
   AiExplanationSnapshot: 'AiExplanationSnapshot',
   AiDecisionProposal: 'AiDecisionProposal',
   GovernanceAuditEvent: 'GovernanceAuditEvent',
-  HighStakesEmploymentAction: 'HighStakesEmploymentAction'
+  HighStakesEmploymentAction: 'HighStakesEmploymentAction',
+  JobRequisition: 'JobRequisition',
+  Candidate: 'Candidate',
+  JobApplication: 'JobApplication',
+  JobOffer: 'JobOffer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -166,6 +170,8 @@ export const EmployeeScalarFieldEnum = {
   hireDate: 'hireDate',
   terminationDate: 'terminationDate',
   anonymizedPseudonym: 'anonymizedPseudonym',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -211,6 +217,8 @@ export const HrCaseRequestScalarFieldEnum = {
   body: 'body',
   status: 'status',
   employeeVisibleNote: 'employeeVisibleNote',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -717,6 +725,8 @@ export const BenefitEnrollmentScalarFieldEnum = {
   effectiveTo: 'effectiveTo',
   dependentCount: 'dependentCount',
   retirementDeferralBasisPoints: 'retirementDeferralBasisPoints',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -754,6 +764,8 @@ export const TaxYearDocumentScalarFieldEnum = {
   title: 'title',
   availabilityNote: 'availabilityNote',
   issuedAt: 'issuedAt',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -925,6 +937,83 @@ export const HighStakesEmploymentActionScalarFieldEnum = {
 } as const
 
 export type HighStakesEmploymentActionScalarFieldEnum = (typeof HighStakesEmploymentActionScalarFieldEnum)[keyof typeof HighStakesEmploymentActionScalarFieldEnum]
+
+
+export const JobRequisitionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  title: 'title',
+  departmentId: 'departmentId',
+  jobRoleId: 'jobRoleId',
+  hiringManagerId: 'hiringManagerId',
+  status: 'status',
+  openings: 'openings',
+  locationCountry: 'locationCountry',
+  employmentType: 'employmentType',
+  description: 'description',
+  closedAt: 'closedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JobRequisitionScalarFieldEnum = (typeof JobRequisitionScalarFieldEnum)[keyof typeof JobRequisitionScalarFieldEnum]
+
+
+export const CandidateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  fullName: 'fullName',
+  email: 'email',
+  phone: 'phone',
+  sourceChannel: 'sourceChannel',
+  anonymizedPseudonym: 'anonymizedPseudonym',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CandidateScalarFieldEnum = (typeof CandidateScalarFieldEnum)[keyof typeof CandidateScalarFieldEnum]
+
+
+export const JobApplicationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  requisitionId: 'requisitionId',
+  candidateId: 'candidateId',
+  stage: 'stage',
+  latestScreeningProposalId: 'latestScreeningProposalId',
+  note: 'note',
+  appliedAt: 'appliedAt',
+  rejectedAt: 'rejectedAt',
+  hiredAt: 'hiredAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JobApplicationScalarFieldEnum = (typeof JobApplicationScalarFieldEnum)[keyof typeof JobApplicationScalarFieldEnum]
+
+
+export const JobOfferScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  authorizingProposalId: 'authorizingProposalId',
+  status: 'status',
+  baseAnnualAmountMinor: 'baseAnnualAmountMinor',
+  currencyCode: 'currencyCode',
+  startDate: 'startDate',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  declinedAt: 'declinedAt',
+  rescindedAt: 'rescindedAt',
+  deletedAt: 'deletedAt',
+  retentionExpiresAt: 'retentionExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JobOfferScalarFieldEnum = (typeof JobOfferScalarFieldEnum)[keyof typeof JobOfferScalarFieldEnum]
 
 
 export const SortOrder = {

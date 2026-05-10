@@ -331,3 +331,23 @@ export type GovernanceAuditEvent = Prisma.GovernanceAuditEventModel
  * 
  */
 export type HighStakesEmploymentAction = Prisma.HighStakesEmploymentActionModel
+/**
+ * Model JobRequisition
+ * A posted role under a tenant. Hiring manager + department + jurisdiction govern offer authorities.
+ */
+export type JobRequisition = Prisma.JobRequisitionModel
+/**
+ * Model Candidate
+ * Candidate identity. PII root for ATS — soft-delete + retention drives GDPR right-to-be-forgotten.
+ */
+export type Candidate = Prisma.CandidateModel
+/**
+ * Model JobApplication
+ * One candidate's pursuit of one requisition. Stage transitions are HITL-gated for HIRED.
+ */
+export type JobApplication = Prisma.JobApplicationModel
+/**
+ * Model JobOffer
+ * Offer letter intent. Compensation is stored in MINOR units to match payroll-calc.
+ */
+export type JobOffer = Prisma.JobOfferModel

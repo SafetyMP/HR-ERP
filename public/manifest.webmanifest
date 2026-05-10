@@ -1,0 +1,33 @@
+{
+  "name": "HR ERP",
+  "short_name": "HR ERP",
+  "description": "Open-source HR & payroll experiences with multi-tenant security and AI governance.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "any",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Paystub",
+      "short_name": "Paystub",
+      "description": "Open the latest paystub",
+      "url": "/employee/paystub"
+    },
+    {
+      "name": "Time off",
+      "short_name": "Time off",
+      "description": "Submit a time-off request",
+      "url": "/employee/time-off"
+    }
+  ]
+}
