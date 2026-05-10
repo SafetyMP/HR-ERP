@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/SafetyMP/HR-ERP/compare/v2.2.0...v2.3.0) (2026-05-10)
+
+### Features
+
+* Phase 3 HR APIs (performance, comp, LMS, workflow, webhooks, engagement), migrations, demo seeds, deploy charts ([aea072d](https://github.com/SafetyMP/HR-ERP/commit/aea072df09e07ae401cc9ce989a7d215d3e78957))
+
 ## [2.2.0](https://github.com/SafetyMP/HR-ERP/compare/v2.1.3...v2.2.0) (2026-05-10)
 
 ### Features
