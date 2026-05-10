@@ -1,8 +1,8 @@
-export type { CivilDateIso, DateIntervalIso } from "./calendar.js";
+export type { CivilDateIso, DateIntervalIso } from "./calendar";
 
-export { civilDate, intersectIntervals, intervalLengthDaysUtc, utcEpochDayFromIso } from "./dates.js";
+export { civilDate, intersectIntervals, intervalLengthDaysUtc, utcEpochDayFromIso } from "./dates";
 
-export type { CanonicalMoney, RoundingMode } from "./numerics.js";
+export type { CanonicalMoney, RoundingMode } from "./numerics";
 export {
   Rational,
   applyRationalRate,
@@ -13,31 +13,31 @@ export {
   moneySubtract,
   multiplyMoneyMinor,
   zeroMoney,
-} from "./numerics.js";
+} from "./numerics";
 
 export type {
   CommissionTierTable,
   PayrollPolicyRelease,
   ProgressiveTaxTable,
-} from "./policy.js";
-export { progressiveIncomeTaxMinor, tieredCommissionMinor } from "./policy.js";
+} from "./policy";
+export { progressiveIncomeTaxMinor, tieredCommissionMinor } from "./policy";
 
-export type { CompensationRateSlice, PaySegment, ProrationStrategy } from "./segmentizer.js";
+export type { CompensationRateSlice, PaySegment, ProrationStrategy } from "./segmentizer";
 export {
   aggregateSegmentGross,
   applyResidualToSegments,
   segmentizePayPeriod,
-} from "./segmentizer.js";
+} from "./segmentizer";
 
 export type {
   GrossToNetPipelineInput,
   GrossToNetPipelineResult,
   PipelinePhaseMoneyLine,
   PretaxDeductionRule,
-} from "./pipeline.js";
-export { runGrossToNetPipeline } from "./pipeline.js";
+} from "./pipeline";
+export { runGrossToNetPipeline } from "./pipeline";
 
-export type { PayrollComputationOutput } from "./compute.js";
-export { computePayroll, computePayrollBatchParallel } from "./compute.js";
+export type { PayrollComputationOutput } from "./compute";
+export { computePayroll, computePayrollBatchParallel } from "./compute";
 
-export { sha256Hex, stableStringify } from "./canonicalJson.js";
+export { sha256Hex, stableStringify } from "./canonicalJson";

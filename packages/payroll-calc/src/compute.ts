@@ -1,7 +1,7 @@
-import { sha256Hex, stableStringify } from "./canonicalJson.js";
-import type { CanonicalMoney } from "./numerics.js";
-import type { GrossToNetPipelineInput, GrossToNetPipelineResult } from "./pipeline.js";
-import { runGrossToNetPipeline } from "./pipeline.js";
+import { sha256Hex, stableStringify } from "./canonicalJson";
+import type { CanonicalMoney } from "./numerics";
+import type { GrossToNetPipelineInput, GrossToNetPipelineResult } from "./pipeline";
+import { runGrossToNetPipeline } from "./pipeline";
 
 export interface PayrollComputationOutput {
   readonly inputsFingerprintSha256: string;

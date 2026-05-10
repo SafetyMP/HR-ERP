@@ -1,16 +1,16 @@
-import type { DateIntervalIso } from "./calendar.js";
-import type { ProgressiveTaxTable, CommissionTierTable, PayrollPolicyRelease } from "./policy.js";
+import type { DateIntervalIso } from "./calendar";
+import type { ProgressiveTaxTable, CommissionTierTable, PayrollPolicyRelease } from "./policy";
 import {
   progressiveIncomeTaxMinor,
   tieredCommissionMinor,
-} from "./policy.js";
-import type { PaySegment, ProrationStrategy, CompensationRateSlice } from "./segmentizer.js";
+} from "./policy";
+import type { PaySegment, ProrationStrategy, CompensationRateSlice } from "./segmentizer";
 import {
   aggregateSegmentGross,
   segmentizePayPeriod,
-} from "./segmentizer.js";
-import type { CanonicalMoney, RoundingMode } from "./numerics.js";
-import { assertSameCurrencyMoney, moneyAdd, moneyFromMinor, zeroMoney } from "./numerics.js";
+} from "./segmentizer";
+import type { CanonicalMoney, RoundingMode } from "./numerics";
+import { assertSameCurrencyMoney, moneyAdd, moneyFromMinor, zeroMoney } from "./numerics";
 
 export interface PretaxDeductionRule {
   readonly id: string;

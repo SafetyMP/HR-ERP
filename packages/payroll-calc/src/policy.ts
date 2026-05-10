@@ -1,5 +1,5 @@
-import type { RoundingMode } from "./numerics.js";
-import { applyRationalRate } from "./numerics.js";
+import type { RoundingMode } from "./numerics";
+import { applyRationalRate } from "./numerics";
 
 /** Table handles stored beside payroll results for deterministic replay across parallel workers. */
 export interface PayrollPolicyRelease {

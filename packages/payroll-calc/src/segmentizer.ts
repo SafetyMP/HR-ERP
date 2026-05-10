@@ -1,11 +1,11 @@
-import type { CivilDateIso, DateIntervalIso } from "./calendar.js";
+import type { CivilDateIso, DateIntervalIso } from "./calendar";
 import {
   intersectIntervals,
   intervalLengthDaysUtc,
   utcEpochDayFromIso,
-} from "./dates.js";
-import type { CanonicalMoney, RoundingMode } from "./numerics.js";
-import { Rational, moneyAdd, moneyFromMinor, multiplyMoneyMinor, zeroMoney } from "./numerics.js";
+} from "./dates";
+import type { CanonicalMoney, RoundingMode } from "./numerics";
+import { Rational, moneyAdd, moneyFromMinor, multiplyMoneyMinor, zeroMoney } from "./numerics";
 
 export type ProrationStrategy =
   | { readonly kind: "calendar_days" }

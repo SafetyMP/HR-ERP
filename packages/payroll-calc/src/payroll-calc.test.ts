@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { civilDate } from "./dates.js";
-import { moneyFromMinor } from "./numerics.js";
-import { computePayroll, computePayrollBatchParallel } from "./compute.js";
-import type { CommissionTierTable, ProgressiveTaxTable } from "./policy.js";
-import { progressiveIncomeTaxMinor, tieredCommissionMinor } from "./policy.js";
-import { segmentizePayPeriod } from "./segmentizer.js";
-import type { GrossToNetPipelineInput } from "./pipeline.js";
-import { runGrossToNetPipeline } from "./pipeline.js";
+import { civilDate } from "./dates";
+import { moneyFromMinor } from "./numerics";
+import { computePayroll, computePayrollBatchParallel } from "./compute";
+import type { CommissionTierTable, ProgressiveTaxTable } from "./policy";
+import { progressiveIncomeTaxMinor, tieredCommissionMinor } from "./policy";
+import { segmentizePayPeriod } from "./segmentizer";
+import type { GrossToNetPipelineInput } from "./pipeline";
+import { runGrossToNetPipeline } from "./pipeline";
 
 const USD = {
   cc: "USD",
