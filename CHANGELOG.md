@@ -1,3 +1,10 @@
+## [2.6.0](https://github.com/SafetyMP/HR-ERP/compare/v2.5.0...v2.6.0) (2026-05-19)
+
+### Features
+
+* **learning:** enrollment status filters and Tier 1 route smoke ([3137691](https://github.com/SafetyMP/HR-ERP/commit/3137691197756a579ac0e7586d3e3985e5049fa3))
+* **phase-b:** payroll close, life events, talent depth, and HR ops UI ([58b3d8d](https://github.com/SafetyMP/HR-ERP/commit/58b3d8daf92826ebc6abc3d710c1d3ea2a3aed21))
+
 ## [2.5.0](https://github.com/SafetyMP/HR-ERP/compare/v2.4.0...v2.5.0) (2026-05-19)
 
 ### Features
