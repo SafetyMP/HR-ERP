@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 
 type PunchDto = { kind: string; occurredAt: string };
@@ -34,15 +31,16 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchTeamAttendance(token: string): Promise<{
+async function fetchTeamAttendance(bearerToken: string | null): Promise<{
   members: Member[] | null;
   ok: boolean;
   auth: boolean;
   forbidden: boolean;
 }> {
-  const res = await fetch("/api/v1/manager/team/attendance/today", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-  });
+  const res = await hrApiFetch("/api/v1/manager/team/attendance/today", {
+    bearerToken, 
+    headers: { Accept: "application/json" },
+  })
   if (res.status === 401) {
     return { members: null, ok: false, auth: true, forbidden: false };
   }
@@ -64,24 +62,13 @@ async function fetchTeamAttendance(token: string): Promise<{
 }
 
 export function TeamAttendanceClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const [members, setMembers] = useState<Member[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "forbidden" | "recoverable" | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -91,7 +78,7 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchTeamAttendance(token);
+      const result = await fetchTeamAttendance(bearerToken);
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
@@ -115,16 +102,16 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setMembers(undefined);
     });
     void (async () => {
-      const result = await fetchTeamAttendance(token);
+      const result = await fetchTeamAttendance(bearerToken);
       if (!result.ok && result.auth) {
         setLoadError("auth");
         setMembers([]);
@@ -145,7 +132,24 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
     })();
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Team attendance"
+        description="Sign in as a manager to view team attendance."
+        returnTo="/manager/team-attendance"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (loadError === "forbidden") {
     return (

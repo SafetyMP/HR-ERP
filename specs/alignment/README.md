@@ -9,6 +9,8 @@ When Architecture, Security, Integrations, QA, or Legal-process guidance **confl
 
 **Orchestrator** keeps `specs/alignment/decisions/` the single source for phase topology. It also runs **step 1 — PO orchestration**: load `hr-product-owner`, verify a Feature brief (or spike ADR), and emit a short **PO orchestration checkpoint** before Architecture starts—see [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc).
 
+**Competitive / operate TCO:** [Competitive analysis & roadmap](../competitive-analysis-roadmap.md) (parity matrix, funding tiers); executive brief and TCO worksheet under [`docs/product/`](../docs/product/).
+
 ## Conflict log (optional table in PR)
 
 | Topic | Agent A | Agent B | Resolution ADR |

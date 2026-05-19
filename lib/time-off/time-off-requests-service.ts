@@ -2,6 +2,7 @@ import type { TimeOffRequestStatus } from "@/app/generated/prisma/client";
 
 import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
+import { validateTimeOffRequestDates } from "@/lib/pto/validate-time-off-request";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -16,13 +17,6 @@ export type TimeOffRequestItemPayload = {
   decisionNote: string | null;
 };
 
-function inclusiveCalendarDays(startIsoDate: string, endIsoDate: string): number {
-  const s = new Date(`${startIsoDate}T12:00:00.000Z`).getTime();
-  const e = new Date(`${endIsoDate}T12:00:00.000Z`).getTime();
-  if (!Number.isFinite(s) || !Number.isFinite(e) || e < s) return 0;
-  return Math.floor((e - s) / 86_400_000) + 1;
-}
-
 export async function createMyTimeOffRequest(
   auth: AuthContext,
   input: { startDate: string; endDate: string; note?: string | null },
@@ -35,17 +29,13 @@ export async function createMyTimeOffRequest(
     });
   }
 
-  const days = inclusiveCalendarDays(input.startDate, input.endDate);
-  if (days <= 0) {
+  try {
+    validateTimeOffRequestDates(input);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "leave_invalid_range";
     throw new ApiError(400, {
       code: "bad_request",
-      message: "leave_invalid_range",
-    });
-  }
-  if (days > 14) {
-    throw new ApiError(400, {
-      code: "bad_request",
-      message: "leave_range_too_long",
+      message,
     });
   }
 

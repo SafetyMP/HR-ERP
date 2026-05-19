@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,7 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type DocRow = {
   id: string;
@@ -31,28 +27,17 @@ type Props = {
 };
 
 export function TaxDocumentsClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } = useHrAccess(initialBearerToken);
   const [rows, setRows] = useState<DocRow[] | undefined>(undefined);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     let cancelled = false;
     startTransition(() => setRows(undefined));
     void (async () => {
-      const res = await fetch("/api/v1/me/tax-documents/summary", {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      const res = await hrApiFetch("/api/v1/me/tax-documents/summary", {
+        bearerToken,
+        headers: { Accept: "application/json" },
       });
       if (cancelled) return;
       if (!res.ok) {
@@ -65,9 +50,26 @@ export function TaxDocumentsClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Tax documents"
+        description="Sign in to view your year-end tax summaries."
+        returnTo="/employee/tax-documents"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (rows === undefined) {
     return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading tax summaries…</p>;
@@ -76,7 +78,8 @@ export function TaxDocumentsClient({ initialBearerToken }: Props) {
   return (
     <div className="space-y-4">
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Year-end artifacts availability — download wiring stays vendor-specific; rows explain what payroll posted for self‑service visibility.
+        Year-end artifacts availability — download wiring stays vendor-specific; rows explain what payroll posted for
+        self‑service visibility.
       </p>
       {rows.length === 0 ? (
         <Card>

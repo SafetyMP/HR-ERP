@@ -1,7 +1,7 @@
 # Feature brief: Employee self-service — current paystub (earnings statement)
 
 **ID:** 001-employee-paystub-self-service  
-**Status:** PO approved  
+**Status:** Done  
 **Last updated:** 2026-05-09  
 
 ## PO gate (required before Engineering)

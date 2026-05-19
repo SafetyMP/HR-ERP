@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 
 type Row = {
@@ -32,9 +29,10 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchRows(token: string): Promise<{ rows: Row[] | null; ok: boolean; forbidden: boolean }> {
-  const res = await fetch("/api/v1/manager/team/time-off/requests", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+async function fetchRows(bearerToken: string | null): Promise<{ rows: Row[] | null; ok: boolean; forbidden: boolean }> {
+  const res = await hrApiFetch("/api/v1/manager/team/time-off/requests", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
   if (res.status === 403) return { rows: null, ok: false, forbidden: true };
   if (!res.ok) return { rows: null, ok: false, forbidden: false };
@@ -47,32 +45,21 @@ async function fetchRows(token: string): Promise<{ rows: Row[] | null; ok: boole
 }
 
 export function ManagerTeamLeaveClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const [rows, setRows] = useState<Row[] | undefined>(undefined);
   const [forbidden, setForbidden] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     let cancelled = false;
     startTransition(() => {
       setRows(undefined);
       setForbidden(false);
     });
     void (async () => {
-      const result = await fetchRows(token);
+      const result = await fetchRows(bearerToken);
       if (cancelled) return;
       if (result.forbidden) {
         setForbidden(true);
@@ -88,30 +75,47 @@ export function ManagerTeamLeaveClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const decide = async (requestId: string, decision: "APPROVED" | "DENIED") => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setBusyId(requestId);
     try {
-      const res = await fetch("/api/v1/manager/team/time-off/decision", {
+      const res = await hrApiFetch("/api/v1/manager/team/time-off/decision", {
+        bearerToken,
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ requestId, decision }),
       });
       if (!res.ok) return;
-      const refreshed = await fetchRows(token);
+      const refreshed = await fetchRows(bearerToken);
       if (refreshed.rows) setRows(refreshed.rows);
     } finally {
       setBusyId(null);
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Team leave"
+        description="Sign in as a manager to review team leave requests."
+        returnTo="/manager/team-leave"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (forbidden) {
     return (

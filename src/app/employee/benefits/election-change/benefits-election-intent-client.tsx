@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import Link from "next/link";
-import { startTransition, useEffect, useState } from "react";
+import { useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,14 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type Props = {
   initialBearerToken?: string;
 };
 
 export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } = useHrAccess(initialBearerToken);
   const [category, setCategory] = useState<
     "MEDICAL" | "DENTAL" | "VISION" | "INCOME_PROTECTION" | "RETIREMENT"
   >("MEDICAL");
@@ -32,27 +28,15 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
   const submit = async () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setBusy(true);
     setMsg(null);
     try {
-      const res = await fetch("/api/v1/me/benefits/election-change-requests", {
+      const res = await hrApiFetch("/api/v1/me/benefits/election-change-requests", {
+        bearerToken,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -69,14 +53,32 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Benefits election change"
+        description="Sign in to tell Benefits what coverage change you want."
+        returnTo="/employee/benefits/election-change"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   return (
     <Card className="shadow-sm">
       <CardHeader>
         <CardTitle>Tell Benefits what you want to change</CardTitle>
         <CardDescription>
-          Captures intent only — carriers and payroll feeds update elsewhere. Contact your administrator for effective dates.
+          Captures intent only — carriers and payroll feeds update elsewhere. Contact your administrator for effective
+          dates.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">

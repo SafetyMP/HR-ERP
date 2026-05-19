@@ -88,6 +88,7 @@ export default function Home() {
   const employeeSelfService: DemoLink[] = [
     { href: "/employee/time", label: "Time & attendance", emphasis: true },
     { href: "/employee/performance/goals", label: "My performance goals", emphasis: true },
+    { href: "/employee/learning", label: "My learning", emphasis: true },
     { href: "/employee/paystub", label: "Current earnings statement", emphasis: true },
     { href: "/employee/paystub/history", label: "Pay history" },
     { href: "/employee/benefits", label: "Benefits summary" },
@@ -103,6 +104,7 @@ export default function Home() {
 
   const manager: DemoLink[] = [
     { href: "/manager/team-attendance", label: "Team attendance today", emphasis: true },
+    { href: "/manager/recruiting", label: "Recruiting pipeline", emphasis: true },
     { href: "/manager/team-performance", label: "Team performance goals" },
     { href: "/manager/team-leave", label: "Team leave decisions" },
     { href: "/manager/punch-corrections", label: "Punch correction proposals" },
@@ -110,6 +112,7 @@ export default function Home() {
 
   const hrOps: DemoLink[] = [
     { href: "/hr/review-queue", label: "HR review queue", emphasis: true },
+    { href: "/hr/payroll-runs", label: "Payroll runs", emphasis: true },
     { href: "/hr/onboarding-templates", label: "Onboarding templates" },
   ];
 

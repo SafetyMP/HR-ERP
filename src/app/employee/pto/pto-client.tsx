@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { formatBalanceHoursDisplay } from "@/lib/pto/format-balance-hours";
 
 
@@ -35,16 +32,14 @@ function formatCalendarDay(isoDate: string): string {
   );
 }
 
-async function fetchPtoSummary(token: string): Promise<{
+async function fetchPtoSummary(bearerToken: string | null): Promise<{
   summary: PtoSummaryApiShape | null;
   ok: boolean;
   retryable: boolean;
 }> {
-  const res = await fetch("/api/v1/me/pto/summary", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  const res = await hrApiFetch("/api/v1/me/pto/summary", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
 
   if (res.status === 401) {
@@ -68,25 +63,13 @@ async function fetchPtoSummary(token: string): Promise<{
 }
 
 export function PtoClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [summary, setSummary] = useState<PtoSummaryApiShape | null | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) {
-        setTokenState(fromStorage);
-      } else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -96,7 +79,7 @@ export function PtoClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchPtoSummary(token);
+      const result = await fetchPtoSummary(bearerToken);
       if (cancelled) return;
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
@@ -114,16 +97,16 @@ export function PtoClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = useCallback(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setSummary(undefined);
     });
     void (async () => {
-      const result = await fetchPtoSummary(token);
+      const result = await fetchPtoSummary(bearerToken);
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
         setSummary(null);
@@ -136,45 +119,24 @@ export function PtoClient({ initialBearerToken }: Props) {
       }
       setSummary(result.summary);
     })();
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
-  const devHint =
-    process.env.NODE_ENV === "development" ? (
-      <p className="mt-4 rounded-md border border-dashed border-zinc-300 p-3 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-        Dev only: employee JWT needs <code className="font-mono">pto:self_read</code> (included in the employee role) plus{" "}
-        <code className="font-mono">subject_employee_id</code>. Example:{" "}
-        <code className="font-mono">
-          DEV_ROLES=employee DEV_SUBJECT_EMPLOYEE_ID=… DEV_TENANT_ID=… node scripts/issue-dev-jwt.mjs
-        </code>
-      </p>
-    ) : null;
-
-  if (!token) {
+  if (!ready) {
     return (
-      <Card className="mx-auto w-full max-w-lg shadow-sm">
-        <CardHeader>
-          <CardTitle>PTO</CardTitle>
-          <CardDescription>
-            Sign in to view your PTO balance and recorded time off. Your session token was not found on this device.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="hrerp-pto-token">
-            Paste bearer token (development)
-          </label>
-          <textarea
-            id="hrerp-pto-token"
-            className="mt-2 w-full rounded-md border border-zinc-300 bg-white p-2 font-mono text-xs dark:border-zinc-700 dark:bg-zinc-950"
-            rows={3}
-            placeholder="Bearer token from scripts/issue-dev-jwt.mjs"
-            onChange={(e) => {
-              const t = writeDevBearerTokenToSession(e.target.value);
-              if (t) setTokenState(t);
-            }}
-          />
-          {devHint}
-        </CardContent>
-      </Card>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="PTO"
+        description="Sign in to view your PTO balance and recorded time off."
+        returnTo="/employee/pto"
+        onDevTokenPaste={persistBearer}
+      />
     );
   }
 
@@ -203,17 +165,8 @@ export function PtoClient({ initialBearerToken }: Props) {
             Your session could not be verified. Sign in again and return to PTO.
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            clearDevBearerTokenFromSession();
-            setTokenState(null);
-            setLoadError(null);
-            setSummary(undefined);
-          }}
-        >
-          Clear token and start over
+        <Button type="button" variant="outline" onClick={() => signOut()}>
+          Sign out and start over
         </Button>
       </div>
     );

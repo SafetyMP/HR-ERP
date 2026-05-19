@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type FieldPolicyMap = Record<string, "hr_maintained" | "self_editable">;
 
@@ -119,17 +115,15 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchProfile(token: string): Promise<{
+async function fetchProfile(bearerToken: string | null): Promise<{
   profile: EmployeeSelfProfileApi | null;
   ok: boolean;
   retryable: boolean;
   apiMessage?: string;
 }> {
-  const res = await fetch("/api/v1/me/profile", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  const res = await hrApiFetch("/api/v1/me/profile", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
 
   let body: {
@@ -163,7 +157,7 @@ async function fetchProfile(token: string): Promise<{
 }
 
 async function saveProfile(
-  token: string,
+  bearerToken: string | null,
   draft: EditableDraft,
 ): Promise<{
   profile: EmployeeSelfProfileApi | null;
@@ -171,10 +165,10 @@ async function saveProfile(
   ok: boolean;
   retryable: boolean;
 }> {
-  const res = await fetch("/api/v1/me/profile", {
+  const res = await hrApiFetch("/api/v1/me/profile", {
+    bearerToken,
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -225,7 +219,8 @@ function HrNote() {
 }
 
 export function EmployeeProfileClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [profile, setProfile] = useState<EmployeeSelfProfileApi | null | undefined>(undefined);
   const [draft, setDraft] = useState<EditableDraft>(emptyDraft());
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
@@ -234,26 +229,13 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) {
-        setTokenState(fromStorage);
-      } else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
   const applyLoadedProfile = useCallback((p: EmployeeSelfProfileApi) => {
     setProfile(p);
     setDraft(draftFromProfile(p));
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -266,7 +248,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchProfile(token);
+      const result = await fetchProfile(bearerToken);
       if (cancelled) return;
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
@@ -290,17 +272,17 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token, applyLoadedProfile]);
+  }, [isAuthenticated, bearerToken, applyLoadedProfile]);
 
   const retryLoad = useCallback(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setAuthHint(null);
       setProfile(undefined);
     });
     void (async () => {
-      const result = await fetchProfile(token);
+      const result = await fetchProfile(bearerToken);
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
         setAuthHint(result.apiMessage ?? null);
@@ -319,14 +301,14 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       }
       applyLoadedProfile(result.profile);
     })();
-  }, [token, applyLoadedProfile]);
+  }, [isAuthenticated, bearerToken, applyLoadedProfile]);
 
   const onSave = useCallback(async () => {
-    if (!token || profile === undefined || profile === null) return;
+    if (!isAuthenticated || profile === undefined || profile === null) return;
     setSaving(true);
     setSaveError(null);
     setConfirmationMessage(null);
-    const result = await saveProfile(token, draft);
+    const result = await saveProfile(bearerToken, draft);
     setSaving(false);
     if (!result.ok && !result.retryable) {
       setLoadError("auth");
@@ -340,7 +322,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       applyLoadedProfile(result.profile);
     }
     setConfirmationMessage(result.confirmationMessage ?? "Your profile updates were saved.");
-  }, [token, profile, draft, applyLoadedProfile]);
+  }, [isAuthenticated, bearerToken, profile, draft, applyLoadedProfile]);
 
   const emergencyUnset = useMemo(() => {
     if (!profile) return true;
@@ -352,44 +334,22 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     );
   }, [profile]);
 
-  const devHint =
-    process.env.NODE_ENV === "development" ? (
-      <p className="mt-4 rounded-md border border-dashed border-zinc-300 p-3 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-        Dev only: run <code className="font-mono">npm run jwt:dev</code> from the repo root — it loads{" "}
-        <code className="font-mono">.env</code> so <code className="font-mono">JWT_SECRET</code> matches{" "}
-        <code className="font-mono">npm run dev</code>. Defaults align with demo bootstrap (
-        <code className="font-mono">default-tenant</code>, seeded Jordan employee). Employee JWT needs{" "}
-        <code className="font-mono">employees:read</code> and <code className="font-mono">profile:self_update</code>{" "}
-        (included in <code className="font-mono">employee</code> role).
-      </p>
-    ) : null;
-
-  if (!token) {
+  if (!ready) {
     return (
-      <Card className="mx-auto w-full max-w-lg shadow-sm">
-        <CardHeader>
-          <CardTitle>My profile</CardTitle>
-          <CardDescription>
-            Sign in to view your HR profile. Your session token was not found on this device.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="hrerp-profile-token">
-            Paste bearer token (development)
-          </label>
-          <textarea
-            id="hrerp-profile-token"
-            className="mt-2 w-full rounded-md border border-zinc-300 bg-white p-2 font-mono text-xs dark:border-zinc-700 dark:bg-zinc-950"
-            rows={3}
-            placeholder="Paste JWT (npm run jwt:dev) — raw eyJ… or Bearer eyJ…"
-            onChange={(e) => {
-              const t = writeDevBearerTokenToSession(e.target.value);
-              if (t) setTokenState(t);
-            }}
-          />
-          {devHint}
-        </CardContent>
-      </Card>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="My profile"
+        description="Sign in to view and update your HR profile."
+        returnTo="/employee/profile"
+        onDevTokenPaste={persistBearer}
+      />
     );
   }
 
@@ -415,10 +375,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
         <div role="alert">
           <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Your session could not be verified. Mint a fresh token with{" "}
-            <code className="rounded bg-zinc-100 px-1 font-mono text-xs dark:bg-zinc-800">npm run jwt:dev</code> using the
-            same <code className="rounded bg-zinc-100 px-1 font-mono text-xs dark:bg-zinc-800">JWT_SECRET</code> as this dev
-            server, then paste the printed line below.
+            Your session could not be verified. Sign in again and return to your profile.
           </p>
           {authHint ? (
             <p className="mt-3 rounded-md border border-zinc-200 bg-zinc-50 p-2 font-mono text-xs text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
@@ -426,18 +383,8 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
             </p>
           ) : null}
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            clearDevBearerTokenFromSession();
-            setTokenState(null);
-            setLoadError(null);
-            setAuthHint(null);
-            setProfile(undefined);
-          }}
-        >
-          Clear token and start over
+        <Button type="button" variant="outline" onClick={() => signOut()}>
+          Sign out and start over
         </Button>
       </div>
     );

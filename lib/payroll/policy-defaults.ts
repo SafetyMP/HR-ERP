@@ -1,38 +1,20 @@
-import type { ProgressiveTaxTable } from "@hr-erp/payroll-calc";
+import {
+  US_FED_WAGE_BRACKET_2026_v1,
+  type ProgressiveTaxTable,
+} from "@hr-erp/payroll-calc";
 
 export const CALC_SEMANTIC_VERSION = "payroll-calc@0.1.0";
 
 export const DEFAULT_POLICY_RELEASE_ID = "PAYROLL_DEFAULTS_2026_v1";
 
 /**
- * Stub two-bracket federal-style schedule. **Not a real IRS table** — this is a versioned
- * placeholder so the kernel can run end-to-end deterministically. Production deployments
- * must replace it with statutory tables for each supported jurisdiction; the registry is
- * keyed by `versionId` so historical runs replay against their original policy.
+ * Default federal withholding table (engineering v1). **Not IRS Publication 15-T.**
+ * Counsel must approve before production payroll. Replay keys on `versionId`.
+ *
+ * @see specs/alignment/decisions/0005-us-federal-withholding-v1.md
  */
-export const DEFAULT_FEDERAL_TAX_TABLE: ProgressiveTaxTable = {
-  versionId: "US_FED_PLACEHOLDER_2026_v1",
-  brackets: [
-    {
-      lowerInclusiveMinor: 0n,
-      upperExclusiveMinor: 50_000_00n,
-      marginalRateNumerator: 10n,
-      marginalRateDenominator: 100n,
-    },
-    {
-      lowerInclusiveMinor: 50_000_00n,
-      upperExclusiveMinor: 250_000_00n,
-      marginalRateNumerator: 22n,
-      marginalRateDenominator: 100n,
-    },
-    {
-      lowerInclusiveMinor: 250_000_00n,
-      upperExclusiveMinor: null,
-      marginalRateNumerator: 32n,
-      marginalRateDenominator: 100n,
-    },
-  ],
-};
+export const DEFAULT_FEDERAL_TAX_TABLE: ProgressiveTaxTable =
+  US_FED_WAGE_BRACKET_2026_v1;
 
 /** USD-equivalent annualized standard deduction placeholder, prorated per pay period in run-payroll. */
 export const DEFAULT_ANNUAL_STANDARD_DEDUCTION_MINOR = 14_600_00n;

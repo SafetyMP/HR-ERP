@@ -262,6 +262,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "learning:enrollment_assign",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("GET", "/api/v1/me/learning/enrollments")]: {
+    permission: "learning:enrollment_self_read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("POST", "/api/v1/me/learning/enrollments/:id/complete")]: {
     permission: "learning:enrollment_complete_self",
     abac: { minMfa: "standard", maxDataClassification: "internal" },

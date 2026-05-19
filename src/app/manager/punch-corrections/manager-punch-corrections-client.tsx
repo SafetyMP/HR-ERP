@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import Link from "next/link";
-import { startTransition, useEffect, useState } from "react";
+import { useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,14 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type Props = {
   initialBearerToken?: string;
 };
 
 export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } = useHrAccess(initialBearerToken);
   const [employeeId, setEmployeeId] = useState("");
   const [punchKind, setPunchKind] = useState<"CLOCK_IN" | "CLOCK_OUT">("CLOCK_IN");
   const [requestedOccurredAt, setRequestedOccurredAt] = useState("");
@@ -32,20 +28,8 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
   const submit = async () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     const occurredRaw = requestedOccurredAt.trim();
     const occurredAt = new Date(occurredRaw);
     if (!occurredRaw || Number.isNaN(occurredAt.getTime())) {
@@ -55,10 +39,10 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
     setBusy(true);
     setMsg(null);
     try {
-      const res = await fetch("/api/v1/manager/team/attendance/correction-requests", {
+      const res = await hrApiFetch("/api/v1/manager/team/attendance/correction-requests", {
+        bearerToken,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -80,19 +64,38 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Punch corrections"
+        description="Sign in as a manager to propose punch corrections for your team."
+        returnTo="/manager/punch-corrections"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   return (
     <Card className="shadow-sm">
       <CardHeader>
         <CardTitle>Propose a punch correction</CardTitle>
         <CardDescription>
-          Escalates to HR / Payroll — does not mutate authoritative punches automatically. Use Core HR employee IDs (UUIDs).
+          Escalates to HR / Payroll — does not mutate authoritative punches automatically. Use Core HR employee IDs
+          (UUIDs).
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <p className="text-zinc-600 dark:text-zinc-400">
-          Demo Jordan subject id for QA: <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">b0000001-0001-4000-8000-000000000011</code>
+          Demo Jordan subject id for QA:{" "}
+          <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">b0000001-0001-4000-8000-000000000011</code>
         </p>
         <div>
           <label className="font-medium text-zinc-700 dark:text-zinc-300" htmlFor="corr-emp">
@@ -149,10 +152,7 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
           <Button
             type="button"
             disabled={
-              busy ||
-              reason.trim().length < 8 ||
-              !employeeId.trim() ||
-              !requestedOccurredAt.trim()
+              busy || reason.trim().length < 8 || !employeeId.trim() || !requestedOccurredAt.trim()
             }
             onClick={() => void submit()}
           >

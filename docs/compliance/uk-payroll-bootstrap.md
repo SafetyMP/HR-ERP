@@ -2,8 +2,10 @@
 
 > Status: scope draft. Country payroll #2 lives here as a reference for the Phase 2
 > milestone documented in [HR ERP — Competitive Analysis & Roadmap](../../specs/competitive-analysis-roadmap.md).
-> Calculation tables, code, and gold vectors land in `packages/payroll-calc/uk/`
-> in the implementation Task that follows this scope. Legal counsel must sign off
+> **Spike landed (2026-05-18):** `packages/payroll-calc/src/countries/uk/` (`paye.ts`, `ni.ts`) +
+> [`uk-golden-vectors.test.ts`](../../packages/payroll-calc/src/countries/uk/uk-golden-vectors.test.ts);
+> ADR [`specs/alignment/decisions/0007-uk-payroll-bootstrap-spike.md`](../../specs/alignment/decisions/0007-uk-payroll-bootstrap-spike.md).
+> Not wired to `runPayroll` until country selector exists. Legal counsel must sign off
 > on the citations below before the engine is enabled in production.
 
 ## In-scope statutory components

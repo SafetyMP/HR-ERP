@@ -58,12 +58,17 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 | [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | How Feature briefs and UAC work |
 | [product/feature-brief-template.md](./product/feature-brief-template.md) | Template for shippable capabilities |
 | [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); section 2c platform inventory + diagram; section 2d skills gap lens; Feature 001 backlog / audit sections |
+| [product/competitive-benchmark-executive-brief.md](./product/competitive-benchmark-executive-brief.md) | Multi-segment competitive benchmark (operations lens) — executive summary |
+| [product/competitive-ops-tco-worksheet.md](./product/competitive-ops-tco-worksheet.md) | Illustrative operate TCO vs SaaS PEPM by segment |
+| [product/competitive-ops-inventory.md](./product/competitive-ops-inventory.md) | Validated production/CI/worker inventory for benchmark |
+| [../specs/competitive-analysis-roadmap.md](../specs/competitive-analysis-roadmap.md) | Competitive parity matrix, roadmap tiers, strategic priorities |
 
 ## Operations
 
 | Doc | Purpose |
 | --- | --- |
 | [operations/production-rollback-runbook.md](./operations/production-rollback-runbook.md) | Rollback checklist |
+| [operations/phase1-production-checklist.md](./operations/phase1-production-checklist.md) | Phase 1 prod checklist (Vercel, workers, env); run `npm run ops:smoke` / `npm run ops:verify` |
 | [operations/vercel-managed-phase1-environment.md](./operations/vercel-managed-phase1-environment.md) | Managed deploy notes |
 
 ## UI

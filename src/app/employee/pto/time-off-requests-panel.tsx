@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 export type TimeOffRequestApiItem = {
   id: string;
@@ -52,14 +47,15 @@ function formatDay(isoDate: string): string {
   );
 }
 
-async function fetchTimeOffRequests(token: string): Promise<{
+async function fetchTimeOffRequests(bearerToken: string | null): Promise<{
   items: TimeOffRequestApiItem[] | null;
   ok: boolean;
   auth: boolean;
   forbidden: boolean;
 }> {
-  const res = await fetch("/api/v1/me/time-off/requests", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  const res = await hrApiFetch("/api/v1/me/time-off/requests", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
   if (res.status === 401) {
     return { items: null, ok: false, auth: true, forbidden: false };
@@ -80,7 +76,7 @@ async function fetchTimeOffRequests(token: string): Promise<{
 }
 
 export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated } = useHrAccess(initialBearerToken);
   const [items, setItems] = useState<TimeOffRequestApiItem[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | "forbidden" | null>(null);
   const [startDate, setStartDate] = useState("");
@@ -89,19 +85,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
   const [submitBusy, setSubmitBusy] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -111,7 +95,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchTimeOffRequests(token);
+      const result = await fetchTimeOffRequests(bearerToken);
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
@@ -135,16 +119,16 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setItems(undefined);
     });
     void (async () => {
-      const result = await fetchTimeOffRequests(token);
+      const result = await fetchTimeOffRequests(bearerToken);
       if (!result.ok && result.auth) {
         setLoadError("auth");
         setItems([]);
@@ -166,13 +150,13 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
   };
 
   const submit = async () => {
-    if (!token || !startDate || !endDate) return;
+    if (!isAuthenticated || !startDate || !endDate) return;
     setSubmitBusy(true);
     try {
-      const res = await fetch("/api/v1/me/time-off/requests", {
+      const res = await hrApiFetch("/api/v1/me/time-off/requests", {
+        bearerToken,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -195,7 +179,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
         return;
       }
       setNote("");
-      const refreshed = await fetchTimeOffRequests(token);
+      const refreshed = await fetchTimeOffRequests(bearerToken);
       if (refreshed.ok && refreshed.items) {
         setItems(refreshed.items);
       }
@@ -204,7 +188,15 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Loading time-off requests…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) return null;
 
   if (loadError === "auth") {
     return (

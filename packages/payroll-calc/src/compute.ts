@@ -28,6 +28,7 @@ export function computePayroll(input: GrossToNetPipelineInput): PayrollComputati
     policyRelease: input.policyRelease,
     commissionEligibleSalesMinor: input.commissionEligibleSalesMinor ?? null,
     commissionTable: input.commissionTable ?? null,
+    additionalGrossLines: input.additionalGrossLines ?? [],
   };
   const inputsFingerprintSha256 = sha256Hex(stableStringify(fingerprintPayload));
   const pipeline = runGrossToNetPipeline(input);

@@ -30,6 +30,7 @@ export {
 } from "./segmentizer";
 
 export type {
+  AdditionalGrossLine,
   GrossToNetPipelineInput,
   GrossToNetPipelineResult,
   PipelinePhaseMoneyLine,
@@ -41,3 +42,18 @@ export type { PayrollComputationOutput } from "./compute";
 export { computePayroll, computePayrollBatchParallel } from "./compute";
 
 export { sha256Hex, stableStringify } from "./canonicalJson";
+
+export { US_FED_WAGE_BRACKET_2026_v1 } from "./tables/us-fed-wage-bracket-2026-v1";
+
+export { computeUkPayeBootstrap } from "./countries/uk/paye";
+export { computeUkNiClass1Bootstrap } from "./countries/uk/ni";
+export type {
+  UkNiInput,
+  UkNiResult,
+  UkPayeInput,
+  UkPayeResult,
+} from "./countries/uk/types";
+export {
+  UK_NI_VERSION_ID,
+  UK_PAYE_VERSION_ID,
+} from "./countries/uk/types";

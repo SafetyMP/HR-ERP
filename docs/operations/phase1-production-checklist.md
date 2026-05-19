@@ -1,0 +1,99 @@
+# Phase 1 production operations checklist
+
+**Purpose:** Minimum operational bar for HR ERP Phase 1 (modular monolith on Vercel + Postgres + Redis workers).  
+**Anchors:** ADR [`0001-phase1-scope`](../../specs/alignment/decisions/0001-phase1-scope.md), [`0004-modular-monolith-phase1`](../../specs/alignment/decisions/0004-modular-monolith-phase1.md), [competitive ops inventory](../product/competitive-ops-inventory.md).
+
+---
+
+## 1. Supported deployment pattern (90-day default)
+
+| Layer | Choice |
+| --- | --- |
+| **Web app** | Vercel git integration → Production deploy on `main` (region `iad1` per [`vercel.json`](../../vercel.json)) |
+| **Database** | Single `DATABASE_URL` (Neon, RDS, or equivalent) |
+| **Redis** | Managed Redis for BullMQ (`REDIS_URL`) |
+| **Background workers** | **Option B (recommended):** small always-on VM or PaaS process host running **both** `npm run worker:webhooks` and `npm run worker:integrations` |
+
+Do **not** run Kafka, Schema Registry, or second Postgres instances in production until an ADR trigger is documented ([`deferred-platform-track.md`](../product/deferred-platform-track.md)).
+
+---
+
+## 2. Environment variables (Production)
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `DATABASE_URL` | Yes | App system of record |
+| `JWT_SECRET` | Yes | Min 32 chars; set only in Vercel dashboard (see [vercel-managed-phase1-environment.md](./vercel-managed-phase1-environment.md)) |
+| `REDIS_URL` | Yes (if workers enabled) | BullMQ + integration jobs |
+| `INTEGRATION_SECRET_KEY` | Yes | Integration token encryption |
+| `WEBHOOK_ENCRYPTION_KEY` | Recommended | Webhook subscription secrets; falls back to `INTEGRATION_SECRET_KEY` if unset |
+| `WEBHOOK_FANOUT_ON_ENQUEUE` | Optional | Default on; set `0` to disable fan-out |
+| `WEBHOOK_DELIVERY_POLL_MS` | Optional | Default `2000` |
+| `OIDC_*` | If using enterprise IdP | See `.env.example` |
+
+---
+
+## 3. Pre-deploy checklist
+
+- [ ] `main` passes CI + QA ([`deploy.yml`](../../.github/workflows/deploy.yml) gate)
+- [ ] `npx prisma migrate deploy` applied to production database
+- [ ] `npm run db:verify` passes against production (read-only maintenance window)
+- [ ] Vercel Production env reviewed (no empty `JWT_SECRET` in build artifacts)
+- [ ] Rollback runbook linked: [production-rollback-runbook.md](./production-rollback-runbook.md)
+
+---
+
+## 4. Worker processes (required for webhooks)
+
+Start and supervise on the worker host:
+
+```bash
+export DATABASE_URL="..."
+export REDIS_URL="..."
+export JWT_SECRET="..."   # if workers need auth context for jobs
+npm run worker:webhooks
+# separate process or supervisor entry:
+npm run worker:integrations
+```
+
+**Verify:**
+
+1. Redis reachable from worker host.
+2. After a domain event with fan-out enabled, `webhook_deliveries` rows move `PENDING` → `SUCCESS` or `RETRY`/`FAILED` with `last_response_code` set.
+3. Integration DLQ empty or monitored (`npm run integrations:replay-dlq` documented for on-call).
+
+**Staging smoke (optional):**
+
+```bash
+npm run ops:smoke
+# full data + env gate:
+npm run ops:verify
+```
+
+---
+
+## 5. Post-deploy smoke
+
+- [ ] `GET /` loads home hub
+- [ ] Employee paystub path works with production IdP or session cookie
+- [ ] One authenticated `GET /api/v1/me/profile` returns 200 for test employee
+- [ ] Workers running ≥24h without crash loop
+- [ ] No PII in application logs (pay amounts, SSN patterns)
+
+---
+
+## 6. Explicitly out of scope for Phase 1 prod
+
+| Item | Action |
+| --- | --- |
+| `docker compose --profile architecture` | Local/staging research only |
+| `npm run outbox:kafka` | Do not run without ADR |
+| Second `postgres-core-hr` / `postgres-payroll` URLs | Not wired to app |
+
+---
+
+## 7. Related documents
+
+- [Validated ops inventory](../product/competitive-ops-inventory.md)
+- [Executive brief](../product/competitive-benchmark-executive-brief.md)
+- [Docker / OCI](../../docker/README.md)

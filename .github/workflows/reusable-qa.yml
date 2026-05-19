@@ -57,6 +57,7 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
       - run: npx prisma migrate deploy
+      - run: npm run db:verify
       - run: npx vitest run tests/integration
       - name: FAILURE_SUMMARY reminder
         if: failure()
@@ -75,6 +76,8 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
       - run: npx playwright install chromium --with-deps
+      - name: Mint e2e JWTs for feature UAC specs
+        run: node scripts/ci-issue-e2e-jwts.mjs --github-env >> $GITHUB_ENV
       - run: npm run test:e2e
       - name: FAILURE_SUMMARY reminder
         if: failure()

@@ -1,3 +1,4 @@
+import { parseSessionTokenFromCookieHeader } from "@/lib/auth/session-cookie";
 import { ApiError } from "@/lib/api/v1/errors";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { readCorrelationId } from "@/lib/security/correlation-id";
@@ -5,18 +6,19 @@ import { claimsToAuthContext, verifyHrJwt } from "@/lib/security/jwt";
 
 export { readCorrelationId } from "@/lib/security/correlation-id";
 
+function readAccessTokenFromRequest(request: Request): string | null {
+  const authorization = request.headers.get("authorization");
+  if (authorization?.startsWith("Bearer ")) {
+    const token = authorization.slice("Bearer ".length).trim();
+    if (token) return token;
+  }
+  return parseSessionTokenFromCookieHeader(request.headers.get("cookie"));
+}
+
 export async function requireBearerAuth(request: Request): Promise<AuthContext> {
   const correlationId = readCorrelationId(request);
-  const authorization = request.headers.get("authorization");
+  const token = readAccessTokenFromRequest(request);
 
-  if (!authorization?.startsWith("Bearer ")) {
-    throw new ApiError(401, {
-      code: "unauthorized",
-      message: "missing_bearer_token",
-    });
-  }
-
-  const token = authorization.slice("Bearer ".length).trim();
   if (!token) {
     throw new ApiError(401, {
       code: "unauthorized",

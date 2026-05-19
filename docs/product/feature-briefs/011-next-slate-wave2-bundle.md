@@ -1,8 +1,8 @@
 # Feature brief: Phase 2 “next slate” bundle (011–018)
 
 **ID:** 011-next-slate-wave2-bundle  
-**Status:** Draft  
-**Last updated:** 2026-05-09  
+**Status:** Implemented  
+**Last updated:** 2026-05-18  
 
 Bundled capability set shipping together: manager leave decisions, HR case lifecycle visibility, tax/year-end summaries, benefits election intent, punch-correction proposals, onboarding templates + apply API, separation/offboarding tasks, organization context.
 

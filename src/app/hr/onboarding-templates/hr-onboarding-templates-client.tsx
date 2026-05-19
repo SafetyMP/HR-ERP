@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 
 type Tpl = { id: string; title: string; itemCount: number };
@@ -25,7 +22,8 @@ type Props = {
 };
 
 export function HrOnboardingTemplatesClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const [templates, setTemplates] = useState<Tpl[] | undefined>(undefined);
   const [employeeId, setEmployeeId] = useState("");
   const [templateId, setTemplateId] = useState("");
@@ -33,24 +31,13 @@ export function HrOnboardingTemplatesClient({ initialBearerToken }: Props) {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     let cancelled = false;
     startTransition(() => setTemplates(undefined));
     void (async () => {
-      const res = await fetch("/api/v1/hr/onboarding/templates", {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      const res = await hrApiFetch("/api/v1/hr/onboarding/templates", {
+        bearerToken,
+        headers: { Accept: "application/json" },
       });
       if (cancelled) return;
       if (!res.ok) {
@@ -65,17 +52,17 @@ export function HrOnboardingTemplatesClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const apply = async () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setBusy(true);
     setMsg(null);
     try {
-      const res = await fetch("/api/v1/hr/onboarding/apply-template", {
+      const res = await hrApiFetch("/api/v1/hr/onboarding/apply-template", {
+        bearerToken,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -96,7 +83,24 @@ export function HrOnboardingTemplatesClient({ initialBearerToken }: Props) {
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Onboarding templates"
+        description="Sign in to manage onboarding templates."
+        returnTo="/hr/onboarding-templates"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -2,7 +2,7 @@
 
 **Purpose:** Define how to answer “what percent complete?” without inventing a single orphan number. Aligns with the PO operating model (Feature briefs + numbered UAC).
 
-**Last inventory:** 2026-05-09 (Features **001**–**005** implementation verified in codebase)
+**Last inventory:** 2026-05-18 (Features **001**–**017** shipped; Track A **115/115** UAC)
 
 **Shippable vs platform:** **Track A (Feature UAC)** is the authoritative bar for “product shipped.” Routes, demos, kernels, and docs in tree that are **not** tied to an approved Feature brief’s numbered UAC count as **platform / scaffold / demo** capability — useful, but not closure of PO scope.
 
@@ -26,16 +26,18 @@
 
 | Source | Count |
 | --- | ---: |
-| Feature briefs in `docs/product/feature-briefs/` | **5** |
-| Total numbered UAC (sum across briefs 001–005) | **30** |
+| Feature briefs in `docs/product/feature-briefs/` | **17** (**001**–**017**) |
+| Total numbered UAC (sum across briefs **001**–**013**, audited) | **85** |
+| Shipped / verified UAC (audited **001**–**013**) | **85** / **85** |
+| Shipped / verified UAC (audited **014**–**017**) | **30** / **30** |
+| **Cumulative Track A** | **115** / **115** |
 
-Shipped / verified UAC to date: Feature **001** — **6** / 6 · Feature **002** — **6** / 6 · Feature **003** — **6** / 6 · Feature **004** — **6** / 6 · Feature **005** — **6** / 6 (**30** / **30** total numbered UAC for approved portfolio briefs **001–005**).
+Per brief UAC counts: **001**–**005** — 6 each · **006**–**010** — 6 each · **011** — 12 · **012** — 6 · **013** — 7.
 
-Per brief UAC counts: **001** — 6 · **002** — 6 · **003** — 6 · **004** — 6 · **005** — 6.
+Wave **001**–**005** audits: **§3**–**§3e** below. Wave **006**–**013** audits: [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).  
+Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./completion-audits/features-014-017.md).
 
-As briefs are added, update this table or derive counts from briefs in CI/docs automation later.
-
-**Primary product gap (prioritization):** **None** among approved portfolio briefs **001–005** — all closed against numbered UAC in **§3**–**§3e**. Extend [`feature-briefs/`](./feature-briefs/) for net-new HR ERP slices beyond this set.
+**Primary product gap (prioritization):** Track A **001**–**017** closed (**115/115** UAC). **Next:** Tier 2 compliance (ADR **0005**–**0008**) with counsel; Phase 2 platform per [`deferred-platform-track.md`](./deferred-platform-track.md).
 
 ---
 
@@ -55,11 +57,11 @@ Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator.m
 
 ## 2c. Implemented capabilities today (engineering / platform inventory)
 
-Point-in-time inventory of what exists **in-repo** beneath track A — individual brief UAC closure is tracked in **§3**–**§3e** (Features **001**–**005**).
+Point-in-time inventory of what exists **in-repo** beneath track A — UAC closure in **§3**–**§3e** and [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).
 
 ### Web application (Next.js App Router)
 
-- **Home:** [`src/app/page.tsx`](../../src/app/page.tsx) — primary CTAs **Time** (Feature **002**), **Earnings statement** (Feature **001**), **Benefits** (Feature **003**), **My profile** (Feature **004**), **PTO** (Feature **005**) plus examples / QA lab.
+- **Home:** [`src/app/page.tsx`](../../src/app/page.tsx) — employee CTAs (**001**–**007**, **009**–**010**, **012**), manager/HR links for **008** and Feature **011** bundle (team leave, punch corrections, review queue, onboarding templates, tax docs, org context, separation).
 - **Employee profile:** [`src/app/employee/profile/page.tsx`](../../src/app/employee/profile/page.tsx) — HR profile read / guarded self-update (`EmployeeProfileClient`).
 - **Employee benefits:** [`src/app/employee/benefits/page.tsx`](../../src/app/employee/benefits/page.tsx) — enrollment summary (`BenefitsClient`).
 - **Employee PTO:** [`src/app/employee/pto/page.tsx`](../../src/app/employee/pto/page.tsx) — read-only balance + recorded dates (`PtoClient`).
@@ -90,11 +92,11 @@ Other surfaces (not all in route-policies): [`src/app/api/governance/proposals`]
 ### Data and payroll math
 
 - **Prisma app DB:** [`prisma/schema.prisma`](../../prisma/schema.prisma) — tenants, employees (**preferred name**, mailing address, personal email, phone, emergency contact columns — Feature **004**), churn scores, payroll period / payout lines, **`BenefitEnrollment`** (Feature **003**), **`PtoBalance`** / **`PtoRequest`** (Feature **005** demo seed rows), etc.
-- **Payroll kernel package:** [`packages/payroll-calc/`](../../packages/payroll-calc/) — deterministic pipeline + tests; **not yet** the sole source for paystub lines (employee statement reads persisted `PaymentInstruction` / `PayoutLine`; kernel integration remains a future enhancement).
+- **Payroll kernel package:** [`packages/payroll-calc/`](../../packages/payroll-calc/) — deterministic pipeline + tests; pay runs via [`lib/payroll/run-payroll.ts`](../../lib/payroll/run-payroll.ts) persist kernel output to `PaymentInstruction` / `PayoutLine`; paystub UI reads those rows. **Statutory** tables remain placeholders — see [`docs/compliance/us-federal-withholding-placeholder.md`](../compliance/us-federal-withholding-placeholder.md).
 
 ### Security and platform
 
-- **Auth / policies / RLS-oriented path:** [`middleware.ts`](../../middleware.ts), [`lib/security/`](../../lib/security/).
+- **Auth / policies / RLS-oriented path:** [`middleware.ts`](../../middleware.ts), [`lib/security/`](../../lib/security/), httpOnly session ([`lib/auth/session-cookie.ts`](../../lib/auth/session-cookie.ts)), OIDC login/callback ([`src/app/api/auth/oidc/`](../../src/app/api/auth/oidc/)), employee UI [`useHrAccess`](../../src/lib/auth/use-hr-access.ts).
 - **Workers:** outbox → Kafka publisher, BullMQ integration jobs ([`README.md`](../../README.md)).
 - **Contracts:** [`contracts/openapi/`](../../contracts/openapi/), [`proto/`](../../proto/).
 - **Python sidecar:** training / ETL / churn FastAPI — [`services/`](../../services/) (“Predictive HR” in README).
@@ -149,15 +151,15 @@ Skills live under [`.cursor/skills/*/SKILL.md`](../../.cursor/skills/). They are
 
 | Skill | Role | Present in codebase | Typical remaining work |
 | --- | --- | --- | --- |
-| [`hr-product-owner`](../../.cursor/skills/hr-product-owner/SKILL.md) | Briefs + UAC + friction | Briefs **001–005** approved · portfolio closed | Author brief **006+** / backlog slices beyond set |
+| [`hr-product-owner`](../../.cursor/skills/hr-product-owner/SKILL.md) | Briefs + UAC + friction | Briefs **001–013** audited | Author brief **014+** for net-new slices |
 | [`hr-erp-principal-architecture`](../../.cursor/skills/hr-erp-principal-architecture/SKILL.md) | Contexts, buses, contracts | Phase 1 ADR + logical separation | Kafka/outbox extraction when ADR triggers |
 | [`hr-erp-innovation-rd`](../../.cursor/skills/hr-erp-innovation-rd/SKILL.md) | Edge/pgvector/Wasm/Rust gates | Postgres-centered MVP | Parity notes when Edge-heavy paths land |
 | [`hr-backend-compliance`](../../.cursor/skills/hr-backend-compliance/SKILL.md) | Wage/hour, `COMPLIANCE_*` | Strong **docs**; employee clock-in + **today summary** | Premium/OT + meal/break rules when briefs demand |
-| [`hr-payroll-calculation-engine`](../../.cursor/skills/hr-payroll-calculation-engine/SKILL.md) | `packages/payroll-calc` | Package + tests | Optional: kernel output ↔ persisted paystub lines |
+| [`hr-payroll-calculation-engine`](../../.cursor/skills/hr-payroll-calculation-engine/SKILL.md) | `packages/payroll-calc` | Package + run-payroll persistence | Replace placeholder federal tables per jurisdiction |
 | [`hr-ai-data-governance`](../../.cursor/skills/hr-ai-data-governance/SKILL.md) | HITL, XAI, governance | Proposals APIs + churn surfaces | [`PR_CHECKLIST.md`](../ai-governance/PR_CHECKLIST.md) for production scoring |
 | [`hr-erp-mlops`](../../.cursor/skills/hr-erp-mlops/SKILL.md) | Inference tiering, logs, drift | Churn proxy + doc sequence | Phases in [`implementation-sequence.md`](../ml/implementation-sequence.md) |
-| [`hr-erp-security-identity`](../../.cursor/skills/hr-erp-security-identity/SKILL.md) | RBAC/ABAC, RLS, CI | Baseline wired | Cookie/session UX vs dev bearer for employee flows |
-| [`hr-erp-qa-chaos`](../../.cursor/skills/hr-erp-qa-chaos/SKILL.md) | Layered tests | QA lab + [`docs/QA.md`](../QA.md) · timed Playwright for briefs **001–005** | Expand suites when brief **006+** lands |
+| [`hr-erp-security-identity`](../../.cursor/skills/hr-erp-security-identity/SKILL.md) | RBAC/ABAC, RLS, CI | Session cookie + OIDC routes + employee `useHrAccess` | Webhook secret column encryption (schema TODO) |
+| [`hr-erp-qa-chaos`](../../.cursor/skills/hr-erp-qa-chaos/SKILL.md) | Layered tests | Playwright **001–010** + CI JWT mint (`scripts/ci-issue-e2e-jwts.mjs`) · `db:verify` in reusable-qa | Expand integration DB suites per new briefs |
 | [`hr-db-migration-state`](../../.cursor/skills/hr-db-migration-state/SKILL.md) | Safe DDL, verify | Migrations + runbooks | Applies on every schema change |
 | [`hr-code-health`](../../.cursor/skills/hr-code-health/SKILL.md) | Smell/refactor hygiene | Process skill | Runs on substantive `src`/contract edits |
 | [`hr-erp-packaging-supply-chain`](../../.cursor/skills/hr-erp-packaging-supply-chain/SKILL.md) | OCI, SBOM | CI + README | Operational release tuning |
@@ -171,9 +173,9 @@ The long global **Cursor marketplace** skill list does **not** replace the 15-re
 
 ## 2e. Primary product backlog (track A recap)
 
-**Features 001–005** are **closed** against numbered UAC — see **§3**, **§3b**, **§3c**, **§3d**, and **§3e**.
+**Features 001–013** are **closed** against numbered UAC (85/85) — see **§3**–**§3e** and [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).
 
-**Next:** Add **Feature 006+** briefs under [`feature-briefs/`](./feature-briefs/) when expanding HR ERP scope beyond this set.
+**Next:** Implement Feature briefs **014**–**017**; platform deferrals reaffirmed in [`deferred-platform-track.md`](./deferred-platform-track.md) (2026-05-18 gap analysis).
 
 ---
 

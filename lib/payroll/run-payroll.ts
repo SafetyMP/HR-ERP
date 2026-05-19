@@ -9,6 +9,14 @@ import {
 import { ApiError } from "@/lib/api/v1/errors";
 import { enqueueEvent } from "@/lib/outbox/enqueue-event";
 import {
+  computePremiumAllocationForPunches,
+  isPremiumFromAttendanceEnabled,
+  loadPunchesForPayPeriod,
+  resolvePremiumGeoId,
+} from "@/lib/payroll/premium-earnings-from-attendance";
+import { premiumGrossLinesFromAllocation } from "@/lib/payroll/premium-pay-minor";
+import type { AdditionalGrossLine } from "@hr-erp/payroll-calc";
+import {
   CALC_SEMANTIC_VERSION,
   DEFAULT_ANNUAL_STANDARD_DEDUCTION_MINOR,
   DEFAULT_FEDERAL_TAX_TABLE,
@@ -132,6 +140,12 @@ export async function runPayroll(
       const employees = await tx.employee.findMany({
         where: employeeWhere,
         include: {
+          organization: {
+            select: {
+              jurisdictionCountry: true,
+              jurisdictionSubdivision: true,
+            },
+          },
           compensationRecords: {
             where: { effectiveFrom: { lte: period.endDate } },
             orderBy: { effectiveFrom: "desc" },
@@ -187,6 +201,53 @@ export async function runPayroll(
         }
 
         const baseAnnualMinor = decimalToMinor(latest.baseAmount, currencyScale);
+
+        let additionalGrossLines: AdditionalGrossLine[] = [];
+        let premiumMemo: Record<string, unknown> | null = null;
+        if (isPremiumFromAttendanceEnabled()) {
+          const punches = await loadPunchesForPayPeriod(
+            tx,
+            auth.tenantId,
+            employee.id,
+            period.startDate,
+            periodEndExclusive,
+          );
+          const geoId = resolvePremiumGeoId(
+            employee.organization.jurisdictionCountry,
+            employee.organization.jurisdictionSubdivision,
+          );
+          const premium = computePremiumAllocationForPunches({
+            geoId,
+            punches,
+            flsaExempt: false,
+          });
+          additionalGrossLines = premiumGrossLinesFromAllocation(
+            baseAnnualMinor,
+            premium,
+          );
+          premiumMemo = {
+            premiumFromAttendance: true,
+            geoId: premium.geoId,
+            rulePackVersion: premium.rulePackVersion,
+            regularMinutes: premium.regularMinutes,
+            overtimeMinutes: premium.overtimeMinutes,
+            doubletimeMinutes: premium.doubletimeMinutes,
+            additionalGrossLineCodes: additionalGrossLines.map((l) => l.code),
+            warnings: premium.warnings,
+          };
+          await enqueueEvent(tx, {
+            tenantId: auth.tenantId,
+            category: "domain.payroll",
+            eventType: "payroll.premium_hours.computed",
+            correlationId: auth.correlationId,
+            payload: {
+              payrollPeriodId: period.id,
+              employeeId: employee.id,
+              ...premiumMemo,
+            },
+          });
+        }
+
         const pipelineInput = buildPipelineInputForEmployee({
           employeeId: employee.id,
           payRunId: period.id,
@@ -196,10 +257,13 @@ export async function runPayroll(
           effectiveFrom: latest.effectiveFrom,
           currencyCode,
           currencyScale,
+          additionalGrossLines,
         });
 
         const computation = computePayroll(pipelineInput);
         const status = existing && reissue ? "reissued" : "computed";
+
+        const memo = buildMemo(computation, premiumMemo);
 
         if (existing) {
           await tx.payoutLine.deleteMany({
@@ -208,7 +272,7 @@ export async function runPayroll(
           await tx.paymentInstruction.update({
             where: { id: existing.id },
             data: {
-              memo: buildMemo(computation),
+              memo,
             },
           });
         }
@@ -222,7 +286,7 @@ export async function runPayroll(
                 tenantId: auth.tenantId,
                 employeeId: employee.id,
                 payrollPeriodId: period.id,
-                memo: buildMemo(computation),
+                memo,
               },
             });
 
@@ -288,6 +352,7 @@ export function buildPipelineInputForEmployee(args: {
   effectiveFrom: Date;
   currencyCode: string;
   currencyScale: number;
+  additionalGrossLines?: readonly AdditionalGrossLine[];
 }): GrossToNetPipelineInput {
   const periodGrossMinor = annualToPeriodMinor(
     args.baseAnnualMinor,
@@ -327,14 +392,19 @@ export function buildPipelineInputForEmployee(args: {
       progressiveFederalId: DEFAULT_FEDERAL_TAX_TABLE.versionId,
       commissionTierSetId: null,
     },
+    additionalGrossLines: args.additionalGrossLines ?? [],
   };
 }
 
-function buildMemo(computation: PayrollComputationOutput): string {
+function buildMemo(
+  computation: PayrollComputationOutput,
+  premium: Record<string, unknown> | null = null,
+): string {
   return JSON.stringify({
     fingerprint: computation.inputsFingerprintSha256,
     calcSemanticVersion: computation.calcSemanticVersion,
     policyReleaseId: DEFAULT_POLICY_RELEASE_ID,
+    ...(premium ? { premium } : {}),
   });
 }
 
@@ -347,9 +417,13 @@ function buildPayoutLineRows(
   let order = 0;
 
   for (const line of computation.pipeline.phaseLines.grossComposition) {
+    const isPremium =
+      line.code === "overtime_premium_1_5x" ||
+      line.code === "doubletime_premium_2x";
     rows.push({
       paymentInstructionId,
-      lineType: line.code === "tiered_commission" ? "BONUS" : "SALARY",
+      lineType:
+        line.code === "tiered_commission" || isPremium ? "BONUS" : "SALARY",
       sortOrder: order++,
       amountMinor: Number(line.amount.minor),
       currencyCode,

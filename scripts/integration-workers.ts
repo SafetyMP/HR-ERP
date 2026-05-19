@@ -17,6 +17,7 @@ import {
 import { IntegrationHttpError } from "@/lib/integrations/errors";
 import { writeIntegrationDeadLetter } from "@/lib/integrations/dlq/write-dlq";
 import { publishPendingOutboxBatch } from "@/lib/integrations/outbox/publish-outbox";
+import { processPendingWebhookDeliveries } from "@/lib/webhooks/process-pending-deliveries";
 import { refreshExpiringDemoTokens } from "@/lib/integrations/workers/token-refresh";
 import { Worker, UnrecoverableError, type Job } from "bullmq";
 
@@ -80,12 +81,19 @@ setInterval(() => {
 }, 2000);
 
 setInterval(() => {
+  processPendingWebhookDeliveries().catch((e) => {
+    console.error("[webhooks]", e);
+  });
+}, Number(process.env.WEBHOOK_DELIVERY_POLL_MS ?? "2000"));
+
+setInterval(() => {
   refreshExpiringDemoTokens().catch((e) => {
     console.error("[token-refresh]", e);
   });
 }, 60_000);
 
 void publishPendingOutboxBatch();
+void processPendingWebhookDeliveries();
 void refreshExpiringDemoTokens();
 
 console.log(

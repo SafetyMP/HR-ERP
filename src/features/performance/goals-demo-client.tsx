@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 export type GoalRowEmployee = {
   id: string;
@@ -39,7 +36,7 @@ type Props = {
 };
 
 async function fetchGoals(
-  token: string,
+  bearerToken: string | null,
   variant: Props["variant"],
 ): Promise<{ goals: GoalRowEmployee[] | GoalRowManager[]; ok: boolean; retryable: boolean }> {
   const path =
@@ -47,11 +44,9 @@ async function fetchGoals(
       ? "/api/v1/me/performance/goals"
       : "/api/v1/manager/performance/goals";
 
-  const res = await fetch(path, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  const res = await hrApiFetch(path, {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
 
   if (res.status === 401) {
@@ -76,33 +71,17 @@ async function fetchGoals(
 }
 
 export function GoalsDemoClient({ variant, initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [goals, setGoals] = useState<(GoalRowEmployee | GoalRowManager)[] | undefined>(undefined);
   const [loadOk, setLoadOk] = useState<boolean | undefined>(undefined);
   const [retryable, setRetryable] = useState(false);
 
-  const persistToken = useCallback((next: string | null) => {
-    if (next?.trim()) {
-      writeDevBearerTokenToSession(next.trim());
-    } else {
-      clearDevBearerTokenFromSession();
-    }
-    startTransition(() => setTokenState(next?.trim() ?? null));
-  }, []);
+  const returnTo =
+    variant === "employee" ? "/employee/performance/goals" : "/manager/team-performance";
 
   useEffect(() => {
-    const fromSession = readDevBearerTokenFromSession();
-    if (initialBearerToken?.trim()) {
-      persistToken(initialBearerToken.trim());
-      return;
-    }
-    if (fromSession?.trim()) {
-      persistToken(fromSession.trim());
-    }
-  }, [initialBearerToken, persistToken]);
-
-  useEffect(() => {
-    if (!token) {
+    if (!isAuthenticated) {
       startTransition(() => {
         setGoals(undefined);
         setLoadOk(undefined);
@@ -113,7 +92,7 @@ export function GoalsDemoClient({ variant, initialBearerToken }: Props) {
 
     let cancelled = false;
     void (async () => {
-      const result = await fetchGoals(token, variant);
+      const result = await fetchGoals(bearerToken, variant);
       if (cancelled) return;
       setGoals(result.goals);
       setLoadOk(result.ok);
@@ -123,61 +102,68 @@ export function GoalsDemoClient({ variant, initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token, variant]);
+  }, [isAuthenticated, bearerToken, variant]);
 
   const reload = useCallback(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     void (async () => {
-      const result = await fetchGoals(token, variant);
+      const result = await fetchGoals(bearerToken, variant);
       setGoals(result.goals);
       setLoadOk(result.ok);
       setRetryable(result.retryable);
     })();
-  }, [token, variant]);
+  }, [isAuthenticated, bearerToken, variant]);
 
   const heading =
     variant === "employee"
       ? "Your goals load from Core HR when you are signed in."
       : "Direct reports’ goals appear here when hierarchy and seeds are wired.";
 
+  if (!ready) {
+    return (
+      <p className="text-sm text-muted-foreground" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title={variant === "employee" ? "Performance goals" : "Team performance goals"}
+        description={
+          variant === "employee"
+            ? "Sign in to view your performance goals."
+            : "Sign in as a manager to view your team’s goals."
+        }
+        returnTo={returnTo}
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Dev bearer token</CardTitle>
-        <CardDescription>
-          Paste a JWT from <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">npm run jwt:dev</code>{" "}
-          {variant === "manager"
-            ? "(use roles=manager and manager employee id for hierarchy)."
-            : "(employee principal recommended)."}
-        </CardDescription>
+        <CardTitle>{variant === "employee" ? "Your goals" : "Team goals"}</CardTitle>
+        <CardDescription>{heading}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <textarea
-          className="min-h-[88px] w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          placeholder="Paste Bearer token…"
-          aria-label="Bearer token"
-          value={token ?? ""}
-          onChange={(e) => persistToken(e.target.value || null)}
-          spellCheck={false}
-          autoComplete="off"
-        />
         <div className="flex flex-wrap gap-2">
-          <Button type="button" variant="secondary" size="sm" onClick={() => reload()} disabled={!token}>
+          <Button type="button" variant="secondary" size="sm" onClick={() => reload()}>
             Reload goals
           </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={() => persistToken(null)}>
-            Clear token
+          <Button type="button" variant="ghost" size="sm" onClick={() => signOut()}>
+            Sign out
           </Button>
         </div>
 
-        {!token ? (
-          <p className="text-sm text-muted-foreground">{heading}</p>
-        ) : loadOk === undefined ? (
+        {loadOk === undefined ? (
           <p className="text-sm text-muted-foreground">Loading…</p>
         ) : !loadOk ? (
           <p className="text-sm text-destructive">
             Could not load goals.
-            {retryable ? " Try again in a moment." : " Check your token role and tenant."}
+            {retryable ? " Try again in a moment." : " Check your session and role."}
           </p>
         ) : goals?.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -189,9 +175,7 @@ export function GoalsDemoClient({ variant, initialBearerToken }: Props) {
             {goals!.map((g) => (
               <li key={g.id} className="list-none px-4 py-3 text-sm">
                 {variant === "manager" && "employeeDisplayName" in g ? (
-                  <p className="font-medium text-foreground">
-                    {(g as GoalRowManager).employeeDisplayName}
-                  </p>
+                  <p className="font-medium text-foreground">{(g as GoalRowManager).employeeDisplayName}</p>
                 ) : null}
                 <p className="text-foreground">{g.title}</p>
                 <p className="mt-1 text-xs text-muted-foreground">

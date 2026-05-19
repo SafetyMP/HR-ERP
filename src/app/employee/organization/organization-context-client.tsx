@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,7 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type Props = {
   initialBearerToken?: string;
@@ -30,28 +26,17 @@ type OrgCtx = {
 };
 
 export function OrganizationContextClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } = useHrAccess(initialBearerToken);
   const [ctx, setCtx] = useState<OrgCtx | null | undefined>(undefined);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     let cancelled = false;
     startTransition(() => setCtx(undefined));
     void (async () => {
-      const res = await fetch("/api/v1/me/organization/context", {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      const res = await hrApiFetch("/api/v1/me/organization/context", {
+        bearerToken,
+        headers: { Accept: "application/json" },
       });
       if (cancelled) return;
       if (!res.ok) {
@@ -64,9 +49,26 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Organization"
+        description="Sign in to view your team and management chain."
+        returnTo="/employee/organization"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (ctx === undefined) {
     return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading directory snapshot…</p>;
@@ -75,7 +77,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
   if (ctx === null) {
     return (
       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Couldn&apos;t load organization context — refresh your session token.
+        Couldn&apos;t load organization context — try signing in again.
       </p>
     );
   }

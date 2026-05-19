@@ -23,7 +23,10 @@ export async function middleware(request: NextRequest) {
   correlationHeaders.set("x-trace-id", traceId);
 
   const authHeader = request.headers.get("authorization");
-  if (!authHeader?.startsWith("Bearer ")) {
+  const cookieHeader = request.headers.get("cookie");
+  const hasSessionCookie =
+    cookieHeader?.includes("hrerp_session=") ?? false;
+  if (!authHeader?.startsWith("Bearer ") && !hasSessionCookie) {
     return NextResponse.json(
       {
         apiVersion: API_VERSION,
@@ -36,8 +39,10 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  const token = authHeader.slice("Bearer ".length).trim();
-  if (!token) {
+  const token = authHeader?.startsWith("Bearer ")
+    ? authHeader.slice("Bearer ".length).trim()
+    : "";
+  if (authHeader?.startsWith("Bearer ") && !token) {
     return NextResponse.json(
       {
         apiVersion: API_VERSION,

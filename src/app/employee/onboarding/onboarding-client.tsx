@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 
 export type OnboardingTaskApi = {
@@ -37,14 +34,15 @@ function labelStatus(s: string): string {
   return s;
 }
 
-async function fetchOnboardingTasks(token: string): Promise<{
+async function fetchOnboardingTasks(bearerToken: string | null): Promise<{
   tasks: OnboardingTaskApi[] | null;
   ok: boolean;
   auth: boolean;
 }> {
-  const res = await fetch("/api/v1/me/onboarding/tasks", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-  });
+  const res = await hrApiFetch("/api/v1/me/onboarding/tasks", {
+    bearerToken, 
+    headers: { Accept: "application/json" },
+  })
   if (res.status === 401) {
     return { tasks: null, ok: false, auth: true };
   }
@@ -55,11 +53,15 @@ async function fetchOnboardingTasks(token: string): Promise<{
   return { tasks: body.data?.onboardingTasks ?? [], ok: true, auth: false };
 }
 
-async function patchTask(token: string, taskId: string, status: "PENDING" | "IN_PROGRESS" | "DONE"): Promise<boolean> {
-  const res = await fetch("/api/v1/me/onboarding/tasks", {
+async function patchTask(
+  bearerToken: string | null,
+  taskId: string,
+  status: "PENDING" | "IN_PROGRESS" | "DONE",
+): Promise<boolean> {
+  const res = await hrApiFetch("/api/v1/me/onboarding/tasks", {
+    bearerToken,
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -69,25 +71,14 @@ async function patchTask(token: string, taskId: string, status: "PENDING" | "IN_
 }
 
 export function OnboardingTasksClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const [tasks, setTasks] = useState<OnboardingTaskApi[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -97,7 +88,7 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchOnboardingTasks(token);
+      const result = await fetchOnboardingTasks(bearerToken);
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
@@ -116,16 +107,16 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setTasks(undefined);
     });
     void (async () => {
-      const result = await fetchOnboardingTasks(token);
+      const result = await fetchOnboardingTasks(bearerToken);
       if (!result.ok && result.auth) {
         setLoadError("auth");
         setTasks([]);
@@ -142,15 +133,15 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
   };
 
   const advanceTask = async (taskId: string, status: "IN_PROGRESS" | "DONE") => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setBusyId(taskId);
     try {
-      const ok = await patchTask(token, taskId, status);
+      const ok = await patchTask(bearerToken, taskId, status);
       if (!ok) {
         setLoadError("recoverable");
         return;
       }
-      const refreshed = await fetchOnboardingTasks(token);
+      const refreshed = await fetchOnboardingTasks(bearerToken);
       if (refreshed.ok && refreshed.tasks) {
         setTasks(refreshed.tasks);
       }
@@ -159,7 +150,24 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Onboarding"
+        description="Sign in to view your onboarding tasks."
+        returnTo="/employee/onboarding"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (loadError === "recoverable") {
     return (

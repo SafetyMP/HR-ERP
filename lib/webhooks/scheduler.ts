@@ -2,6 +2,10 @@ import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
+import {
+  decryptWebhookSecret,
+  encryptWebhookSecret,
+} from "@/lib/webhooks/secret-crypto";
 import { signWebhookPayload } from "@/lib/webhooks/signing";
 
 const SUPPORTED_EVENT_TYPES_PREFIX = [
@@ -67,7 +71,7 @@ export async function createSubscription(
           tenantId: auth.tenantId,
           label: input.label.trim(),
           targetUrl: input.targetUrl,
-          secret: input.secret,
+          secret: encryptWebhookSecret(input.secret),
           eventTypes: input.eventTypes,
           isActive: true,
         },
@@ -83,8 +87,8 @@ export interface QueueDeliveryInput {
 
 /**
  * Persist a delivery row in PENDING with the canonical signature precomputed.
- * The actual HTTP POST is performed by an out-of-process worker (not in
- * scope for this scaffold) that reads PENDING/RETRY rows and updates status.
+ * HTTP POST is performed by `processPendingWebhookDeliveries` (see
+ * `npm run worker:webhooks` or `worker:integrations`).
  */
 export async function queueDelivery(
   auth: AuthContext,
@@ -113,7 +117,10 @@ export async function queueDelivery(
           message: "webhook subscription is inactive",
         });
       }
-      const sig = signWebhookPayload(input.payload, sub.secret);
+      const sig = signWebhookPayload(
+        input.payload,
+        decryptWebhookSecret(sub.secret),
+      );
       return tx.webhookDelivery.create({
         data: {
           tenantId: auth.tenantId,

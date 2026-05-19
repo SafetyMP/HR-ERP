@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { formatMoneyMinor } from "@/lib/paystub/format-money";
 
 
@@ -38,13 +35,14 @@ function formatRange(start: string, end: string): string {
   return `${fmt.format(new Date(`${start}T12:00:00.000Z`))} — ${fmt.format(new Date(`${end}T12:00:00.000Z`))}`;
 }
 
-async function fetchPaystubHistory(token: string): Promise<{
+async function fetchPaystubHistory(bearerToken: string | null): Promise<{
   rows: PaystubHistoryRow[] | null;
   ok: boolean;
   auth: boolean;
 }> {
-  const res = await fetch("/api/v1/me/paystub/history", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  const res = await hrApiFetch("/api/v1/me/paystub/history", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
   if (res.status === 401) {
     return { rows: null, ok: false, auth: true };
@@ -57,24 +55,13 @@ async function fetchPaystubHistory(token: string): Promise<{
 }
 
 export function PaystubHistoryClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [rows, setRows] = useState<PaystubHistoryRow[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -84,7 +71,7 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchPaystubHistory(token);
+      const result = await fetchPaystubHistory(bearerToken);
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
@@ -103,16 +90,16 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setRows(undefined);
     });
     void (async () => {
-      const result = await fetchPaystubHistory(token);
+      const result = await fetchPaystubHistory(bearerToken);
       if (!result.ok && result.auth) {
         setLoadError("auth");
         setRows([]);
@@ -128,14 +115,22 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
     })();
   };
 
-  if (!token) {
+  if (!ready) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Paste token</CardTitle>
-          <CardDescription>Sign in with your development bearer token to load pay history.</CardDescription>
-        </CardHeader>
-      </Card>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Pay history"
+        description="Sign in to view your historical earnings statements."
+        returnTo="/employee/paystub/history"
+        onDevTokenPaste={persistBearer}
+      />
     );
   }
 
@@ -151,7 +146,14 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
   }
 
   if (loadError === "auth") {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Session issue — sign in again.</p>;
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">Session issue — sign in again.</p>
+        <Button type="button" variant="outline" onClick={() => signOut()}>
+          Sign out and start over
+        </Button>
+      </div>
+    );
   }
 
   if (rows === undefined) {

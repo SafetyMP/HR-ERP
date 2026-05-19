@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import Link from "next/link";
 
+import { redirectDevJwtToSession } from "@/lib/auth/redirect-dev-jwt";
+
 import { PaystubClient } from "./paystub-client";
 
 export const metadata: Metadata = {
@@ -15,8 +17,7 @@ type Props = {
 
 export default async function EmployeePaystubPage(props: Props) {
   const sp = props.searchParams ? await props.searchParams : {};
-  const initialBearerToken =
-    process.env.NODE_ENV === "development" && sp.devJwt?.trim() ? sp.devJwt.trim() : undefined;
+  redirectDevJwtToSession(sp.devJwt, "/employee/paystub");
 
   return (
     <div className="mx-auto flex min-h-[60vh] w-full max-w-3xl flex-col gap-8 px-6 py-12">
@@ -31,7 +32,7 @@ export default async function EmployeePaystubPage(props: Props) {
           .
         </p>
       </header>
-      <PaystubClient initialBearerToken={initialBearerToken} />
+      <PaystubClient />
     </div>
   );
 }

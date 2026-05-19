@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { redirectDevJwtToSession } from "@/lib/auth/redirect-dev-jwt";
+
 import { TeamAttendanceClient } from "./team-attendance-client";
 
 export const metadata: Metadata = {
@@ -13,8 +15,7 @@ type Props = {
 
 export default async function ManagerTeamAttendancePage(props: Props) {
   const sp = props.searchParams ? await props.searchParams : {};
-  const initialBearerToken =
-    process.env.NODE_ENV === "development" && sp.devJwt?.trim() ? sp.devJwt.trim() : undefined;
+  redirectDevJwtToSession(sp.devJwt, "/manager/team-attendance");
 
   return (
     <div className="mx-auto flex min-h-[60vh] w-full max-w-3xl flex-col gap-8 px-6 py-12">
@@ -25,7 +26,7 @@ export default async function ManagerTeamAttendancePage(props: Props) {
           Snapshot of who punched today — informational; approvals and corrections stay with HR / Workforce policies.
         </p>
       </header>
-      <TeamAttendanceClient initialBearerToken={initialBearerToken} />
+      <TeamAttendanceClient />
     </div>
   );
 }

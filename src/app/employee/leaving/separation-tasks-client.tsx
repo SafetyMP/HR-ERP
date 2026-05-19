@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 
 type TaskApi = {
@@ -29,13 +26,14 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchSeparationTasks(token: string): Promise<{
+async function fetchSeparationTasks(bearerToken: string | null): Promise<{
   tasks: TaskApi[] | null;
   ok: boolean;
   auth: boolean;
 }> {
-  const res = await fetch("/api/v1/me/separation/tasks", {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  const res = await hrApiFetch("/api/v1/me/separation/tasks", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
   if (res.status === 401) return { tasks: null, ok: false, auth: true };
   if (!res.ok) return { tasks: null, ok: false, auth: false };
@@ -44,14 +42,14 @@ async function fetchSeparationTasks(token: string): Promise<{
 }
 
 async function patchSeparationTask(
-  token: string,
+  bearerToken: string | null,
   taskId: string,
   status: "PENDING" | "IN_PROGRESS" | "DONE",
 ): Promise<boolean> {
-  const res = await fetch("/api/v1/me/separation/tasks", {
+  const res = await hrApiFetch("/api/v1/me/separation/tasks", {
+    bearerToken,
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -61,32 +59,21 @@ async function patchSeparationTask(
 }
 
 export function SeparationTasksClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const [tasks, setTasks] = useState<TaskApi[] | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) setTokenState(fromStorage);
-      else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     let cancelled = false;
     startTransition(() => {
       setLoadError(null);
       setTasks(undefined);
     });
     void (async () => {
-      const result = await fetchSeparationTasks(token);
+      const result = await fetchSeparationTasks(bearerToken);
       if (cancelled) return;
       if (!result.ok && result.auth) {
         setLoadError("auth");
@@ -104,16 +91,16 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setTasks(undefined);
     });
     void (async () => {
-      const result = await fetchSeparationTasks(token);
+      const result = await fetchSeparationTasks(bearerToken);
       if (!result.ok && result.auth) {
         setLoadError("auth");
         setTasks([]);
@@ -130,22 +117,39 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
   };
 
   const advanceTask = async (taskId: string, status: "IN_PROGRESS" | "DONE") => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setBusyId(taskId);
     try {
-      const ok = await patchSeparationTask(token, taskId, status);
+      const ok = await patchSeparationTask(bearerToken, taskId, status);
       if (!ok) {
         setLoadError("recoverable");
         return;
       }
-      const refreshed = await fetchSeparationTasks(token);
+      const refreshed = await fetchSeparationTasks(bearerToken);
       if (refreshed.ok && refreshed.tasks) setTasks(refreshed.tasks);
     } finally {
       setBusyId(null);
     }
   };
 
-  if (!token) return null;
+  if (!ready) {
+    return (
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Separation"
+        description="Sign in to view your separation checklist."
+        returnTo="/employee/leaving"
+        onDevTokenPaste={persistBearer}
+      />
+    );
+  }
 
   if (loadError === "recoverable") {
     return (

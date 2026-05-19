@@ -12,6 +12,12 @@ import {
 import type { CanonicalMoney, RoundingMode } from "./numerics";
 import { assertSameCurrencyMoney, moneyAdd, moneyFromMinor, zeroMoney } from "./numerics";
 
+/** Extra gross lines (e.g. OT/DT premium pay) added after base salary and commission. */
+export interface AdditionalGrossLine {
+  readonly code: string;
+  readonly amountMinor: bigint;
+}
+
 export interface PretaxDeductionRule {
   readonly id: string;
   readonly amountMinor: bigint;
@@ -38,6 +44,7 @@ export interface GrossToNetPipelineInput {
   /** Optional commission basis (minor units) evaluated through `commissionTable`. */
   readonly commissionEligibleSalesMinor?: bigint | null;
   readonly commissionTable?: CommissionTierTable | null;
+  readonly additionalGrossLines?: readonly AdditionalGrossLine[];
 }
 
 export interface PipelinePhaseMoneyLine {
@@ -95,6 +102,13 @@ export function runGrossToNetPipeline(input: GrossToNetPipelineInput): GrossToNe
     runningGross = moneyAdd(runningGross, commissionMoney);
   }
 
+  for (const line of input.additionalGrossLines ?? []) {
+    const take = line.amountMinor < 0n ? 0n : line.amountMinor;
+    const money = moneyMinor(currencyCode, currencyScale, take);
+    grossLines.push({ code: line.code, amount: money });
+    runningGross = moneyAdd(runningGross, money);
+  }
+
   const grossCompositionPhaseTotal = grossLines.reduce(
     (acc, line) => moneyAdd(acc, line.amount),
     zeroMoney(currencyCode, currencyScale),
@@ -139,7 +153,7 @@ export function runGrossToNetPipeline(input: GrossToNetPipelineInput): GrossToNe
 
   const withholdingLines: PipelinePhaseMoneyLine[] = [
     {
-      code: "federal_progressive_stub",
+      code: `federal_withholding_${input.federalTaxTable.versionId}`,
       amount: moneyMinor(currencyCode, currencyScale, federalTaxMinor),
     },
   ];

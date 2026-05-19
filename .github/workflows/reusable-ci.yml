@@ -30,6 +30,10 @@ jobs:
 
   python-pipelines:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.files.*.path, 'services/pipelines/') ||
+      contains(github.event.pull_request.files.*.path, 'services/ml-serving/')
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6

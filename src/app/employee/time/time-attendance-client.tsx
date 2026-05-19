@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 export type TodayAttendanceApi = {
   calendarDate: string;
@@ -26,16 +22,14 @@ export type TodayAttendanceApi = {
   punches: { kind: string; occurredAt: string }[];
 };
 
-async function fetchToday(token: string): Promise<{
+async function fetchToday(bearerToken: string | null): Promise<{
   data: TodayAttendanceApi | null;
   ok: boolean;
   retryable: boolean;
 }> {
-  const res = await fetch("/api/v1/me/attendance/today", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  const res = await hrApiFetch("/api/v1/me/attendance/today", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
 
   if (res.status === 401) {
@@ -90,24 +84,12 @@ type Props = {
 };
 
 export function TimeAttendanceClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [summary, setSummary] = useState<TodayAttendanceApi | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
   const [clockMessage, setClockMessage] = useState<string | null>(null);
   const [clockBusy, setClockBusy] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) {
-        setTokenState(fromStorage);
-      } else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
 
   const applyFetchResult = useCallback(
     (result: { data: TodayAttendanceApi | null; ok: boolean; retryable: boolean }) => {
@@ -132,7 +114,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
   );
 
   useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -142,7 +124,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchToday(token);
+      const result = await fetchToday(bearerToken);
       if (cancelled) return;
       applyFetchResult(result);
     })();
@@ -150,29 +132,29 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token, applyFetchResult]);
+  }, [isAuthenticated, bearerToken, applyFetchResult]);
 
   const reload = useCallback(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setSummary(undefined);
     });
     void (async () => {
-      const result = await fetchToday(token);
+      const result = await fetchToday(bearerToken);
       applyFetchResult(result);
     })();
-  }, [token, applyFetchResult]);
+  }, [isAuthenticated, bearerToken, applyFetchResult]);
 
   const clockIn = useCallback(async () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     setClockBusy(true);
     setClockMessage(null);
     try {
-      const res = await fetch("/api/v1/attendance/clock-in", {
+      const res = await hrApiFetch("/api/v1/attendance/clock-in", {
+        bearerToken,
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -200,44 +182,24 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     } finally {
       setClockBusy(false);
     }
-  }, [token, reload]);
+  }, [isAuthenticated, bearerToken, reload]);
 
-  const devHint =
-    process.env.NODE_ENV === "development" ? (
-      <p className="mt-4 rounded-md border border-dashed border-zinc-300 p-3 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-        Dev: issue JWT with{" "}
-        <code className="font-mono">roles=[&quot;employee&quot;]</code>,{" "}
-        <code className="font-mono">subject_employee_id</code>, and matching tenant —{" "}
-        <code className="font-mono">node scripts/issue-dev-jwt.mjs</code>
-      </p>
-    ) : null;
-
-  if (!token) {
+  if (!ready) {
     return (
-      <Card className="mx-auto w-full max-w-lg shadow-sm">
-        <CardHeader>
-          <CardTitle>Time</CardTitle>
-          <CardDescription>
-            Sign in to view today’s attendance. Your session token was not found on this device.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="hrerp-token-time">
-            Paste bearer token (development)
-          </label>
-          <textarea
-            id="hrerp-token-time"
-            className="mt-2 w-full rounded-md border border-zinc-300 bg-white p-2 font-mono text-xs dark:border-zinc-700 dark:bg-zinc-950"
-            rows={3}
-            placeholder="Bearer token from scripts/issue-dev-jwt.mjs"
-            onChange={(e) => {
-              const t = writeDevBearerTokenToSession(e.target.value);
-              if (t) setTokenState(t);
-            }}
-          />
-          {devHint}
-        </CardContent>
-      </Card>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Time"
+        description="Sign in to view today’s attendance and clock in."
+        returnTo="/employee/time"
+        onDevTokenPaste={persistBearer}
+      />
     );
   }
 
@@ -268,17 +230,8 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
             Your session could not be verified. Sign in again and return to Time.
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            clearDevBearerTokenFromSession();
-            setTokenState(null);
-            setLoadError(null);
-            setSummary(undefined);
-          }}
-        >
-          Clear token and start over
+        <Button type="button" variant="outline" onClick={() => signOut()}>
+          Sign out and start over
         </Button>
       </div>
     );

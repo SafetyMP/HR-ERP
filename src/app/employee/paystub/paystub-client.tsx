@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  clearDevBearerTokenFromSession,
-  readDevBearerTokenFromSession,
-  writeDevBearerTokenToSession,
-} from "@/lib/auth/dev-bearer-session";
-
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { formatMoneyMinor } from "@/lib/paystub/format-money";
-
 
 export type PaystubApiLine = {
   label: string;
@@ -42,16 +38,16 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchPaystub(token: string): Promise<{
+async function fetchPaystub(
+  bearerToken: string | null,
+): Promise<{
   paystub: PaystubApiShape | null;
   ok: boolean;
   retryable: boolean;
 }> {
-  const res = await fetch("/api/v1/me/paystub/current", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  const res = await hrApiFetch("/api/v1/me/paystub/current", {
+    bearerToken,
+    headers: { Accept: "application/json" },
   });
 
   if (res.status === 401) {
@@ -76,25 +72,13 @@ async function fetchPaystub(token: string): Promise<{
 }
 
 export function PaystubClient({ initialBearerToken }: Props) {
-  const [token, setTokenState] = useState<string | null>(null);
+  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+    useHrAccess(initialBearerToken);
   const [paystub, setPaystub] = useState<PaystubApiShape | null | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    startTransition(() => {
-      const fromStorage = readDevBearerTokenFromSession();
-      if (fromStorage) {
-        setTokenState(fromStorage);
-      } else if (initialBearerToken?.trim()) {
-        const t = writeDevBearerTokenToSession(initialBearerToken);
-        if (t) setTokenState(t);
-      }
-    });
-  }, [initialBearerToken]);
-
-  useEffect(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
 
     let cancelled = false;
 
@@ -104,7 +88,7 @@ export function PaystubClient({ initialBearerToken }: Props) {
     });
 
     void (async () => {
-      const result = await fetchPaystub(token);
+      const result = await fetchPaystub(bearerToken);
       if (cancelled) return;
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
@@ -122,16 +106,16 @@ export function PaystubClient({ initialBearerToken }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
   const retryLoad = useCallback(() => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     startTransition(() => {
       setLoadError(null);
       setPaystub(undefined);
     });
     void (async () => {
-      const result = await fetchPaystub(token);
+      const result = await fetchPaystub(bearerToken);
       if (!result.ok && !result.retryable) {
         setLoadError("auth");
         setPaystub(null);
@@ -144,47 +128,24 @@ export function PaystubClient({ initialBearerToken }: Props) {
       }
       setPaystub(result.paystub);
     })();
-  }, [token]);
+  }, [isAuthenticated, bearerToken]);
 
-  const devHint =
-    process.env.NODE_ENV === "development" ? (
-      <p className="mt-4 rounded-md border border-dashed border-zinc-300 p-3 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-        Dev only: issue a JWT with{" "}
-        <code className="font-mono">roles=[&quot;employee&quot;]</code> and{" "}
-        <code className="font-mono">subject_employee_id</code> set to your seeded employee id, then paste it below.
-        Example:{" "}
-        <code className="font-mono">
-          DEV_ROLES=employee DEV_SUBJECT_EMPLOYEE_ID=… DEV_TENANT_ID=… node scripts/issue-dev-jwt.mjs
-        </code>
-      </p>
-    ) : null;
-
-  if (!token) {
+  if (!ready) {
     return (
-      <Card className="mx-auto w-full max-w-lg shadow-sm">
-        <CardHeader>
-          <CardTitle>Earnings statement</CardTitle>
-          <CardDescription>
-            Sign in to view your paystub. Your session token was not found on this device.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="hrerp-token">
-            Paste bearer token (development)
-          </label>
-          <textarea
-            id="hrerp-token"
-            className="mt-2 w-full rounded-md border border-zinc-300 bg-white p-2 font-mono text-xs dark:border-zinc-700 dark:bg-zinc-950"
-            rows={3}
-            placeholder="Bearer token from scripts/issue-dev-jwt.mjs"
-            onChange={(e) => {
-              const t = writeDevBearerTokenToSession(e.target.value);
-              if (t) setTokenState(t);
-            }}
-          />
-          {devHint}
-        </CardContent>
-      </Card>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+        Checking your session…
+      </p>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <HrSignInCard
+        title="Earnings statement"
+        description="Sign in to view your paystub."
+        returnTo="/employee/paystub"
+        onDevTokenPaste={persistBearer}
+      />
     );
   }
 
@@ -215,17 +176,8 @@ export function PaystubClient({ initialBearerToken }: Props) {
             Your session could not be verified. Sign in again and return to your earnings statement.
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            clearDevBearerTokenFromSession();
-            setTokenState(null);
-            setLoadError(null);
-            setPaystub(undefined);
-          }}
-        >
-          Clear token and start over
+        <Button type="button" variant="outline" onClick={() => signOut()}>
+          Sign out and start over
         </Button>
       </div>
     );

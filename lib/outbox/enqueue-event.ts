@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 
 import type { Prisma } from "@/app/generated/prisma/client";
+import {
+  fanOutWebhookDeliveries,
+  isWebhookFanOutOnEnqueueEnabled,
+} from "@/lib/webhooks/fan-out";
 
 /**
  * Unified outbox API. Phase 1 (single Postgres) writes to `IntegrationOutbox`;
@@ -92,6 +96,18 @@ export async function enqueueEvent(
     },
     select: { id: true },
   });
+
+  if (
+    input.tenantId &&
+    isWebhookFanOutOnEnqueueEnabled() &&
+    input.category.startsWith("domain.")
+  ) {
+    await fanOutWebhookDeliveries(tx, {
+      tenantId: input.tenantId,
+      eventType: input.eventType,
+      payload: input.payload,
+    });
+  }
 
   return {
     outboxId: row.id,

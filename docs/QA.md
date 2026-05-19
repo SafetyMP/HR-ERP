@@ -26,6 +26,9 @@ DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" np
 # E2E — Playwright starts `npm run dev` unless CI reuse rules apply
 npm run test:e2e
 
+# CI mints feature UAC JWTs (reusable-qa e2e job)
+node scripts/ci-issue-e2e-jwts.mjs
+
 # Deterministic mega-batch → tests/generated/
 npx tsx scripts/qa-generate-fixture-batch.ts --seed=12345 --count=5000
 
