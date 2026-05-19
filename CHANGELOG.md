@@ -1,3 +1,9 @@
+## [2.8.2](https://github.com/SafetyMP/HR-ERP/compare/v2.8.1...v2.8.2) (2026-05-19)
+
+### Bug Fixes
+
+* **auth:** allow all Vercel production aliases for Neon callbackURL ([cc9172b](https://github.com/SafetyMP/HR-ERP/commit/cc9172b1ce16c81b9e1ad528a6c96675376c128a))
+
 ## [2.8.1](https://github.com/SafetyMP/HR-ERP/compare/v2.8.0...v2.8.1) (2026-05-19)
 
 ### Bug Fixes
