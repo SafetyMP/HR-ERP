@@ -47,6 +47,7 @@ export function EmployeeLearningClient({ initialBearerToken }: Props) {
   const [msg, setMsg] = useState<string | null>(null);
   const [forbidden, setForbidden] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<"ALL" | "OPEN" | "COMPLETED">("ALL");
 
   const reload = async () => {
     const res = await hrApiFetch("/api/v1/me/learning/enrollments", {
@@ -135,6 +136,13 @@ export function EmployeeLearningClient({ initialBearerToken }: Props) {
     );
   }
 
+  const visibleRows =
+    rows?.filter((e) => {
+      if (statusFilter === "ALL") return true;
+      if (statusFilter === "COMPLETED") return e.status === "COMPLETED";
+      return e.status !== "COMPLETED";
+    }) ?? [];
+
   return (
     <Card>
       <CardHeader>
@@ -149,6 +157,17 @@ export function EmployeeLearningClient({ initialBearerToken }: Props) {
           <Button type="button" variant="ghost" size="sm" onClick={() => signOut()}>
             Sign out
           </Button>
+          {(["ALL", "OPEN", "COMPLETED"] as const).map((f) => (
+            <Button
+              key={f}
+              type="button"
+              size="sm"
+              variant={statusFilter === f ? "default" : "outline"}
+              onClick={() => setStatusFilter(f)}
+            >
+              {f === "ALL" ? "All" : f === "OPEN" ? "Open" : "Completed"}
+            </Button>
+          ))}
         </div>
 
         {loadFailed ? (
@@ -161,13 +180,13 @@ export function EmployeeLearningClient({ initialBearerToken }: Props) {
         ) : null}
         {rows === undefined ? (
           <p className="text-sm text-muted-foreground">Loading enrollments…</p>
-        ) : rows.length === 0 ? (
+        ) : visibleRows.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No assignments yet. HR has not published courses for you.
           </p>
         ) : (
           <ul className="divide-y divide-border rounded-md border border-border" role="list">
-            {rows.map((e) => (
+            {visibleRows.map((e) => (
               <li key={e.id} className="list-none px-4 py-3 text-sm">
                 <p className="font-medium text-foreground">{e.course.title}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
