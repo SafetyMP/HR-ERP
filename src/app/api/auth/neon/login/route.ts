@@ -4,9 +4,23 @@ import { neonAuthConfigured } from "@/lib/auth/neon-auth-config";
 
 export const dynamic = "force-dynamic";
 
+function safeReturnTo(raw: string | null): string {
+  if (!raw) return "/";
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw;
+  return "/";
+}
+
+function authReturnCookie(returnTo: string): string {
+  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  return `hrerp_auth_return=${encodeURIComponent(returnTo)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=600${secure}`;
+}
+
 /**
  * Starts Google OAuth through the Neon Auth **proxy** (`/api/neon-auth/*`) so
  * session cookies are set on this host (required before `/api/auth/neon/complete`).
+ *
+ * `callbackURL` must match a Neon Auth trusted origin exactly (no query string).
+ * `returnTo` is stored in `hrerp_auth_return` and read in `/api/auth/neon/complete`.
  */
 export async function GET(request: Request) {
   if (!neonAuthConfigured()) {
@@ -14,9 +28,9 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("returnTo")?.trim() || "/";
+  const returnTo = safeReturnTo(url.searchParams.get("returnTo"));
   const origin = url.origin;
-  const callbackURL = `${origin}/api/auth/neon/complete?returnTo=${encodeURIComponent(returnTo)}`;
+  const callbackURL = `${origin}/api/auth/neon/complete`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -57,7 +71,8 @@ export async function GET(request: Request) {
 </body>
 </html>`;
 
-  return new NextResponse(html, {
-    headers: { "Content-Type": "text/html; charset=utf-8" },
-  });
+  const headers = new Headers({ "Content-Type": "text/html; charset=utf-8" });
+  headers.append("Set-Cookie", authReturnCookie(returnTo));
+
+  return new NextResponse(html, { headers });
 }

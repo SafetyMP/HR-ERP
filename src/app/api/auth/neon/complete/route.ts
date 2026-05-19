@@ -16,6 +16,22 @@ function safeReturnTo(raw: string | null): string {
   return "/";
 }
 
+function readReturnToFromCookie(cookieHeader: string | null): string {
+  if (!cookieHeader) return "/";
+  for (const part of cookieHeader.split(";")) {
+    const trimmed = part.trim();
+    if (!trimmed.startsWith("hrerp_auth_return=")) continue;
+    const raw = trimmed.slice("hrerp_auth_return=".length);
+    try {
+      const path = decodeURIComponent(raw);
+      if (path.startsWith("/") && !path.startsWith("//")) return path;
+    } catch {
+      /* ignore */
+    }
+  }
+  return "/";
+}
+
 function errorHtml(title: string, detail: string, returnTo: string): string {
   const safeDetail = detail.replace(/</g, "&lt;");
   const safeReturn = returnTo.replace(/"/g, "&quot;");
@@ -37,7 +53,10 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  const returnTo = safeReturnTo(url.searchParams.get("returnTo"));
+  const returnToParam = url.searchParams.get("returnTo");
+  const returnTo = returnToParam
+    ? safeReturnTo(returnToParam)
+    : readReturnToFromCookie(request.headers.get("cookie"));
 
   const auth = getNeonAuth();
   const { data: session, error: sessionError } = await auth.getSession();
@@ -74,6 +93,10 @@ export async function GET(request: Request) {
 
     const headers = new Headers();
     headers.append("Set-Cookie", buildSessionSetCookieHeader(hrToken));
+    headers.append(
+      "Set-Cookie",
+      "hrerp_auth_return=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+    );
     return NextResponse.redirect(new URL(returnTo, request.url), { headers });
   } catch (err) {
     const code = err instanceof Error ? err.message : "neon_provision_failed";
