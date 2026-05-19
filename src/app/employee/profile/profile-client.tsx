@@ -212,7 +212,7 @@ async function saveProfile(
 
 function HrNote() {
   return (
-    <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+    <p className="mt-1 text-xs text-muted-foreground dark:text-zinc-400">
       Maintained by HR — contact HR Operations to request a change.
     </p>
   );
@@ -336,7 +336,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -357,8 +357,8 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">We couldn&apos;t load your profile</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your profile</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Please try again in a moment. If this keeps happening, contact HR Operations.
           </p>
         </div>
@@ -373,8 +373,8 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to your profile.
           </p>
           {authHint ? (
@@ -392,7 +392,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
 
   if (profile === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your profile…
       </p>
     );
@@ -451,7 +451,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
           </div>
           <div>
             <Label htmlFor="preferred">Preferred name</Label>
-            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-xs text-muted-foreground dark:text-zinc-400">
               Shown on badges and internal tools — not your legal tax name.
             </p>
             <Input

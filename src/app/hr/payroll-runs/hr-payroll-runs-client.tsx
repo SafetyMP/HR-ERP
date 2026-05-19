@@ -15,7 +15,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import { toast } from "sonner";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type RunRow = {
@@ -131,15 +141,15 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
       };
       if (!res.ok) {
         const errMsg = body.error?.message ?? "";
-        setMsg(
+        toast.error(
           errMsg === "payroll_period_locked"
             ? "This period is locked — no further pay runs allowed."
             : errMsg || "Pay run failed.",
         );
         return;
       }
-      setMsg(
-        `Run complete — ${body.data?.computed ?? 0} computed, ${body.data?.skipped ?? 0} skipped, ${body.data?.withoutCompensation ?? 0} without compensation.`,
+      toast.success(
+        `Payroll run complete — ${body.data?.computed ?? 0} computed, ${body.data?.skipped ?? 0} skipped.`,
       );
       await reload();
     } finally {
@@ -189,25 +199,13 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter periods">
-            {(
-              [
-                ["all", "All"],
-                ["needs_close", "Needs close"],
-                ["locked", "Locked"],
-              ] as const
-            ).map(([key, label]) => (
-              <Button
-                key={key}
-                type="button"
-                size="sm"
-                variant={filter === key ? "secondary" : "outline"}
-                onClick={() => setFilter(key)}
-              >
-                {label}
-              </Button>
-            ))}
-          </div>
+          <Tabs value={filter} onValueChange={(v) => setFilter(v as FilterChip)}>
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="needs_close">Needs close</TabsTrigger>
+              <TabsTrigger value="locked">Locked</TabsTrigger>
+            </TabsList>
+          </Tabs>
 
           {loadFailed ? (
             <p className="text-sm text-muted-foreground">

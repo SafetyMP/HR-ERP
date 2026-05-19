@@ -55,7 +55,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -83,7 +83,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <div>
-          <label className="font-medium text-zinc-700 dark:text-zinc-300" htmlFor="ben-cat">
+          <label className="font-medium text-foreground" htmlFor="ben-cat">
             Coverage area
           </label>
           <select
@@ -100,7 +100,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
           </select>
         </div>
         <div>
-          <label className="font-medium text-zinc-700 dark:text-zinc-300" htmlFor="ben-sum">
+          <label className="font-medium text-foreground" htmlFor="ben-sum">
             Describe the change
           </label>
           <textarea
@@ -112,7 +112,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
             placeholder="Example: Switch medical tier from Silver to Gold effective next open enrollment."
           />
         </div>
-        {msg ? <p className="text-zinc-700 dark:text-zinc-300">{msg}</p> : null}
+        {msg ? <p className="text-foreground">{msg}</p> : null}
         <div className="flex flex-wrap gap-2">
           <Button type="button" disabled={busy || summary.trim().length < 8} onClick={() => void submit()}>
             {busy ? "Sending…" : "Submit intent"}

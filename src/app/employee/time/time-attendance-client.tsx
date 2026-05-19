@@ -186,7 +186,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -207,10 +207,10 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-lg font-semibold text-foreground">
             We couldn’t load your attendance
           </h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-sm text-muted-foreground">
             Please try again in a moment. If this keeps happening, contact Payroll.
           </p>
         </div>
@@ -225,8 +225,8 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to Time.
           </p>
         </div>
@@ -239,7 +239,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
 
   if (summary === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading today’s time…
       </p>
     );
@@ -261,7 +261,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
             {summary.clockedIn
               ? "Your latest punch today is a clock-in. Clock out when your shift ends (when your employer enables clock-out in this app)."
               : "Start your shift with clock-in when you’re ready."}{" "}
-            <span className="block pt-2 text-xs text-zinc-500">{tzNote}</span>
+            <span className="block pt-2 text-xs text-muted-foreground">{tzNote}</span>
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
@@ -269,7 +269,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
             {clockBusy ? "Recording…" : "Clock in"}
           </Button>
           {clockMessage ? (
-            <p className="self-center text-sm text-zinc-700 dark:text-zinc-300">{clockMessage}</p>
+            <p className="self-center text-sm text-foreground">{clockMessage}</p>
           ) : null}
         </CardFooter>
       </Card>
@@ -292,11 +292,11 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
             <CardDescription>Work date {summary.calendarDate}</CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <ul className="divide-y divide-border">
               {summary.punches.map((p, i) => (
                 <li key={`${p.kind}-${p.occurredAt}-${i}`} className="flex justify-between py-3 text-sm">
                   <span>{punchKindLabel(p.kind)}</span>
-                  <span className="tabular-nums text-zinc-600 dark:text-zinc-400">
+                  <span className="tabular-nums text-muted-foreground">
                     Punch time {formatPunchClock(p.occurredAt, summary.timeZone)}
                   </span>
                 </li>

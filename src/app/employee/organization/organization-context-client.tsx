@@ -53,7 +53,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -71,12 +71,12 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
   }
 
   if (ctx === undefined) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading directory snapshot…</p>;
+    return <p className="text-sm text-muted-foreground">Loading directory snapshot…</p>;
   }
 
   if (ctx === null) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Couldn&apos;t load organization context — try signing in again.
       </p>
     );
@@ -90,9 +90,9 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
           <CardDescription>Minimum viable directory slice — no salary or performance data.</CardDescription>
         </CardHeader>
         <CardContent className="text-sm">
-          <div className="font-medium text-zinc-950 dark:text-zinc-50">{ctx.self.displayName}</div>
+          <div className="font-medium text-foreground">{ctx.self.displayName}</div>
           {ctx.department ? (
-            <div className="mt-2 text-zinc-600 dark:text-zinc-400">
+            <div className="mt-2 text-muted-foreground">
               Department: {ctx.department.name}
               {ctx.department.code ? ` (${ctx.department.code})` : ""}
             </div>
@@ -107,7 +107,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent>
           {ctx.managerChain.length === 0 ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">No manager recorded.</p>
+            <p className="text-sm text-muted-foreground">No manager recorded.</p>
           ) : (
             <ol className="list-decimal space-y-2 pl-5 text-sm text-zinc-800 dark:text-zinc-200">
               {ctx.managerChain.map((m) => (
@@ -125,7 +125,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent>
           {ctx.peers.length === 0 ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">No peers found or you&apos;re the only report.</p>
+            <p className="text-sm text-muted-foreground">No peers found or you&apos;re the only report.</p>
           ) : (
             <ul className="space-y-2 text-sm text-zinc-800 dark:text-zinc-200" role="list">
               {ctx.peers.map((p) => (

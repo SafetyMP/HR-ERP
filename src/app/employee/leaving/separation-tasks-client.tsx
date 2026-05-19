@@ -134,7 +134,7 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -154,7 +154,7 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
   if (loadError === "recoverable") {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Couldn&apos;t refresh leaving checklist.</p>
+        <p className="text-sm text-muted-foreground">Couldn&apos;t refresh leaving checklist.</p>
         <Button type="button" onClick={() => retryLoad()}>
           Retry
         </Button>
@@ -163,12 +163,12 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
   }
 
   if (loadError === "auth") {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Session issue — sign in again.</p>;
+    return <p className="text-sm text-muted-foreground">Session issue — sign in again.</p>;
   }
 
   if (tasks === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading leaving checklist…
       </p>
     );
@@ -182,18 +182,18 @@ export function SeparationTasksClient({ initialBearerToken }: Props) {
       </CardHeader>
       <CardContent>
         {tasks.length === 0 ? (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             No separation tasks assigned — if you&apos;re exiting soon, confirm HR opened your checklist.
           </p>
         ) : (
-          <ul className="divide-y divide-zinc-200 dark:divide-zinc-800" role="list">
+          <ul className="divide-y divide-border" role="list">
             {tasks.map((task) => (
               <li key={task.id} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <div className="font-medium text-zinc-950 dark:text-zinc-50">{task.title}</div>
-                  <div className="mt-1 text-xs uppercase tracking-wide text-zinc-500">{task.status.replace(/_/g, " ")}</div>
+                  <div className="font-medium text-foreground">{task.title}</div>
+                  <div className="mt-1 text-xs uppercase tracking-wide text-muted-foreground">{task.status.replace(/_/g, " ")}</div>
                   {task.dueAt ? (
-                    <div className="mt-1 text-xs text-zinc-500">Due {task.dueAt}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Due {task.dueAt}</div>
                   ) : null}
                 </div>
                 <div className="flex flex-wrap gap-2">

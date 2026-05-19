@@ -123,7 +123,7 @@ export function PtoClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -144,8 +144,8 @@ export function PtoClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">We couldn&apos;t load your PTO summary</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your PTO summary</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Please try again in a moment. If this keeps happening, contact HR Operations.
           </p>
         </div>
@@ -160,8 +160,8 @@ export function PtoClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to PTO.
           </p>
         </div>
@@ -174,7 +174,7 @@ export function PtoClient({ initialBearerToken }: Props) {
 
   if (summary === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your PTO summary…
       </p>
     );
@@ -190,7 +190,7 @@ export function PtoClient({ initialBearerToken }: Props) {
 
   return (
     <div className="space-y-8">
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Read-only snapshot of what HR has posted for you. To request new time off or fix an exception, use your usual HR
         or manager channel — not this screen.
       </p>
@@ -217,16 +217,16 @@ export function PtoClient({ initialBearerToken }: Props) {
           <CardContent>
             {summary.balanceHours !== null && summary.balanceAsOfDate ? (
               <div>
-                <p className="text-3xl font-semibold tabular-nums text-zinc-950 dark:text-white">
+                <p className="text-3xl font-semibold tabular-nums text-foreground">
                   {formatBalanceHoursDisplay(summary.balanceHours)}{" "}
-                  <span className="text-base font-normal text-zinc-600 dark:text-zinc-400">hours</span>
+                  <span className="text-base font-normal text-muted-foreground">hours</span>
                 </p>
-                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                <p className="mt-2 text-sm text-muted-foreground">
                   Balance as of {formatCalendarDay(summary.balanceAsOfDate)}.
                 </p>
               </div>
             ) : (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted-foreground">
                 HR hasn&apos;t posted a PTO balance to your profile yet. You may still see recent recorded dates below if
                 time off was logged on individual days.
               </p>
@@ -243,13 +243,13 @@ export function PtoClient({ initialBearerToken }: Props) {
           </CardHeader>
           <CardContent>
             {!summary.recentTimeOff?.length ? (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted-foreground">
                 No recorded time-off dates appear in your visible history yet.
               </p>
             ) : (
-              <ul className="divide-y divide-zinc-200 dark:divide-zinc-800" role="list">
+              <ul className="divide-y divide-border" role="list">
                 {summary.recentTimeOff.map((row) => (
-                  <li key={row.requestDate} className="py-3 text-sm text-zinc-900 dark:text-zinc-100">
+                  <li key={row.requestDate} className="py-3 text-sm text-foreground">
                     {formatCalendarDay(row.requestDate)}
                   </li>
                 ))}

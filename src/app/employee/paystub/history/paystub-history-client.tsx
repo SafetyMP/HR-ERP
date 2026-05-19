@@ -117,7 +117,7 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -137,7 +137,7 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
   if (loadError === "recoverable") {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">We couldn&apos;t load pay history.</p>
+        <p className="text-sm text-muted-foreground">We couldn&apos;t load pay history.</p>
         <Button type="button" onClick={() => retryLoad()}>
           Retry
         </Button>
@@ -148,7 +148,7 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
   if (loadError === "auth") {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Session issue — sign in again.</p>
+        <p className="text-sm text-muted-foreground">Session issue — sign in again.</p>
         <Button type="button" variant="outline" onClick={() => signOut()}>
           Sign out and start over
         </Button>
@@ -157,12 +157,12 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
   }
 
   if (rows === undefined) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading pay history…</p>;
+    return <p className="text-sm text-muted-foreground">Loading pay history…</p>;
   }
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Corrected pay runs appear as separate rows when payroll posts them — contact HR if something looks wrong.
       </p>
       {rows.length === 0 ? (
@@ -185,11 +185,11 @@ export function PaystubHistoryClient({ initialBearerToken }: Props) {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-6 text-sm">
                   <div>
-                    <div className="text-xs uppercase tracking-wide text-zinc-500">Gross</div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Gross</div>
                     <div className="tabular-nums font-medium">{formatMoneyMinor(row.grossPayMinor, row.currencyCode)}</div>
                   </div>
                   <div>
-                    <div className="text-xs uppercase tracking-wide text-zinc-500">Net</div>
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Net</div>
                     <div className="tabular-nums font-medium">{formatMoneyMinor(row.netPayMinor, row.currencyCode)}</div>
                   </div>
                 </CardContent>

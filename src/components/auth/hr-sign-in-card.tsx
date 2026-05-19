@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   title: string;
@@ -34,28 +35,24 @@ export function HrSignInCard({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button asChild className="w-full">
+        <Button asChild className="w-full" size="lg">
           <Link href={loginHref}>Sign in with your organization account</Link>
         </Button>
         {isDev && onDevTokenPaste ? (
-          <>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Development: mint a token with{" "}
-              <code className="font-mono">npm run jwt:dev</code>, then paste below or open{" "}
-              <code className="font-mono">
-                /api/auth/dev-bootstrap?token=…&amp;returnTo={returnTo}
-              </code>
-              .
+          <details className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
+            <summary className="cursor-pointer font-medium text-muted-foreground">
+              Developer tools
+            </summary>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Mint a token with <code className="font-mono">npm run jwt:dev</code> or use{" "}
+              <code className="font-mono">/api/auth/dev-bootstrap</code>.
             </p>
-            <label
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-              htmlFor="hrerp-dev-token"
-            >
-              Development bearer token
+            <label className="mt-3 block text-xs font-medium" htmlFor="hrerp-dev-token">
+              Paste bearer token
             </label>
-            <textarea
+            <Textarea
               id="hrerp-dev-token"
-              className="w-full rounded-md border border-zinc-300 bg-white p-2 font-mono text-xs dark:border-zinc-700 dark:bg-zinc-950"
+              className="mt-1 font-mono text-xs"
               rows={3}
               placeholder="Paste token from scripts/issue-dev-jwt.mjs"
               onChange={(e) => {
@@ -63,7 +60,7 @@ export function HrSignInCard({
                 if (v) onDevTokenPaste(v);
               }}
             />
-          </>
+          </details>
         ) : null}
       </CardContent>
     </Card>

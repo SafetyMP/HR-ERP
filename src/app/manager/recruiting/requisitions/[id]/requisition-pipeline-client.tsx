@@ -13,7 +13,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 
@@ -92,9 +106,10 @@ export function RequisitionPipelineClient({
         },
       );
       if (!res.ok) {
-        setMsg("Could not update stage. The move may not be allowed for this candidate.");
+        toast.error("Could not update stage. The move may not be allowed for this candidate.");
         return;
       }
+      toast.success("Stage updated.");
       await load();
     } finally {
       setBusyId(null);
@@ -262,32 +277,40 @@ export function RequisitionPipelineClient({
                     {new Date(a.appliedAt).toLocaleDateString()}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {ADVANCE_STAGES.map((stage) => (
-                      <Button
-                        key={stage}
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        disabled={busyId === a.id || a.stage === "REJECTED"}
-                        onClick={() => void advanceStage(a.id, stage)}
-                      >
-                        → {STAGE_LABEL[stage] ?? stage}
-                      </Button>
-                    ))}
                     {a.stage !== "REJECTED" && a.stage !== "HIRED" ? (
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="destructive"
-                        disabled={busyId === a.id}
-                        onClick={() => void advanceStage(a.id, "REJECTED")}
-                      >
-                        Reject
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            disabled={busyId === a.id}
+                          >
+                            Move to stage
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          {ADVANCE_STAGES.map((stage) => (
+                            <DropdownMenuItem
+                              key={stage}
+                              onSelect={() => void advanceStage(a.id, stage)}
+                            >
+                              {STAGE_LABEL[stage] ?? stage}
+                            </DropdownMenuItem>
+                          ))}
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onSelect={() => void advanceStage(a.id, "REJECTED")}
+                          >
+                            Reject
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     ) : null}
                   </div>
                   <ApplicationInterviewsPanel
                     applicationId={a.id}
+                    candidateName={a.candidate.fullName}
                     bearerToken={bearerToken}
                   />
                 </li>
@@ -304,13 +327,19 @@ export function RequisitionPipelineClient({
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <label className="text-sm">
-            Application ID
-            <Input
-              className="mt-1 font-mono text-xs"
-              value={offerAppId}
-              onChange={(e) => setOfferAppId(e.target.value)}
-              placeholder="Paste application UUID"
-            />
+            Applicant
+            <Select value={offerAppId} onValueChange={setOfferAppId}>
+              <SelectTrigger className="mt-1">
+                <SelectValue placeholder="Select applicant" />
+              </SelectTrigger>
+              <SelectContent>
+                {(apps ?? []).map((a) => (
+                  <SelectItem key={a.id} value={a.id}>
+                    {a.candidate.fullName} ({STAGE_LABEL[a.stage] ?? a.stage})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </label>
           <label className="text-sm">
             Annual base (minor units, e.g. cents)

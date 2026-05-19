@@ -17,10 +17,10 @@ export default function EmployeeAreaError({
 
   return (
     <main role="alert" className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 p-8">
-      <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold text-foreground">
         We couldn’t load your workspace
       </h1>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Your data is safe — this view just hit a snag. Try again, and reach out to HR if it
         keeps failing.
       </p>

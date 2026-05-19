@@ -168,7 +168,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -189,10 +189,10 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-lg font-semibold text-foreground">
             We couldn&apos;t load your Benefits summary
           </h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-sm text-muted-foreground">
             Please try again in a moment. If this keeps happening, contact your Benefits administrator.
           </p>
         </div>
@@ -207,8 +207,8 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to Benefits.
           </p>
         </div>
@@ -221,7 +221,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
 
   if (summary === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your Benefits summary…
       </p>
     );
@@ -270,21 +270,21 @@ export function BenefitsClient({ initialBearerToken }: Props) {
                 key={`${row.category}-${row.planLabel}-${idx}`}
                 className="border-b border-zinc-100 pb-6 last:border-b-0 last:pb-0 dark:border-zinc-800"
               >
-                <h3 className="text-base font-semibold text-zinc-950 dark:text-white">{row.planLabel}</h3>
+                <h3 className="text-base font-semibold text-foreground">{row.planLabel}</h3>
                 {row.carrierName ? (
-                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{row.carrierName}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{row.carrierName}</p>
                 ) : null}
-                <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <p className="mt-3 text-sm text-foreground">
                   <span className="font-medium text-zinc-800 dark:text-zinc-200">Effective: </span>
                   {formatEffectiveRange(row.effectiveFrom, row.effectiveTo)}
                 </p>
                 {row.dependentCount !== null && row.dependentCount !== undefined ? (
-                  <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+                  <p className="mt-2 text-sm text-foreground">
                     Dependents covered: {row.dependentCount}
                   </p>
                 ) : null}
                 {row.electiveDeferralPercent !== null && row.electiveDeferralPercent !== undefined ? (
-                  <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+                  <p className="mt-2 text-sm text-foreground">
                     Elective deferral (payroll): {row.electiveDeferralPercent}%
                   </p>
                 ) : null}

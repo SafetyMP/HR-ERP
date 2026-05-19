@@ -20,9 +20,9 @@ export default async function EmployeeLeavingPage(props: Props) {
   return (
     <div className="mx-auto flex min-h-[60vh] w-full max-w-3xl flex-col gap-8 px-6 py-12">
       <header>
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">Transitions</p>
-        <h1 className="mt-2 text-3xl font-semibold text-zinc-950 dark:text-white">Leaving checklist</h1>
-        <p className="mt-2 max-w-prose text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">Transitions</p>
+        <h1 className="mt-2 text-3xl font-semibold text-foreground">Leaving checklist</h1>
+        <p className="mt-2 max-w-prose text-sm text-muted-foreground">
           Mirrors onboarding ergonomics for respectful exits — compliance-sensitive approvals remain with HR & payroll teams.
         </p>
       </header>

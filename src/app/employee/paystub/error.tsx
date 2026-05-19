@@ -12,10 +12,10 @@ export default function PaystubErrorBoundary({
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 p-8" role="alert">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
+        <h1 className="text-2xl font-semibold text-foreground">
           We couldn&apos;t load your earnings statement
         </h1>
-        <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-3 text-sm text-muted-foreground">
           Something went wrong while opening this page. Try again in a moment. If pay should already be posted,
           contact Payroll.
         </p>

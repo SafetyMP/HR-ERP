@@ -132,7 +132,7 @@ export function PaystubClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -153,10 +153,10 @@ export function PaystubClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-lg font-semibold text-foreground">
             We couldn&apos;t load your earnings statement
           </h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-sm text-muted-foreground">
             Please try again in a moment. If this keeps happening, contact Payroll.
           </p>
         </div>
@@ -171,8 +171,8 @@ export function PaystubClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Session issue</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to your earnings statement.
           </p>
         </div>
@@ -185,7 +185,7 @@ export function PaystubClient({ initialBearerToken }: Props) {
 
   if (paystub === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your earnings statement…
       </p>
     );
@@ -218,10 +218,10 @@ export function PaystubClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent className="space-y-8">
           <section aria-labelledby="earnings-heading">
-            <h3 id="earnings-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+            <h3 id="earnings-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Earnings
             </h3>
-            <ul className="mt-3 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <ul className="mt-3 divide-y divide-border">
               {paystub.earnings.map((row, i) => (
                 <li key={`e-${i}-${row.lineType}`} className="flex justify-between py-2 text-sm">
                   <span>{row.label}</span>
@@ -232,13 +232,13 @@ export function PaystubClient({ initialBearerToken }: Props) {
           </section>
 
           <section aria-labelledby="pretax-heading">
-            <h3 id="pretax-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+            <h3 id="pretax-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Pre-tax deductions
             </h3>
             {paystub.preTaxDeductions.length === 0 ? (
-              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">None this period.</p>
+              <p className="mt-3 text-sm text-muted-foreground">None this period.</p>
             ) : (
-              <ul className="mt-3 divide-y divide-zinc-200 dark:divide-zinc-800">
+              <ul className="mt-3 divide-y divide-border">
                 {paystub.preTaxDeductions.map((row, i) => (
                   <li key={`p-${i}-${row.lineType}`} className="flex justify-between py-2 text-sm">
                     <span>{row.label}</span>
@@ -250,13 +250,13 @@ export function PaystubClient({ initialBearerToken }: Props) {
           </section>
 
           <section aria-labelledby="taxes-heading">
-            <h3 id="taxes-heading" className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+            <h3 id="taxes-heading" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Taxes
             </h3>
             {paystub.taxes.length === 0 ? (
-              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">None this period.</p>
+              <p className="mt-3 text-sm text-muted-foreground">None this period.</p>
             ) : (
-              <ul className="mt-3 divide-y divide-zinc-200 dark:divide-zinc-800">
+              <ul className="mt-3 divide-y divide-border">
                 {paystub.taxes.map((row, i) => (
                   <li key={`t-${i}-${row.lineType}`} className="flex justify-between py-2 text-sm">
                     <span>{row.label}</span>

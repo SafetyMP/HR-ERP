@@ -190,7 +190,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading time-off requests…
       </p>
     );
@@ -240,7 +240,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
 
   if (items === undefined) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading time-off requests…
       </p>
     );
@@ -259,7 +259,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="leave-start">
+              <label className="text-sm font-medium text-foreground" htmlFor="leave-start">
                 First day away
               </label>
               <input
@@ -271,7 +271,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="leave-end">
+              <label className="text-sm font-medium text-foreground" htmlFor="leave-end">
                 Last day away
               </label>
               <input
@@ -284,7 +284,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
             </div>
           </div>
           <div>
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="leave-note">
+            <label className="text-sm font-medium text-foreground" htmlFor="leave-note">
               Note for your manager (optional)
             </label>
             <textarea
@@ -310,22 +310,22 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent>
           {items.length === 0 ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">No requests submitted from this portal yet.</p>
+            <p className="text-sm text-muted-foreground">No requests submitted from this portal yet.</p>
           ) : (
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-800" role="list">
+            <ul className="divide-y divide-border" role="list">
               {items.map((row) => (
                 <li key={row.id} className="py-3 text-sm">
-                  <div className="font-medium text-zinc-950 dark:text-zinc-50">
+                  <div className="font-medium text-foreground">
                     {formatDay(row.startDate)} — {formatDay(row.endDate)}
                   </div>
-                  <div className="mt-1 text-zinc-600 dark:text-zinc-400">{statusLabel(row.status)}</div>
+                  <div className="mt-1 text-muted-foreground">{statusLabel(row.status)}</div>
                   {row.decisionNote ? (
-                    <div className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
+                    <div className="mt-2 text-xs text-muted-foreground">
                       Manager note: {row.decisionNote}
                     </div>
                   ) : null}
                   {row.note ? (
-                    <div className="mt-2 text-zinc-700 dark:text-zinc-300">&ldquo;{row.note}&rdquo;</div>
+                    <div className="mt-2 text-foreground">&ldquo;{row.note}&rdquo;</div>
                   ) : null}
                 </li>
               ))}

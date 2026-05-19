@@ -20,9 +20,9 @@ export default async function EmployeeTimePage(props: Props) {
   return (
     <div className="mx-auto flex min-h-[60vh] w-full max-w-3xl flex-col gap-8 px-6 py-12">
       <header>
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">Time · Clock</p>
-        <h1 className="mt-2 text-3xl font-semibold text-zinc-950 dark:text-white">Time</h1>
-        <p className="mt-2 max-w-prose text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">Time · Clock</p>
+        <h1 className="mt-2 text-3xl font-semibold text-foreground">Time</h1>
+        <p className="mt-2 max-w-prose text-sm text-muted-foreground">
           Today’s attendance summary—confirm your latest punch time without opening a ticket.
         </p>
       </header>

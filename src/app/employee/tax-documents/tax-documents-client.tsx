@@ -54,7 +54,7 @@ export function TaxDocumentsClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -72,12 +72,12 @@ export function TaxDocumentsClient({ initialBearerToken }: Props) {
   }
 
   if (rows === undefined) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading tax summaries…</p>;
+    return <p className="text-sm text-muted-foreground">Loading tax summaries…</p>;
   }
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Year-end artifacts availability — download wiring stays vendor-specific; rows explain what payroll posted for
         self‑service visibility.
       </p>
@@ -99,7 +99,7 @@ export function TaxDocumentsClient({ initialBearerToken }: Props) {
                   </CardTitle>
                   <CardDescription>{r.documentKind.replace(/_/g, " ")}</CardDescription>
                 </CardHeader>
-                <CardContent className="text-sm text-zinc-700 dark:text-zinc-300">
+                <CardContent className="text-sm text-foreground">
                   {r.availabilityNote ?? "No availability note on file."}
                 </CardContent>
               </Card>

@@ -152,7 +152,7 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -172,7 +172,7 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
   if (loadError === "recoverable") {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Couldn&apos;t refresh onboarding tasks.</p>
+        <p className="text-sm text-muted-foreground">Couldn&apos;t refresh onboarding tasks.</p>
         <Button type="button" onClick={() => retryLoad()}>
           Retry
         </Button>
@@ -181,11 +181,11 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
   }
 
   if (loadError === "auth") {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Sign in again to view onboarding.</p>;
+    return <p className="text-sm text-muted-foreground">Sign in again to view onboarding.</p>;
   }
 
   if (tasks === undefined) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading onboarding checklist…</p>;
+    return <p className="text-sm text-muted-foreground">Loading onboarding checklist…</p>;
   }
 
   return (
@@ -199,18 +199,18 @@ export function OnboardingTasksClient({ initialBearerToken }: Props) {
       </CardHeader>
       <CardContent>
         {tasks.length === 0 ? (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             No onboarding tasks are assigned in the system yet. Your HR contact may still be setting things up.
           </p>
         ) : (
-          <ul className="divide-y divide-zinc-200 dark:divide-zinc-800" role="list">
+          <ul className="divide-y divide-border" role="list">
             {tasks.map((t) => (
               <li key={t.id} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <div className="font-medium text-zinc-950 dark:text-zinc-50">{t.title}</div>
-                  <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{labelStatus(t.status)}</div>
+                  <div className="font-medium text-foreground">{t.title}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{labelStatus(t.status)}</div>
                   {t.dueAt ? (
-                    <div className="mt-1 text-xs text-zinc-500">Due {t.dueAt}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Due {t.dueAt}</div>
                   ) : null}
                 </div>
                 <div className="flex flex-wrap gap-2">

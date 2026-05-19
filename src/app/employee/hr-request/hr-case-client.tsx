@@ -131,7 +131,7 @@ export function HrCaseRequestClient({ initialBearerToken }: Props) {
 
   if (!ready) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400" aria-live="polite">
+      <p className="text-sm text-muted-foreground" aria-live="polite">
         Checking your session…
       </p>
     );
@@ -159,23 +159,23 @@ export function HrCaseRequestClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent>
           {casesError ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-muted-foreground">
               Couldn&apos;t load your history.{" "}
               <button type="button" className="underline" onClick={() => reloadCases()}>
                 Retry
               </button>
             </p>
           ) : cases === undefined ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading…</p>
+            <p className="text-sm text-muted-foreground">Loading…</p>
           ) : cases.length === 0 ? (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">No structured requests logged yet.</p>
+            <p className="text-sm text-muted-foreground">No structured requests logged yet.</p>
           ) : (
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-800" role="list">
+            <ul className="divide-y divide-border" role="list">
               {cases.map((c) => (
                 <li key={c.id} className="py-3 text-sm">
-                  <div className="font-medium text-zinc-950 dark:text-zinc-50">{c.category.replace(/_/g, " ")}</div>
-                  <div className="mt-1 text-zinc-600 dark:text-zinc-400">{statusPlain(c.status)}</div>
-                  <div className="mt-2 text-zinc-700 dark:text-zinc-300">{c.bodyPreview}</div>
+                  <div className="font-medium text-foreground">{c.category.replace(/_/g, " ")}</div>
+                  <div className="mt-1 text-muted-foreground">{statusPlain(c.status)}</div>
+                  <div className="mt-2 text-foreground">{c.bodyPreview}</div>
                   {c.employeeVisibleNote ? (
                     <div className="mt-2 rounded-md border border-zinc-200 bg-zinc-50 p-2 text-xs text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                       HR note: {c.employeeVisibleNote}
@@ -206,7 +206,7 @@ export function HrCaseRequestClient({ initialBearerToken }: Props) {
             </div>
           ) : null}
           <div>
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="case-cat">
+            <label className="text-sm font-medium text-foreground" htmlFor="case-cat">
               Topic
             </label>
             <select
@@ -221,7 +221,7 @@ export function HrCaseRequestClient({ initialBearerToken }: Props) {
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300" htmlFor="case-body">
+            <label className="text-sm font-medium text-foreground" htmlFor="case-body">
               What do you need?
             </label>
             <textarea

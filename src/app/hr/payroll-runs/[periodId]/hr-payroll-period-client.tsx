@@ -8,6 +8,17 @@ import { HrPageShell } from "@/components/hr/hr-page-shell";
 import { PayrollPeriodStatusBadge } from "@/components/hr/payroll-period-status";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -304,6 +315,8 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
   const step3Done =
     detail.status === "LOCKED" || detail.status === "ARTIFACT_GENERATED";
   const step4Done = detail.status === "ARTIFACT_GENERATED";
+  const stepsComplete = [step1Done, step2Done, step3Done, step4Done].filter(Boolean).length;
+  const closeProgress = (stepsComplete / 4) * 100;
 
   return (
     <HrPageShell
@@ -334,6 +347,10 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
             <h2 id="close-checklist-heading" className="text-sm font-semibold text-foreground">
               Period close checklist
             </h2>
+            <Progress className="mt-3" value={closeProgress} aria-label="Close progress" />
+            <p className="mt-1 text-xs text-muted-foreground">
+              {stepsComplete} of 4 steps complete
+            </p>
             <ol className="mt-3 space-y-4" role="list">
               <li className="list-none rounded-md border border-border p-4">
                 <p className="text-sm font-medium">
@@ -366,10 +383,10 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
                         <p className="text-muted-foreground">
                           {payrollExceptionLabel(ex.code)}
                         </p>
-                        <input
-                          type="text"
+                        <Textarea
                           placeholder="Resolution note (optional)"
-                          className="mt-2 w-full rounded-md border border-border bg-background px-2 py-1 text-xs"
+                          className="mt-2 text-xs"
+                          rows={2}
                           value={resolveNotes[ex.id] ?? ""}
                           onChange={(e) =>
                             setResolveNotes((prev) => ({

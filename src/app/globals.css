@@ -23,6 +23,11 @@
   --destructive: #d55e00;
   --destructive-foreground: #ffffff;
   --ring: #0072b2;
+  --muted: #e8eef4;
+  --accent: #e8f2fa;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0d1b2a;
+  --sidebar-border: #c5d0dc;
 }
 
 .dark {
@@ -39,6 +44,11 @@
   --destructive: #e69f00;
   --destructive-foreground: #051018;
   --ring: #56b4e9;
+  --muted: #1a2836;
+  --accent: #243447;
+  --sidebar: #121a24;
+  --sidebar-foreground: #eef2f7;
+  --sidebar-border: #5c6b7d;
 }
 
 @theme inline {
@@ -54,6 +64,11 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-ring: var(--ring);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

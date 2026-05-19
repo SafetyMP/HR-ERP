@@ -11,8 +11,8 @@ export default function OnboardingErrorBoundary({
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 p-8" role="alert">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">We couldn&apos;t load Onboarding</h1>
-        <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+        <h1 className="text-2xl font-semibold text-foreground">We couldn&apos;t load Onboarding</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
           Something went wrong while opening your checklist. Try again or reach your HR contact if tasks stay unavailable.
         </p>
       </div>
