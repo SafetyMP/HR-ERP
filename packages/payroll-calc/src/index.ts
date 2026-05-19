@@ -44,6 +44,7 @@ export { computePayroll, computePayrollBatchParallel } from "./compute";
 export { sha256Hex, stableStringify } from "./canonicalJson";
 
 export { US_FED_WAGE_BRACKET_2026_v1 } from "./tables/us-fed-wage-bracket-2026-v1";
+export { FED_ZERO_PLACEHOLDER_v1 } from "./tables/fed-zero-placeholder";
 
 export { computeUkPayeBootstrap } from "./countries/uk/paye";
 export { computeUkNiClass1Bootstrap } from "./countries/uk/ni";

@@ -2,7 +2,7 @@
 
 **Purpose:** Define how to answer “what percent complete?” without inventing a single orphan number. Aligns with the PO operating model (Feature briefs + numbered UAC).
 
-**Last inventory:** 2026-05-18 (Features **001**–**017** shipped; Track A **115/115** UAC)
+**Last inventory:** 2026-05-18 (Features **001**–**021** shipped; Track A **147/147** UAC)
 
 **Shippable vs platform:** **Track A (Feature UAC)** is the authoritative bar for “product shipped.” Routes, demos, kernels, and docs in tree that are **not** tied to an approved Feature brief’s numbered UAC count as **platform / scaffold / demo** capability — useful, but not closure of PO scope.
 
@@ -26,18 +26,19 @@
 
 | Source | Count |
 | --- | ---: |
-| Feature briefs in `docs/product/feature-briefs/` | **17** (**001**–**017**) |
+| Feature briefs in `docs/product/feature-briefs/` | **21** (**001**–**021**) |
 | Total numbered UAC (sum across briefs **001**–**013**, audited) | **85** |
 | Shipped / verified UAC (audited **001**–**013**) | **85** / **85** |
 | Shipped / verified UAC (audited **014**–**017**) | **30** / **30** |
-| **Cumulative Track A** | **115** / **115** |
+| Shipped / verified UAC (audited **018**–**021**, Phase B) | **32** / **32** |
+| **Cumulative Track A** | **147** / **147** |
 
 Per brief UAC counts: **001**–**005** — 6 each · **006**–**010** — 6 each · **011** — 12 · **012** — 6 · **013** — 7.
 
 Wave **001**–**005** audits: **§3**–**§3e** below. Wave **006**–**013** audits: [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).  
 Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./completion-audits/features-014-017.md).
 
-**Primary product gap (prioritization):** Track A **001**–**017** closed (**115/115** UAC). **Next:** Tier 2 compliance (ADR **0005**–**0008**) with counsel; Phase 2 platform per [`deferred-platform-track.md`](./deferred-platform-track.md).
+**Primary product gap (prioritization):** Track A **001**–**021** closed (**147/147** UAC) including Phase B in-house payroll close. **North star:** [BambooHR + separate payroll](./goal-beat-bamboohr-plus-payroll-stack.md) — Phase B **exit** for reference customers; Phase C (connector catalog) remains deferred. Platform: [`deferred-platform-track.md`](./deferred-platform-track.md).
 
 ---
 

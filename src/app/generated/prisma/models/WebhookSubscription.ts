@@ -14,8 +14,8 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model WebhookSubscription
- * Tenant-scoped webhook subscription. Secrets are stored encrypted at rest
- * (TODO: column-level encryption — see `docs/security/identity-and-jwks.md`).
+ * Tenant-scoped webhook subscription. `secret` stores AES-256-GCM ciphertext
+ * with `enc:v1:` prefix (see `lib/webhooks/secret-crypto.ts`).
  * `eventTypes` is a JSON array of dotted event-type strings exactly as
  * emitted by [`enqueueEvent`](../lib/outbox/enqueue-event.ts).
  */

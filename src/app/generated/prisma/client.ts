@@ -192,6 +192,16 @@ export type MeetingProposalParticipant = Prisma.MeetingProposalParticipantModel
  */
 export type PayrollPeriod = Prisma.PayrollPeriodModel
 /**
+ * Model PayrollRunException
+ * 
+ */
+export type PayrollRunException = Prisma.PayrollRunExceptionModel
+/**
+ * Model PayrollFilingArtifact
+ * 
+ */
+export type PayrollFilingArtifact = Prisma.PayrollFilingArtifactModel
+/**
  * Model PaymentInstruction
  * 
  */
@@ -282,6 +292,11 @@ export type TaxYearDocument = Prisma.TaxYearDocumentModel
  */
 export type BenefitElectionChangeRequest = Prisma.BenefitElectionChangeRequestModel
 /**
+ * Model BenefitLifeEvent
+ * 
+ */
+export type BenefitLifeEvent = Prisma.BenefitLifeEventModel
+/**
  * Model AttendanceCorrectionRequest
  * Manager-submitted punch correction proposal reviewed by HR/Payroll (Feature 015).
  */
@@ -347,6 +362,11 @@ export type Candidate = Prisma.CandidateModel
  */
 export type JobApplication = Prisma.JobApplicationModel
 /**
+ * Model JobInterview
+ * 
+ */
+export type JobInterview = Prisma.JobInterviewModel
+/**
  * Model PerformanceCycle
  * A bounded review window across the tenant (e.g. "FY26 H1 Review"). Goals
  * and reviews live inside one cycle; calibration freezes ratings before
@@ -407,8 +427,8 @@ export type EngagementSurvey = Prisma.EngagementSurveyModel
 export type EngagementResponse = Prisma.EngagementResponseModel
 /**
  * Model WebhookSubscription
- * Tenant-scoped webhook subscription. Secrets are stored encrypted at rest
- * (TODO: column-level encryption — see `docs/security/identity-and-jwks.md`).
+ * Tenant-scoped webhook subscription. `secret` stores AES-256-GCM ciphertext
+ * with `enc:v1:` prefix (see `lib/webhooks/secret-crypto.ts`).
  * `eventTypes` is a JSON array of dotted event-type strings exactly as
  * emitted by [`enqueueEvent`](../lib/outbox/enqueue-event.ts).
  */

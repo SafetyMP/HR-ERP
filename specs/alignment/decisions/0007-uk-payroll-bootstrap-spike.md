@@ -16,7 +16,7 @@ Mid-market roadmap targets **US + UK**. [`docs/compliance/uk-payroll-bootstrap.m
    - `ni.ts` — Class 1 employee/employer NIC on earnings band (simplified 2026/27 thresholds)
    - `types.ts` — shared UK payroll types and `versionId` constants
 2. Add **`uk-golden-vectors.test.ts`** with HMRC-style sample scenarios (documented expected values; spike uses engineering rounding).
-3. **Do not** wire UK into `runPayroll` default path until country selector exists on `PayrollPeriod` / employee work context.
+3. **Wire UK in `runPayroll`** when `organization.jurisdictionCountry` is GB/UK (implemented 2026-05-18 via `resolvePayrollJurisdiction` — still **not** RTI/filing-ready).
 4. Document open Legal questions in uk-payroll-bootstrap.md (unchanged).
 
 ## Consequences

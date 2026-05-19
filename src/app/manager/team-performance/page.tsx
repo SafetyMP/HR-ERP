@@ -4,6 +4,8 @@ import { redirectDevJwtToSession } from "@/lib/auth/redirect-dev-jwt";
 
 import { PerformanceGoalsClient } from "@/features/performance/performance-goals-client";
 
+import { ManagerTeamReviewsClient } from "./manager-team-reviews-client";
+
 export const metadata: Metadata = {
   title: "Team performance goals",
   description: "View performance goals for direct reports",
@@ -27,6 +29,7 @@ export default async function ManagerTeamPerformancePage(props: Props) {
         </p>
       </header>
       <PerformanceGoalsClient variant="manager" />
+      <ManagerTeamReviewsClient />
     </div>
   );
 }

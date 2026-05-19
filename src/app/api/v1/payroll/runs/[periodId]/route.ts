@@ -46,11 +46,22 @@ export async function GET(
         });
         if (!period) return null;
 
+        const openExceptions = await tx.payrollRunException.count({
+          where: {
+            tenantId: auth.tenantId,
+            payrollPeriodId: period.id,
+            status: "OPEN",
+          },
+        });
+
         return {
           payrollPeriodId: period.id,
           startDate: period.startDate.toISOString().slice(0, 10),
           endDate: period.endDate.toISOString().slice(0, 10),
           label: period.label,
+          status: period.status,
+          lockedAt: period.lockedAt?.toISOString() ?? null,
+          openExceptionCount: openExceptions,
           paymentInstructions: period.paymentInstructions.map((pi) => ({
             paymentInstructionId: pi.id,
             employeeId: pi.employeeId,

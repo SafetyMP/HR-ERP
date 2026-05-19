@@ -10,7 +10,7 @@ This document consolidates the **multi-segment competitive benchmark** (value vs
 
 ## 1. Positioning statement
 
-HR ERP is a **Phase 1 modular monolith** (Next.js + single Postgres) with **enterprise security scaffolding**, a **deterministic payroll calculation kernel**, and **strong employee/manager self-service** (Features 001–013, **85/85 UAC**). It is **not** a low-ops SMB HRIS or a Workday replacement out of the box. Competitive value is **control and extensibility**; competitive cost is **your operations team**, not the hosting bill alone.
+HR ERP is a **Phase 1 modular monolith** (Next.js + single Postgres) with **enterprise security scaffolding**, a **deterministic payroll calculation kernel**, and **strong employee/manager self-service** (Features **001–017**, **115/115 UAC**). Primary segment: mid-market US+UK build platform ([ADR 0009](alignment/decisions/0009-mid-market-segment-strategy.md)). It is **not** a low-ops SMB HRIS or a Workday replacement out of the box.
 
 ---
 
@@ -48,7 +48,7 @@ Ratings for **this repository** as of the inventory date in [`docs/product/codeb
 ### Segment verdict (product value only)
 
 - **SMB:** **Lose** on payroll filing, benefits, time-to-value unless payroll is outsourced.
-- **Mid-market:** **Closest** after Tier 1 (briefs 014–017) + Tier 2 statutory depth; **lose** today on recruiting UI, pay-run ops, performance cycles, learning, credible withholding.
+- **Mid-market:** **Target overtake** = [BambooHR + separate payroll](../docs/product/goal-beat-bamboohr-plus-payroll-stack.md) (unified portal + in-app pay runs); **lose** today on benefits ops, partner filing, integration catalog until Phase B/C.
 - **Enterprise:** **Lose** on global HCM and SI ecosystem; **win** on license avoidance only with multi-year internal build mandate.
 
 ---
@@ -96,7 +96,7 @@ Aligned with [`docs/product/deferred-platform-track.md`](../docs/product/deferre
 | --- | --- | --- |
 | US federal withholding v1 | [0005](alignment/decisions/0005-us-federal-withholding-v1.md) | Table + golden vectors in `payroll-calc`; not IRS-certified |
 | Time → premium → paystub | [0006](alignment/decisions/0006-time-to-premium-paystub-integration.md) | Phase 1b when `PAYROLL_PREMIUM_FROM_ATTENDANCE=1` |
-| UK PAYE/NI bootstrap | [0007](alignment/decisions/0007-uk-payroll-bootstrap-spike.md) | Spike; not wired to `runPayroll` |
+| UK PAYE/NI bootstrap | [0007](alignment/decisions/0007-uk-payroll-bootstrap-spike.md) | Wired in `runPayroll` for GB orgs via `lib/payroll/payroll-jurisdiction.ts` (not RTI/filing) |
 | Webhook HTTP delivery | [0008](alignment/decisions/0008-tier2-gap-analysis-implementation.md) | **Shipped** — run workers in prod |
 | COBRA / ACA / 834 | [us-benefits-cobra-aca-834.md](../docs/compliance/us-benefits-cobra-aca-834.md) | Design; counsel before production |
 
@@ -117,10 +117,11 @@ Aligned with [`docs/product/deferred-platform-track.md`](../docs/product/deferre
 | --- | --- | --- |
 | **P0** | Run `worker:webhooks` and `worker:integrations` in staging/prod | Prevent silent integration failure |
 | **P0** | Keep Phase 1 monolith until ADR trigger | Avoid 3–5× infra ops for Kafka/second DB |
-| **P1** | Ship Tier 1 briefs 014–017 | Best mid-market credibility per engineering dollar |
+| **P1** | Ship Tier 1 briefs 014–017 | **Done** — 115/115 UAC |
 | **P1** | Encrypt webhook secrets at rest (ADR 0008 consequence) | Reduce security incident cost |
-| **P2** | Move Python churn CI smoke to nightly or path-filter | Lower PR Actions minutes |
-| **P3** | Partner/embed Gusto or ADP for SMB payroll filing | Transfer statutory ops to vendor |
+| **P2** | Python churn CI path-filter on PRs | **Done** — `reusable-ci.yml` |
+| **P2** | Vendor connector RFC | **Draft** — [vendor-connector-rfc.md](../docs/integrations/vendor-connector-rfc.md) |
+| **P3** | Mid-market segment ADR | **Done** — [0009](alignment/decisions/0009-mid-market-segment-strategy.md) |
 
 ---
 
@@ -141,4 +142,7 @@ Aligned with [`docs/product/deferred-platform-track.md`](../docs/product/deferre
 | Validated ops inventory | [`docs/product/competitive-ops-inventory.md`](../docs/product/competitive-ops-inventory.md) |
 | TCO worksheet | [`docs/product/competitive-ops-tco-worksheet.md`](../docs/product/competitive-ops-tco-worksheet.md) |
 | Executive brief | [`docs/product/competitive-benchmark-executive-brief.md`](../docs/product/competitive-benchmark-executive-brief.md) |
+| Phase 1 prod checklist | [`docs/operations/phase1-production-checklist.md`](../docs/operations/phase1-production-checklist.md) |
+| Vendor connector RFC | [`docs/integrations/vendor-connector-rfc.md`](../docs/integrations/vendor-connector-rfc.md) |
+| Segment strategy ADR | [`specs/alignment/decisions/0009-mid-market-segment-strategy.md`](alignment/decisions/0009-mid-market-segment-strategy.md) |
 | Completion baseline | [`docs/product/codebase-completion-baseline.md`](../docs/product/codebase-completion-baseline.md) |

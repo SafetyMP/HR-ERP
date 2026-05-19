@@ -37,6 +37,34 @@ export const HrCaseStatus = {
 export type HrCaseStatus = (typeof HrCaseStatus)[keyof typeof HrCaseStatus]
 
 
+export const PayrollPeriodStatus = {
+  OPEN: 'OPEN',
+  COMPUTED: 'COMPUTED',
+  LOCKED: 'LOCKED',
+  ARTIFACT_GENERATED: 'ARTIFACT_GENERATED'
+} as const
+
+export type PayrollPeriodStatus = (typeof PayrollPeriodStatus)[keyof typeof PayrollPeriodStatus]
+
+
+export const PayrollRunExceptionCode = {
+  NO_COMPENSATION: 'NO_COMPENSATION',
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  SKIPPED_EXISTING: 'SKIPPED_EXISTING'
+} as const
+
+export type PayrollRunExceptionCode = (typeof PayrollRunExceptionCode)[keyof typeof PayrollRunExceptionCode]
+
+
+export const PayrollRunExceptionStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED',
+  WAIVED: 'WAIVED'
+} as const
+
+export type PayrollRunExceptionStatus = (typeof PayrollRunExceptionStatus)[keyof typeof PayrollRunExceptionStatus]
+
+
 export const OnboardingStatus = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -78,6 +106,27 @@ export const BenefitElectionIntentStatus = {
 } as const
 
 export type BenefitElectionIntentStatus = (typeof BenefitElectionIntentStatus)[keyof typeof BenefitElectionIntentStatus]
+
+
+export const BenefitLifeEventType = {
+  MARRIAGE: 'MARRIAGE',
+  BIRTH_ADOPTION: 'BIRTH_ADOPTION',
+  DIVORCE: 'DIVORCE',
+  LOSS_OF_COVERAGE: 'LOSS_OF_COVERAGE',
+  OTHER: 'OTHER'
+} as const
+
+export type BenefitLifeEventType = (typeof BenefitLifeEventType)[keyof typeof BenefitLifeEventType]
+
+
+export const BenefitLifeEventStatus = {
+  SUBMITTED: 'SUBMITTED',
+  HR_REVIEW: 'HR_REVIEW',
+  APPLIED: 'APPLIED',
+  DENIED: 'DENIED'
+} as const
+
+export type BenefitLifeEventStatus = (typeof BenefitLifeEventStatus)[keyof typeof BenefitLifeEventStatus]
 
 
 export const AttendanceCorrectionStatus = {
@@ -179,6 +228,15 @@ export const JobOfferStatus = {
 } as const
 
 export type JobOfferStatus = (typeof JobOfferStatus)[keyof typeof JobOfferStatus]
+
+
+export const JobInterviewOutcome = {
+  SCHEDULED: 'SCHEDULED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type JobInterviewOutcome = (typeof JobInterviewOutcome)[keyof typeof JobInterviewOutcome]
 
 
 export const PerformanceCycleStatus = {

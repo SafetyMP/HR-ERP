@@ -612,6 +612,57 @@ export type EnumMeetingProposalStatusWithAggregatesFilter<$PrismaModel = never> 
   _max?: Prisma.NestedEnumMeetingProposalStatusFilter<$PrismaModel>
 }
 
+export type EnumPayrollPeriodStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPeriodStatus | Prisma.EnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel> | $Enums.PayrollPeriodStatus
+}
+
+export type EnumPayrollPeriodStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPeriodStatus | Prisma.EnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPeriodStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollPeriodStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel>
+}
+
+export type EnumPayrollRunExceptionCodeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionCode | Prisma.EnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel> | $Enums.PayrollRunExceptionCode
+}
+
+export type EnumPayrollRunExceptionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionStatus | Prisma.EnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel> | $Enums.PayrollRunExceptionStatus
+}
+
+export type EnumPayrollRunExceptionCodeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionCode | Prisma.EnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionCodeWithAggregatesFilter<$PrismaModel> | $Enums.PayrollRunExceptionCode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel>
+}
+
+export type EnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionStatus | Prisma.EnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollRunExceptionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
+}
+
 export type EnumPayoutLineTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.PayoutLineType | Prisma.EnumPayoutLineTypeFieldRefInput<$PrismaModel>
   in?: $Enums.PayoutLineType[] | Prisma.ListEnumPayoutLineTypeFieldRefInput<$PrismaModel>
@@ -748,6 +799,40 @@ export type EnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaModel = n
   _max?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
 }
 
+export type EnumBenefitLifeEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel> | $Enums.BenefitLifeEventType
+}
+
+export type EnumBenefitLifeEventStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventStatus | Prisma.EnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
+}
+
+export type EnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.BenefitLifeEventType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel>
+}
+
+export type EnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventStatus | Prisma.EnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+}
+
 export type EnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
   in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
@@ -882,6 +967,23 @@ export type EnumJobApplicationStageWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumJobApplicationStageFilter<$PrismaModel>
   _max?: Prisma.NestedEnumJobApplicationStageFilter<$PrismaModel>
+}
+
+export type EnumJobInterviewOutcomeFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobInterviewOutcome | Prisma.EnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  in?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel> | $Enums.JobInterviewOutcome
+}
+
+export type EnumJobInterviewOutcomeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobInterviewOutcome | Prisma.EnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  in?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumJobInterviewOutcomeWithAggregatesFilter<$PrismaModel> | $Enums.JobInterviewOutcome
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel>
 }
 
 export type EnumPerformanceCycleStatusFilter<$PrismaModel = never> = {
@@ -1779,6 +1881,57 @@ export type NestedEnumMeetingProposalStatusWithAggregatesFilter<$PrismaModel = n
   _max?: Prisma.NestedEnumMeetingProposalStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumPayrollPeriodStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPeriodStatus | Prisma.EnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel> | $Enums.PayrollPeriodStatus
+}
+
+export type NestedEnumPayrollPeriodStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPeriodStatus | Prisma.EnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPeriodStatus[] | Prisma.ListEnumPayrollPeriodStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPeriodStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollPeriodStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollPeriodStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionCode | Prisma.EnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel> | $Enums.PayrollRunExceptionCode
+}
+
+export type NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionStatus | Prisma.EnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel> | $Enums.PayrollRunExceptionStatus
+}
+
+export type NestedEnumPayrollRunExceptionCodeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionCode | Prisma.EnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionCode[] | Prisma.ListEnumPayrollRunExceptionCodeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionCodeWithAggregatesFilter<$PrismaModel> | $Enums.PayrollRunExceptionCode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollRunExceptionCodeFilter<$PrismaModel>
+}
+
+export type NestedEnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollRunExceptionStatus | Prisma.EnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollRunExceptionStatus[] | Prisma.ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollRunExceptionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
+}
+
 export type NestedEnumPayoutLineTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.PayoutLineType | Prisma.EnumPayoutLineTypeFieldRefInput<$PrismaModel>
   in?: $Enums.PayoutLineType[] | Prisma.ListEnumPayoutLineTypeFieldRefInput<$PrismaModel>
@@ -1915,6 +2068,40 @@ export type NestedEnumBenefitElectionIntentStatusWithAggregatesFilter<$PrismaMod
   _max?: Prisma.NestedEnumBenefitElectionIntentStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumBenefitLifeEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel> | $Enums.BenefitLifeEventType
+}
+
+export type NestedEnumBenefitLifeEventStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventStatus | Prisma.EnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
+}
+
+export type NestedEnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.BenefitLifeEventType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitLifeEventTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BenefitLifeEventStatus | Prisma.EnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BenefitLifeEventStatus[] | Prisma.ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+}
+
 export type NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.AttendanceCorrectionStatus | Prisma.EnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
   in?: $Enums.AttendanceCorrectionStatus[] | Prisma.ListEnumAttendanceCorrectionStatusFieldRefInput<$PrismaModel>
@@ -2049,6 +2236,23 @@ export type NestedEnumJobApplicationStageWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumJobApplicationStageFilter<$PrismaModel>
   _max?: Prisma.NestedEnumJobApplicationStageFilter<$PrismaModel>
+}
+
+export type NestedEnumJobInterviewOutcomeFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobInterviewOutcome | Prisma.EnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  in?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel> | $Enums.JobInterviewOutcome
+}
+
+export type NestedEnumJobInterviewOutcomeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.JobInterviewOutcome | Prisma.EnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  in?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.JobInterviewOutcome[] | Prisma.ListEnumJobInterviewOutcomeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumJobInterviewOutcomeWithAggregatesFilter<$PrismaModel> | $Enums.JobInterviewOutcome
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumJobInterviewOutcomeFilter<$PrismaModel>
 }
 
 export type NestedEnumPerformanceCycleStatusFilter<$PrismaModel = never> = {

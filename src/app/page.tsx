@@ -94,6 +94,8 @@ export default function Home() {
     { href: "/employee/benefits", label: "Benefits summary" },
     { href: "/employee/pto", label: "PTO" },
     { href: "/employee/benefits/election-change", label: "Benefits change intent" },
+    { href: "/employee/benefits/life-events", label: "Benefits life events" },
+    { href: "/employee/performance/reviews", label: "My performance review" },
     { href: "/employee/profile", label: "My profile" },
     { href: "/employee/organization", label: "Organization context" },
     { href: "/employee/onboarding", label: "Onboarding tasks" },
@@ -111,8 +113,10 @@ export default function Home() {
   ];
 
   const hrOps: DemoLink[] = [
+    { href: "/hr/dashboard", label: "HR dashboard", emphasis: true },
     { href: "/hr/review-queue", label: "HR review queue", emphasis: true },
     { href: "/hr/payroll-runs", label: "Payroll runs", emphasis: true },
+    { href: "/hr/benefits/life-events", label: "Benefits life events" },
     { href: "/hr/onboarding-templates", label: "Onboarding templates" },
   ];
 
@@ -205,7 +209,7 @@ export default function Home() {
           <WorkflowSection
             id="nav-hr"
             title="HR operations"
-            description="Queues and templates for people teams."
+            description="Start at the dashboard for headcount and items needing action. Close pay periods in-app from payroll runs—run, resolve exceptions, lock, and download filing packages without copying UUIDs."
             links={hrOps}
           />
 

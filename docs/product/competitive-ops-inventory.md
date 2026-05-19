@@ -49,7 +49,7 @@
 | Job | Workflow | Steps (summary) |
 | --- | --- | --- |
 | **ci / web** | `reusable-ci.yml` | `npm ci`, lint, `security:scan`, contracts drift, prisma validate/generate, **build**, unit tests |
-| **ci / python-pipelines** | `reusable-ci.yml` | Python 3.12, `train_churn.py` smoke on **every** gate |
+| **ci / python-pipelines** | `reusable-ci.yml` | Python 3.12 churn smoke — **PR path-filter** to `services/pipelines/**` and `services/ml-serving/**`; runs on all pushes to `main` |
 | **qa / vitest-shard** | `reusable-qa.yml` | Matrix **2 shards** of `vitest run` |
 | **qa / integration** | `reusable-qa.yml` | Postgres 16 service, `migrate deploy`, `db:verify`, `tests/integration` |
 | **qa / e2e** | `reusable-qa.yml` | Playwright chromium, `ci-issue-e2e-jwts.mjs`, `test:e2e` |
@@ -77,8 +77,8 @@ Same **ci** + **qa** suites as quality gate (second run on merge — intentional
 | --- | --- | --- |
 | Prisma models | **78** | `prisma/schema.prisma` |
 | Route policy registry | **~400+ lines** | `lib/security/route-policies.ts` |
-| Shipped Feature UAC | **85 / 85** (001–013) | [`codebase-completion-baseline.md`](./codebase-completion-baseline.md) |
-| Approved backlog UAC | **30** (014–017) | Feature briefs |
+| Shipped Feature UAC | **115 / 115** (001–017) | [`codebase-completion-baseline.md`](./codebase-completion-baseline.md) |
+| Production checklist | Published | [`phase1-production-checklist.md`](../operations/phase1-production-checklist.md) |
 
 ---
 
@@ -116,4 +116,6 @@ From [`.env.example`](../../.env.example) — non-exhaustive:
 - [Competitive analysis & roadmap](../../specs/competitive-analysis-roadmap.md)
 - [Operations TCO worksheet](./competitive-ops-tco-worksheet.md)
 - [Executive brief](./competitive-benchmark-executive-brief.md)
+- [Phase 1 production checklist](../operations/phase1-production-checklist.md)
+- [Vendor connector RFC](../integrations/vendor-connector-rfc.md)
 - [Deferred platform track](./deferred-platform-track.md)

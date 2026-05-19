@@ -2,6 +2,7 @@
 
 import { startTransition, useEffect, useState } from "react";
 
+import { ApplicationInterviewsPanel } from "./application-interviews-panel";
 import { STAGE_LABEL } from "../../manager-recruiting-client";
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
@@ -267,13 +268,28 @@ export function RequisitionPipelineClient({
                         type="button"
                         size="sm"
                         variant="outline"
-                        disabled={busyId === a.id}
+                        disabled={busyId === a.id || a.stage === "REJECTED"}
                         onClick={() => void advanceStage(a.id, stage)}
                       >
                         → {STAGE_LABEL[stage] ?? stage}
                       </Button>
                     ))}
+                    {a.stage !== "REJECTED" && a.stage !== "HIRED" ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        disabled={busyId === a.id}
+                        onClick={() => void advanceStage(a.id, "REJECTED")}
+                      >
+                        Reject
+                      </Button>
+                    ) : null}
                   </div>
+                  <ApplicationInterviewsPanel
+                    applicationId={a.id}
+                    bearerToken={bearerToken}
+                  />
                 </li>
               ))}
             </ul>

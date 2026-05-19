@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useEffect, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { HrPageShell } from "@/components/hr/hr-page-shell";
+import { PayrollPeriodStatusBadge } from "@/components/hr/payroll-period-status";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,8 +23,11 @@ type RunRow = {
   startDate: string;
   endDate: string;
   label: string | null;
+  status: string;
   paymentInstructionCount: number;
 };
+
+type FilterChip = "all" | "needs_close" | "locked";
 
 type Props = {
   initialBearerToken?: string;
@@ -34,10 +39,12 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
   const [runs, setRuns] = useState<RunRow[] | undefined>(undefined);
   const [forbidden, setForbidden] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
+  const [filter, setFilter] = useState<FilterChip>("all");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [periodId, setPeriodId] = useState("");
   const [reissue, setReissue] = useState(false);
-  const [busy, setBusy] = useState(false);
   const [reissueConfirm, setReissueConfirm] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
 
   const reload = async () => {
@@ -77,19 +84,29 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
     };
   }, [isAuthenticated, bearerToken]);
 
-  const executeRun = async () => {
-    const id = periodId.trim();
-    if (!id) {
-      setMsg("Enter a payroll period ID (UUID).");
-      return;
+  const filteredRuns = useMemo(() => {
+    if (!runs) return [];
+    if (filter === "needs_close") {
+      return runs.filter((r) => r.status === "COMPUTED");
     }
-    if (reissue && !reissueConfirm) {
-      setMsg(
-        "Confirm reissue below — existing payment instructions for this period may be replaced.",
+    if (filter === "locked") {
+      return runs.filter(
+        (r) => r.status === "LOCKED" || r.status === "ARTIFACT_GENERATED",
       );
+    }
+    return runs;
+  }, [runs, filter]);
+
+  const executeRun = async (targetPeriodId: string, opts?: { reissue?: boolean }) => {
+    const useReissue = opts?.reissue ?? false;
+    if (useReissue && !reissueConfirm) {
+      setMsg(
+        "Confirm reissue in Advanced options — existing payment instructions may be replaced.",
+      );
+      setShowAdvanced(true);
       return;
     }
-    setBusy(true);
+    setBusyId(targetPeriodId);
     setMsg(null);
     try {
       const res = await hrApiFetch("/api/v1/payroll/runs", {
@@ -100,8 +117,8 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          payrollPeriodId: id,
-          reissue,
+          payrollPeriodId: targetPeriodId,
+          reissue: useReissue,
         }),
       });
       const body = (await res.json().catch(() => ({}))) as {
@@ -113,15 +130,20 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
         error?: { message?: string };
       };
       if (!res.ok) {
-        setMsg(body.error?.message ?? "Pay run failed.");
+        const errMsg = body.error?.message ?? "";
+        setMsg(
+          errMsg === "payroll_period_locked"
+            ? "This period is locked — no further pay runs allowed."
+            : errMsg || "Pay run failed.",
+        );
         return;
       }
       setMsg(
-        `Run complete — computed ${body.data?.computed ?? 0}, skipped ${body.data?.skipped ?? 0}, without compensation ${body.data?.withoutCompensation ?? 0}.`,
+        `Run complete — ${body.data?.computed ?? 0} computed, ${body.data?.skipped ?? 0} skipped, ${body.data?.withoutCompensation ?? 0} without compensation.`,
       );
       await reload();
     } finally {
-      setBusy(false);
+      setBusyId(null);
     }
   };
 
@@ -153,102 +175,153 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Pay periods</CardTitle>
-        <CardDescription>
-          Recent payroll periods and payment instruction counts. Open a period for line-level
-          detail.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" variant="secondary" size="sm" onClick={() => void reload()}>
-            Reload
-          </Button>
-          <Button type="button" variant="ghost" size="sm" onClick={() => signOut()}>
-            Sign out
-          </Button>
-        </div>
-
-        <div className="flex flex-col gap-2 rounded-md border border-border p-4">
-          <p className="text-sm font-medium text-foreground">Execute pay run</p>
-          <Input
-            placeholder="Payroll period ID (UUID)"
-            value={periodId}
-            onChange={(e) => setPeriodId(e.target.value)}
-            className="font-mono text-xs"
-          />
-          <label className="flex items-center gap-2 text-sm text-muted-foreground">
-            <input
-              type="checkbox"
-              checked={reissue}
-              onChange={(e) => {
-                setReissue(e.target.checked);
-                if (!e.target.checked) setReissueConfirm(false);
-              }}
-            />
-            Reissue (replace existing instructions for this period)
-          </label>
-          {reissue ? (
-            <label className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
-              <input
-                type="checkbox"
-                checked={reissueConfirm}
-                onChange={(e) => setReissueConfirm(e.target.checked)}
-              />
-              I understand prior payment instructions for this period may be replaced
-            </label>
-          ) : null}
-          <Button type="button" onClick={() => void executeRun()} disabled={busy}>
-            {busy ? "Running…" : "Run payroll"}
-          </Button>
-        </div>
-
-        {loadFailed ? (
-          <p className="text-sm text-muted-foreground">
-            Could not load pay periods.{" "}
-            <Button type="button" variant="link" className="h-auto p-0" onClick={() => void reload()}>
-              Retry
-            </Button>
-          </p>
-        ) : null}
-        {runs === undefined ? (
-          <p className="text-sm text-muted-foreground">Loading periods…</p>
-        ) : runs.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No payroll periods found.</p>
-        ) : (
-          <ul className="divide-y divide-border rounded-md border border-border" role="list">
-            {runs.map((r) => (
-              <li key={r.payrollPeriodId} className="list-none px-4 py-3 text-sm">
-                <Link
-                  href={`/hr/payroll-runs/${r.payrollPeriodId}`}
-                  className="font-medium text-primary underline underline-offset-4"
-                >
-                  {r.label ?? `${r.startDate} → ${r.endDate}`}
-                </Link>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {r.startDate} → {r.endDate} · {r.paymentInstructionCount} payment instruction
-                  {r.paymentInstructionCount === 1 ? "" : "s"}
-                </p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => {
-                    setPeriodId(r.payrollPeriodId);
-                    setMsg(null);
-                  }}
-                >
-                  Use for run
-                </Button>
-              </li>
+    <HrPageShell
+      activePath="/hr/payroll-runs"
+      onReload={() => void reload()}
+      onSignOut={() => signOut()}
+    >
+      <Card>
+        <CardHeader>
+          <CardTitle>Pay periods</CardTitle>
+          <CardDescription>
+            Run gross-to-net, resolve exceptions, lock the period, and generate filing
+            packages — all in one place.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-6">
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter periods">
+            {(
+              [
+                ["all", "All"],
+                ["needs_close", "Needs close"],
+                ["locked", "Locked"],
+              ] as const
+            ).map(([key, label]) => (
+              <Button
+                key={key}
+                type="button"
+                size="sm"
+                variant={filter === key ? "secondary" : "outline"}
+                onClick={() => setFilter(key)}
+              >
+                {label}
+              </Button>
             ))}
-          </ul>
-        )}
-        {msg ? <p className="text-sm text-muted-foreground">{msg}</p> : null}
-      </CardContent>
-    </Card>
+          </div>
+
+          {loadFailed ? (
+            <p className="text-sm text-muted-foreground">
+              Could not load pay periods.{" "}
+              <Button type="button" variant="link" className="h-auto p-0" onClick={() => void reload()}>
+                Retry
+              </Button>
+            </p>
+          ) : null}
+
+          {runs === undefined ? (
+            <p className="text-sm text-muted-foreground">Loading periods…</p>
+          ) : filteredRuns.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No periods match this filter.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border rounded-md border border-border" role="list">
+              {filteredRuns.map((r) => (
+                <li
+                  key={r.payrollPeriodId}
+                  className="list-none flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Link
+                        href={`/hr/payroll-runs/${r.payrollPeriodId}`}
+                        className="font-medium text-primary underline underline-offset-4"
+                      >
+                        {r.label ?? `${r.startDate} → ${r.endDate}`}
+                      </Link>
+                      <PayrollPeriodStatusBadge status={r.status} />
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {r.startDate} → {r.endDate} · {r.paymentInstructionCount} payment
+                      instruction{r.paymentInstructionCount === 1 ? "" : "s"}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button type="button" variant="outline" size="sm" asChild>
+                      <Link href={`/hr/payroll-runs/${r.payrollPeriodId}`}>
+                        Close period
+                      </Link>
+                    </Button>
+                    {(r.status === "OPEN" || r.status === "COMPUTED") && (
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={busyId === r.payrollPeriodId}
+                        onClick={() => void executeRun(r.payrollPeriodId)}
+                      >
+                        {busyId === r.payrollPeriodId ? "Running…" : "Run payroll"}
+                      </Button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <details
+            className="rounded-md border border-border p-4"
+            open={showAdvanced}
+            onToggle={(e) => setShowAdvanced((e.target as HTMLDetailsElement).open)}
+          >
+            <summary className="cursor-pointer text-sm font-medium text-foreground">
+              Advanced — manual period ID
+            </summary>
+            <div className="mt-4 flex flex-col gap-2">
+              <Input
+                placeholder="Payroll period ID (UUID)"
+                value={periodId}
+                onChange={(e) => setPeriodId(e.target.value)}
+                className="font-mono text-xs"
+              />
+              <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={reissue}
+                  onChange={(e) => {
+                    setReissue(e.target.checked);
+                    if (!e.target.checked) setReissueConfirm(false);
+                  }}
+                />
+                Reissue (replace existing instructions)
+              </label>
+              {reissue ? (
+                <label className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
+                  <input
+                    type="checkbox"
+                    checked={reissueConfirm}
+                    onChange={(e) => setReissueConfirm(e.target.checked)}
+                  />
+                  I understand prior payment instructions may be replaced
+                </label>
+              ) : null}
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={!periodId.trim() || busyId !== null}
+                onClick={() => void executeRun(periodId.trim(), { reissue })}
+              >
+                Run for entered ID
+              </Button>
+            </div>
+          </details>
+
+          {msg ? (
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              {msg}
+            </p>
+          ) : null}
+        </CardContent>
+      </Card>
+    </HrPageShell>
   );
 }

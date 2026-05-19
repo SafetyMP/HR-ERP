@@ -401,6 +401,8 @@ export type EmployeeWhereInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestListRelationFilter
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestListRelationFilter
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskListRelationFilter
+  payrollRunExceptions?: Prisma.PayrollRunExceptionListRelationFilter
+  benefitLifeEvents?: Prisma.BenefitLifeEventListRelationFilter
 }
 
 export type EmployeeOrderByWithRelationInput = {
@@ -467,6 +469,8 @@ export type EmployeeOrderByWithRelationInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestOrderByRelationAggregateInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskOrderByRelationAggregateInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionOrderByRelationAggregateInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventOrderByRelationAggregateInput
 }
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -537,6 +541,8 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestListRelationFilter
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestListRelationFilter
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskListRelationFilter
+  payrollRunExceptions?: Prisma.PayrollRunExceptionListRelationFilter
+  benefitLifeEvents?: Prisma.BenefitLifeEventListRelationFilter
 }, "id" | "tenantId_email">
 
 export type EmployeeOrderByWithAggregationInput = {
@@ -667,6 +673,8 @@ export type EmployeeCreateInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateInput = {
@@ -729,6 +737,8 @@ export type EmployeeUncheckedCreateInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUpdateInput = {
@@ -791,6 +801,8 @@ export type EmployeeUpdateInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateInput = {
@@ -853,6 +865,8 @@ export type EmployeeUncheckedUpdateInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyInput = {
@@ -1482,6 +1496,20 @@ export type EmployeeUpdateOneRequiredWithoutMeetingParticipationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutMeetingParticipationsInput, Prisma.EmployeeUpdateWithoutMeetingParticipationsInput>, Prisma.EmployeeUncheckedUpdateWithoutMeetingParticipationsInput>
 }
 
+export type EmployeeCreateNestedOneWithoutPayrollRunExceptionsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedCreateWithoutPayrollRunExceptionsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutPayrollRunExceptionsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutPayrollRunExceptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedCreateWithoutPayrollRunExceptionsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutPayrollRunExceptionsInput
+  upsert?: Prisma.EmployeeUpsertWithoutPayrollRunExceptionsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutPayrollRunExceptionsInput, Prisma.EmployeeUpdateWithoutPayrollRunExceptionsInput>, Prisma.EmployeeUncheckedUpdateWithoutPayrollRunExceptionsInput>
+}
+
 export type EmployeeCreateNestedOneWithoutPaymentInstructionsInput = {
   create?: Prisma.XOR<Prisma.EmployeeCreateWithoutPaymentInstructionsInput, Prisma.EmployeeUncheckedCreateWithoutPaymentInstructionsInput>
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutPaymentInstructionsInput
@@ -1622,6 +1650,20 @@ export type EmployeeUpdateOneRequiredWithoutBenefitElectionChangeRequestsNestedI
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutBenefitElectionChangeRequestsInput, Prisma.EmployeeUpdateWithoutBenefitElectionChangeRequestsInput>, Prisma.EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput>
 }
 
+export type EmployeeCreateNestedOneWithoutBenefitLifeEventsInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitLifeEventsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutBenefitLifeEventsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+}
+
+export type EmployeeUpdateOneRequiredWithoutBenefitLifeEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitLifeEventsInput>
+  connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutBenefitLifeEventsInput
+  upsert?: Prisma.EmployeeUpsertWithoutBenefitLifeEventsInput
+  connect?: Prisma.EmployeeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmployeeUpdateToOneWithWhereWithoutBenefitLifeEventsInput, Prisma.EmployeeUpdateWithoutBenefitLifeEventsInput>, Prisma.EmployeeUncheckedUpdateWithoutBenefitLifeEventsInput>
+}
+
 export type EmployeeCreateNestedOneWithoutAttendanceCorrectionSubjectsInput = {
   create?: Prisma.XOR<Prisma.EmployeeCreateWithoutAttendanceCorrectionSubjectsInput, Prisma.EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput>
   connectOrCreate?: Prisma.EmployeeCreateOrConnectWithoutAttendanceCorrectionSubjectsInput
@@ -1739,6 +1781,8 @@ export type EmployeeCreateWithoutOrganizationInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutOrganizationInput = {
@@ -1800,6 +1844,8 @@ export type EmployeeUncheckedCreateWithoutOrganizationInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutOrganizationInput = {
@@ -1921,6 +1967,8 @@ export type EmployeeCreateWithoutDirectReportsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutDirectReportsInput = {
@@ -1982,6 +2030,8 @@ export type EmployeeUncheckedCreateWithoutDirectReportsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutDirectReportsInput = {
@@ -2048,6 +2098,8 @@ export type EmployeeCreateWithoutManagerInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutManagerInput = {
@@ -2109,6 +2161,8 @@ export type EmployeeUncheckedCreateWithoutManagerInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutManagerInput = {
@@ -2191,6 +2245,8 @@ export type EmployeeUpdateWithoutDirectReportsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutDirectReportsInput = {
@@ -2252,6 +2308,8 @@ export type EmployeeUncheckedUpdateWithoutDirectReportsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUpsertWithWhereUniqueWithoutManagerInput = {
@@ -2329,6 +2387,8 @@ export type EmployeeCreateWithoutPtoRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPtoRequestsInput = {
@@ -2390,6 +2450,8 @@ export type EmployeeUncheckedCreateWithoutPtoRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPtoRequestsInput = {
@@ -2467,6 +2529,8 @@ export type EmployeeUpdateWithoutPtoRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPtoRequestsInput = {
@@ -2528,6 +2592,8 @@ export type EmployeeUncheckedUpdateWithoutPtoRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutTimeOffRequestsInput = {
@@ -2589,6 +2655,8 @@ export type EmployeeCreateWithoutTimeOffRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutTimeOffRequestsInput = {
@@ -2650,6 +2718,8 @@ export type EmployeeUncheckedCreateWithoutTimeOffRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutTimeOffRequestsInput = {
@@ -2716,6 +2786,8 @@ export type EmployeeCreateWithoutTimeOffDecisionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutTimeOffDecisionsInput = {
@@ -2777,6 +2849,8 @@ export type EmployeeUncheckedCreateWithoutTimeOffDecisionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutTimeOffDecisionsInput = {
@@ -2854,6 +2928,8 @@ export type EmployeeUpdateWithoutTimeOffRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutTimeOffRequestsInput = {
@@ -2915,6 +2991,8 @@ export type EmployeeUncheckedUpdateWithoutTimeOffRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUpsertWithoutTimeOffDecisionsInput = {
@@ -2987,6 +3065,8 @@ export type EmployeeUpdateWithoutTimeOffDecisionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput = {
@@ -3048,6 +3128,8 @@ export type EmployeeUncheckedUpdateWithoutTimeOffDecisionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutHrCaseRequestsInput = {
@@ -3109,6 +3191,8 @@ export type EmployeeCreateWithoutHrCaseRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutHrCaseRequestsInput = {
@@ -3170,6 +3254,8 @@ export type EmployeeUncheckedCreateWithoutHrCaseRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutHrCaseRequestsInput = {
@@ -3247,6 +3333,8 @@ export type EmployeeUpdateWithoutHrCaseRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutHrCaseRequestsInput = {
@@ -3308,6 +3396,8 @@ export type EmployeeUncheckedUpdateWithoutHrCaseRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutDepartmentInput = {
@@ -3369,6 +3459,8 @@ export type EmployeeCreateWithoutDepartmentInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -3430,6 +3522,8 @@ export type EmployeeUncheckedCreateWithoutDepartmentInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -3517,6 +3611,8 @@ export type EmployeeCreateWithoutJobRoleInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutJobRoleInput = {
@@ -3578,6 +3674,8 @@ export type EmployeeUncheckedCreateWithoutJobRoleInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutJobRoleInput = {
@@ -3665,6 +3763,8 @@ export type EmployeeCreateWithoutCompensationRecordsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutCompensationRecordsInput = {
@@ -3726,6 +3826,8 @@ export type EmployeeUncheckedCreateWithoutCompensationRecordsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutCompensationRecordsInput = {
@@ -3803,6 +3905,8 @@ export type EmployeeUpdateWithoutCompensationRecordsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutCompensationRecordsInput = {
@@ -3864,6 +3968,8 @@ export type EmployeeUncheckedUpdateWithoutCompensationRecordsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPtoBalancesInput = {
@@ -3925,6 +4031,8 @@ export type EmployeeCreateWithoutPtoBalancesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPtoBalancesInput = {
@@ -3986,6 +4094,8 @@ export type EmployeeUncheckedCreateWithoutPtoBalancesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPtoBalancesInput = {
@@ -4063,6 +4173,8 @@ export type EmployeeUpdateWithoutPtoBalancesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPtoBalancesInput = {
@@ -4124,6 +4236,8 @@ export type EmployeeUncheckedUpdateWithoutPtoBalancesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPerformanceReviewsInput = {
@@ -4185,6 +4299,8 @@ export type EmployeeCreateWithoutPerformanceReviewsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPerformanceReviewsInput = {
@@ -4246,6 +4362,8 @@ export type EmployeeUncheckedCreateWithoutPerformanceReviewsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPerformanceReviewsInput = {
@@ -4323,6 +4441,8 @@ export type EmployeeUpdateWithoutPerformanceReviewsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPerformanceReviewsInput = {
@@ -4384,6 +4504,8 @@ export type EmployeeUncheckedUpdateWithoutPerformanceReviewsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutEmploymentEventsInput = {
@@ -4445,6 +4567,8 @@ export type EmployeeCreateWithoutEmploymentEventsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutEmploymentEventsInput = {
@@ -4506,6 +4630,8 @@ export type EmployeeUncheckedCreateWithoutEmploymentEventsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutEmploymentEventsInput = {
@@ -4583,6 +4709,8 @@ export type EmployeeUpdateWithoutEmploymentEventsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutEmploymentEventsInput = {
@@ -4644,6 +4772,8 @@ export type EmployeeUncheckedUpdateWithoutEmploymentEventsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutEmployeeSkillsInput = {
@@ -4705,6 +4835,8 @@ export type EmployeeCreateWithoutEmployeeSkillsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutEmployeeSkillsInput = {
@@ -4766,6 +4898,8 @@ export type EmployeeUncheckedCreateWithoutEmployeeSkillsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutEmployeeSkillsInput = {
@@ -4843,6 +4977,8 @@ export type EmployeeUpdateWithoutEmployeeSkillsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutEmployeeSkillsInput = {
@@ -4904,6 +5040,8 @@ export type EmployeeUncheckedUpdateWithoutEmployeeSkillsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutUserAccountsInput = {
@@ -4965,6 +5103,8 @@ export type EmployeeCreateWithoutUserAccountsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutUserAccountsInput = {
@@ -5026,6 +5166,8 @@ export type EmployeeUncheckedCreateWithoutUserAccountsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutUserAccountsInput = {
@@ -5103,6 +5245,8 @@ export type EmployeeUpdateWithoutUserAccountsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutUserAccountsInput = {
@@ -5164,6 +5308,8 @@ export type EmployeeUncheckedUpdateWithoutUserAccountsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -5225,6 +5371,8 @@ export type EmployeeCreateWithoutAnalyticsFeatureSnapshotsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -5286,6 +5434,8 @@ export type EmployeeUncheckedCreateWithoutAnalyticsFeatureSnapshotsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAnalyticsFeatureSnapshotsInput = {
@@ -5363,6 +5513,8 @@ export type EmployeeUpdateWithoutAnalyticsFeatureSnapshotsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAnalyticsFeatureSnapshotsInput = {
@@ -5424,6 +5576,8 @@ export type EmployeeUncheckedUpdateWithoutAnalyticsFeatureSnapshotsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutChurnScoresInput = {
@@ -5485,6 +5639,8 @@ export type EmployeeCreateWithoutChurnScoresInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutChurnScoresInput = {
@@ -5546,6 +5702,8 @@ export type EmployeeUncheckedCreateWithoutChurnScoresInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutChurnScoresInput = {
@@ -5623,6 +5781,8 @@ export type EmployeeUpdateWithoutChurnScoresInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutChurnScoresInput = {
@@ -5684,6 +5844,8 @@ export type EmployeeUncheckedUpdateWithoutChurnScoresInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutWorkContextInput = {
@@ -5745,6 +5907,8 @@ export type EmployeeCreateWithoutWorkContextInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutWorkContextInput = {
@@ -5806,6 +5970,8 @@ export type EmployeeUncheckedCreateWithoutWorkContextInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutWorkContextInput = {
@@ -5883,6 +6049,8 @@ export type EmployeeUpdateWithoutWorkContextInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutWorkContextInput = {
@@ -5944,6 +6112,8 @@ export type EmployeeUncheckedUpdateWithoutWorkContextInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutSchedulingPreferenceInput = {
@@ -6005,6 +6175,8 @@ export type EmployeeCreateWithoutSchedulingPreferenceInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutSchedulingPreferenceInput = {
@@ -6066,6 +6238,8 @@ export type EmployeeUncheckedCreateWithoutSchedulingPreferenceInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutSchedulingPreferenceInput = {
@@ -6143,6 +6317,8 @@ export type EmployeeUpdateWithoutSchedulingPreferenceInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutSchedulingPreferenceInput = {
@@ -6204,6 +6380,8 @@ export type EmployeeUncheckedUpdateWithoutSchedulingPreferenceInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutMeetingProposalsOrgInput = {
@@ -6265,6 +6443,8 @@ export type EmployeeCreateWithoutMeetingProposalsOrgInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutMeetingProposalsOrgInput = {
@@ -6326,6 +6506,8 @@ export type EmployeeUncheckedCreateWithoutMeetingProposalsOrgInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutMeetingProposalsOrgInput = {
@@ -6403,6 +6585,8 @@ export type EmployeeUpdateWithoutMeetingProposalsOrgInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutMeetingProposalsOrgInput = {
@@ -6464,6 +6648,8 @@ export type EmployeeUncheckedUpdateWithoutMeetingProposalsOrgInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutMeetingParticipationsInput = {
@@ -6525,6 +6711,8 @@ export type EmployeeCreateWithoutMeetingParticipationsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutMeetingParticipationsInput = {
@@ -6586,6 +6774,8 @@ export type EmployeeUncheckedCreateWithoutMeetingParticipationsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutMeetingParticipationsInput = {
@@ -6663,6 +6853,8 @@ export type EmployeeUpdateWithoutMeetingParticipationsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutMeetingParticipationsInput = {
@@ -6724,6 +6916,276 @@ export type EmployeeUncheckedUpdateWithoutMeetingParticipationsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutPayrollRunExceptionsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutPayrollRunExceptionsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutPayrollRunExceptionsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedCreateWithoutPayrollRunExceptionsInput>
+}
+
+export type EmployeeUpsertWithoutPayrollRunExceptionsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedUpdateWithoutPayrollRunExceptionsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedCreateWithoutPayrollRunExceptionsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutPayrollRunExceptionsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutPayrollRunExceptionsInput, Prisma.EmployeeUncheckedUpdateWithoutPayrollRunExceptionsInput>
+}
+
+export type EmployeeUpdateWithoutPayrollRunExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutPayrollRunExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutPaymentInstructionsInput = {
@@ -6785,6 +7247,8 @@ export type EmployeeCreateWithoutPaymentInstructionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutPaymentInstructionsInput = {
@@ -6846,6 +7310,8 @@ export type EmployeeUncheckedCreateWithoutPaymentInstructionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutPaymentInstructionsInput = {
@@ -6923,6 +7389,8 @@ export type EmployeeUpdateWithoutPaymentInstructionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutPaymentInstructionsInput = {
@@ -6984,6 +7452,8 @@ export type EmployeeUncheckedUpdateWithoutPaymentInstructionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutHolidayRegionsInput = {
@@ -7045,6 +7515,8 @@ export type EmployeeCreateWithoutHolidayRegionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutHolidayRegionsInput = {
@@ -7106,6 +7578,8 @@ export type EmployeeUncheckedCreateWithoutHolidayRegionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutHolidayRegionsInput = {
@@ -7183,6 +7657,8 @@ export type EmployeeUpdateWithoutHolidayRegionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutHolidayRegionsInput = {
@@ -7244,6 +7720,8 @@ export type EmployeeUncheckedUpdateWithoutHolidayRegionsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutCapacityAdjustmentsInput = {
@@ -7305,6 +7783,8 @@ export type EmployeeCreateWithoutCapacityAdjustmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutCapacityAdjustmentsInput = {
@@ -7366,6 +7846,8 @@ export type EmployeeUncheckedCreateWithoutCapacityAdjustmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutCapacityAdjustmentsInput = {
@@ -7443,6 +7925,8 @@ export type EmployeeUpdateWithoutCapacityAdjustmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutCapacityAdjustmentsInput = {
@@ -7504,6 +7988,8 @@ export type EmployeeUncheckedUpdateWithoutCapacityAdjustmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutSprintCapacityRowsInput = {
@@ -7565,6 +8051,8 @@ export type EmployeeCreateWithoutSprintCapacityRowsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutSprintCapacityRowsInput = {
@@ -7626,6 +8114,8 @@ export type EmployeeUncheckedCreateWithoutSprintCapacityRowsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutSprintCapacityRowsInput = {
@@ -7703,6 +8193,8 @@ export type EmployeeUpdateWithoutSprintCapacityRowsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutSprintCapacityRowsInput = {
@@ -7764,6 +8256,8 @@ export type EmployeeUncheckedUpdateWithoutSprintCapacityRowsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutOnboardingTasksInput = {
@@ -7825,6 +8319,8 @@ export type EmployeeCreateWithoutOnboardingTasksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutOnboardingTasksInput = {
@@ -7886,6 +8382,8 @@ export type EmployeeUncheckedCreateWithoutOnboardingTasksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutOnboardingTasksInput = {
@@ -7963,6 +8461,8 @@ export type EmployeeUpdateWithoutOnboardingTasksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutOnboardingTasksInput = {
@@ -8024,6 +8524,8 @@ export type EmployeeUncheckedUpdateWithoutOnboardingTasksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutEmployeeSeparationTasksInput = {
@@ -8085,6 +8587,8 @@ export type EmployeeCreateWithoutEmployeeSeparationTasksInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput = {
@@ -8146,6 +8650,8 @@ export type EmployeeUncheckedCreateWithoutEmployeeSeparationTasksInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutEmployeeSeparationTasksInput = {
@@ -8223,6 +8729,8 @@ export type EmployeeUpdateWithoutEmployeeSeparationTasksInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput = {
@@ -8284,6 +8792,8 @@ export type EmployeeUncheckedUpdateWithoutEmployeeSeparationTasksInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutAttendancePunchesInput = {
@@ -8345,6 +8855,8 @@ export type EmployeeCreateWithoutAttendancePunchesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendancePunchesInput = {
@@ -8406,6 +8918,8 @@ export type EmployeeUncheckedCreateWithoutAttendancePunchesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendancePunchesInput = {
@@ -8483,6 +8997,8 @@ export type EmployeeUpdateWithoutAttendancePunchesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendancePunchesInput = {
@@ -8544,6 +9060,8 @@ export type EmployeeUncheckedUpdateWithoutAttendancePunchesInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutBenefitEnrollmentsInput = {
@@ -8605,6 +9123,8 @@ export type EmployeeCreateWithoutBenefitEnrollmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutBenefitEnrollmentsInput = {
@@ -8666,6 +9186,8 @@ export type EmployeeUncheckedCreateWithoutBenefitEnrollmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutBenefitEnrollmentsInput = {
@@ -8743,6 +9265,8 @@ export type EmployeeUpdateWithoutBenefitEnrollmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutBenefitEnrollmentsInput = {
@@ -8804,6 +9328,8 @@ export type EmployeeUncheckedUpdateWithoutBenefitEnrollmentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutTaxYearDocumentsInput = {
@@ -8865,6 +9391,8 @@ export type EmployeeCreateWithoutTaxYearDocumentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutTaxYearDocumentsInput = {
@@ -8926,6 +9454,8 @@ export type EmployeeUncheckedCreateWithoutTaxYearDocumentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutTaxYearDocumentsInput = {
@@ -9003,6 +9533,8 @@ export type EmployeeUpdateWithoutTaxYearDocumentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput = {
@@ -9064,6 +9596,8 @@ export type EmployeeUncheckedUpdateWithoutTaxYearDocumentsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutBenefitElectionChangeRequestsInput = {
@@ -9125,6 +9659,8 @@ export type EmployeeCreateWithoutBenefitElectionChangeRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput = {
@@ -9186,6 +9722,8 @@ export type EmployeeUncheckedCreateWithoutBenefitElectionChangeRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutBenefitElectionChangeRequestsInput = {
@@ -9263,6 +9801,8 @@ export type EmployeeUpdateWithoutBenefitElectionChangeRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput = {
@@ -9324,6 +9864,276 @@ export type EmployeeUncheckedUpdateWithoutBenefitElectionChangeRequestsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeCreateWithoutBenefitLifeEventsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  manager?: Prisma.EmployeeCreateNestedOneWithoutDirectReportsInput
+  directReports?: Prisma.EmployeeCreateNestedManyWithoutManagerInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutEmployeesInput
+  jobRole?: Prisma.JobRoleCreateNestedOneWithoutEmployeesInput
+  onboardingTasks?: Prisma.OnboardingTaskCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeUncheckedCreateWithoutBenefitLifeEventsInput = {
+  id?: string
+  tenantId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  preferredName?: string | null
+  personalEmail?: string | null
+  phone?: string | null
+  mailingAddressLine1?: string | null
+  mailingAddressLine2?: string | null
+  mailingCity?: string | null
+  mailingRegion?: string | null
+  mailingPostalCode?: string | null
+  mailingCountry?: string | null
+  emergencyContactName?: string | null
+  emergencyContactPhone?: string | null
+  emergencyContactRelationship?: string | null
+  managerId?: string | null
+  departmentId?: string | null
+  jobRoleId?: string | null
+  status?: $Enums.EmployeeStatus
+  hireDate?: Date | string | null
+  terminationDate?: Date | string | null
+  anonymizedPseudonym?: string | null
+  deletedAt?: Date | string | null
+  retentionExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  directReports?: Prisma.EmployeeUncheckedCreateNestedManyWithoutManagerInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedCreateNestedManyWithoutEmployeeInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedCreateNestedOneWithoutEmployeeInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedCreateNestedOneWithoutEmployeeInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedCreateNestedManyWithoutEmployeeInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedCreateNestedManyWithoutOrganizerInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedCreateNestedManyWithoutEmployeeInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedCreateNestedManyWithoutEmployeeInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedCreateNestedManyWithoutEmployeeInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoRequests?: Prisma.PtoRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedCreateNestedManyWithoutEmployeeInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedCreateNestedManyWithoutEmployeeInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedCreateNestedManyWithoutEmployeeInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedCreateNestedManyWithoutEmployeeInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedCreateNestedManyWithoutEmployeeInput
+  userAccounts?: Prisma.UserAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedCreateNestedManyWithoutEmployeeInput
+  churnScores?: Prisma.ChurnScoreUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+}
+
+export type EmployeeCreateOrConnectWithoutBenefitLifeEventsInput = {
+  where: Prisma.EmployeeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitLifeEventsInput>
+}
+
+export type EmployeeUpsertWithoutBenefitLifeEventsInput = {
+  update: Prisma.XOR<Prisma.EmployeeUpdateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedUpdateWithoutBenefitLifeEventsInput>
+  create: Prisma.XOR<Prisma.EmployeeCreateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedCreateWithoutBenefitLifeEventsInput>
+  where?: Prisma.EmployeeWhereInput
+}
+
+export type EmployeeUpdateToOneWithWhereWithoutBenefitLifeEventsInput = {
+  where?: Prisma.EmployeeWhereInput
+  data: Prisma.XOR<Prisma.EmployeeUpdateWithoutBenefitLifeEventsInput, Prisma.EmployeeUncheckedUpdateWithoutBenefitLifeEventsInput>
+}
+
+export type EmployeeUpdateWithoutBenefitLifeEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutEmployeesNestedInput
+  manager?: Prisma.EmployeeUpdateOneWithoutDirectReportsNestedInput
+  directReports?: Prisma.EmployeeUpdateManyWithoutManagerNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutEmployeesNestedInput
+  jobRole?: Prisma.JobRoleUpdateOneWithoutEmployeesNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+}
+
+export type EmployeeUncheckedUpdateWithoutBenefitLifeEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  personalEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingAddressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mailingCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  managerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  hireDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminationDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  anonymizedPseudonym?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retentionExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  directReports?: Prisma.EmployeeUncheckedUpdateManyWithoutManagerNestedInput
+  onboardingTasks?: Prisma.OnboardingTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  vendorLinks?: Prisma.EmployeeVendorLinkUncheckedUpdateManyWithoutEmployeeNestedInput
+  workContext?: Prisma.EmployeeWorkContextUncheckedUpdateOneWithoutEmployeeNestedInput
+  schedulingPreference?: Prisma.SchedulingPreferenceUncheckedUpdateOneWithoutEmployeeNestedInput
+  holidayRegions?: Prisma.EmployeeHolidayRegionUncheckedUpdateManyWithoutEmployeeNestedInput
+  meetingProposalsOrg?: Prisma.MeetingProposalUncheckedUpdateManyWithoutOrganizerNestedInput
+  meetingParticipations?: Prisma.MeetingProposalParticipantUncheckedUpdateManyWithoutEmployeeNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput
+  capacityAdjustments?: Prisma.CapacityAdjustmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  sprintCapacityRows?: Prisma.SprintCapacitySummaryUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendancePunches?: Prisma.AttendancePunchUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoRequests?: Prisma.PtoRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  compensationRecords?: Prisma.CompensationRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+  ptoBalances?: Prisma.PtoBalanceUncheckedUpdateManyWithoutEmployeeNestedInput
+  performanceReviews?: Prisma.PerformanceReviewUncheckedUpdateManyWithoutEmployeeNestedInput
+  employmentEvents?: Prisma.EmploymentEventUncheckedUpdateManyWithoutEmployeeNestedInput
+  employeeSkills?: Prisma.EmployeeSkillUncheckedUpdateManyWithoutEmployeeNestedInput
+  userAccounts?: Prisma.UserAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  analyticsFeatureSnapshots?: Prisma.AnalyticsFeatureSnapshotUncheckedUpdateManyWithoutEmployeeNestedInput
+  churnScores?: Prisma.ChurnScoreUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitEnrollments?: Prisma.BenefitEnrollmentUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitElectionChangeRequests?: Prisma.BenefitElectionChangeRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  taxYearDocuments?: Prisma.TaxYearDocumentUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffRequests?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  timeOffDecisions?: Prisma.TimeOffRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  hrCaseRequests?: Prisma.HrCaseRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
+  attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
+  attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
+  employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutAttendanceCorrectionSubjectsInput = {
@@ -9385,6 +10195,8 @@ export type EmployeeCreateWithoutAttendanceCorrectionSubjectsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput = {
@@ -9446,6 +10258,8 @@ export type EmployeeUncheckedCreateWithoutAttendanceCorrectionSubjectsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendanceCorrectionSubjectsInput = {
@@ -9512,6 +10326,8 @@ export type EmployeeCreateWithoutAttendanceCorrectionsSubmittedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput = {
@@ -9573,6 +10389,8 @@ export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsSubmittedInput = 
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendanceCorrectionsSubmittedInput = {
@@ -9639,6 +10457,8 @@ export type EmployeeCreateWithoutAttendanceCorrectionsDecidedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput = {
@@ -9700,6 +10520,8 @@ export type EmployeeUncheckedCreateWithoutAttendanceCorrectionsDecidedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutEmployeeInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutAttendanceCorrectionsDecidedInput = {
@@ -9777,6 +10599,8 @@ export type EmployeeUpdateWithoutAttendanceCorrectionSubjectsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput = {
@@ -9838,6 +10662,8 @@ export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionSubjectsInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUpsertWithoutAttendanceCorrectionsSubmittedInput = {
@@ -9910,6 +10736,8 @@ export type EmployeeUpdateWithoutAttendanceCorrectionsSubmittedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput = {
@@ -9971,6 +10799,8 @@ export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsSubmittedInput = 
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUpsertWithoutAttendanceCorrectionsDecidedInput = {
@@ -10043,6 +10873,8 @@ export type EmployeeUpdateWithoutAttendanceCorrectionsDecidedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput = {
@@ -10104,6 +10936,8 @@ export type EmployeeUncheckedUpdateWithoutAttendanceCorrectionsDecidedInput = {
   attendanceCorrectionSubjects?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutEmployeeNestedInput
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateWithoutVendorLinksInput = {
@@ -10165,6 +10999,8 @@ export type EmployeeCreateWithoutVendorLinksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateWithoutVendorLinksInput = {
@@ -10226,6 +11062,8 @@ export type EmployeeUncheckedCreateWithoutVendorLinksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutSubmittedByInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedCreateNestedManyWithoutDecidedByInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedCreateNestedManyWithoutEmployeeInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeCreateOrConnectWithoutVendorLinksInput = {
@@ -10303,6 +11141,8 @@ export type EmployeeUpdateWithoutVendorLinksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutVendorLinksInput = {
@@ -10364,6 +11204,8 @@ export type EmployeeUncheckedUpdateWithoutVendorLinksInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyOrganizationInput = {
@@ -10455,6 +11297,8 @@ export type EmployeeUpdateWithoutOrganizationInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutOrganizationInput = {
@@ -10516,6 +11360,8 @@ export type EmployeeUncheckedUpdateWithoutOrganizationInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutOrganizationInput = {
@@ -10637,6 +11483,8 @@ export type EmployeeUpdateWithoutManagerInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutManagerInput = {
@@ -10698,6 +11546,8 @@ export type EmployeeUncheckedUpdateWithoutManagerInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutManagerInput = {
@@ -10819,6 +11669,8 @@ export type EmployeeUpdateWithoutDepartmentInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -10880,6 +11732,8 @@ export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -11001,6 +11855,8 @@ export type EmployeeUpdateWithoutJobRoleInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateWithoutJobRoleInput = {
@@ -11062,6 +11918,8 @@ export type EmployeeUncheckedUpdateWithoutJobRoleInput = {
   attendanceCorrectionsSubmitted?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutSubmittedByNestedInput
   attendanceCorrectionsDecided?: Prisma.AttendanceCorrectionRequestUncheckedUpdateManyWithoutDecidedByNestedInput
   employeeSeparationTasks?: Prisma.EmployeeSeparationTaskUncheckedUpdateManyWithoutEmployeeNestedInput
+  payrollRunExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput
+  benefitLifeEvents?: Prisma.BenefitLifeEventUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateManyWithoutJobRoleInput = {
@@ -11129,6 +11987,8 @@ export type EmployeeCountOutputType = {
   attendanceCorrectionsSubmitted: number
   attendanceCorrectionsDecided: number
   employeeSeparationTasks: number
+  payrollRunExceptions: number
+  benefitLifeEvents: number
 }
 
 export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -11161,6 +12021,8 @@ export type EmployeeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   attendanceCorrectionsSubmitted?: boolean | EmployeeCountOutputTypeCountAttendanceCorrectionsSubmittedArgs
   attendanceCorrectionsDecided?: boolean | EmployeeCountOutputTypeCountAttendanceCorrectionsDecidedArgs
   employeeSeparationTasks?: boolean | EmployeeCountOutputTypeCountEmployeeSeparationTasksArgs
+  payrollRunExceptions?: boolean | EmployeeCountOutputTypeCountPayrollRunExceptionsArgs
+  benefitLifeEvents?: boolean | EmployeeCountOutputTypeCountBenefitLifeEventsArgs
 }
 
 /**
@@ -11376,6 +12238,20 @@ export type EmployeeCountOutputTypeCountEmployeeSeparationTasksArgs<ExtArgs exte
   where?: Prisma.EmployeeSeparationTaskWhereInput
 }
 
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountPayrollRunExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollRunExceptionWhereInput
+}
+
+/**
+ * EmployeeCountOutputType without action
+ */
+export type EmployeeCountOutputTypeCountBenefitLifeEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BenefitLifeEventWhereInput
+}
+
 
 export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -11441,6 +12317,8 @@ export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   attendanceCorrectionsSubmitted?: boolean | Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>
   attendanceCorrectionsDecided?: boolean | Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>
   employeeSeparationTasks?: boolean | Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>
+  payrollRunExceptions?: boolean | Prisma.Employee$payrollRunExceptionsArgs<ExtArgs>
+  benefitLifeEvents?: boolean | Prisma.Employee$benefitLifeEventsArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["employee"]>
 
@@ -11582,6 +12460,8 @@ export type EmployeeInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   attendanceCorrectionsSubmitted?: boolean | Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>
   attendanceCorrectionsDecided?: boolean | Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>
   employeeSeparationTasks?: boolean | Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>
+  payrollRunExceptions?: boolean | Prisma.Employee$payrollRunExceptionsArgs<ExtArgs>
+  benefitLifeEvents?: boolean | Prisma.Employee$benefitLifeEventsArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -11635,6 +12515,8 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     attendanceCorrectionsSubmitted: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
     attendanceCorrectionsDecided: Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>[]
     employeeSeparationTasks: Prisma.$EmployeeSeparationTaskPayload<ExtArgs>[]
+    payrollRunExceptions: Prisma.$PayrollRunExceptionPayload<ExtArgs>[]
+    benefitLifeEvents: Prisma.$BenefitLifeEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -12101,6 +12983,8 @@ export interface Prisma__EmployeeClient<T, Null = never, ExtArgs extends runtime
   attendanceCorrectionsSubmitted<T extends Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendanceCorrectionsSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceCorrectionsDecided<T extends Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$attendanceCorrectionsDecidedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employeeSeparationTasks<T extends Prisma.Employee$employeeSeparationTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$employeeSeparationTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeSeparationTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payrollRunExceptions<T extends Prisma.Employee$payrollRunExceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$payrollRunExceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollRunExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  benefitLifeEvents<T extends Prisma.Employee$benefitLifeEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Employee$benefitLifeEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BenefitLifeEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13347,6 +14231,54 @@ export type Employee$employeeSeparationTasksArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.EmployeeSeparationTaskScalarFieldEnum | Prisma.EmployeeSeparationTaskScalarFieldEnum[]
+}
+
+/**
+ * Employee.payrollRunExceptions
+ */
+export type Employee$payrollRunExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollRunException
+   */
+  select?: Prisma.PayrollRunExceptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollRunException
+   */
+  omit?: Prisma.PayrollRunExceptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollRunExceptionInclude<ExtArgs> | null
+  where?: Prisma.PayrollRunExceptionWhereInput
+  orderBy?: Prisma.PayrollRunExceptionOrderByWithRelationInput | Prisma.PayrollRunExceptionOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollRunExceptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollRunExceptionScalarFieldEnum | Prisma.PayrollRunExceptionScalarFieldEnum[]
+}
+
+/**
+ * Employee.benefitLifeEvents
+ */
+export type Employee$benefitLifeEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BenefitLifeEvent
+   */
+  select?: Prisma.BenefitLifeEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BenefitLifeEvent
+   */
+  omit?: Prisma.BenefitLifeEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BenefitLifeEventInclude<ExtArgs> | null
+  where?: Prisma.BenefitLifeEventWhereInput
+  orderBy?: Prisma.BenefitLifeEventOrderByWithRelationInput | Prisma.BenefitLifeEventOrderByWithRelationInput[]
+  cursor?: Prisma.BenefitLifeEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BenefitLifeEventScalarFieldEnum | Prisma.BenefitLifeEventScalarFieldEnum[]
 }
 
 /**

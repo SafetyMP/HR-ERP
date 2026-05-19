@@ -30,6 +30,18 @@ Do **not** run Kafka, Schema Registry, or second Postgres instances in productio
 | `WEBHOOK_FANOUT_ON_ENQUEUE` | Optional | Default on; set `0` to disable fan-out |
 | `WEBHOOK_DELIVERY_POLL_MS` | Optional | Default `2000` |
 | `OIDC_*` | If using enterprise IdP | See `.env.example` |
+| `PAYROLL_PREMIUM_FROM_ATTENDANCE` | Optional | Set `1` to include OT/DT premium lines on pay runs (ADR 0006) |
+
+### OIDC / session (when `OIDC_ISSUER` is set)
+
+| Variable | Purpose |
+| --- | --- |
+| `OIDC_ISSUER` | IdP issuer URL |
+| `OIDC_CLIENT_ID` / `OIDC_CLIENT_SECRET` | OAuth client |
+| `OIDC_REDIRECT_URI` | Must match IdP app registration (e.g. `https://<host>/api/auth/oidc/callback`) |
+| `SESSION_COOKIE_NAME` | HttpOnly session cookie (default `hr_erp_session`) |
+
+**Verify:** `GET /api/auth/oidc/login` redirects to IdP; callback sets session cookie; employee routes accept cookie without `Authorization` header. Dev-only: `POST /api/auth/dev-bootstrap` must be **disabled** in Production.
 
 ---
 

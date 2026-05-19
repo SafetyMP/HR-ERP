@@ -17,12 +17,24 @@ import {
 import { premiumGrossLinesFromAllocation } from "@/lib/payroll/premium-pay-minor";
 import type { AdditionalGrossLine } from "@hr-erp/payroll-calc";
 import {
+  pipelineDefaultsForJurisdiction,
+  policyReleaseIdForJurisdiction,
+  resolvePayrollJurisdiction,
+} from "@/lib/payroll/payroll-jurisdiction";
+import { syncExceptionsFromRunResults } from "@/lib/payroll/payroll-exceptions";
+import {
+  assertPeriodAllowsPayRun,
+  statusAfterPayRun,
+} from "@/lib/payroll/payroll-period-lifecycle";
+import {
   CALC_SEMANTIC_VERSION,
-  DEFAULT_ANNUAL_STANDARD_DEDUCTION_MINOR,
-  DEFAULT_FEDERAL_TAX_TABLE,
   DEFAULT_POLICY_RELEASE_ID,
   currencyMinorScale,
 } from "@/lib/payroll/policy-defaults";
+import {
+  applyUkStatutoryDeductions,
+  grossPeriodMinorFromComputation,
+} from "@/lib/payroll/uk-statutory-deductions";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -127,6 +139,7 @@ export async function runPayroll(
           message: "payroll_period_not_found",
         });
       }
+      assertPeriodAllowsPayRun(period.status);
 
       const periodEndExclusive = new Date(period.endDate);
       periodEndExclusive.setUTCDate(periodEndExclusive.getUTCDate() + 1);
@@ -248,6 +261,11 @@ export async function runPayroll(
           });
         }
 
+        const jurisdiction = resolvePayrollJurisdiction(
+          employee.organization.jurisdictionCountry,
+        );
+        const jurisdictionDefaults = pipelineDefaultsForJurisdiction(jurisdiction);
+
         const pipelineInput = buildPipelineInputForEmployee({
           employeeId: employee.id,
           payRunId: period.id,
@@ -258,12 +276,22 @@ export async function runPayroll(
           currencyCode,
           currencyScale,
           additionalGrossLines,
+          jurisdictionDefaults,
         });
 
         const computation = computePayroll(pipelineInput);
+        let ukStatutory: ReturnType<typeof applyUkStatutoryDeductions> | null = null;
+        if (jurisdiction === "GB") {
+          const grossPeriodMinor = grossPeriodMinorFromComputation(computation);
+          ukStatutory = applyUkStatutoryDeductions({
+            computation,
+            grossPeriodMinor,
+          });
+        }
+
         const status = existing && reissue ? "reissued" : "computed";
 
-        const memo = buildMemo(computation, premiumMemo);
+        const memo = buildMemo(computation, premiumMemo, jurisdiction, ukStatutory);
 
         if (existing) {
           await tx.payoutLine.deleteMany({
@@ -290,17 +318,26 @@ export async function runPayroll(
               },
             });
 
-        const lines = buildPayoutLineRows(paymentInstruction.id, computation, currencyCode);
+        const lines = buildPayoutLineRows(
+          paymentInstruction.id,
+          computation,
+          currencyCode,
+          ukStatutory,
+        );
         if (lines.length > 0) {
           await tx.payoutLine.createMany({ data: lines });
         }
 
         computed += 1;
+        const netPayMinor = ukStatutory
+          ? Number(ukStatutory.adjustedNetMinor)
+          : Number(computation.netPay.minor);
+
         results.push({
           employeeId: employee.id,
           paymentInstructionId: paymentInstruction.id,
           inputsFingerprintSha256: computation.inputsFingerprintSha256,
-          netPayMinor: Number(computation.netPay.minor),
+          netPayMinor,
           currencyCode,
           status,
         });
@@ -318,6 +355,21 @@ export async function runPayroll(
         withoutCompensation,
         results,
       };
+
+      await syncExceptionsFromRunResults(
+        tx,
+        auth.tenantId,
+        period.id,
+        results,
+      );
+
+      const nextStatus = statusAfterPayRun(summary.computed, period.status);
+      if (nextStatus !== period.status) {
+        await tx.payrollPeriod.update({
+          where: { id: period.id },
+          data: { status: nextStatus },
+        });
+      }
 
       await enqueueEvent(tx, {
         tenantId: auth.tenantId,
@@ -338,6 +390,34 @@ export async function runPayroll(
         dedupeKey: `payroll.pay_run.computed:${summary.payrollPeriodId}:${reissue ? "reissue" : "first"}`,
       });
 
+      await enqueueEvent(tx, {
+        tenantId: auth.tenantId,
+        category: "domain.payroll",
+        eventType: "payroll.period.computed",
+        correlationId: auth.correlationId,
+        payload: {
+          payrollPeriodId: summary.payrollPeriodId,
+          periodStatus: nextStatus,
+          computed: summary.computed,
+        },
+      });
+
+      for (const row of results) {
+        if (row.status === "no_compensation" || row.status === "skipped_existing") {
+          await enqueueEvent(tx, {
+            tenantId: auth.tenantId,
+            category: "domain.payroll",
+            eventType: "payroll.exception.opened",
+            correlationId: auth.correlationId,
+            payload: {
+              payrollPeriodId: period.id,
+              employeeId: row.employeeId,
+              code: row.status === "no_compensation" ? "NO_COMPENSATION" : "SKIPPED_EXISTING",
+            },
+          });
+        }
+      }
+
       return summary;
     },
   );
@@ -353,7 +433,10 @@ export function buildPipelineInputForEmployee(args: {
   currencyCode: string;
   currencyScale: number;
   additionalGrossLines?: readonly AdditionalGrossLine[];
+  jurisdictionDefaults?: ReturnType<typeof pipelineDefaultsForJurisdiction>;
 }): GrossToNetPipelineInput {
+  const jurisdictionDefaults =
+    args.jurisdictionDefaults ?? pipelineDefaultsForJurisdiction("US");
   const periodGrossMinor = annualToPeriodMinor(
     args.baseAnnualMinor,
     args.periodStart,
@@ -383,15 +466,12 @@ export function buildPipelineInputForEmployee(args: {
     rounding: "half_up",
     pretaxDeductions: [],
     standardDeductionMinor: annualToPeriodMinor(
-      DEFAULT_ANNUAL_STANDARD_DEDUCTION_MINOR,
+      jurisdictionDefaults.standardDeductionMinor,
       args.periodStart,
       args.periodEndExclusive,
     ),
-    federalTaxTable: DEFAULT_FEDERAL_TAX_TABLE,
-    policyRelease: {
-      progressiveFederalId: DEFAULT_FEDERAL_TAX_TABLE.versionId,
-      commissionTierSetId: null,
-    },
+    federalTaxTable: jurisdictionDefaults.federalTaxTable,
+    policyRelease: jurisdictionDefaults.policyRelease,
     additionalGrossLines: args.additionalGrossLines ?? [],
   };
 }
@@ -399,12 +479,26 @@ export function buildPipelineInputForEmployee(args: {
 function buildMemo(
   computation: PayrollComputationOutput,
   premium: Record<string, unknown> | null = null,
+  jurisdiction: ReturnType<typeof resolvePayrollJurisdiction> = "US",
+  ukStatutory: ReturnType<typeof applyUkStatutoryDeductions> | null = null,
 ): string {
   return JSON.stringify({
     fingerprint: computation.inputsFingerprintSha256,
     calcSemanticVersion: computation.calcSemanticVersion,
-    policyReleaseId: DEFAULT_POLICY_RELEASE_ID,
+    policyReleaseId: policyReleaseIdForJurisdiction(jurisdiction),
+    jurisdiction,
     ...(premium ? { premium } : {}),
+    ...(ukStatutory
+      ? {
+          ukStatutory: {
+            payeVersionId: ukStatutory.payeVersionId,
+            niVersionId: ukStatutory.niVersionId,
+            payeMinor: ukStatutory.payeMinor.toString(),
+            employeeNiMinor: ukStatutory.employeeNiMinor.toString(),
+            employerNiMinor: ukStatutory.employerNiMinor.toString(),
+          },
+        }
+      : {}),
   });
 }
 
@@ -412,6 +506,7 @@ function buildPayoutLineRows(
   paymentInstructionId: string,
   computation: PayrollComputationOutput,
   currencyCode: string,
+  ukStatutory: ReturnType<typeof applyUkStatutoryDeductions> | null = null,
 ): Prisma.PayoutLineCreateManyInput[] {
   const rows: Prisma.PayoutLineCreateManyInput[] = [];
   let order = 0;
@@ -441,6 +536,9 @@ function buildPayoutLineRows(
   }
 
   for (const line of computation.pipeline.phaseLines.federalWithholding) {
+    if (line.amount.minor === 0n && ukStatutory) {
+      continue;
+    }
     rows.push({
       paymentInstructionId,
       lineType: "TAX_WITHHOLDING",
@@ -448,6 +546,27 @@ function buildPayoutLineRows(
       amountMinor: Number(line.amount.minor),
       currencyCode,
     });
+  }
+
+  if (ukStatutory) {
+    if (ukStatutory.payeMinor > 0n) {
+      rows.push({
+        paymentInstructionId,
+        lineType: "TAX_WITHHOLDING",
+        sortOrder: order++,
+        amountMinor: Number(ukStatutory.payeMinor),
+        currencyCode,
+      });
+    }
+    if (ukStatutory.employeeNiMinor > 0n) {
+      rows.push({
+        paymentInstructionId,
+        lineType: "TAX_WITHHOLDING",
+        sortOrder: order++,
+        amountMinor: Number(ukStatutory.employeeNiMinor),
+        currencyCode,
+      });
+    }
   }
 
   return rows;

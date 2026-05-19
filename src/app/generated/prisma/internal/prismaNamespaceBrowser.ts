@@ -81,6 +81,8 @@ export const ModelName = {
   MeetingProposalSlot: 'MeetingProposalSlot',
   MeetingProposalParticipant: 'MeetingProposalParticipant',
   PayrollPeriod: 'PayrollPeriod',
+  PayrollRunException: 'PayrollRunException',
+  PayrollFilingArtifact: 'PayrollFilingArtifact',
   PaymentInstruction: 'PaymentInstruction',
   PayoutLine: 'PayoutLine',
   FxSnapshot: 'FxSnapshot',
@@ -99,6 +101,7 @@ export const ModelName = {
   OnboardingTemplateItem: 'OnboardingTemplateItem',
   TaxYearDocument: 'TaxYearDocument',
   BenefitElectionChangeRequest: 'BenefitElectionChangeRequest',
+  BenefitLifeEvent: 'BenefitLifeEvent',
   AttendanceCorrectionRequest: 'AttendanceCorrectionRequest',
   IntegrationInstance: 'IntegrationInstance',
   IntegrationOutbox: 'IntegrationOutbox',
@@ -112,6 +115,7 @@ export const ModelName = {
   JobRequisition: 'JobRequisition',
   Candidate: 'Candidate',
   JobApplication: 'JobApplication',
+  JobInterview: 'JobInterview',
   PerformanceCycle: 'PerformanceCycle',
   PerformanceGoal: 'PerformanceGoal',
   PerformanceReviewV2: 'PerformanceReviewV2',
@@ -551,11 +555,44 @@ export const PayrollPeriodScalarFieldEnum = {
   startDate: 'startDate',
   endDate: 'endDate',
   label: 'label',
+  status: 'status',
+  lockedAt: 'lockedAt',
+  lockedBySubjectId: 'lockedBySubjectId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PayrollPeriodScalarFieldEnum = (typeof PayrollPeriodScalarFieldEnum)[keyof typeof PayrollPeriodScalarFieldEnum]
+
+
+export const PayrollRunExceptionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  payrollPeriodId: 'payrollPeriodId',
+  employeeId: 'employeeId',
+  code: 'code',
+  status: 'status',
+  resolutionNote: 'resolutionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayrollRunExceptionScalarFieldEnum = (typeof PayrollRunExceptionScalarFieldEnum)[keyof typeof PayrollRunExceptionScalarFieldEnum]
+
+
+export const PayrollFilingArtifactScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  payrollPeriodId: 'payrollPeriodId',
+  jurisdiction: 'jurisdiction',
+  versionId: 'versionId',
+  payloadHash: 'payloadHash',
+  payloadJson: 'payloadJson',
+  generatedAt: 'generatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollFilingArtifactScalarFieldEnum = (typeof PayrollFilingArtifactScalarFieldEnum)[keyof typeof PayrollFilingArtifactScalarFieldEnum]
 
 
 export const PaymentInstructionScalarFieldEnum = {
@@ -803,6 +840,23 @@ export const BenefitElectionChangeRequestScalarFieldEnum = {
 export type BenefitElectionChangeRequestScalarFieldEnum = (typeof BenefitElectionChangeRequestScalarFieldEnum)[keyof typeof BenefitElectionChangeRequestScalarFieldEnum]
 
 
+export const BenefitLifeEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  employeeId: 'employeeId',
+  eventType: 'eventType',
+  eventDate: 'eventDate',
+  description: 'description',
+  status: 'status',
+  hrNote: 'hrNote',
+  cobraEventId: 'cobraEventId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BenefitLifeEventScalarFieldEnum = (typeof BenefitLifeEventScalarFieldEnum)[keyof typeof BenefitLifeEventScalarFieldEnum]
+
+
 export const AttendanceCorrectionRequestScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1008,6 +1062,21 @@ export const JobApplicationScalarFieldEnum = {
 } as const
 
 export type JobApplicationScalarFieldEnum = (typeof JobApplicationScalarFieldEnum)[keyof typeof JobApplicationScalarFieldEnum]
+
+
+export const JobInterviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  scheduledAt: 'scheduledAt',
+  interviewType: 'interviewType',
+  outcome: 'outcome',
+  scorecardJson: 'scorecardJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JobInterviewScalarFieldEnum = (typeof JobInterviewScalarFieldEnum)[keyof typeof JobInterviewScalarFieldEnum]
 
 
 export const PerformanceCycleScalarFieldEnum = {

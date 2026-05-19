@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -80,6 +82,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     useHrAccess(initialBearerToken);
   const [summary, setSummary] = useState<BenefitsSummaryApiShape | null | undefined>(undefined);
   const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
+  const [pendingLifeEvent, setPendingLifeEvent] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -105,6 +108,20 @@ export function BenefitsClient({ initialBearerToken }: Props) {
         return;
       }
       setSummary(result.summary);
+
+      const lifeRes = await hrApiFetch("/api/v1/me/benefits/life-events", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (lifeRes.ok) {
+        const lifeBody = (await lifeRes.json()) as {
+          data?: { events?: { status: string }[] };
+        };
+        const events = lifeBody.data?.events ?? [];
+        setPendingLifeEvent(
+          events.some((e) => e.status === "SUBMITTED" || e.status === "HR_REVIEW"),
+        );
+      }
     })();
 
     return () => {
@@ -227,7 +244,18 @@ export function BenefitsClient({ initialBearerToken }: Props) {
 
   return (
     <div className="space-y-8">
-      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+      {pendingLifeEvent ? (
+        <Alert>
+          <AlertTitle>Life event in progress</AlertTitle>
+          <AlertDescription>
+            You have a life event under review.{" "}
+            <Link href="/employee/benefits/life-events" className="font-medium underline">
+              Track your life event
+            </Link>
+          </AlertDescription>
+        </Alert>
+      ) : null}
+      <p className="text-xs text-muted-foreground">
         Effective dates use {summary.calendarBasis === "UTC" ? "UTC calendar dates" : "the noted calendar basis"}.
       </p>
       {grouped.map((section) => (

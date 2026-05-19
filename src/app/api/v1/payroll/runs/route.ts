@@ -73,6 +73,7 @@ export async function GET(request: Request) {
             startDate: true,
             endDate: true,
             label: true,
+            status: true,
             _count: { select: { paymentInstructions: true } },
           },
         }),
@@ -83,6 +84,7 @@ export async function GET(request: Request) {
       startDate: p.startDate.toISOString().slice(0, 10),
       endDate: p.endDate.toISOString().slice(0, 10),
       label: p.label,
+      status: p.status,
       paymentInstructionCount: p._count.paymentInstructions,
     }));
 

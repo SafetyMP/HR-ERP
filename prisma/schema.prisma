@@ -111,6 +111,8 @@ model Employee {
   attendanceCorrectionsSubmitted AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionSubmittedBy")
   attendanceCorrectionsDecided   AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionDecidedBy")
   employeeSeparationTasks        EmployeeSeparationTask[]
+  payrollRunExceptions           PayrollRunException[]
+  benefitLifeEvents              BenefitLifeEvent[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -593,20 +595,81 @@ model MeetingProposalParticipant {
 
 // --- Payroll splits ---
 
+enum PayrollPeriodStatus {
+  OPEN
+  COMPUTED
+  LOCKED
+  ARTIFACT_GENERATED
+}
+
+enum PayrollRunExceptionCode {
+  NO_COMPENSATION
+  VALIDATION_ERROR
+  SKIPPED_EXISTING
+}
+
+enum PayrollRunExceptionStatus {
+  OPEN
+  RESOLVED
+  WAIVED
+}
+
 model PayrollPeriod {
-  id        String   @id @default(uuid())
-  tenantId  String   @map("tenant_id")
-  startDate DateTime @map("start_date") @db.Date
-  endDate   DateTime @map("end_date") @db.Date
-  label     String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                  String              @id @default(uuid())
+  tenantId            String              @map("tenant_id")
+  startDate           DateTime            @map("start_date") @db.Date
+  endDate             DateTime            @map("end_date") @db.Date
+  label               String?
+  status              PayrollPeriodStatus @default(OPEN)
+  lockedAt            DateTime?           @map("locked_at")
+  lockedBySubjectId   String?             @map("locked_by_subject_id")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
 
   organization        Organization         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   paymentInstructions PaymentInstruction[]
+  runExceptions       PayrollRunException[]
+  filingArtifacts     PayrollFilingArtifact[]
 
   @@index([tenantId])
+  @@index([tenantId, status])
   @@map("payroll_periods")
+}
+
+model PayrollRunException {
+  id              String                    @id @default(uuid())
+  tenantId        String                    @map("tenant_id")
+  payrollPeriodId String                    @map("payroll_period_id")
+  employeeId      String                    @map("employee_id")
+  code            PayrollRunExceptionCode
+  status          PayrollRunExceptionStatus @default(OPEN)
+  resolutionNote  String?                   @map("resolution_note")
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  updatedAt       DateTime                  @updatedAt @map("updated_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+  employee      Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, payrollPeriodId, employeeId, code])
+  @@index([tenantId, payrollPeriodId, status])
+  @@map("payroll_run_exceptions")
+}
+
+model PayrollFilingArtifact {
+  id              String   @id @default(uuid())
+  tenantId        String   @map("tenant_id")
+  payrollPeriodId String   @map("payroll_period_id")
+  jurisdiction    String
+  versionId       String   @map("version_id")
+  payloadHash     String   @map("payload_hash")
+  payloadJson     Json     @map("payload_json")
+  generatedAt     DateTime @default(now()) @map("generated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, payrollPeriodId])
+  @@map("payroll_filing_artifacts")
 }
 
 model PaymentInstruction {
@@ -958,6 +1021,41 @@ model BenefitElectionChangeRequest {
   @@map("benefit_election_change_requests")
 }
 
+enum BenefitLifeEventType {
+  MARRIAGE
+  BIRTH_ADOPTION
+  DIVORCE
+  LOSS_OF_COVERAGE
+  OTHER
+}
+
+enum BenefitLifeEventStatus {
+  SUBMITTED
+  HR_REVIEW
+  APPLIED
+  DENIED
+}
+
+model BenefitLifeEvent {
+  id           String                 @id @default(uuid())
+  tenantId     String                 @map("tenant_id")
+  employeeId   String                 @map("employee_id")
+  eventType    BenefitLifeEventType   @map("event_type")
+  eventDate    DateTime               @map("event_date") @db.Date
+  description  String?                @db.VarChar(2000)
+  status       BenefitLifeEventStatus @default(SUBMITTED)
+  hrNote       String?                @map("hr_note") @db.VarChar(2000)
+  cobraEventId String?                @unique @map("cobra_event_id")
+  createdAt    DateTime               @default(now()) @map("created_at")
+  updatedAt    DateTime               @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([tenantId, employeeId])
+  @@map("benefit_life_events")
+}
+
 enum AttendanceCorrectionStatus {
   PENDING
   APPROVED
@@ -1288,10 +1386,34 @@ model JobApplication {
   requisition JobRequisition @relation(fields: [requisitionId], references: [id], onDelete: Cascade)
   candidate   Candidate      @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   offers      JobOffer[]
+  interviews  JobInterview[]
 
   @@unique([tenantId, requisitionId, candidateId])
   @@index([tenantId, stage])
   @@map("job_applications")
+}
+
+enum JobInterviewOutcome {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+model JobInterview {
+  id            String              @id @default(uuid())
+  tenantId      String              @map("tenant_id")
+  applicationId String              @map("application_id")
+  scheduledAt   DateTime            @map("scheduled_at")
+  interviewType String              @map("interview_type")
+  outcome       JobInterviewOutcome @default(SCHEDULED)
+  scorecardJson Json                @default("{}") @map("scorecard_json")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  application JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, applicationId])
+  @@map("job_interviews")
 }
 
 // --- Performance management ---

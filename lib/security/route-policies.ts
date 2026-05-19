@@ -170,6 +170,74 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "payroll:run_read",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
+  [routeKey("GET", "/api/v1/payroll/runs/:periodId/exceptions")]: {
+    permission: "payroll:run_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/payroll/runs/exceptions/:id")]: {
+    permission: "payroll:run_execute",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/payroll/runs/:periodId/lock")]: {
+    permission: "payroll:run_execute",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/payroll/runs/:periodId/filing-artifact")]: {
+    permission: "payroll:run_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/payroll/runs/:periodId/filing-artifact")]: {
+    permission: "payroll:run_execute",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/me/benefits/life-events")]: {
+    permission: "benefits:election_intent_submit",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/benefits/life-events")]: {
+    permission: "benefits:read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/hr/benefits/life-events")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/hr/benefits/life-events/:id")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/recruiting/applications/:id/interviews")]: {
+    permission: "recruiting:application_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/recruiting/applications/:id/interviews")]: {
+    permission: "recruiting:application_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/recruiting/interviews/:id")]: {
+    permission: "recruiting:application_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/me/performance/reviews")]: {
+    permission: "performance:review_self_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/me/performance/reviews/:id")]: {
+    permission: "performance:review_self_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/manager/performance/reviews")]: {
+    permission: "performance:review_team_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("PATCH", "/api/v1/manager/performance/reviews/:id")]: {
+    permission: "performance:review_team_write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/hr/analytics/ops-summary")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("GET", "/api/v1/recruiting/requisitions")]: {
     permission: "recruiting:requisition_read",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
@@ -324,6 +392,87 @@ export function getRoutePolicy(
     const match = pathname.match(/^\/api\/v1\/payroll\/runs\/([^/]+)$/);
     if (match && UUID_PATTERN.test(match[1]!)) {
       return ROUTES[routeKey("GET", "/api/v1/payroll/runs/:periodId")];
+    }
+    const exceptionsMatch = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/([^/]+)\/exceptions$/,
+    );
+    if (exceptionsMatch && UUID_PATTERN.test(exceptionsMatch[1]!)) {
+      return ROUTES[routeKey("GET", "/api/v1/payroll/runs/:periodId/exceptions")];
+    }
+    const filingGetMatch = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/([^/]+)\/filing-artifact$/,
+    );
+    if (filingGetMatch && UUID_PATTERN.test(filingGetMatch[1]!)) {
+      return ROUTES[
+        routeKey("GET", "/api/v1/payroll/runs/:periodId/filing-artifact")
+      ];
+    }
+  }
+
+  if (verb === "POST") {
+    const lockMatch = pathname.match(/^\/api\/v1\/payroll\/runs\/([^/]+)\/lock$/);
+    if (lockMatch && UUID_PATTERN.test(lockMatch[1]!)) {
+      return ROUTES[routeKey("POST", "/api/v1/payroll/runs/:periodId/lock")];
+    }
+    const filingPostMatch = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/([^/]+)\/filing-artifact$/,
+    );
+    if (filingPostMatch && UUID_PATTERN.test(filingPostMatch[1]!)) {
+      return ROUTES[
+        routeKey("POST", "/api/v1/payroll/runs/:periodId/filing-artifact")
+      ];
+    }
+    const interviewPostMatch = pathname.match(
+      /^\/api\/v1\/recruiting\/applications\/([^/]+)\/interviews$/,
+    );
+    if (interviewPostMatch && UUID_PATTERN.test(interviewPostMatch[1]!)) {
+      return ROUTES[
+        routeKey("POST", "/api/v1/recruiting/applications/:id/interviews")
+      ];
+    }
+  }
+
+  if (verb === "PATCH") {
+    const exceptionPatch = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/exceptions\/([^/]+)$/,
+    );
+    if (exceptionPatch && UUID_PATTERN.test(exceptionPatch[1]!)) {
+      return ROUTES[routeKey("PATCH", "/api/v1/payroll/runs/exceptions/:id")];
+    }
+    const lifeEventPatch = pathname.match(
+      /^\/api\/v1\/hr\/benefits\/life-events\/([^/]+)$/,
+    );
+    if (lifeEventPatch && UUID_PATTERN.test(lifeEventPatch[1]!)) {
+      return ROUTES[routeKey("PATCH", "/api/v1/hr/benefits/life-events/:id")];
+    }
+    const interviewPatch = pathname.match(
+      /^\/api\/v1\/recruiting\/interviews\/([^/]+)$/,
+    );
+    if (interviewPatch && UUID_PATTERN.test(interviewPatch[1]!)) {
+      return ROUTES[routeKey("PATCH", "/api/v1/recruiting/interviews/:id")];
+    }
+    const selfReviewPatch = pathname.match(
+      /^\/api\/v1\/me\/performance\/reviews\/([^/]+)$/,
+    );
+    if (selfReviewPatch && UUID_PATTERN.test(selfReviewPatch[1]!)) {
+      return ROUTES[routeKey("PATCH", "/api/v1/me/performance/reviews/:id")];
+    }
+    const mgrReviewPatch = pathname.match(
+      /^\/api\/v1\/manager\/performance\/reviews\/([^/]+)$/,
+    );
+    if (mgrReviewPatch && UUID_PATTERN.test(mgrReviewPatch[1]!)) {
+      return ROUTES[routeKey("PATCH", "/api/v1/manager/performance/reviews/:id")];
+    }
+  }
+
+  if (verb === "GET") {
+    const interviewListMatch = pathname.match(
+      /^\/api\/v1\/recruiting\/applications\/([^/]+)\/interviews$/,
+    );
+    if (interviewListMatch && UUID_PATTERN.test(interviewListMatch[1]!)) {
+      return ROUTES[
+        routeKey("GET", "/api/v1/recruiting/applications/:id/interviews")
+      ];
     }
   }
 

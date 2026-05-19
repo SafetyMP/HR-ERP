@@ -30,6 +30,9 @@ export type PayrollPeriodMinAggregateOutputType = {
   startDate: Date | null
   endDate: Date | null
   label: string | null
+  status: $Enums.PayrollPeriodStatus | null
+  lockedAt: Date | null
+  lockedBySubjectId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +43,9 @@ export type PayrollPeriodMaxAggregateOutputType = {
   startDate: Date | null
   endDate: Date | null
   label: string | null
+  status: $Enums.PayrollPeriodStatus | null
+  lockedAt: Date | null
+  lockedBySubjectId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +56,9 @@ export type PayrollPeriodCountAggregateOutputType = {
   startDate: number
   endDate: number
   label: number
+  status: number
+  lockedAt: number
+  lockedBySubjectId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +71,9 @@ export type PayrollPeriodMinAggregateInputType = {
   startDate?: true
   endDate?: true
   label?: true
+  status?: true
+  lockedAt?: true
+  lockedBySubjectId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +84,9 @@ export type PayrollPeriodMaxAggregateInputType = {
   startDate?: true
   endDate?: true
   label?: true
+  status?: true
+  lockedAt?: true
+  lockedBySubjectId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +97,9 @@ export type PayrollPeriodCountAggregateInputType = {
   startDate?: true
   endDate?: true
   label?: true
+  status?: true
+  lockedAt?: true
+  lockedBySubjectId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +183,9 @@ export type PayrollPeriodGroupByOutputType = {
   startDate: Date
   endDate: Date
   label: string | null
+  status: $Enums.PayrollPeriodStatus
+  lockedAt: Date | null
+  lockedBySubjectId: string | null
   createdAt: Date
   updatedAt: Date
   _count: PayrollPeriodCountAggregateOutputType | null
@@ -196,10 +217,15 @@ export type PayrollPeriodWhereInput = {
   startDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   endDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   label?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFilter<"PayrollPeriod"> | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+  lockedBySubjectId?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   paymentInstructions?: Prisma.PaymentInstructionListRelationFilter
+  runExceptions?: Prisma.PayrollRunExceptionListRelationFilter
+  filingArtifacts?: Prisma.PayrollFilingArtifactListRelationFilter
 }
 
 export type PayrollPeriodOrderByWithRelationInput = {
@@ -208,10 +234,15 @@ export type PayrollPeriodOrderByWithRelationInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedBySubjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
   paymentInstructions?: Prisma.PaymentInstructionOrderByRelationAggregateInput
+  runExceptions?: Prisma.PayrollRunExceptionOrderByRelationAggregateInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactOrderByRelationAggregateInput
 }
 
 export type PayrollPeriodWhereUniqueInput = Prisma.AtLeast<{
@@ -223,10 +254,15 @@ export type PayrollPeriodWhereUniqueInput = Prisma.AtLeast<{
   startDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   endDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   label?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFilter<"PayrollPeriod"> | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+  lockedBySubjectId?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   paymentInstructions?: Prisma.PaymentInstructionListRelationFilter
+  runExceptions?: Prisma.PayrollRunExceptionListRelationFilter
+  filingArtifacts?: Prisma.PayrollFilingArtifactListRelationFilter
 }, "id">
 
 export type PayrollPeriodOrderByWithAggregationInput = {
@@ -235,6 +271,9 @@ export type PayrollPeriodOrderByWithAggregationInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lockedBySubjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PayrollPeriodCountOrderByAggregateInput
@@ -251,6 +290,9 @@ export type PayrollPeriodScalarWhereWithAggregatesInput = {
   startDate?: Prisma.DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
   label?: Prisma.StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
+  status?: Prisma.EnumPayrollPeriodStatusWithAggregatesFilter<"PayrollPeriod"> | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PayrollPeriod"> | Date | string | null
+  lockedBySubjectId?: Prisma.StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
 }
@@ -260,10 +302,15 @@ export type PayrollPeriodCreateInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPayrollPeriodsInput
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodUncheckedCreateInput = {
@@ -272,9 +319,14 @@ export type PayrollPeriodUncheckedCreateInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodUpdateInput = {
@@ -282,10 +334,15 @@ export type PayrollPeriodUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPayrollPeriodsNestedInput
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodUncheckedUpdateInput = {
@@ -294,9 +351,14 @@ export type PayrollPeriodUncheckedUpdateInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodCreateManyInput = {
@@ -305,6 +367,9 @@ export type PayrollPeriodCreateManyInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -314,6 +379,9 @@ export type PayrollPeriodUpdateManyMutationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -324,6 +392,9 @@ export type PayrollPeriodUncheckedUpdateManyInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -344,6 +415,9 @@ export type PayrollPeriodCountOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBySubjectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -354,6 +428,9 @@ export type PayrollPeriodMaxOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBySubjectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -364,8 +441,16 @@ export type PayrollPeriodMinOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  lockedAt?: Prisma.SortOrder
+  lockedBySubjectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type PayrollPeriodScalarRelationFilter = {
+  is?: Prisma.PayrollPeriodWhereInput
+  isNot?: Prisma.PayrollPeriodWhereInput
 }
 
 export type PayrollPeriodNullableScalarRelationFilter = {
@@ -415,6 +500,38 @@ export type PayrollPeriodUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.PayrollPeriodScalarWhereInput | Prisma.PayrollPeriodScalarWhereInput[]
 }
 
+export type EnumPayrollPeriodStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PayrollPeriodStatus
+}
+
+export type PayrollPeriodCreateNestedOneWithoutRunExceptionsInput = {
+  create?: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedCreateWithoutRunExceptionsInput>
+  connectOrCreate?: Prisma.PayrollPeriodCreateOrConnectWithoutRunExceptionsInput
+  connect?: Prisma.PayrollPeriodWhereUniqueInput
+}
+
+export type PayrollPeriodUpdateOneRequiredWithoutRunExceptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedCreateWithoutRunExceptionsInput>
+  connectOrCreate?: Prisma.PayrollPeriodCreateOrConnectWithoutRunExceptionsInput
+  upsert?: Prisma.PayrollPeriodUpsertWithoutRunExceptionsInput
+  connect?: Prisma.PayrollPeriodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayrollPeriodUpdateToOneWithWhereWithoutRunExceptionsInput, Prisma.PayrollPeriodUpdateWithoutRunExceptionsInput>, Prisma.PayrollPeriodUncheckedUpdateWithoutRunExceptionsInput>
+}
+
+export type PayrollPeriodCreateNestedOneWithoutFilingArtifactsInput = {
+  create?: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedCreateWithoutFilingArtifactsInput>
+  connectOrCreate?: Prisma.PayrollPeriodCreateOrConnectWithoutFilingArtifactsInput
+  connect?: Prisma.PayrollPeriodWhereUniqueInput
+}
+
+export type PayrollPeriodUpdateOneRequiredWithoutFilingArtifactsNestedInput = {
+  create?: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedCreateWithoutFilingArtifactsInput>
+  connectOrCreate?: Prisma.PayrollPeriodCreateOrConnectWithoutFilingArtifactsInput
+  upsert?: Prisma.PayrollPeriodUpsertWithoutFilingArtifactsInput
+  connect?: Prisma.PayrollPeriodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayrollPeriodUpdateToOneWithWhereWithoutFilingArtifactsInput, Prisma.PayrollPeriodUpdateWithoutFilingArtifactsInput>, Prisma.PayrollPeriodUncheckedUpdateWithoutFilingArtifactsInput>
+}
+
 export type PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput = {
   create?: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutPaymentInstructionsInput, Prisma.PayrollPeriodUncheckedCreateWithoutPaymentInstructionsInput>
   connectOrCreate?: Prisma.PayrollPeriodCreateOrConnectWithoutPaymentInstructionsInput
@@ -436,9 +553,14 @@ export type PayrollPeriodCreateWithoutOrganizationInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodUncheckedCreateWithoutOrganizationInput = {
@@ -446,9 +568,14 @@ export type PayrollPeriodUncheckedCreateWithoutOrganizationInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodCreateOrConnectWithoutOrganizationInput = {
@@ -486,8 +613,163 @@ export type PayrollPeriodScalarWhereInput = {
   startDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   endDate?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   label?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFilter<"PayrollPeriod"> | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+  lockedBySubjectId?: Prisma.StringNullableFilter<"PayrollPeriod"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PayrollPeriod"> | Date | string
+}
+
+export type PayrollPeriodCreateWithoutRunExceptionsInput = {
+  id?: string
+  startDate: Date | string
+  endDate: Date | string
+  label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutPayrollPeriodsInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactCreateNestedManyWithoutPayrollPeriodInput
+}
+
+export type PayrollPeriodUncheckedCreateWithoutRunExceptionsInput = {
+  id?: string
+  tenantId: string
+  startDate: Date | string
+  endDate: Date | string
+  label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedCreateNestedManyWithoutPayrollPeriodInput
+}
+
+export type PayrollPeriodCreateOrConnectWithoutRunExceptionsInput = {
+  where: Prisma.PayrollPeriodWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedCreateWithoutRunExceptionsInput>
+}
+
+export type PayrollPeriodUpsertWithoutRunExceptionsInput = {
+  update: Prisma.XOR<Prisma.PayrollPeriodUpdateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedUpdateWithoutRunExceptionsInput>
+  create: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedCreateWithoutRunExceptionsInput>
+  where?: Prisma.PayrollPeriodWhereInput
+}
+
+export type PayrollPeriodUpdateToOneWithWhereWithoutRunExceptionsInput = {
+  where?: Prisma.PayrollPeriodWhereInput
+  data: Prisma.XOR<Prisma.PayrollPeriodUpdateWithoutRunExceptionsInput, Prisma.PayrollPeriodUncheckedUpdateWithoutRunExceptionsInput>
+}
+
+export type PayrollPeriodUpdateWithoutRunExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutPayrollPeriodsNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUpdateManyWithoutPayrollPeriodNestedInput
+}
+
+export type PayrollPeriodUncheckedUpdateWithoutRunExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+}
+
+export type PayrollPeriodCreateWithoutFilingArtifactsInput = {
+  id?: string
+  startDate: Date | string
+  endDate: Date | string
+  label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutPayrollPeriodsInput
+  paymentInstructions?: Prisma.PaymentInstructionCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutPayrollPeriodInput
+}
+
+export type PayrollPeriodUncheckedCreateWithoutFilingArtifactsInput = {
+  id?: string
+  tenantId: string
+  startDate: Date | string
+  endDate: Date | string
+  label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+}
+
+export type PayrollPeriodCreateOrConnectWithoutFilingArtifactsInput = {
+  where: Prisma.PayrollPeriodWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedCreateWithoutFilingArtifactsInput>
+}
+
+export type PayrollPeriodUpsertWithoutFilingArtifactsInput = {
+  update: Prisma.XOR<Prisma.PayrollPeriodUpdateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedUpdateWithoutFilingArtifactsInput>
+  create: Prisma.XOR<Prisma.PayrollPeriodCreateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedCreateWithoutFilingArtifactsInput>
+  where?: Prisma.PayrollPeriodWhereInput
+}
+
+export type PayrollPeriodUpdateToOneWithWhereWithoutFilingArtifactsInput = {
+  where?: Prisma.PayrollPeriodWhereInput
+  data: Prisma.XOR<Prisma.PayrollPeriodUpdateWithoutFilingArtifactsInput, Prisma.PayrollPeriodUncheckedUpdateWithoutFilingArtifactsInput>
+}
+
+export type PayrollPeriodUpdateWithoutFilingArtifactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutPayrollPeriodsNestedInput
+  paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutPayrollPeriodNestedInput
+}
+
+export type PayrollPeriodUncheckedUpdateWithoutFilingArtifactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodCreateWithoutPaymentInstructionsInput = {
@@ -495,9 +777,14 @@ export type PayrollPeriodCreateWithoutPaymentInstructionsInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPayrollPeriodsInput
+  runExceptions?: Prisma.PayrollRunExceptionCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodUncheckedCreateWithoutPaymentInstructionsInput = {
@@ -506,8 +793,13 @@ export type PayrollPeriodUncheckedCreateWithoutPaymentInstructionsInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedCreateNestedManyWithoutPayrollPeriodInput
 }
 
 export type PayrollPeriodCreateOrConnectWithoutPaymentInstructionsInput = {
@@ -531,9 +823,14 @@ export type PayrollPeriodUpdateWithoutPaymentInstructionsInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPayrollPeriodsNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodUncheckedUpdateWithoutPaymentInstructionsInput = {
@@ -542,8 +839,13 @@ export type PayrollPeriodUncheckedUpdateWithoutPaymentInstructionsInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodCreateManyOrganizationInput = {
@@ -551,6 +853,9 @@ export type PayrollPeriodCreateManyOrganizationInput = {
   startDate: Date | string
   endDate: Date | string
   label?: string | null
+  status?: $Enums.PayrollPeriodStatus
+  lockedAt?: Date | string | null
+  lockedBySubjectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -560,9 +865,14 @@ export type PayrollPeriodUpdateWithoutOrganizationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentInstructions?: Prisma.PaymentInstructionUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodUncheckedUpdateWithoutOrganizationInput = {
@@ -570,9 +880,14 @@ export type PayrollPeriodUncheckedUpdateWithoutOrganizationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentInstructions?: Prisma.PaymentInstructionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  runExceptions?: Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  filingArtifacts?: Prisma.PayrollFilingArtifactUncheckedUpdateManyWithoutPayrollPeriodNestedInput
 }
 
 export type PayrollPeriodUncheckedUpdateManyWithoutOrganizationInput = {
@@ -580,6 +895,9 @@ export type PayrollPeriodUncheckedUpdateManyWithoutOrganizationInput = {
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPayrollPeriodStatusFieldUpdateOperationsInput | $Enums.PayrollPeriodStatus
+  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lockedBySubjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -591,10 +909,14 @@ export type PayrollPeriodUncheckedUpdateManyWithoutOrganizationInput = {
 
 export type PayrollPeriodCountOutputType = {
   paymentInstructions: number
+  runExceptions: number
+  filingArtifacts: number
 }
 
 export type PayrollPeriodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paymentInstructions?: boolean | PayrollPeriodCountOutputTypeCountPaymentInstructionsArgs
+  runExceptions?: boolean | PayrollPeriodCountOutputTypeCountRunExceptionsArgs
+  filingArtifacts?: boolean | PayrollPeriodCountOutputTypeCountFilingArtifactsArgs
 }
 
 /**
@@ -614,6 +936,20 @@ export type PayrollPeriodCountOutputTypeCountPaymentInstructionsArgs<ExtArgs ext
   where?: Prisma.PaymentInstructionWhereInput
 }
 
+/**
+ * PayrollPeriodCountOutputType without action
+ */
+export type PayrollPeriodCountOutputTypeCountRunExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollRunExceptionWhereInput
+}
+
+/**
+ * PayrollPeriodCountOutputType without action
+ */
+export type PayrollPeriodCountOutputTypeCountFilingArtifactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollFilingArtifactWhereInput
+}
+
 
 export type PayrollPeriodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -621,10 +957,15 @@ export type PayrollPeriodSelect<ExtArgs extends runtime.Types.Extensions.Interna
   startDate?: boolean
   endDate?: boolean
   label?: boolean
+  status?: boolean
+  lockedAt?: boolean
+  lockedBySubjectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   paymentInstructions?: boolean | Prisma.PayrollPeriod$paymentInstructionsArgs<ExtArgs>
+  runExceptions?: boolean | Prisma.PayrollPeriod$runExceptionsArgs<ExtArgs>
+  filingArtifacts?: boolean | Prisma.PayrollPeriod$filingArtifactsArgs<ExtArgs>
   _count?: boolean | Prisma.PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollPeriod"]>
 
@@ -634,6 +975,9 @@ export type PayrollPeriodSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   startDate?: boolean
   endDate?: boolean
   label?: boolean
+  status?: boolean
+  lockedAt?: boolean
+  lockedBySubjectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -645,6 +989,9 @@ export type PayrollPeriodSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   startDate?: boolean
   endDate?: boolean
   label?: boolean
+  status?: boolean
+  lockedAt?: boolean
+  lockedBySubjectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -656,14 +1003,19 @@ export type PayrollPeriodSelectScalar = {
   startDate?: boolean
   endDate?: boolean
   label?: boolean
+  status?: boolean
+  lockedAt?: boolean
+  lockedBySubjectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PayrollPeriodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "startDate" | "endDate" | "label" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
+export type PayrollPeriodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "startDate" | "endDate" | "label" | "status" | "lockedAt" | "lockedBySubjectId" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
 export type PayrollPeriodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   paymentInstructions?: boolean | Prisma.PayrollPeriod$paymentInstructionsArgs<ExtArgs>
+  runExceptions?: boolean | Prisma.PayrollPeriod$runExceptionsArgs<ExtArgs>
+  filingArtifacts?: boolean | Prisma.PayrollPeriod$filingArtifactsArgs<ExtArgs>
   _count?: boolean | Prisma.PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PayrollPeriodIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -678,6 +1030,8 @@ export type $PayrollPeriodPayload<ExtArgs extends runtime.Types.Extensions.Inter
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
     paymentInstructions: Prisma.$PaymentInstructionPayload<ExtArgs>[]
+    runExceptions: Prisma.$PayrollRunExceptionPayload<ExtArgs>[]
+    filingArtifacts: Prisma.$PayrollFilingArtifactPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -685,6 +1039,9 @@ export type $PayrollPeriodPayload<ExtArgs extends runtime.Types.Extensions.Inter
     startDate: Date
     endDate: Date
     label: string | null
+    status: $Enums.PayrollPeriodStatus
+    lockedAt: Date | null
+    lockedBySubjectId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["payrollPeriod"]>
@@ -1083,6 +1440,8 @@ export interface Prisma__PayrollPeriodClient<T, Null = never, ExtArgs extends ru
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentInstructions<T extends Prisma.PayrollPeriod$paymentInstructionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollPeriod$paymentInstructionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentInstructionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  runExceptions<T extends Prisma.PayrollPeriod$runExceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollPeriod$runExceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollRunExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  filingArtifacts<T extends Prisma.PayrollPeriod$filingArtifactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollPeriod$filingArtifactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollFilingArtifactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1117,6 +1476,9 @@ export interface PayrollPeriodFieldRefs {
   readonly startDate: Prisma.FieldRef<"PayrollPeriod", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"PayrollPeriod", 'DateTime'>
   readonly label: Prisma.FieldRef<"PayrollPeriod", 'String'>
+  readonly status: Prisma.FieldRef<"PayrollPeriod", 'PayrollPeriodStatus'>
+  readonly lockedAt: Prisma.FieldRef<"PayrollPeriod", 'DateTime'>
+  readonly lockedBySubjectId: Prisma.FieldRef<"PayrollPeriod", 'String'>
   readonly createdAt: Prisma.FieldRef<"PayrollPeriod", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PayrollPeriod", 'DateTime'>
 }
@@ -1541,6 +1903,54 @@ export type PayrollPeriod$paymentInstructionsArgs<ExtArgs extends runtime.Types.
   take?: number
   skip?: number
   distinct?: Prisma.PaymentInstructionScalarFieldEnum | Prisma.PaymentInstructionScalarFieldEnum[]
+}
+
+/**
+ * PayrollPeriod.runExceptions
+ */
+export type PayrollPeriod$runExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollRunException
+   */
+  select?: Prisma.PayrollRunExceptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollRunException
+   */
+  omit?: Prisma.PayrollRunExceptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollRunExceptionInclude<ExtArgs> | null
+  where?: Prisma.PayrollRunExceptionWhereInput
+  orderBy?: Prisma.PayrollRunExceptionOrderByWithRelationInput | Prisma.PayrollRunExceptionOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollRunExceptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollRunExceptionScalarFieldEnum | Prisma.PayrollRunExceptionScalarFieldEnum[]
+}
+
+/**
+ * PayrollPeriod.filingArtifacts
+ */
+export type PayrollPeriod$filingArtifactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollFilingArtifact
+   */
+  select?: Prisma.PayrollFilingArtifactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollFilingArtifact
+   */
+  omit?: Prisma.PayrollFilingArtifactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollFilingArtifactInclude<ExtArgs> | null
+  where?: Prisma.PayrollFilingArtifactWhereInput
+  orderBy?: Prisma.PayrollFilingArtifactOrderByWithRelationInput | Prisma.PayrollFilingArtifactOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollFilingArtifactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollFilingArtifactScalarFieldEnum | Prisma.PayrollFilingArtifactScalarFieldEnum[]
 }
 
 /**
