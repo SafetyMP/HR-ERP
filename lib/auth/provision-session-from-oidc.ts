@@ -4,6 +4,40 @@ import { ROLES } from "@/lib/security/permissions";
 import { signHrAccessToken } from "@/lib/security/jwt";
 import { verifyHrJwt } from "@/lib/security/jwt";
 
+/** Map a known login email to an HR access JWT (tenant + roles from `UserAccount`). */
+export async function provisionHrSessionFromEmail(
+  emailRaw: string,
+): Promise<string> {
+  const email = emailRaw.trim().toLowerCase();
+  if (!email) {
+    throw new Error("oidc_missing_email_claim");
+  }
+
+  const account = await prisma.userAccount.findFirst({
+    where: { email },
+    include: { roles: true },
+  });
+  if (!account) {
+    throw new Error("oidc_user_not_provisioned");
+  }
+
+  const roles = account.roles
+    .map((r) => r.role)
+    .filter((r): r is Role => (ROLES as readonly string[]).includes(r));
+
+  if (roles.length === 0) {
+    throw new Error("oidc_user_no_roles");
+  }
+
+  return signHrAccessToken({
+    sub: account.id,
+    tenantId: account.tenantId,
+    roles,
+    subjectEmployeeId: account.employeeId ?? undefined,
+    expiresIn: "8h",
+  });
+}
+
 /**
  * Returns an HR-shaped access JWT suitable for the session cookie.
  * If the IdP token already carries HR claims (`tenant_id`, `roles`), reuse it.
@@ -35,27 +69,5 @@ export async function accessTokenForOidcLogin(
     throw new Error("oidc_missing_email_claim");
   }
 
-  const account = await prisma.userAccount.findFirst({
-    where: { email },
-    include: { roles: true },
-  });
-  if (!account) {
-    throw new Error("oidc_user_not_provisioned");
-  }
-
-  const roles = account.roles
-    .map((r) => r.role)
-    .filter((r): r is Role => (ROLES as readonly string[]).includes(r));
-
-  if (roles.length === 0) {
-    throw new Error("oidc_user_no_roles");
-  }
-
-  return signHrAccessToken({
-    sub: account.id,
-    tenantId: account.tenantId,
-    roles,
-    subjectEmployeeId: account.employeeId ?? undefined,
-    expiresIn: "8h",
-  });
+  return provisionHrSessionFromEmail(email);
 }
