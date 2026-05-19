@@ -1,3 +1,9 @@
+## [2.8.0](https://github.com/SafetyMP/HR-ERP/compare/v2.7.0...v2.8.0) (2026-05-19)
+
+### Features
+
+* **auth:** Neon Auth Google sign-in for Vercel production ([6d6f6bf](https://github.com/SafetyMP/HR-ERP/commit/6d6f6bf176095e3831f06cdcd39918af6ba00f02))
+
 ## [2.7.0](https://github.com/SafetyMP/HR-ERP/compare/v2.6.0...v2.7.0) (2026-05-19)
 
 ### Features
