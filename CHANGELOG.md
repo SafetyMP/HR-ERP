@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/SafetyMP/HR-ERP/compare/v2.6.0...v2.7.0) (2026-05-19)
+
+### Features
+
+* **ux:** product shell, design system, and workflow polish (brief 022) ([08e1b7a](https://github.com/SafetyMP/HR-ERP/commit/08e1b7a436b934eb1112de44297c4f13197888f0))
+
 ## [2.6.0](https://github.com/SafetyMP/HR-ERP/compare/v2.5.0...v2.6.0) (2026-05-19)
 
 ### Features
