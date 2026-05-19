@@ -1,3 +1,9 @@
+## [2.8.1](https://github.com/SafetyMP/HR-ERP/compare/v2.8.0...v2.8.1) (2026-05-19)
+
+### Bug Fixes
+
+* **auth:** Neon Google sign-in cookie bridge and clearer errors ([0ca0704](https://github.com/SafetyMP/HR-ERP/commit/0ca07045d5d46148335e67c7905bd232da29235a))
+
 ## [2.8.0](https://github.com/SafetyMP/HR-ERP/compare/v2.7.0...v2.8.0) (2026-05-19)
 
 ### Features
