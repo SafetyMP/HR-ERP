@@ -1,3 +1,9 @@
+## [2.5.0](https://github.com/SafetyMP/HR-ERP/compare/v2.4.0...v2.5.0) (2026-05-19)
+
+### Features
+
+* **ops:** Phase 1 smoke gates, webhook encryption, and Tier 1 slate 014-017 ([dfc80c9](https://github.com/SafetyMP/HR-ERP/commit/dfc80c93184a1f673ea0b9e2977c5dd50e8dc8ef))
+
 ## [2.4.0](https://github.com/SafetyMP/HR-ERP/compare/v2.3.1...v2.4.0) (2026-05-10)
 
 ### Features
