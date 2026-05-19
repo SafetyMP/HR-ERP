@@ -1,3 +1,9 @@
+## [2.9.0](https://github.com/SafetyMP/HR-ERP/compare/v2.8.2...v2.9.0) (2026-05-19)
+
+### Features
+
+* **auth:** enable demo JWT sign-in on production ([eb70524](https://github.com/SafetyMP/HR-ERP/commit/eb705244eb0f763b3e33d04e88d37d82b5ad44ad))
+
 ## [2.8.2](https://github.com/SafetyMP/HR-ERP/compare/v2.8.1...v2.8.2) (2026-05-19)
 
 ### Bug Fixes
