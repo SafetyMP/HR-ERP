@@ -26,7 +26,9 @@ export function HrSignInCard({
   onDevTokenPaste,
 }: Props) {
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
-  const isDev = process.env.NODE_ENV === "development";
+  const showDevTokenPaste =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true";
 
   return (
     <Card className="mx-auto w-full max-w-lg shadow-sm">
@@ -38,14 +40,18 @@ export function HrSignInCard({
         <Button asChild className="w-full" size="lg">
           <Link href={loginHref}>Sign in with your organization account</Link>
         </Button>
-        {isDev && onDevTokenPaste ? (
+        {showDevTokenPaste && onDevTokenPaste ? (
           <details className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
             <summary className="cursor-pointer font-medium text-muted-foreground">
-              Developer tools
+              Demo sign-in (dev JWT)
             </summary>
             <p className="mt-2 text-xs text-muted-foreground">
-              Mint a token with <code className="font-mono">npm run jwt:dev</code> or use{" "}
-              <code className="font-mono">/api/auth/dev-bootstrap</code>.
+              Run{" "}
+              <code className="font-mono">npm run jwt:dev:demo-employee</code>,{" "}
+              <code className="font-mono">jwt:dev:demo-manager</code>, or{" "}
+              <code className="font-mono">jwt:dev:demo-hr</code> (use{" "}
+              <code className="font-mono">jwt:dev:vercel</code> on Production), then paste
+              the token below.
             </p>
             <label className="mt-3 block text-xs font-medium" htmlFor="hrerp-dev-token">
               Paste bearer token
