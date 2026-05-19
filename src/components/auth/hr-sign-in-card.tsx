@@ -25,7 +25,7 @@ export function HrSignInCard({
   returnTo = "/",
   onDevTokenPaste,
 }: Props) {
-  const loginHref = `/api/auth/oidc/login?returnTo=${encodeURIComponent(returnTo)}`;
+  const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
   const isDev = process.env.NODE_ENV === "development";
 
   return (

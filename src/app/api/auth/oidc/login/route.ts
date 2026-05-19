@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: "oidc_not_configured",
-        hint: "Set OIDC_ISSUER, OIDC_CLIENT_ID, and OIDC_REDIRECT_URI — or use development session bootstrap.",
+        hint: "Set OIDC_ISSUER, OIDC_CLIENT_ID, and OIDC_REDIRECT_URI — or NEON_AUTH_BASE_URL + NEON_AUTH_COOKIE_SECRET on Vercel.",
       },
       { status: 501 },
     );
