@@ -6,9 +6,9 @@ import { Calendar, Clock, DollarSign, Heart } from "lucide-react";
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import {
   demoPreviewBootstrapHref,
-  demoPreviewSignInUiEnabled,
   type DemoPreviewPersona,
 } from "@/lib/auth/demo-preview-config";
+import { useDemoPreviewEnabled } from "@/lib/auth/use-demo-preview-enabled";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,7 +56,7 @@ const ROLE_HUBS: ReadonlyArray<{
 
 export function HomeLandingClient() {
   const { ready, isAuthenticated, persistBearer } = useHrAccess();
-  const demoPreviewEnabled = demoPreviewSignInUiEnabled();
+  const demoPreviewEnabled = useDemoPreviewEnabled();
 
   if (!ready) {
     return <p className="text-sm text-muted-foreground">Loading…</p>;

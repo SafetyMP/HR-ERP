@@ -28,21 +28,31 @@ describe("demo-preview", () => {
     );
   });
 
-  it("enables server gate on preview when ALLOW_DEMO_PREVIEW_SIGNIN=1", () => {
-    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
+  it("enables server gate automatically on Vercel Preview", () => {
     vi.stubEnv("VERCEL_ENV", "preview");
     vi.stubEnv("NODE_ENV", "production");
     expect(demoPreviewSignInServerEnabled()).toBe(true);
   });
 
+  it("enables server gate automatically in local development", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    expect(demoPreviewSignInServerEnabled()).toBe(true);
+  });
+
+  it("can disable server gate on preview with DISABLE_DEMO_PREVIEW_SIGNIN", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("DISABLE_DEMO_PREVIEW_SIGNIN", "1");
+    expect(demoPreviewSignInServerEnabled()).toBe(false);
+  });
+
   it("blocks server gate on production by default", () => {
-    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("NODE_ENV", "production");
     expect(demoPreviewSignInServerEnabled()).toBe(false);
   });
 
-  it("allows server gate on production with explicit break-glass flag", () => {
+  it("allows server gate on production with explicit break-glass flags", () => {
     vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
     vi.stubEnv("ALLOW_DEMO_PREVIEW_ON_PRODUCTION", "1");
     vi.stubEnv("VERCEL_ENV", "production");
@@ -61,9 +71,14 @@ describe("demo-preview", () => {
   });
 });
 
-describe("demo-preview route gate", () => {
-  it("imports route module", async () => {
+describe("demo-preview routes", () => {
+  it("imports bootstrap route", async () => {
     const mod = await import("@/app/api/auth/demo-preview/route");
+    expect(typeof mod.GET).toBe("function");
+  });
+
+  it("imports status route", async () => {
+    const mod = await import("@/app/api/auth/demo-preview/status/route");
     expect(typeof mod.GET).toBe("function");
   });
 });

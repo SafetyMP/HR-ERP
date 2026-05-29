@@ -5,9 +5,9 @@ import Link from "next/link";
 import {
   DEMO_PREVIEW_PERSONAS,
   demoPreviewBootstrapHref,
-  demoPreviewSignInUiEnabled,
   type DemoPreviewPersona,
 } from "@/lib/auth/demo-preview-config";
+import { useDemoPreviewEnabled } from "@/lib/auth/use-demo-preview-enabled";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,7 +34,7 @@ export function HrSignInCard({
   onDevTokenPaste,
 }: Props) {
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
-  const showDemoPreview = demoPreviewSignInUiEnabled();
+  const showDemoPreview = useDemoPreviewEnabled();
   const showDevTokenPaste =
     process.env.NODE_ENV !== "production" &&
     (process.env.NODE_ENV === "development" ||
