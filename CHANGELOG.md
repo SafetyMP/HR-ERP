@@ -1,3 +1,9 @@
+## [2.12.0](https://github.com/SafetyMP/HR-ERP/compare/v2.11.0...v2.12.0) (2026-05-29)
+
+### Features
+
+* **integrations:** ship Phase C connectors and reference exit validation ([3e99ffb](https://github.com/SafetyMP/HR-ERP/commit/3e99ffb84a43993690b697b378f048f23a24d8be))
+
 ## [2.11.0](https://github.com/SafetyMP/HR-ERP/compare/v2.10.0...v2.11.0) (2026-05-29)
 
 ### Features
