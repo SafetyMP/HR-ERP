@@ -1,6 +1,6 @@
 {
   "name": "hr-erp-scaffold",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "private": true,
   "license": "Apache-2.0",
   "repository": {
@@ -20,9 +20,9 @@
     "governance:lint:strict": "node scripts/governance-lint.mjs diff --strict",
     "governance:plan": "node scripts/governance-lint.mjs plan --json",
     "governance:pr-body": "node scripts/governance-generate-pr-body.mjs",
-  "governance:ci": "node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json",
-  "governance:hooks:status": "node --input-type=module -e \"import { resolveHookMode } from './.cursor/hooks/lib.mjs'; console.log('GOVERNANCE_HOOK_MODE=' + resolveHookMode())\"",
-  "governance:protect-mcp": "node scripts/protect-mcp-shadow-check.mjs",
+    "governance:ci": "node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json",
+    "governance:hooks:status": "node --input-type=module -e \"import { resolveHookMode } from './.cursor/hooks/lib.mjs'; console.log('GOVERNANCE_HOOK_MODE=' + resolveHookMode())\"",
+    "governance:protect-mcp": "node scripts/protect-mcp-shadow-check.mjs",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

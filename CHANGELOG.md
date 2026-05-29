@@ -1,3 +1,9 @@
+## [2.10.0](https://github.com/SafetyMP/HR-ERP/compare/v2.9.0...v2.10.0) (2026-05-29)
+
+### Features
+
+* **governance:** unlock Cursor 3 native runtime with hooks and manifest v3 ([b4f8957](https://github.com/SafetyMP/HR-ERP/commit/b4f895756c9f1ccb0aebed91a3502b46a56266d7))
+
 ## [2.9.0](https://github.com/SafetyMP/HR-ERP/compare/v2.8.2...v2.9.0) (2026-05-19)
 
 ### Features
