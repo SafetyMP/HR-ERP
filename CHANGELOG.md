@@ -1,3 +1,9 @@
+## [2.13.2](https://github.com/SafetyMP/HR-ERP/compare/v2.13.1...v2.13.2) (2026-05-29)
+
+### Bug Fixes
+
+* **auth:** auto-enable demo preview on Vercel Preview deploys ([33c96f0](https://github.com/SafetyMP/HR-ERP/commit/33c96f086e40f7354c2d82db88228ebd7afe59f4))
+
 ## [2.13.1](https://github.com/SafetyMP/HR-ERP/compare/v2.13.0...v2.13.1) (2026-05-29)
 
 ### Bug Fixes
