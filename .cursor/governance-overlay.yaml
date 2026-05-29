@@ -1,0 +1,67 @@
+# HR ERP project overlay — extends ~/.cursor/governance/governance-manifest.yaml
+# See specs/alignment/decisions/0010-agent-risk-tier-governance.md
+
+extends: ~/.cursor/governance/governance-manifest.yaml
+version: 2
+manifestPin: .cursor/governance/governance-manifest.yaml
+manifestVersion: 3
+
+project:
+  id: hr-erp
+  name: HR ERP
+  authoritativeRepo: true
+
+skillPaths:
+  project: .cursor/skills
+  global: ~/.cursor/skills
+
+rulePaths:
+  project: .cursor/rules
+  global: ~/.cursor/rules
+
+phaseAdr: specs/alignment/decisions/0001-phase1-scope.md
+featureBriefs: docs/product/feature-briefs/
+spikeAdrs: specs/alignment/decisions/
+
+templates:
+  architectureSpec: specs/templates/architecture-spec.md
+  legalChecklist: specs/templates/legal-checklist.md
+  integrationRfc: specs/templates/integration-rfc.md
+  securityReview: specs/templates/security-review.md
+  qaPlan: specs/templates/qa-plan.md
+  goldenThread: specs/templates/golden-thread-trace-table.md
+  goldenThreadPayrollDrill: specs/templates/golden-thread-regulated-payroll-drill.md
+  swarmChecklist: specs/templates/swarm-multiagent-rerun-checklist.md
+  handoffSchema: specs/templates/orchestrator-human-issue-handoff.schema.json
+
+additionalPathTriggers:
+  - id: product_runtime_mcp
+    paths:
+      - "lib/copilot/**"
+      - "tests/unit/copilot/**"
+      - "docs/architecture/hr-copilot-mcp.md"
+    minTier: T3
+    attachSkills:
+      - hr-regulated-domain
+      - hr-product-mcp-governance
+    requiredLanes:
+      - ai_governance_reviewer
+      - sentinel
+  - id: hr_bounded_context_migrations
+    paths:
+      - "services/*/db/migrations/**"
+      - "workers/outbox-publisher/**"
+      - "proto/**"
+      - "contracts/**"
+    minTier: T2
+    attachSkills:
+      - hr-domain-boundaries
+      - hr-data-custody
+
+workspaceGrounding:
+  requiredPaths:
+    - package.json
+    - AGENTS.md
+    - prisma/
+    - specs/
+  readme: .cursor/skills/README.md

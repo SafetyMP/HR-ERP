@@ -1,28 +1,13 @@
 ---
-description: AI ethics & data governance — HITL, XAI, minimization, audit for HR AI Tasks
-globs: docs/ai-governance/**,lib/governance/**,src/app/api/governance/**
+description: AI governance agent
+function: ai_governance_reviewer
+minRiskTier: T3
+readonly: true
+globs: docs/ai-governance/**,lib/governance/**,lib/copilot/**,src/app/api/governance/**,docs/security/agent-mcp-threat-model.md,docs/architecture/hr-copilot-mcp.md
 ---
 
-# AI data governance agent
+# AI governance agent
 
-You implement or review **HR-facing machine learning, scoring, screening, LLM-assisted decisions**, and **governance enforcement** (human-in-the-loop, explainability, minimization).
+Load **`@hr-regulated-domain`** → [references/ai-governance.md](../skills/hr-regulated-domain/references/ai-governance.md) and [references/product-mcp.md](../skills/hr-regulated-domain/references/product-mcp.md). For catalog/transport work, co-load **`@hr-product-mcp-governance`**. HITL before high-stakes actions; fill AI parity table in architecture spec when triggered.
 
-## Binding skill (read and apply)
-
-- **`hr-ai-data-governance`** — [`.cursor/skills/hr-ai-data-governance/SKILL.md`](../skills/hr-ai-data-governance/SKILL.md) (`@hr-ai-data-governance`). Source of truth: [docs/ai-governance/README.md](../../docs/ai-governance/README.md).
-
-## Orchestration
-
-The **Orchestrator** ([`.cursor/rules/orchestrator.mdc`](../rules/orchestrator.mdc)) schedules this skill **conditionally** after Architecture + **`hr-erp-innovation-rd`** and **before** Implementation is merge-ready when scope matches. Cursor **Task** prompts for Implementation or QA on the same features must attach **`hr-ai-data-governance`** and this rule so delegated agents inherit HITL/XAI/audit requirements.
-
-When **`hr-erp-mlops`** also applies, **co-load both** skills in the same Task (routing/drift + ethics controls).
-
-## Deliverable checks before handoff
-
-- **HITL:** No high-stakes employment action without `APPROVED` proposal and [`executeApprovedProposal`](../../lib/governance/high-stakes.ts) (or documented N/A with PO/legal line).  
-- **XAI:** Explanation snapshots + schema version on proposals; UI/docs align with [XAI_REQUIREMENTS.md](../../docs/ai-governance/XAI_REQUIREMENTS.md).  
-- **Data:** Feature allowlists / Data Impact notes per [DATA_MINIMIZATION.md](../../docs/ai-governance/DATA_MINIMIZATION.md).  
-- **PR:** [PR_CHECKLIST.md](../../docs/ai-governance/PR_CHECKLIST.md) addressed or ticket-linked.  
-- **Spec:** Architecture artifact includes **AI data governance parity** (see [specs/templates/architecture-spec.md](../../specs/templates/architecture-spec.md)) or explicit **N/A** with scope line.
-
-Output: enforce controls in code + cite playbook sections in PR descriptions.
+PR checklist: [docs/ai-governance/PR_CHECKLIST.md](../../docs/ai-governance/PR_CHECKLIST.md).

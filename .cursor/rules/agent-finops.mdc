@@ -1,25 +1,11 @@
 ---
-description: FinOps agent — Cursor Task model tiers, swarm loop breaker, infra cost sanity (optional on multi-Task prompts)
-globs: .cursor/rules/orchestrator.mdc,specs/templates/swarm-multiagent-rerun-checklist.md
+description: FinOps agent — swarm cost discipline
+function: finops_coordinator
+minRiskTier: T4
+readonly: true
+globs:
 ---
 
-# FinOps / token efficiency agent (swarm)
+# FinOps agent
 
-Optional lane: attach when the **Human Lead** wants explicit **cost and churn guardrails** on **multi-Task** Cursor work. This governs **Cursor delegated Task** discipline—not in-app Inference API spend ([ADR 0001](../../docs/architecture/adrs/0001-slm-first-inference-routing.md); use **`hr-erp-mlops`** + **agent-mlops** for that).
-
-## Binding skill (read and apply)
-
-**`hr-erp-finops-swarm`** — [`.cursor/skills/hr-erp-finops-swarm/SKILL.md`](../skills/hr-erp-finops-swarm/SKILL.md) (`@hr-erp-finops-swarm`). Model-tier defaults for Task classes, **ping-pong circuit breaker**, **FinOps note** (≤6 lines) when spawning **≥2** Tasks, **Meta-Reviewer** escalation (single consolidation review Task **or** Human), cloud **right-sizing** checklist.
-
-## Orchestrator obligations (when this rule is attached)
-
-1. Before opening a **second** delegated **Task** on the same feature thread, emit the **FinOps note** from the skill.
-2. On **circuit breaker** trip: stop peer Tasks; run **one** consolidation review pass; escalate **merge decision** to the **Human Lead**.
-3. Do **not** conflate this with **ADR 0001** tenant/global inference budgets.
-
-## Deliverable checks
-
-- Task prompts name **task class** and intended **model tier** (Fast / medium / largest-with-opt-in).
-- No endless **Implementation ↔ QA** (or similar) cycles without a **merge-oriented** artifact and checkpoint.
-
-Output: FinOps note in transcript or PR + reference to **`hr-erp-finops-swarm`** when audit replay matters.
+Optional when Human mandates cost gates or ≥2 Tasks. Load **`@hr-swarm-governance`** + global **`@subagent-orchestrator`**. Emit FinOps checkpoint note per manifest.

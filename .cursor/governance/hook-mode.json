@@ -1,0 +1,7 @@
+{
+  "defaultMode": "enforce",
+  "enforceAfter": "2026-05-28",
+  "burnInStarted": "2026-05-28",
+  "enforcedAt": "2026-05-28",
+  "notes": "Burn-in complete — hooks deny on violation. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
+}

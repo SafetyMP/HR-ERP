@@ -1,17 +1,32 @@
-# HR ERP project skills — workspace grounding
+# HR ERP project skills — revamp 2026-05-28
 
-Every agent that loads an `@hr-*` skill defined under this folder must treat **this repository clone as the source of truth**, not training data or other workspaces.
+**Format:** [Antigravity SKILL.md pattern](https://github.com/sickn33/antigravity-awesome-skills) — L1 frontmatter, L2 body (When / Do not / Instructions / Limitations), L3 `references/`.
 
-## Mandatory before asserting facts
+**Router:** Global `@skill-router` + `@governance-tier-gate` (`~/.cursor/skills/`). Legacy 15-skill stack archived under `_archived/2026-05-28-revamp/`.
 
-1. **Confirm the workspace root** is the HR ERP checkout (expects `package.json`, `AGENTS.md`, `prisma/`, `specs/` at repo root—not an empty sandbox or unrelated project).
+## Project skills (8)
 
-2. **Verify paths and symbols** you will cite: use **Read**, **Grep**, or codebase search. Do not assume files, exports, route trees, or contract paths exist until checked.
+| Skill | Invoke | Min tier | Trigger |
+|-------|--------|----------|---------|
+| [hr-product-gate](hr-product-gate/SKILL.md) | `@hr-product-gate` | T1 | PO gate, Feature briefs, UAC |
+| [hr-domain-boundaries](hr-domain-boundaries/SKILL.md) | `@hr-domain-boundaries` | T1 | Architecture, schemas, cross-context APIs |
+| [hr-data-custody](hr-data-custody/SKILL.md) | `@hr-data-custody` | T2 | DDL, migrations, Docker/GHCR |
+| [hr-regulated-domain](hr-regulated-domain/SKILL.md) | `@hr-regulated-domain` | T3 | Pay/compliance, payroll-calc, AI governance |
+| [hr-product-mcp-governance](hr-product-mcp-governance/SKILL.md) | `@hr-product-mcp-governance` | T3 | In-app copilot MCP catalog/transport |
+| [hr-quality-lab](hr-quality-lab/SKILL.md) | `@hr-quality-lab` | T1 | Tests, QA.md, chaos fixtures |
+| [hr-swarm-governance](hr-swarm-governance/SKILL.md) | `@hr-swarm-governance` | T4 | ≥2 Tasks, post-mortems, community PRs |
+| [hr-orchestration-lanes](hr-orchestration-lanes/SKILL.md) | `@hr-orchestration-lanes` | T1 | Function-lane DAG, path-trigger recipes |
 
-3. **Commands and toolchain:** skim repo-root [`package.json`](../../package.json) `scripts` (and workspaces if relevant) before telling the Human which npm/script to run. Align with CI under [`.github/workflows/`](../../.github/workflows/) when recommending checks.
+**Global (product MCP hybrid):** `@protect-mcp-governance` — Cedar/receipts at transport; see [antigravity-product-mcp-governance.md](../../docs/meta/antigravity-product-mcp-governance.md).
 
-4. **Next.js / App Router:** this repo’s Next.js differs from generic training patterns. Follow [`AGENTS.md`](../../AGENTS.md) (read guides under `node_modules/next/dist/docs/` when touching app/router code).
+Risk tiers: [governance-manifest.yaml](../governance/governance-manifest.yaml) (v2) · ADR [0010](../../specs/alignment/decisions/0010-agent-risk-tier-governance.md) · [0011](../../specs/alignment/decisions/0011-function-lane-orchestration.md) · [harness guide](../../docs/meta/cursor-antigravity-harness.md).
 
-5. **Skills outside this repo:** if these skills were copied or symlinked to `~/.cursor/skills/`, **Still operate on the HR ERP workspace** that contains bounded-context layout, alignment ADRs under `specs/alignment/decisions/`, and orchestration rules in `.cursor/rules/`.
+## Global essentials (install separately)
 
-Skipping these steps when giving implementation or review guidance is an agent defect; skim the loaded skill text, **then ground claims in this tree**.
+Installed in `~/.cursor/skills/`: `cursor-harness-scope`, `protect-mcp-governance`, `skill-router`, `governance-tier-gate`, `concise-planning`, `lint-and-validate`, `systematic-debugging`, `cc-skill-security-review`, `repo-architect`, `testing-patterns`, `subagent-orchestrator`.
+
+## Workspace grounding
+
+1. Confirm workspace root is this HR ERP checkout (`package.json`, `AGENTS.md`, `prisma/`, `specs/`).
+2. Verify paths with Read/Grep before citing.
+3. Use `npm run` scripts from root `package.json` — not training defaults.

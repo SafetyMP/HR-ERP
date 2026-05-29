@@ -1,0 +1,677 @@
+# Global agent governance manifest — risk-tier modular orchestration
+# Canonical home: ~/.cursor/governance/governance-manifest.yaml
+# Per-project overlays: <repo>/.cursor/governance-overlay.yaml
+# Normative ADR: 0010 tiers, 0011 function-lane orchestration
+
+version: 3
+schema: governance-manifest/v3
+
+runtimeProfile: cursor-3-native
+delegationMode: native-subagents
+maxSkillBodies: 3
+hookEnforcement: true
+
+nativeCommands:
+  parallelLanes: /multitask
+  isolatedBranch: /worktree
+  modelCompare: /best-of-n
+  multitaskQueue: /multitask
+  cloudHandoff: Agents Window
+
+# Separate axes — do NOT conflate with riskTier T0–T4
+separateAxes:
+  cursorTaskModelTier:
+    description: Cursor delegated Task cost class (FinOps)
+    values: [fast, medium, largest]
+    skill: hr-swarm-governance
+  productInferenceTier:
+    description: Runtime LLM routing budgets (in-app)
+    values: [A, B, C]
+    adr: docs/architecture/adrs/0001-slm-first-inference-routing.md
+  productMcpToolClass:
+    description: In-app copilot MCP tool exposure class (not Cursor riskTier T0–T4)
+    values: [read_internal, read_confidential, propose_side_effect]
+    skill: hr-product-mcp-governance
+    mapsFrom: lib/copilot/mcp-tools.ts CopilotToolDescriptor.maxDataClassification + HITL
+
+riskTiers:
+  T0:
+    name: Chore
+    description: Copy/CSS/docs typo; zero app, contract, DB, or infra behavior change
+    maxDelegatedTasks: 0
+    allowPremiumModel: false
+    requiredSkills: []
+    requiredAgentRules: []
+    poCheckpoint: N/A
+    goldenThreadRequired: false
+    humanMergeGate: false
+  T1:
+    name: Standard feature
+    description: App or contract changes without regulated domains
+    maxDelegatedTasks: 6
+    allowPremiumModel: false
+    requiredSkills:
+      - governance-tier-gate
+      - hr-product-gate
+      - concise-planning
+    requiredAgentRules:
+      - agent-architecture
+      - agent-code-health
+      - agent-security
+    poCheckpoint: required
+    goldenThreadRequired: true
+    humanMergeGate: false
+  T2:
+    name: Data / identity
+    description: Prisma, RLS, migrations, auth, secrets, packaging
+    maxDelegatedTasks: 8
+    allowPremiumModel: false
+    extends: T1
+    additionalSkills:
+      - hr-data-custody
+    additionalAgentRules:
+      - agent-db-migration-state
+    poCheckpoint: required
+    goldenThreadRequired: true
+    humanMergeGate: false
+  T3:
+    name: Regulated domain
+    description: Pay/time/compliance, payroll kernel, employment AI, MCP product agents
+    maxDelegatedTasks: 10
+    allowPremiumModel: false
+    extends: T2
+    additionalSkills:
+      - hr-regulated-domain
+    additionalAgentRules:
+      - agent-legal-hr-compliance
+      - agent-ai-governance
+      - agent-mlops
+    poCheckpoint: required
+    goldenThreadRequired: true
+    goldenThreadDrill: golden-thread-regulated-payroll-drill
+    humanMergeGate: false
+  T4:
+    name: Critical / swarm
+    description: Multi-Task swarms, cross-context topology, premium-model repair
+    maxDelegatedTasks: 16
+    allowPremiumModel: true
+    extends: T3
+    additionalSkills:
+      - hr-swarm-governance
+    additionalAgentRules:
+      - agent-finops
+    poCheckpoint: required
+    goldenThreadRequired: true
+    humanMergeGate: true
+
+choreClasses:
+  - id: copy_css_only
+    maxTier: T0
+    description: Typo, copy, or CSS-only; zero behavior/data/infra
+    skipSkills:
+      - governance-tier-gate
+      - hr-product-gate
+      - concise-planning
+      - cc-skill-security-review
+      - hr-quality-lab
+    escapePhrase: "step 1 chore N/A"
+  - id: docs_only
+    maxTier: T0
+    description: Documentation-only under docs/ or specs/ with no executable change
+    pathPatterns:
+      - "docs/**"
+      - "specs/**"
+      - "*.md"
+    skipSkills:
+      - hr-data-custody
+    escapePhrase: "step 1 chore N/A"
+
+skills:
+  skill-router:
+    invoke: "@skill-router"
+    orchestratorTier: mandatory
+    minRiskTier: T0
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/skill-router
+    coLoad: []
+  governance-tier-gate:
+    invoke: "@governance-tier-gate"
+    orchestratorTier: mandatory
+    minRiskTier: T1
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/governance-tier-gate
+    coLoad:
+      - skill-router
+  concise-planning:
+    invoke: "@concise-planning"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/concise-planning
+    coLoad: []
+  repo-architect:
+    invoke: "@repo-architect"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-architecture
+    portable: true
+    path: ~/.cursor/skills/repo-architect
+    coLoad: []
+  cc-skill-security-review:
+    invoke: "@cc-skill-security-review"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-security
+    portable: true
+    path: ~/.cursor/skills/cc-skill-security-review
+    coLoad:
+      - auth-implementation-patterns
+  lint-and-validate:
+    invoke: "@lint-and-validate"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-code-health
+    portable: true
+    path: ~/.cursor/skills/lint-and-validate
+    coLoad: []
+  testing-patterns:
+    invoke: "@testing-patterns"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/testing-patterns
+    coLoad: []
+  systematic-debugging:
+    invoke: "@systematic-debugging"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/systematic-debugging
+    coLoad: []
+  hr-product-gate:
+    invoke: "@hr-product-gate"
+    orchestratorTier: mandatory
+    minRiskTier: T1
+    agentRule: null
+    portable: false
+    coLoad: []
+  hr-domain-boundaries:
+    invoke: "@hr-domain-boundaries"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-architecture
+    portable: false
+    coLoad:
+      - repo-architect
+  hr-data-custody:
+    invoke: "@hr-data-custody"
+    orchestratorTier: conditional
+    minRiskTier: T2
+    agentRule: agent-db-migration-state
+    portable: false
+    coLoad:
+      - hr-domain-boundaries
+  hr-regulated-domain:
+    invoke: "@hr-regulated-domain"
+    orchestratorTier: conditional
+    minRiskTier: T3
+    agentRule: agent-legal-hr-compliance
+    portable: false
+    coLoad: []
+  hr-quality-lab:
+    invoke: "@hr-quality-lab"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-qa
+    portable: false
+    coLoad:
+      - hr-product-gate
+  hr-swarm-governance:
+    invoke: "@hr-swarm-governance"
+    orchestratorTier: conditional
+    minRiskTier: T4
+    agentRule: agent-finops
+    portable: false
+    coLoad:
+      - subagent-orchestrator
+  hr-product-mcp-governance:
+    invoke: "@hr-product-mcp-governance"
+    orchestratorTier: conditional
+    minRiskTier: T3
+    agentRule: agent-ai-governance
+    portable: false
+    coLoad:
+      - hr-regulated-domain
+  protect-mcp-governance:
+    invoke: "@protect-mcp-governance"
+    orchestratorTier: conditional
+    minRiskTier: T3
+    agentRule: agent-ai-governance
+    portable: true
+    path: ~/.cursor/skills/protect-mcp-governance
+    coLoad:
+      - hr-product-mcp-governance
+  cursor-harness-scope:
+    invoke: "@cursor-harness-scope"
+    orchestratorTier: mandatory
+    minRiskTier: T0
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/cursor-harness-scope
+    coLoad:
+      - governance-tier-gate
+  hr-orchestration-lanes:
+    invoke: "@hr-orchestration-lanes"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: false
+    coLoad:
+      - cursor-harness-scope
+
+agentRules:
+  agent-architecture:
+    globs:
+      - "prisma/**"
+      - "specs/**"
+      - "app/**"
+      - "src/app/**"
+    skill: hr-domain-boundaries
+  agent-legal-hr-compliance:
+    globs:
+      - "specs/**"
+      - "prisma/**"
+      - "docs/compliance/**"
+    skill: hr-regulated-domain
+    note: Regulated domain L3 refs for compliance and payroll kernel
+  agent-integrations:
+    globs:
+      - "specs/**"
+      - "lib/**"
+      - "app/**"
+      - "src/app/**"
+    skill: null
+    note: Rule-only lane; integration-rfc.md template
+  agent-ai-governance:
+    globs:
+      - "docs/ai-governance/**"
+      - "lib/governance/**"
+      - "lib/copilot/**"
+      - "src/app/api/governance/**"
+      - "docs/security/agent-mcp-threat-model.md"
+      - "docs/architecture/hr-copilot-mcp.md"
+    skill: hr-product-mcp-governance
+  agent-mlops:
+    globs:
+      - "docs/ml/**"
+      - "docs/architecture/adrs/**"
+      - "services/ml-serving/**"
+    skill: hr-regulated-domain
+  agent-code-health:
+    globs:
+      - "**/*.{ts,tsx}"
+      - "contracts/**"
+      - "package.json"
+      - "eslint.config.mjs"
+    skill: lint-and-validate
+  agent-security:
+    globs:
+      - "**/*.{ts,tsx,prisma,md}"
+      - "middleware.ts"
+      - "lib/security/**"
+    skill: cc-skill-security-review
+  agent-qa:
+    globs:
+      - "specs/**"
+      - "**/*test*"
+      - "tests/**"
+      - "vitest.config.*"
+      - "playwright.config.*"
+    skill: hr-quality-lab
+  agent-db-migration-state:
+    globs:
+      - "prisma/**"
+      - "services/*/db/migrations/**"
+      - "scripts/db-verify-migration.ts"
+    skill: hr-data-custody
+  agent-packaging-supply-chain:
+    globs:
+      - "Dockerfile"
+      - ".github/workflows/publish-ghcr.yml"
+      - "docker-compose*.yml"
+    skill: hr-data-custody
+  agent-developer-advocate:
+    globs:
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "AGENTS.md"
+      - "docs/**"
+      - ".github/**"
+    skill: hr-swarm-governance
+  agent-finops:
+    globs: []
+    skill: hr-swarm-governance
+    note: Optional attach when Human mandates cost gates or ≥2 Tasks
+
+pathTriggers:
+  - id: ddl_migrations
+    paths:
+      - "prisma/schema.prisma"
+      - "prisma/migrations/**"
+      - "services/*/db/migrations/**"
+      - "scripts/db-verify-migration.ts"
+    minTier: T2
+    attachSkills:
+      - hr-data-custody
+    attachAgentRules:
+      - agent-db-migration-state
+  - id: security_plane
+    paths:
+      - "middleware.ts"
+      - "lib/security/**"
+    minTier: T2
+    requiredLanes:
+      - sentinel
+    attachSkills:
+      - cc-skill-security-review
+    attachAgentRules:
+      - agent-security
+  - id: packaging_supply_chain
+    paths:
+      - "Dockerfile"
+      - ".github/workflows/publish-ghcr.yml"
+    minTier: T2
+    attachSkills:
+      - hr-data-custody
+    attachAgentRules:
+      - agent-packaging-supply-chain
+  - id: compliance_pay_time
+    paths:
+      - "docs/compliance/**"
+      - "packages/payroll-calc/**"
+    minTier: T3
+    attachSkills:
+      - hr-regulated-domain
+    attachAgentRules:
+      - agent-legal-hr-compliance
+  - id: ai_governance
+    paths:
+      - "docs/ai-governance/**"
+      - "lib/governance/**"
+      - "src/app/api/governance/**"
+      - "docs/security/agent-mcp-threat-model.md"
+    minTier: T3
+    attachSkills:
+      - hr-regulated-domain
+    attachAgentRules:
+      - agent-ai-governance
+  - id: product_runtime_mcp
+    paths:
+      - "lib/copilot/**"
+      - "tests/unit/copilot/**"
+      - "docs/architecture/hr-copilot-mcp.md"
+      - "lib/copilot/governance/**"
+    minTier: T3
+    attachSkills:
+      - hr-regulated-domain
+      - hr-product-mcp-governance
+    attachAgentRules:
+      - agent-ai-governance
+    requiredLanes:
+      - ai_governance_reviewer
+      - sentinel
+  - id: mlops_inference
+    paths:
+      - "docs/ml/**"
+      - "services/ml-serving/**"
+    minTier: T3
+    attachSkills:
+      - hr-regulated-domain
+    attachAgentRules:
+      - agent-mlops
+  - id: test_stack
+    paths:
+      - "tests/**"
+      - "lib/qa/**"
+      - "vitest.config.*"
+      - "playwright.config.*"
+      - "docs/QA.md"
+    minTier: T1
+    attachSkills:
+      - hr-quality-lab
+    attachAgentRules:
+      - agent-qa
+
+agentFunctions:
+  scout:
+    subagentType: explore
+    readonly: true
+    minRiskTier: T1
+    maxSkillBodies: 1
+    allowedPlugins: [context7]
+    agentRule: null
+  architect:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T1
+    maxSkillBodies: 2
+    taskBundle: architecture
+    agentRule: agent-architecture
+  builder:
+    subagentType: generalPurpose
+    readonly: false
+    minRiskTier: T1
+    maxSkillBodies: 3
+    taskBundle: implementation
+    writePaths:
+      - "app/**"
+      - "src/**"
+      - "packages/**"
+      - "lib/**"
+      - "contracts/**"
+    agentRule: agent-code-health
+  custodian:
+    subagentType: generalPurpose
+    readonly: false
+    minRiskTier: T2
+    maxSkillBodies: 2
+    taskBundle: data_custody
+    writePaths:
+      - "prisma/**"
+      - "services/*/db/migrations/**"
+      - "scripts/db-verify-migration.ts"
+    agentRule: agent-db-migration-state
+  packaging:
+    subagentType: generalPurpose
+    readonly: false
+    minRiskTier: T2
+    maxSkillBodies: 2
+    taskBundle: packaging
+    agentRule: agent-packaging-supply-chain
+  integrator:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T1
+    taskBundle: integrations
+    agentRule: agent-integrations
+  counsel:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T3
+    maxSkillBodies: 2
+    taskBundle: legal
+    agentRule: agent-legal-hr-compliance
+  ai_governance_reviewer:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T3
+    maxSkillBodies: 2
+    taskBundle: product_mcp
+    agentRule: agent-ai-governance
+  mlops_reviewer:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T3
+    taskBundle: legal
+    agentRule: agent-mlops
+  sentinel:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T1
+    maxSkillBodies: 2
+    allowedPlugins: []
+    taskBundle: security_review
+    agentRule: agent-security
+  verifier:
+    subagentType: generalPurpose
+    readonly: false
+    minRiskTier: T1
+    maxSkillBodies: 2
+    taskBundle: qa
+    agentRule: agent-qa
+  finops_coordinator:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T4
+    taskBundle: finops_swarm
+    agentRule: agent-finops
+  advocate:
+    subagentType: generalPurpose
+    readonly: true
+    minRiskTier: T1
+    agentRule: agent-developer-advocate
+
+executionGraph:
+  default:
+    - parallel: [scout, architect]
+    - dependsOn: [architect]
+      run: builder
+    - parallel: [sentinel, verifier]
+      dependsOn: [builder]
+  regulated:
+    - parallel: [scout, architect]
+    - dependsOn: [architect]
+      run: counsel
+    - dependsOn: [counsel]
+      run: builder
+    - parallel: [sentinel, verifier]
+      dependsOn: [builder]
+
+taskBundles:
+  architecture:
+    minTier: T1
+    skills:
+      - hr-product-gate
+      - hr-domain-boundaries
+    agentRules:
+      - agent-architecture
+  legal:
+    minTier: T3
+    skills:
+      - hr-product-gate
+      - hr-regulated-domain
+    agentRules:
+      - agent-legal-hr-compliance
+  implementation:
+    minTier: T1
+    skills:
+      - hr-product-gate
+      - lint-and-validate
+      - cc-skill-security-review
+    agentRules:
+      - agent-code-health
+      - agent-security
+  security_review:
+    minTier: T1
+    skills:
+      - hr-product-gate
+      - cc-skill-security-review
+    agentRules:
+      - agent-security
+  qa:
+    minTier: T1
+    skills:
+      - hr-product-gate
+      - hr-quality-lab
+    agentRules:
+      - agent-qa
+  finops_swarm:
+    minTier: T4
+    trigger: ">=2 delegated Tasks on one feature thread"
+    skills:
+      - hr-swarm-governance
+    agentRules:
+      - agent-finops
+  data_custody:
+    minTier: T2
+    skills:
+      - hr-product-gate
+      - hr-data-custody
+    agentRules:
+      - agent-db-migration-state
+  packaging:
+    minTier: T2
+    skills:
+      - hr-data-custody
+    agentRules:
+      - agent-packaging-supply-chain
+  integrations:
+    minTier: T1
+    skills:
+      - hr-product-gate
+    agentRules:
+      - agent-integrations
+  product_mcp:
+    minTier: T3
+    skills:
+      - hr-product-gate
+      - hr-product-mcp-governance
+    agentRules:
+      - agent-ai-governance
+      - agent-security
+
+functionIds:
+  - scout
+  - architect
+  - builder
+  - custodian
+  - packaging
+  - integrator
+  - counsel
+  - ai_governance_reviewer
+  - mlops_reviewer
+  - sentinel
+  - verifier
+  - finops_coordinator
+  - advocate
+
+precedence:
+  - human_po
+  - po_checkpoint
+  - counsel
+  - security_merge_bar
+
+skillIds:
+  - skill-router
+  - governance-tier-gate
+  - concise-planning
+  - repo-architect
+  - cc-skill-security-review
+  - lint-and-validate
+  - testing-patterns
+  - systematic-debugging
+  - hr-product-gate
+  - hr-domain-boundaries
+  - hr-data-custody
+  - hr-regulated-domain
+  - hr-quality-lab
+  - hr-swarm-governance
+  - cursor-harness-scope
+  - hr-orchestration-lanes
+  - hr-product-mcp-governance
+  - protect-mcp-governance

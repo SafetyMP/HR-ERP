@@ -2,17 +2,18 @@
   "ticketId": "gh-999-analytics-churn-empty-state",
   "source": "https://github.com/example/hr-erp/issues/999",
   "summary": "GET /api/v1/analytics/churn returns 200 with empty body when DEMO_TENANT_ID is unset; UI shows infinite spinner.",
+  "riskTier": "T1",
+  "poCheckpoint": "Feature brief / spike ADR: N/A bugfix | UAC: 1 | gate Y | friction N/A | phase ADR: 0001",
   "impact": "Demo analytics page unusable for contributors following README quickstart only.",
   "reproduction": {
     "steps": [
       "Clone repo; copy .env.example to .env; omit DEMO_TENANT_ID.",
       "npm install && npm run dev.",
-      "Open /analytics in browser with dev tools network tab.",
-      "Observe GET /api/v1/analytics/churn succeeds but response body is empty; UI never leaves loading state."
+      "Open /analytics; observe empty churn response and hung spinner."
     ]
   },
   "expectedVsActual": {
-    "expected": "Explicit error or empty-state message; or documented requirement to set DEMO_TENANT_ID.",
+    "expected": "Explicit error or empty-state message; or documented DEMO_TENANT_ID requirement.",
     "actual": "Silent empty payload; client spinner hangs."
   },
   "environment": {
@@ -27,12 +28,59 @@
   ],
   "orchestratorHints": [
     "API error contract vs OpenAPI",
-    "Consider hr-erp-qa-chaos for Playwright coverage of empty-state"
+    "Verifier lane for Playwright empty-state"
   ],
   "conditionalSkills": [
-    "hr-code-health",
-    "hr-erp-security-identity",
-    "hr-erp-qa-chaos"
+    "hr-product-gate",
+    "lint-and-validate",
+    "hr-quality-lab"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "intent": "Scout readonly recon",
+      "function": "scout",
+      "riskTier": "T1",
+      "parallelGroup": "discover",
+      "readonly": true,
+      "skills": ["hr-product-gate"],
+      "agentRules": []
+    },
+    {
+      "intent": "Architect API contract sketch",
+      "function": "architect",
+      "riskTier": "T1",
+      "parallelGroup": "discover",
+      "readonly": true,
+      "skills": ["hr-product-gate", "hr-domain-boundaries"],
+      "agentRules": ["agent-architecture"]
+    },
+    {
+      "intent": "Builder fix handler + UI empty state",
+      "function": "builder",
+      "riskTier": "T1",
+      "dependsOn": ["architect"],
+      "skills": ["hr-product-gate", "lint-and-validate"],
+      "agentRules": ["agent-code-health", "agent-security"]
+    },
+    {
+      "intent": "Sentinel security review",
+      "function": "sentinel",
+      "riskTier": "T1",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate",
+      "readonly": true,
+      "skills": ["cc-skill-security-review"],
+      "agentRules": ["agent-security"]
+    },
+    {
+      "intent": "Verifier regression test",
+      "function": "verifier",
+      "riskTier": "T1",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate",
+      "skills": ["hr-quality-lab"],
+      "agentRules": ["agent-qa"]
+    }
   ],
   "failureArtifacts": {
     "logsExcerpt": "No server exception; handler returns early when tenant scope missing.",
@@ -40,6 +88,6 @@
   },
   "humanReadableOriginal": "I followed the readme and the analytics dashboard just spins forever. No error.",
   "requiresPoCheckpoint": false,
-  "advocateNotes": "Reproduced locally without DEMO_TENANT_ID. Document gap in README or return 4xx with JSON error envelope per API conventions.",
+  "advocateNotes": "Reproduced without DEMO_TENANT_ID. Return 4xx JSON envelope or document env requirement.",
   "reproStatus": "reproduced"
 }

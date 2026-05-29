@@ -44,7 +44,7 @@ Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./compl
 
 ## 2a. Canonical “agent skills” for roadmap and gap analysis
 
-When mapping **“implemented vs still needed”** to Cursor agent guidance **for this repository**, use the **HR ERP skills** shipped in [`.cursor/skills/`](../../.cursor/skills/) (15 `SKILL.md` folders: `hr-product-owner`, `hr-erp-principal-architecture`, `hr-erp-innovation-rd`, `hr-backend-compliance`, `hr-payroll-calculation-engine`, `hr-ai-data-governance`, `hr-erp-mlops`, `hr-erp-security-identity`, `hr-erp-qa-chaos`, `hr-db-migration-state`, `hr-code-health`, `hr-erp-packaging-supply-chain`, `hr-developer-advocate`, `hr-erp-finops-swarm`, `hr-erp-collaboration-audit`).
+When mapping **“implemented vs still needed”** to Cursor agent guidance **for this repository**, use the **revamped project skills** in [`.cursor/skills/`](../../.cursor/skills/) (`hr-product-gate`, `hr-domain-boundaries`, `hr-data-custody`, `hr-regulated-domain`, `hr-product-mcp-governance`, `hr-quality-lab`, `hr-swarm-governance`, `hr-orchestration-lanes`). Legacy names live under `_archived/2026-05-28-revamp/`.
 
 Those skills are **orchestration and quality gates**, not interchangeable with the long **global Cursor marketplace / plugin skill list** (e.g. Vercel, Azure, Neon): the latter supports tooling choices; it does **not** substitute for the repo skill set above when sequencing HR ERP work.
 
@@ -52,7 +52,7 @@ Those skills are **orchestration and quality gates**, not interchangeable with t
 
 ## 2b. Orchestration bundles (conditional skills)
 
-Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc). For **payroll math, wage/hour matrices, Compliance packs, or `docs/compliance/`** implementations, bind **`hr-backend-compliance`** (+ **agent-legal-hr-compliance** on Tasks); for **`packages/payroll-calc/`**, gross-to-net, fingerprints, **`computePayroll`**, also bind **`hr-payroll-calculation-engine`**. For **employee-facing churn/screening/scoring** or **`docs/ai-governance/`**, **`lib/governance/`**, governance APIs — bind **`hr-ai-data-governance`**; co-load **`hr-erp-mlops`** when inference routing, drift, MCP, or model serving materially changes.
+Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc). For **payroll math, wage/hour matrices, Compliance packs, or `docs/compliance/`** — **`@hr-regulated-domain`** (+ **agent-legal-hr-compliance**). For **`packages/payroll-calc/`** — same skill (payroll L3). For **employee-facing churn/screening/scoring**, **`docs/ai-governance/`**, **`lib/governance/`** — **`@hr-regulated-domain`**. For **in-app copilot MCP** (`lib/copilot/`, catalog, transport) — **`@hr-product-mcp-governance`** + **`ai_governance_reviewer`** lane; for **inference routing/drift** without copilot — **`@hr-regulated-domain`** mlops L3 + **`mlops_reviewer`**.
 
 ---
 
@@ -146,29 +146,21 @@ flowchart LR
 
 ---
 
-## 2d. Repo agent skills (15) — gap lens versus inventory above
+## 2d. Repo agent skills — gap lens versus inventory above
 
 Skills live under [`.cursor/skills/*/SKILL.md`](../../.cursor/skills/). They are **orchestration lenses** applied when touching certain paths — not a second product backlog. “Still needed” means the skill stays relevant because the domain is **partially implemented** or **thin** versus production intent.
 
 | Skill | Role | Present in codebase | Typical remaining work |
 | --- | --- | --- | --- |
-| [`hr-product-owner`](../../.cursor/skills/hr-product-owner/SKILL.md) | Briefs + UAC + friction | Briefs **001–013** audited | Author brief **014+** for net-new slices |
-| [`hr-erp-principal-architecture`](../../.cursor/skills/hr-erp-principal-architecture/SKILL.md) | Contexts, buses, contracts | Phase 1 ADR + logical separation | Kafka/outbox extraction when ADR triggers |
-| [`hr-erp-innovation-rd`](../../.cursor/skills/hr-erp-innovation-rd/SKILL.md) | Edge/pgvector/Wasm/Rust gates | Postgres-centered MVP | Parity notes when Edge-heavy paths land |
-| [`hr-backend-compliance`](../../.cursor/skills/hr-backend-compliance/SKILL.md) | Wage/hour, `COMPLIANCE_*` | Strong **docs**; employee clock-in + **today summary** | Premium/OT + meal/break rules when briefs demand |
-| [`hr-payroll-calculation-engine`](../../.cursor/skills/hr-payroll-calculation-engine/SKILL.md) | `packages/payroll-calc` | Package + run-payroll persistence | Replace placeholder federal tables per jurisdiction |
-| [`hr-ai-data-governance`](../../.cursor/skills/hr-ai-data-governance/SKILL.md) | HITL, XAI, governance | Proposals APIs + churn surfaces | [`PR_CHECKLIST.md`](../ai-governance/PR_CHECKLIST.md) for production scoring |
-| [`hr-erp-mlops`](../../.cursor/skills/hr-erp-mlops/SKILL.md) | Inference tiering, logs, drift | Churn proxy + doc sequence | Phases in [`implementation-sequence.md`](../ml/implementation-sequence.md) |
-| [`hr-erp-security-identity`](../../.cursor/skills/hr-erp-security-identity/SKILL.md) | RBAC/ABAC, RLS, CI | Session cookie + OIDC routes + employee `useHrAccess` | Webhook secret column encryption (schema TODO) |
-| [`hr-erp-qa-chaos`](../../.cursor/skills/hr-erp-qa-chaos/SKILL.md) | Layered tests | Playwright **001–010** + CI JWT mint (`scripts/ci-issue-e2e-jwts.mjs`) · `db:verify` in reusable-qa | Expand integration DB suites per new briefs |
-| [`hr-db-migration-state`](../../.cursor/skills/hr-db-migration-state/SKILL.md) | Safe DDL, verify | Migrations + runbooks | Applies on every schema change |
-| [`hr-code-health`](../../.cursor/skills/hr-code-health/SKILL.md) | Smell/refactor hygiene | Process skill | Runs on substantive `src`/contract edits |
-| [`hr-erp-packaging-supply-chain`](../../.cursor/skills/hr-erp-packaging-supply-chain/SKILL.md) | OCI, SBOM | CI + README | Operational release tuning |
-| [`hr-developer-advocate`](../../.cursor/skills/hr-developer-advocate/SKILL.md) | Contributor UX | Templates | External PR/issue handoffs |
-| [`hr-erp-finops-swarm`](../../.cursor/skills/hr-erp-finops-swarm/SKILL.md) | Multi-agent cost discipline | Orchestration-only | Not a product feature gap |
-| [`hr-erp-collaboration-audit`](../../.cursor/skills/hr-erp-collaboration-audit/SKILL.md) | Post-mortems | Audit-only | Not a product feature gap |
+| [`hr-product-gate`](../../.cursor/skills/hr-product-gate/SKILL.md) | Briefs + UAC + friction | Briefs **001–013** audited | Author brief **014+** for net-new slices |
+| [`hr-domain-boundaries`](../../.cursor/skills/hr-domain-boundaries/SKILL.md) | Contexts, buses, contracts | Phase 1 ADR + logical separation | Kafka/outbox extraction when ADR triggers |
+| [`hr-regulated-domain`](../../.cursor/skills/hr-regulated-domain/SKILL.md) | Pay/compliance/AI L3 | Strong **docs**; payroll-calc; governance APIs | Premium/OT rules; production scoring checklist |
+| [`hr-product-mcp-governance`](../../.cursor/skills/hr-product-mcp-governance/SKILL.md) | Copilot MCP catalog/transport | Catalog in `lib/copilot/mcp-tools.ts`; Cedar shadow config | Phase 3 transport + enforce per [`implementation-sequence.md`](../ml/implementation-sequence.md) |
+| [`hr-data-custody`](../../.cursor/skills/hr-data-custody/SKILL.md) | Safe DDL, verify, OCI | Migrations + runbooks + GHCR | Applies on every schema change |
+| [`hr-quality-lab`](../../.cursor/skills/hr-quality-lab/SKILL.md) | Layered tests | Playwright **001–010** + CI JWT mint | Expand integration DB suites per new briefs |
+| [`hr-swarm-governance`](../../.cursor/skills/hr-swarm-governance/SKILL.md) | FinOps, post-mortems, contributor UX | Orchestration templates | Multi-agent cost discipline |
 
-The long global **Cursor marketplace** skill list does **not** replace the 15-repo set for HR ERP sequencing (see **§2a**).
+The long global **Cursor marketplace** skill list does **not** replace the revamped project skill set for HR ERP sequencing (see **§2a**).
 
 ---
 

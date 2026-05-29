@@ -1,0 +1,48 @@
+name: governance-pr-autofill
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  autofill-governance:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.type != 'Bot'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Generate governance PR body stub
+        run: node scripts/governance-generate-pr-body.mjs > /tmp/governance-pr-body.md
+      - name: Append governance stub when missing
+        uses: actions/github-script@v7
+        env:
+          STUB_PATH: /tmp/governance-pr-body.md
+        with:
+          script: |
+            const fs = require('fs');
+            const pr = context.payload.pull_request;
+            const existing = pr.body ?? '';
+            if (/riskTier:/i.test(existing) && /Golden thread|Risk or requirement/i.test(existing)) {
+              core.info('PR body already has governance sections — skipping autofill');
+              return;
+            }
+            const stub = fs.readFileSync(process.env.STUB_PATH, 'utf8');
+            const updated = existing.trim()
+              ? `${existing.trim()}\n\n---\n\n<!-- governance-autofill -->\n${stub}`
+              : stub;
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              body: updated,
+            });

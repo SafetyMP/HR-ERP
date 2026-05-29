@@ -56,7 +56,7 @@ Honor **phase audits**: line sums vs phase totals where implemented.
 
 ## Verification
 
-- Run package tests: `cd packages/payroll-calc && npx vitest run` (or `npm run test:payroll` from repo root when workspaces install cleanly).
+- Run package tests: **`npm run test:payroll`** from repo root (delegates to `@hr-erp/payroll-calc`), or `cd packages/payroll-calc && npx vitest run`.
 - Add **golden vectors** when changing brackets, proration, or rounding (see [`payroll-calc.test.ts`](../../../packages/payroll-calc/src/payroll-calc.test.ts)).
 
 ## Orchestration (repo default)

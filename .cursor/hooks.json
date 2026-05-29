@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "description": "HR ERP governance hooks — GOVERNANCE_HOOK_MODE=shadow|enforce; auto-enforce after .cursor/governance/hook-mode.json enforceAfter",
+  "hooks": {
+    "beforeShellExecution": [{ "command": "node .cursor/hooks/before-shell.mjs", "timeout": 10 }],
+    "beforeMCPExecution": [
+      { "command": "node .cursor/hooks/before-mcp.mjs", "timeout": 10, "failClosed": false }
+    ],
+    "subagentStart": [{ "command": "node .cursor/hooks/subagent-start.mjs", "timeout": 30 }],
+    "afterFileEdit": [{ "command": "node .cursor/hooks/after-file-edit.mjs", "timeout": 5 }],
+    "beforeSubmitPrompt": [{ "command": "node .cursor/hooks/before-submit-prompt.mjs", "timeout": 15 }],
+    "stop": [{ "command": "node .cursor/hooks/stop.mjs", "timeout": 30 }]
+  }
+}

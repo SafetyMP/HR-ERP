@@ -1,15 +1,13 @@
 ---
-description: Code health agent — orchestration-mandatory after Implementation; refactor hygiene, contracts, deps, QA evidence
+description: Code health agent — lint, validate, behavior-preserving refactors
+function: builder
+minRiskTier: T1
+readonly: false
 globs: "**/*.{ts,tsx}",contracts/**,package.json,eslint.config.mjs
 ---
 
-# Code health agent
+# Code health agent (builder lane)
 
-**Orchestrator step 3:** This rule runs as part of sequencing **after Implementation** and **before Security review** on any non-trivial code or contract change unless the Task prompt includes the orchestrator **Code health N/A** one-line scope verbatim.
+Load **`@lint-and-validate`**. Behavior-preserving refactors only; sync OpenAPI/contracts when API surfaces change. Sequencing: manifest `executionGraph` — run after architect/custodian readonly lanes when applicable.
 
-- Load the **`hr-code-health`** skill ([`.cursor/skills/hr-code-health/SKILL.md`](../skills/hr-code-health/SKILL.md); `@hr-code-health`) for every **Implementation** pass and whenever work touches **`src/`**, **`lib/`**, **`contracts/`**, **`package.json`**, or **`eslint.config.mjs`**—not only refactor-only PRs.
-- Refactors MUST be **behavior-preserving**: **`npm run test`** green — coordinate with **`agent-qa`** ([`.cursor/rules/agent-qa.mdc`](agent-qa.mdc)) for plans and **`FAILURE_SUMMARY`** blocks on failures.
-- Propose **dependency or stack migrations** only with **`hr-erp-innovation-rd`** ([`.cursor/skills/hr-erp-innovation-rd/SKILL.md`](../skills/hr-erp-innovation-rd/SKILL.md)) sign-off pathways documented in the PR.
-- When paths, schemas, or status codes change under `src/app/api/`, **`npm run contracts:openapi`** and **manually compare** handlers to YAML under [`contracts/openapi/`](../../contracts/openapi/) (coverage may lag implementation).
-
-Output: refactor notes + checklist evidence (lint, tests, Spectral where applicable); no merge bar substitution for Security.
+Run repo scripts from `package.json` — do not invent commands.

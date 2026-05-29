@@ -2,6 +2,33 @@
 
 <!-- 2–4 sentences -->
 
+## Governance
+
+- **riskTier:** <!-- T0 | T1 | T2 | T3 | T4 — ADR 0010 + function lanes ADR 0011 -->
+- **delegatedTaskPlan:** <!-- output of npm run governance:plan or handoff JSON -->
+- **Suggested tier (CI):** <!-- npm run governance:lint -->
+- **Runtime:** cursor-3-native
+
+### PO orchestration checkpoint (required when riskTier ≥ T1; T0 use `step 1 chore N/A`)
+
+```
+Feature brief / spike ADR: 
+UAC count: 
+PO gate complete: Y/N
+Friction targets cited: Y/N/N/A
+Phase ADR: 
+Payroll / Compliance / Math: N/A or brief path
+```
+
+### Golden thread stub (required when riskTier ≥ T1)
+
+<!-- Paste table from specs/templates/golden-thread-trace-table.md -->
+<!-- T3 pay/time scopes: also complete golden-thread-regulated-payroll-drill.md -->
+
+| Risk or requirement | Control | Artifact path | Verifier | Legal (or N/A) | Compliance / kernel (or N/A) | QA / UAC # (or N/A) |
+| --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | |
+
 ## Module documentation
 
 - [ ] **`README.md` updated** for any new top-level **`packages/*`**, **`services/*`**, or **`workers/*`** surface (purpose, ownership pointer, local run)—or **N/A**
@@ -11,16 +38,18 @@
 - Feature brief / UAC: <!-- link -->
 - Phase ADRs: <!-- e.g. specs/alignment/decisions/0001-phase1-scope.md -->
 
-## Agent sign-off (evidence required)
+## Agent lane sign-off (parallel — ADR 0011)
 
-Check each box and paste **links** (spec paths, CI jobs, screenshots):
+Check each lane in `delegatedTaskPlan` and paste **links** (spec paths, CI jobs):
 
-- [ ] **Architecture** — `specs/.../architecture-spec.md` updated
-- [ ] **Legal / compliance (process)** — `legal-checklist.md` updated (citations; counsel as needed)
-- [ ] **Integration** — `integration-rfc.md` updated or **N/A** with rationale
-- [ ] **Security** — `security-review.md`; **no open merge blockers** (or link **exception ADR**)
-- [ ] **QA** — `qa-plan.md` + CI / manual evidence
-- [ ] **Code health (refactors / churn)** — `npm run lint` + `npm run test`; if HTTP/API or contract docs changed: `npm run contracts:openapi`. Link intentional skips with rationale.
+- [ ] **scout** — exploration notes or N/A
+- [ ] **architect** — `specs/.../architecture-spec.md` or N/A
+- [ ] **builder** — implementation complete
+- [ ] **sentinel** — `security-review.md`; **no open merge blockers**
+- [ ] **verifier** — `qa-plan.md` + CI / manual evidence
+- [ ] **counsel** — `legal-checklist.md` (T3+ regulated paths)
+- [ ] **custodian** — migration runbook (T2+ DDL)
+- [ ] **code health** — `npm run lint` + `npm run test`; contracts drift if API changed
 
 ## Risk / rollback
 

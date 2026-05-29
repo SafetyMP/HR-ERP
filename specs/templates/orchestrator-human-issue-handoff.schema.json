@@ -8,34 +8,113 @@
     "ticketId",
     "summary",
     "humanReadableOriginal",
-    "requiresPoCheckpoint"
+    "requiresPoCheckpoint",
+    "riskTier"
   ],
+  "definitions": {
+    "riskTier": {
+      "type": "string",
+      "enum": ["T0", "T1", "T2", "T3", "T4"],
+      "description": "Agent governance risk tier per governance-manifest.yaml v2"
+    },
+    "agentFunction": {
+      "type": "string",
+      "enum": [
+        "scout",
+        "architect",
+        "builder",
+        "custodian",
+        "packaging",
+        "integrator",
+        "counsel",
+        "ai_governance_reviewer",
+        "mlops_reviewer",
+        "sentinel",
+        "verifier",
+        "finops_coordinator",
+        "advocate"
+      ]
+    },
+    "skillId": {
+      "type": "string",
+      "enum": [
+        "skill-router",
+        "governance-tier-gate",
+        "concise-planning",
+        "repo-architect",
+        "cc-skill-security-review",
+        "lint-and-validate",
+        "testing-patterns",
+        "hr-product-gate",
+        "hr-domain-boundaries",
+        "hr-data-custody",
+        "hr-regulated-domain",
+        "hr-quality-lab",
+        "hr-swarm-governance",
+        "cursor-harness-scope",
+        "hr-orchestration-lanes",
+        "hr-product-mcp-governance",
+        "protect-mcp-governance"
+      ]
+    },
+    "cursorModelTier": {
+      "type": "string",
+      "enum": ["fast", "medium", "largest"]
+    },
+    "delegatedTaskPlanItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent", "riskTier"],
+      "properties": {
+        "intent": {
+          "type": "string",
+          "description": "Human-readable task purpose"
+        },
+        "function": { "$ref": "#/definitions/agentFunction" },
+        "riskTier": { "$ref": "#/definitions/riskTier" },
+        "modelTier": { "$ref": "#/definitions/cursorModelTier" },
+        "dependsOn": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "function ids or intent keys that must complete first"
+        },
+        "parallelGroup": {
+          "type": "string",
+          "description": "Tasks with same group may run concurrently"
+        },
+        "readonly": {
+          "type": "boolean",
+          "description": "Lane must not write app code"
+        },
+        "writePaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Glob allowlist when lane may write"
+        },
+        "skills": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/skillId" }
+        },
+        "agentRules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "agent-*.mdc rule ids"
+        }
+      }
+    }
+  },
   "properties": {
-    "ticketId": {
-      "type": "string",
-      "description": "Stable id (e.g. issue number + slug or UUID)."
-    },
-    "source": {
-      "type": "string",
-      "description": "Issue URL, email ref, or intake channel."
-    },
-    "summary": {
-      "type": "string",
-      "description": "One-line technical summary for Orchestrator / Implementation agents."
-    },
-    "impact": {
-      "type": "string",
-      "description": "User-facing or operational impact (severity, blast radius)."
-    },
+    "ticketId": { "type": "string" },
+    "source": { "type": "string" },
+    "summary": { "type": "string" },
+    "riskTier": { "$ref": "#/definitions/riskTier" },
+    "poCheckpoint": { "type": "string" },
+    "impact": { "type": "string" },
     "reproduction": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "steps": {
-          "type": "array",
-          "items": { "type": "string" },
-          "description": "Ordered steps; minimal, deterministic where possible."
-        }
+        "steps": { "type": "array", "items": { "type": "string" } }
       }
     },
     "expectedVsActual": {
@@ -54,47 +133,35 @@
         "nodeVersion": { "type": "string" },
         "branch": { "type": "string" },
         "commitSha": { "type": "string" }
-      },
-      "description": "Runtime and git pin; extend with env flags as needed."
+      }
     },
     "suspectedPaths": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Repo-relative paths or modules (hypothesis only)."
+      "items": { "type": "string" }
     },
     "orchestratorHints": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Free-text hints, e.g. RLS, payroll kernel, ML governance."
+      "items": { "type": "string" }
     },
     "conditionalSkills": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Skill identifiers to attach on delegated Tasks (e.g. hr-backend-compliance)."
+      "items": { "$ref": "#/definitions/skillId" }
+    },
+    "delegatedTaskPlan": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/delegatedTaskPlanItem" }
     },
     "failureArtifacts": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "logsExcerpt": { "type": "string" },
-        "failureSummaryBlock": {
-          "type": "string",
-          "description": "FAILURE_SUMMARY envelope if CI or QA produced one."
-        }
+        "failureSummaryBlock": { "type": "string" }
       }
     },
-    "humanReadableOriginal": {
-      "type": "string",
-      "description": "Verbatim reporter text for traceability."
-    },
-    "requiresPoCheckpoint": {
-      "type": "boolean",
-      "description": "True if fix/new work needs Feature brief or spike ADR per orchestrator step 1."
-    },
-    "advocateNotes": {
-      "type": "string",
-      "description": "Internal triage notes (repro result, cannot-repro hypothesis)."
-    },
+    "humanReadableOriginal": { "type": "string" },
+    "requiresPoCheckpoint": { "type": "boolean" },
+    "advocateNotes": { "type": "string" },
     "reproStatus": {
       "type": "string",
       "enum": ["reproduced", "could_not_reproduce", "not_attempted"]

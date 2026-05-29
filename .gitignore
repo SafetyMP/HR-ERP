@@ -47,6 +47,11 @@ services/ml-serving/artifacts/*.joblib
 services/ml-serving/artifacts/*.json
 !services/ml-serving/artifacts/.gitkeep
 
+# protect-mcp shadow/receipt artifacts (lib/copilot/governance)
+.protect-mcp/
+# Cursor hook audit output (shadow mode)
+.cursor/hooks-output/
+
 # vercel
 .vercel
 

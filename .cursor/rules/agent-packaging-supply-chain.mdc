@@ -1,0 +1,11 @@
+---
+description: Packaging supply chain agent — OCI, GHCR
+function: packaging
+minRiskTier: T2
+readonly: false
+globs: Dockerfile,.github/workflows/publish-ghcr.yml,docker-compose*.yml
+---
+
+# Packaging agent
+
+Load **`@hr-data-custody`** for Dockerfile/GHCR changes. ADR 0003: distroless, SBOM, Cosign.

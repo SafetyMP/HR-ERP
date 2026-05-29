@@ -38,7 +38,7 @@ Mid-market competitive gap work (**Feature briefs 014–017**, compliance spikes
 
 ## Innovation layers (architecture phases B–D)
 
-Deferred per [`docs/architecture/01-phase-a-core-boundaries.md`](../architecture/01-phase-a-core-boundaries.md): Edge semantic cache, pgvector search, Wasm/Rust payroll workers, PQC/multimodal clients. Run **`hr-erp-innovation-rd`** parity notes before adopting any of these in product paths.
+Deferred per [`docs/architecture/01-phase-a-core-boundaries.md`](../architecture/01-phase-a-core-boundaries.md): Edge semantic cache, pgvector search, Wasm/Rust payroll workers, PQC/multimodal clients. Document parity in an ADR or Feature brief before adopting any of these in product paths.
 
 ---
 
@@ -48,9 +48,9 @@ Deferred per [`docs/architecture/01-phase-a-core-boundaries.md`](../architecture
 | --- | --- | --- |
 | **1 — Inference** | p95 Tier A latency in staging; budget guardrails tested | **Not met** |
 | **2 — Predictive + drift** | Shadow scoring; kill-switch dry-run; prediction log + drift jobs | **Partial** (churn demo + docs) |
-| **3 — Agents + MCP** | Red-team cross-tenant tool failure; MCP transport wired | **Not met** (catalog in [`lib/copilot/mcp-tools.ts`](../../lib/copilot/mcp-tools.ts)) |
+| **3 — Agents + MCP** | Red-team cross-tenant tool failure; MCP transport wired | **Partial** — catalog + stdio server [`scripts/copilot-mcp-server.ts`](../../scripts/copilot-mcp-server.ts); protect-mcp shadow CI |
 
-Employee-facing scoring still requires **`hr-ai-data-governance`** + [`docs/ai-governance/`](../ai-governance/) before production.
+Employee-facing scoring still requires **`@hr-regulated-domain`** + **`@hr-product-mcp-governance`** (when MCP surfaces change) + [`docs/ai-governance/`](../ai-governance/) before production.
 
 ---
 

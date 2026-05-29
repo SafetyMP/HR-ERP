@@ -1,0 +1,38 @@
+---
+description: HR ERP orchestrator — hooks + native runtime (Cursor 3)
+alwaysApply: true
+---
+
+# HR ERP orchestrator
+
+**Process enforcement:** [`.cursor/hooks.json`](../hooks.json) (`GOVERNANCE_HOOK_MODE=shadow|enforce`). **Domain invariants:** [repo-boundaries.mdc](repo-boundaries.mdc).
+
+**Operator guide:** [cursor-3-native-runtime.md](../../docs/meta/cursor-3-native-runtime.md) · Manifest v3: [`.cursor/governance/governance-manifest.yaml`](../governance/governance-manifest.yaml)
+
+## Quick start
+
+1. Classify tier: `npm run governance:lint`
+2. Emit DAG JSON: `node scripts/governance-lint.mjs plan --json`
+3. Parallel lanes: `/multitask` (scout+architect, sentinel+verifier)
+4. DDL isolation: `/worktree` + custodian → builder
+5. PR stub: `npm run governance:pr-body` or hook `stop` output
+
+## Native commands (ADR 0011)
+
+| Lane | Command |
+|------|---------|
+| scout + architect | `/multitask` |
+| custodian (DDL) | `/worktree` |
+| sentinel + verifier | `/multitask` post-builder |
+| T4 swarm | Cloud handoff + `/multitask` |
+| Premium repair | `/best-of-n` (Human auth per ADR 0010) |
+
+## T3+ path triggers
+
+Pay/compliance → counsel (readonly). `lib/copilot/**` → ai_governance_reviewer + sentinel. See manifest `pathTriggers`.
+
+## CI
+
+`npm run governance:ci` on PRs. ADRs: [0010](../../specs/alignment/decisions/0010-agent-risk-tier-governance.md), [0011](../../specs/alignment/decisions/0011-function-lane-orchestration.md).
+
+Precedence: Human PO → PO checkpoint → counsel → Security merge bar.

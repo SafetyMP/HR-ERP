@@ -21,6 +21,22 @@ Before citing paths, scripts, APIs, or dependencies for **this repo**, apply [wo
 
 [docs/architecture/database-migrations-and-state.md](../../../docs/architecture/database-migrations-and-state.md) — surfaces, RLS, expand→migrate→contract, tooling, PR checklist.
 
+## When NOT to use
+
+- Docs-only or comment-only PRs with **zero** DDL, backfill, seed loader, or verify-script changes
+- Pure application logic with no schema, migration, or custody touch
+- Chores where orchestrator logs migration **N/A** with one-line scope
+
+## Migration custody note (output)
+
+After migration work, emit **≤6 lines** in the PR or feature notes:
+
+```
+Migration custody: surfaces [app|core-hr|payroll] | expand/migrate/contract phase |
+verify: npm run db:verify [pass/fail/skipped] | RLS/GUC touched Y/N |
+payroll/compliance rows custody checked Y/N/N/A
+```
+
 ## Boundaries
 
 - **No cross-database FKs** — align with [specs/alignment/decisions/0001-postgres-kafka-context-boundaries.md](../../../specs/alignment/decisions/0001-postgres-kafka-context-boundaries.md); migrations **per** DSN.

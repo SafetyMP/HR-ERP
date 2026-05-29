@@ -1,0 +1,14 @@
+{
+  "$schema": "https://cursor.com/schemas/mcp.json",
+  "description": "HR ERP team MCP allowlist — IDE plane only (not product copilot)",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "prisma": {
+      "command": "npx",
+      "args": ["-y", "prisma", "mcp"]
+    }
+  }
+}

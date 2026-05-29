@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/json",
+  "description": "protect-mcp gateway for HR ERP embedded copilot MCP transport (shadow by default)",
+  "mode": "shadow",
+  "policyPath": "lib/copilot/governance/policy.cedar",
+  "receiptsDir": ".protect-mcp/receipts",
+  "issuerNote": "Rotate keys per environment; receipts correlate with lib/governance audit correlation_id"
+}

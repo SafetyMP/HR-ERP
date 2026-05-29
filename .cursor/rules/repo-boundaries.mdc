@@ -1,0 +1,24 @@
+---
+description: Always-on HR ERP repo boundaries — bounded contexts, contracts, phase scope
+alwaysApply: true
+---
+
+# Repo boundaries (always on)
+
+Canonical docs — **do not guess**; Read these paths when touching architecture:
+
+- [docs/architecture/bounded-contexts.md](../../docs/architecture/bounded-contexts.md)
+- [docs/architecture/README.md](../../docs/architecture/README.md)
+- [contracts/README.md](../../contracts/README.md)
+- Phase: [specs/alignment/decisions/0001-phase1-scope.md](../../specs/alignment/decisions/0001-phase1-scope.md)
+
+## Non-negotiables
+
+- **Payroll never mutates Core HR DB** — events + read APIs only
+- **Single writer per aggregate** in owning bounded context
+- **No cross-database FKs** — stable business IDs as plain columns
+- **Forward-only migrations** on shared branches
+
+## Skills (lazy, tier-gated)
+
+Use `@skill-router` + `@governance-tier-gate` for orchestration. Domain depth: `@hr-domain-boundaries` (architecture), `@hr-regulated-domain` (T3 pay/AI).

@@ -1,27 +1,13 @@
 ---
-description: MLOps agent — inference economics, drift, MCP isolation for AI Tasks
-globs: docs/ml/**,docs/ai-governance/**,docs/architecture/adrs/**,docs/security/agent-mcp-threat-model.md
+description: MLOps agent
+function: mlops_reviewer
+minRiskTier: T3
+readonly: true
+globs: docs/ml/**,docs/architecture/adrs/**
 ---
 
-# MLOps / AI infrastructure agent
+# MLOps agent
 
-You implement or review **production AI** paths: generative inference, predictive scoring, drift monitoring, and **MCP / tool orchestration** for multi-tenant HR.
+Load **`@hr-regulated-domain`** → [references/mlops.md](../skills/hr-regulated-domain/references/mlops.md). Product inference tier A/B/C is separate from Cursor risk tier T0–T4.
 
-## Binding skills (read and apply)
-
-1. **`hr-erp-mlops`** — [`.cursor/skills/hr-erp-mlops/SKILL.md`](../skills/hr-erp-mlops/SKILL.md) (`@hr-erp-mlops`). Tiered routing (SLM-first), caches, prediction log schema, drift thresholds, phased rollout, agent/MCP isolation principles.  
-2. **`hr-ai-data-governance`** — [`.cursor/skills/hr-ai-data-governance/SKILL.md`](../skills/hr-ai-data-governance/SKILL.md) when the change touches **scoring**, **screening**, **employee-facing ML**, or governance APIs under `docs/ai-governance/` / `lib/governance/`. On delegated **Tasks**, include **agent-ai-governance** (`.cursor/rules/agent-ai-governance.mdc`) whenever this skill applies—the **Orchestrator** requires both for in-scope work (see [orchestrator.mdc](orchestrator.mdc)).
-
-## Deliverable checks before handoff
-
-- **Inference:** Single internal surface for completions; no scattered provider model IDs; degradation path is **Tier A / template**, not “fail open” to largest model.  
-- **Predictive:** Plans name **`model_id`**, **`feature_set_version`**, **`features_digest`**, and where rows land (warehouse/event); drift jobs or stubs are not silently omitted.  
-- **Agents / MCP:** Tenant trust comes from **AuthContext / JWT**, not model text; tool allowlists and audit fields (`args_digest`, `correlation_id`) are addressed for new tools.
-
-## Canonical docs
-
-- [docs/ml/README.md](../../docs/ml/README.md)  
-- [docs/architecture/adrs/0001-slm-first-inference-routing.md](../../docs/architecture/adrs/0001-slm-first-inference-routing.md)  
-- [docs/security/agent-mcp-threat-model.md](../../docs/security/agent-mcp-threat-model.md)
-
-Output: cite these constraints in PR descriptions and attach metric/log plans when adding new models or MCP tools.
+Align with ADR 0001 SLM-first routing. Product MCP catalog/transport is **`agent-ai-governance`** + `@hr-product-mcp-governance`, not this lane.
