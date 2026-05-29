@@ -11,6 +11,10 @@ import {
   getIntegrationSecret,
 } from "@/lib/integrations/crypto/tokens";
 import { ensureTenantOrganization } from "@/lib/integrations/tenant/ensure-org";
+import {
+  processBenefitsCarrierNotify,
+  processPayrollPartnerExport,
+} from "@/lib/integrations/vendors/phase-c-handlers";
 
 export class IntegrationJobError extends Error {
   constructor(
@@ -132,6 +136,30 @@ export async function processIntegrationJob(
         tenantId,
         remote as unknown as Record<string, unknown>,
       );
+      return;
+    }
+  }
+
+  if (vendorKey === VENDOR_KEYS.PAYROLL_PARTNER) {
+    if (jobType === JOB_TYPES.PAYROLL_PARTNER_EXPORT) {
+      await processPayrollPartnerExport({
+        exportRowId: String(data.exportRowId ?? ""),
+        payrollPeriodId: String(data.payrollPeriodId ?? ""),
+        filingArtifactId: String(data.filingArtifactId ?? ""),
+        tenantId,
+        correlationId,
+      });
+      return;
+    }
+  }
+
+  if (vendorKey === VENDOR_KEYS.BENEFITS_CARRIER) {
+    if (jobType === JOB_TYPES.BENEFITS_CARRIER_NOTIFY) {
+      await processBenefitsCarrierNotify({
+        lifeEventId: String(data.lifeEventId ?? ""),
+        tenantId,
+        correlationId,
+      });
       return;
     }
   }

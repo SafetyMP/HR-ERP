@@ -202,6 +202,11 @@ export type PayrollRunException = Prisma.PayrollRunExceptionModel
  */
 export type PayrollFilingArtifact = Prisma.PayrollFilingArtifactModel
 /**
+ * Model PayrollPartnerExport
+ * 
+ */
+export type PayrollPartnerExport = Prisma.PayrollPartnerExportModel
+/**
  * Model PaymentInstruction
  * 
  */

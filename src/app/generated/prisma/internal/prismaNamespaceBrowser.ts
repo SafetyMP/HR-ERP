@@ -83,6 +83,7 @@ export const ModelName = {
   PayrollPeriod: 'PayrollPeriod',
   PayrollRunException: 'PayrollRunException',
   PayrollFilingArtifact: 'PayrollFilingArtifact',
+  PayrollPartnerExport: 'PayrollPartnerExport',
   PaymentInstruction: 'PaymentInstruction',
   PayoutLine: 'PayoutLine',
   FxSnapshot: 'FxSnapshot',
@@ -595,6 +596,22 @@ export const PayrollFilingArtifactScalarFieldEnum = {
 export type PayrollFilingArtifactScalarFieldEnum = (typeof PayrollFilingArtifactScalarFieldEnum)[keyof typeof PayrollFilingArtifactScalarFieldEnum]
 
 
+export const PayrollPartnerExportScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  payrollPeriodId: 'payrollPeriodId',
+  integrationId: 'integrationId',
+  exportId: 'exportId',
+  payloadHash: 'payloadHash',
+  status: 'status',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayrollPartnerExportScalarFieldEnum = (typeof PayrollPartnerExportScalarFieldEnum)[keyof typeof PayrollPartnerExportScalarFieldEnum]
+
+
 export const PaymentInstructionScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -850,6 +867,9 @@ export const BenefitLifeEventScalarFieldEnum = {
   status: 'status',
   hrNote: 'hrNote',
   cobraEventId: 'cobraEventId',
+  carrierDeliveryStatus: 'carrierDeliveryStatus',
+  carrierDeliveryAt: 'carrierDeliveryAt',
+  carrierDeliveryError: 'carrierDeliveryError',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

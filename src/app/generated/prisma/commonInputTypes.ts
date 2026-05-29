@@ -663,6 +663,23 @@ export type EnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel = nev
   _max?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
 }
 
+export type EnumPayrollPartnerExportStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPartnerExportStatus | Prisma.EnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel> | $Enums.PayrollPartnerExportStatus
+}
+
+export type EnumPayrollPartnerExportStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPartnerExportStatus | Prisma.EnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPartnerExportStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollPartnerExportStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel>
+}
+
 export type EnumPayoutLineTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.PayoutLineType | Prisma.EnumPayoutLineTypeFieldRefInput<$PrismaModel>
   in?: $Enums.PayoutLineType[] | Prisma.ListEnumPayoutLineTypeFieldRefInput<$PrismaModel>
@@ -813,6 +830,13 @@ export type EnumBenefitLifeEventStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
 }
 
+export type EnumCarrierDeliveryStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CarrierDeliveryStatus | Prisma.EnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel> | $Enums.CarrierDeliveryStatus | null
+}
+
 export type EnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
   in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
@@ -831,6 +855,16 @@ export type EnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+}
+
+export type EnumCarrierDeliveryStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CarrierDeliveryStatus | Prisma.EnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCarrierDeliveryStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.CarrierDeliveryStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel>
 }
 
 export type EnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {
@@ -1932,6 +1966,23 @@ export type NestedEnumPayrollRunExceptionStatusWithAggregatesFilter<$PrismaModel
   _max?: Prisma.NestedEnumPayrollRunExceptionStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPartnerExportStatus | Prisma.EnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel> | $Enums.PayrollPartnerExportStatus
+}
+
+export type NestedEnumPayrollPartnerExportStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PayrollPartnerExportStatus | Prisma.EnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PayrollPartnerExportStatus[] | Prisma.ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPayrollPartnerExportStatusWithAggregatesFilter<$PrismaModel> | $Enums.PayrollPartnerExportStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPayrollPartnerExportStatusFilter<$PrismaModel>
+}
+
 export type NestedEnumPayoutLineTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.PayoutLineType | Prisma.EnumPayoutLineTypeFieldRefInput<$PrismaModel>
   in?: $Enums.PayoutLineType[] | Prisma.ListEnumPayoutLineTypeFieldRefInput<$PrismaModel>
@@ -2082,6 +2133,13 @@ export type NestedEnumBenefitLifeEventStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel> | $Enums.BenefitLifeEventStatus
 }
 
+export type NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CarrierDeliveryStatus | Prisma.EnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel> | $Enums.CarrierDeliveryStatus | null
+}
+
 export type NestedEnumBenefitLifeEventTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.BenefitLifeEventType | Prisma.EnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
   in?: $Enums.BenefitLifeEventType[] | Prisma.ListEnumBenefitLifeEventTypeFieldRefInput<$PrismaModel>
@@ -2100,6 +2158,16 @@ export type NestedEnumBenefitLifeEventStatusWithAggregatesFilter<$PrismaModel = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumBenefitLifeEventStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCarrierDeliveryStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CarrierDeliveryStatus | Prisma.EnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CarrierDeliveryStatus[] | Prisma.ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCarrierDeliveryStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.CarrierDeliveryStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCarrierDeliveryStatusNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumAttendanceCorrectionStatusFilter<$PrismaModel = never> = {

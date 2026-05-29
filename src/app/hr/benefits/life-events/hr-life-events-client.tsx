@@ -14,6 +14,7 @@ import {
   benefitLifeEventStatusLabel,
   benefitLifeEventTypeLabel,
 } from "@/lib/ui/benefit-life-event-labels";
+import { toast } from "sonner";
 
 type EventRow = {
   id: string;
@@ -22,6 +23,8 @@ type EventRow = {
   eventDate: string;
   status: string;
   description: string | null;
+  carrierDeliveryStatus?: string | null;
+  carrierDeliveryError?: string | null;
 };
 
 type Props = { initialBearerToken?: string };
@@ -54,7 +57,7 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
   const decide = async (id: string, decision: "APPLIED" | "DENIED") => {
     setBusyId(id);
     try {
-      await hrApiFetch(`/api/v1/hr/benefits/life-events/${id}`, {
+      const res = await hrApiFetch(`/api/v1/hr/benefits/life-events/${id}`, {
         bearerToken,
         method: "PATCH",
         headers: {
@@ -66,6 +69,13 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
           hrNote: hrNotes[id]?.trim() || undefined,
         }),
       });
+      if (res.ok && decision === "APPLIED") {
+        const body = (await res.json()) as {
+          data?: { carrierDeliveryStatus?: string | null };
+        };
+        const status = body.data?.carrierDeliveryStatus ?? "PENDING";
+        toast.success(`Life event approved — carrier delivery ${status.toLowerCase()}.`);
+      }
       await load();
     } finally {
       setBusyId(null);

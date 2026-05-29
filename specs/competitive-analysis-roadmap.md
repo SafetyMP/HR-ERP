@@ -11,7 +11,7 @@ Detailed TCO: [competitive-ops-tco-worksheet.md](../docs/product/competitive-ops
 
 ## 1. Positioning statement
 
-HR ERP is a **Phase 1 modular monolith** (Next.js + **single Postgres**) with enterprise security scaffolding, a deterministic payroll kernel, and **strong employee/manager/HR self-service** (Features **001–022**, **155 UAC** total; **147 audited** through 021 + **022** shell shipped). Primary segment: mid-market US+UK build platform ([ADR 0009](alignment/decisions/0009-mid-market-segment-strategy.md)).
+HR ERP is a **Phase 1 modular monolith** (Next.js + **single Postgres**) with enterprise security scaffolding, a deterministic payroll kernel, and **strong employee/manager/HR self-service** (Features **001–022**, **155 UAC** total). Phase C connectors **023–025** shipped ([audit](../docs/product/completion-audits/features-023-025.md)). Primary segment: mid-market US+UK build platform ([ADR 0009](alignment/decisions/0009-mid-market-segment-strategy.md)).
 
 ---
 
@@ -36,7 +36,7 @@ HR ERP is a **Phase 1 modular monolith** (Next.js + **single Postgres**) with en
 | Recruiting / ATS | **Partial** | 014, 020 — win vs no ATS; lose vs Greenhouse |
 | Performance | **Partial** | 012–013 demo, 015 cycles |
 | Learning | **Partial** | 017 |
-| Integrations | **Partial** | Webhooks + SCIM API; briefs 023–025 pending |
+| Integrations | **Met** | SCIM (023), partner export (024), carrier stub (025) |
 | Security / multi-tenant | **Strong** | `lib/security/`, RLS |
 | AI / analytics | **Demo** | `/analytics/*` — not production ML ([deferred](../docs/product/deferred-platform-track.md)) |
 

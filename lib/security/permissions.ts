@@ -63,6 +63,7 @@ export const PERMISSIONS = [
   "benefits:cobra_write",
   "integrations:webhook_subscription_write",
   "integrations:webhook_dispatch",
+  "integrations:configure",
   "position:read",
   "position:write",
   "engagement:survey_read",
@@ -222,6 +223,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "benefits:cobra_write",
     "integrations:webhook_subscription_write",
     "integrations:webhook_dispatch",
+    "integrations:configure",
     "position:read",
     "position:write",
     "engagement:survey_read",
@@ -260,6 +262,7 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "analytics:benchmarks:read",
     "payroll:run_execute",
     "payroll:run_read",
+    "integrations:configure",
   ],
   auditor_readonly: [
     "employees:list",

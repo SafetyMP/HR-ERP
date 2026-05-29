@@ -35,6 +35,27 @@ Rotate quarterly and source from a secrets manager (Vercel sensitive env, AWS Se
 Manager, Doppler, etc.). The token grants tenant-scoped admin authority over the SCIM
 endpoint **only**; it cannot read paystubs or other ABAC-gated resources.
 
+### Zero-downtime rotation
+
+During rotation, include both tokens in the JSON entry:
+
+```json
+{
+  "tenant_acme": {
+    "token": "scim_live_NEW_secret",
+    "previousToken": "scim_live_OLD_secret"
+  }
+}
+```
+
+Deploy the new token first with `previousToken` set to the outgoing value. After IdP
+confirms the new token, remove `previousToken` on the next deploy.
+
+### Rate limiting
+
+Default: **120 requests/minute/tenant** (`SCIM_RATE_LIMIT_PER_MINUTE` override).
+Exceeded limits return **429** with `Retry-After` header.
+
 ## Mapping
 
 | SCIM | Employee column |
@@ -42,8 +63,10 @@ endpoint **only**; it cannot read paystubs or other ABAC-gated resources.
 | `userName` | `email` |
 | `name.givenName` | `firstName` |
 | `name.familyName` | `lastName` |
-| `active` | `status` (`ACTIVE` / `INACTIVE`) |
+| `active` | `status` (`ACTIVE` / `TERMINATED`) |
 | `meta.created` / `meta.lastModified` | `createdAt` / `updatedAt` |
+
+SCIM provisioning also upserts a `UserAccount` row (email + `employee` role) for IdP-linked login.
 
 ## Limitations (today)
 

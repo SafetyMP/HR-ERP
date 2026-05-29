@@ -1,10 +1,35 @@
-import type { Employee } from "@/app/generated/prisma/client";
+import type { Employee, Prisma } from "@/app/generated/prisma/client";
 import type { PrismaClient } from "@/app/generated/prisma/client";
 
 import { isPrismaUniqueViolation } from "@/lib/prisma-errors";
 import type { ScimTenantBinding } from "@/lib/scim/auth";
 import { withScimTransaction } from "@/lib/scim/with-scim-transaction";
 import type { ParsedScimUser } from "@/lib/scim/user-mapping";
+
+async function upsertScimUserAccount(
+  tx: Prisma.TransactionClient,
+  tenantId: string,
+  employeeId: string,
+  email: string,
+): Promise<void> {
+  const existing = await tx.userAccount.findUnique({
+    where: { tenantId_email: { tenantId, email } },
+    select: { id: true },
+  });
+  if (existing) {
+    await tx.userAccount.update({
+      where: { id: existing.id },
+      data: { employeeId },
+    });
+    return;
+  }
+  const account = await tx.userAccount.create({
+    data: { tenantId, email, employeeId },
+  });
+  await tx.userRoleAssignment.create({
+    data: { userId: account.id, role: "employee" },
+  });
+}
 
 export async function listScimUsers(
   prisma: PrismaClient,
@@ -36,8 +61,8 @@ export async function createScimUser(
   parsed: ParsedScimUser,
 ): Promise<Employee> {
   try {
-    return await withScimTransaction(prisma, binding, async (tx) =>
-      tx.employee.create({
+    return await withScimTransaction(prisma, binding, async (tx) => {
+      const employee = await tx.employee.create({
         data: {
           tenantId: binding.tenantId,
           email: parsed.email,
@@ -45,8 +70,15 @@ export async function createScimUser(
           lastName: parsed.lastName,
           status: parsed.active ? "ACTIVE" : "TERMINATED",
         },
-      }),
-    );
+      });
+      await upsertScimUserAccount(
+        tx,
+        binding.tenantId,
+        employee.id,
+        parsed.email,
+      );
+      return employee;
+    });
   } catch (err) {
     if (isPrismaUniqueViolation(err)) {
       throw new ScimUserAlreadyExistsError();
@@ -79,7 +111,7 @@ export async function updateScimUser(
       select: { id: true },
     });
     if (!existing) return null;
-    return tx.employee.update({
+    const employee = await tx.employee.update({
       where: { id },
       data: {
         email: parsed.email,
@@ -88,6 +120,8 @@ export async function updateScimUser(
         status: parsed.active ? "ACTIVE" : "TERMINATED",
       },
     });
+    await upsertScimUserAccount(tx, binding.tenantId, employee.id, parsed.email);
+    return employee;
   });
 }
 

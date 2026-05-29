@@ -16,7 +16,7 @@ export interface ScimTenantBinding {
 
 interface ScimTokenEntry {
   tenantId: string;
-  token: string;
+  tokens: string[];
 }
 
 let cached: { raw: string; entries: ScimTokenEntry[] } | null = null;
@@ -25,17 +25,21 @@ function loadEntries(): ScimTokenEntry[] {
   const raw = process.env.SCIM_TENANT_TOKENS ?? "";
   if (!raw.trim()) return [];
   if (cached && cached.raw === raw) return cached.entries;
-  let parsed: Record<string, { token?: string }>;
+  let parsed: Record<string, { token?: string; previousToken?: string }>;
   try {
-    parsed = JSON.parse(raw) as Record<string, { token?: string }>;
+    parsed = JSON.parse(raw) as Record<string, { token?: string; previousToken?: string }>;
   } catch {
     throw new Error("SCIM_TENANT_TOKENS must be valid JSON");
   }
   const entries: ScimTokenEntry[] = [];
   for (const [tenantId, value] of Object.entries(parsed)) {
-    const token = value?.token?.trim();
-    if (tenantId && token && token.length >= 24) {
-      entries.push({ tenantId, token });
+    const tokens: string[] = [];
+    for (const candidate of [value?.token, value?.previousToken]) {
+      const t = candidate?.trim();
+      if (t && t.length >= 24 && !tokens.includes(t)) tokens.push(t);
+    }
+    if (tenantId && tokens.length > 0) {
+      entries.push({ tenantId, tokens });
     }
   }
   cached = { raw, entries };
@@ -66,8 +70,10 @@ export function requireScimBinding(request: Request): ScimTenantBinding {
   }
   const entries = loadEntries();
   for (const entry of entries) {
-    if (matchToken(presented, entry.token)) {
-      return { tenantId: entry.tenantId };
+    for (const token of entry.tokens) {
+      if (matchToken(presented, token)) {
+        return { tenantId: entry.tenantId };
+      }
     }
   }
   throw new ApiError(401, {

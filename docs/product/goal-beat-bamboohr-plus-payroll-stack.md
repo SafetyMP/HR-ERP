@@ -37,10 +37,10 @@ A prospect should agree with **all** of the following after a 30-minute demo + s
 | W3 | **Policy is ours** — replayable, versioned, counsel-path documented | `packages/payroll-calc`, ADR 0005/0007, compliance packs |
 | W4 | **Tenancy is enforceable**, not config-only | RLS + ABAC demo; no cross-tenant IDOR in QA |
 | W5 | **Hiring managers don’t need a separate ATS** for standard reqs | `/manager/recruiting` through offer (014+ depth) |
-| W6 | **Integration is outbound + inbound without Zapier for core paths** | Webhooks shipped; Phase C connectors live |
+| W6 | **Integration is outbound + inbound without Zapier for core paths** | **Met** — webhooks + SCIM (023) + partner export (024) + carrier stub (025) |
 | W7 | **Benefits are operational**, not a PDF summary only | Phase B election + COBRA path (counsel-gated) |
 
-**Product “overtake” for demo = W1–W5 met; W6–W7 partial until Phase C briefs 023–025 and counsel paths complete.**
+**Product “overtake” for demo = W1–W6 met; W7 partial until counsel paths complete (COBRA notice PDF).**
 
 ---
 
@@ -54,7 +54,7 @@ A prospect should agree with **all** of the following after a 30-minute demo + s
 | Benefits | Gap | **Partial** (life events 019) | **Partial** — COBRA PDF counsel-gated |
 | Recruiting | Behind Pro ATS | **Win** vs no ATS / **lose** vs Greenhouse | **Met** for standard reqs (014, 020) |
 | Performance | Behind full suite | **Win** vs goals-only add-ons | **Met** (015, 020) |
-| Integrations | Behind | **Partial** (webhooks + SCIM) | Phase C **023–025** |
+| Integrations | Behind | **Met** (webhooks + Phase C connectors) | Phase C **023–025 shipped** |
 | Admin analytics | Behind | **Partial** (021 dashboard) | **Met** for ops summary |
 
 ---

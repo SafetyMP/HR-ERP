@@ -39,7 +39,7 @@ HR ERP is a **Phase 1 modular monolith** with **155/155 UAC** across Features **
 | W3 Ownable policy | **Partial** (counsel path documented) |
 | W4 Enforceable tenancy | **Met** |
 | W5 No separate ATS | **Met** |
-| W6 Integrations | **Partial** (webhooks + SCIM; 3 connectors pending) |
+| W6 Integrations | **Met** |
 | W7 Benefits ops | **Partial** (life events; COBRA PDF counsel-gated) |
 
 **30-minute demo:** Cover **W1–W5** without `/mock`, `/demo`, or `/global-l10n` routes.
@@ -63,7 +63,7 @@ HR ERP is a **Phase 1 modular monolith** with **155/155 UAC** across Features **
 | **P0** | Stakeholder value plan + doc reset | **Done** |
 | **P0** | Production checklist (workers, OIDC) | Published |
 | **P1** | Reference customer exit runbook | Published |
-| **P1** | Briefs 023–025 (connectors) | Draft |
+| **P1** | Briefs 023–025 (connectors) | **Shipped** — [audit](./completion-audits/features-023-025.md) |
 | **P2** | 022 completion audit + E2E depth | **Done** |
 | **P3** | Payroll DB cutover | After reference exit |
 

@@ -630,6 +630,7 @@ model PayrollPeriod {
   paymentInstructions PaymentInstruction[]
   runExceptions       PayrollRunException[]
   filingArtifacts     PayrollFilingArtifact[]
+  partnerExports      PayrollPartnerExport[]
 
   @@index([tenantId])
   @@index([tenantId, status])
@@ -670,6 +671,31 @@ model PayrollFilingArtifact {
 
   @@index([tenantId, payrollPeriodId])
   @@map("payroll_filing_artifacts")
+}
+
+enum PayrollPartnerExportStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model PayrollPartnerExport {
+  id              String                     @id @default(uuid())
+  tenantId        String                     @map("tenant_id")
+  payrollPeriodId String                     @map("payroll_period_id")
+  integrationId   String                     @map("integration_id")
+  exportId        String                     @map("export_id")
+  payloadHash     String                     @map("payload_hash")
+  status          PayrollPartnerExportStatus @default(PENDING)
+  lastError       String?                    @map("last_error") @db.VarChar(500)
+  createdAt       DateTime                   @default(now()) @map("created_at")
+  updatedAt       DateTime                   @updatedAt @map("updated_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, payrollPeriodId, integrationId])
+  @@index([tenantId, payrollPeriodId])
+  @@map("payroll_partner_exports")
 }
 
 model PaymentInstruction {
@@ -1036,18 +1062,28 @@ enum BenefitLifeEventStatus {
   DENIED
 }
 
+enum CarrierDeliveryStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  SKIPPED
+}
+
 model BenefitLifeEvent {
-  id           String                 @id @default(uuid())
-  tenantId     String                 @map("tenant_id")
-  employeeId   String                 @map("employee_id")
-  eventType    BenefitLifeEventType   @map("event_type")
-  eventDate    DateTime               @map("event_date") @db.Date
-  description  String?                @db.VarChar(2000)
-  status       BenefitLifeEventStatus @default(SUBMITTED)
-  hrNote       String?                @map("hr_note") @db.VarChar(2000)
-  cobraEventId String?                @unique @map("cobra_event_id")
-  createdAt    DateTime               @default(now()) @map("created_at")
-  updatedAt    DateTime               @updatedAt @map("updated_at")
+  id                    String                  @id @default(uuid())
+  tenantId              String                  @map("tenant_id")
+  employeeId            String                  @map("employee_id")
+  eventType             BenefitLifeEventType    @map("event_type")
+  eventDate             DateTime                @map("event_date") @db.Date
+  description           String?                 @db.VarChar(2000)
+  status                BenefitLifeEventStatus  @default(SUBMITTED)
+  hrNote                String?                 @map("hr_note") @db.VarChar(2000)
+  cobraEventId          String?                 @unique @map("cobra_event_id")
+  carrierDeliveryStatus CarrierDeliveryStatus?  @map("carrier_delivery_status")
+  carrierDeliveryAt     DateTime?               @map("carrier_delivery_at")
+  carrierDeliveryError  String?                 @map("carrier_delivery_error") @db.VarChar(500)
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 

@@ -1,6 +1,12 @@
 import type { BenefitLifeEventType } from "@/app/generated/prisma/client";
 
 import { ApiError } from "@/lib/api/v1/errors";
+import { enqueueIntegrationJob } from "@/lib/integrations/queue/integration-queue";
+import {
+  JOB_TYPES,
+  VENDOR_KEYS,
+} from "@/lib/integrations/constants";
+import { enqueueEvent } from "@/lib/outbox/enqueue-event";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -168,12 +174,45 @@ export async function decideBenefitLifeEvent(
           status: input.decision,
           hrNote: input.hrNote?.trim().slice(0, 2000) ?? null,
           cobraEventId,
+          ...(input.decision === "APPLIED"
+            ? { carrierDeliveryStatus: "PENDING" as const }
+            : {}),
         },
       });
 
+      if (input.decision === "APPLIED") {
+        await enqueueEvent(tx, {
+          tenantId: auth.tenantId,
+          category: "domain.benefits",
+          eventType: "benefits.enrollment.changed",
+          correlationId: auth.correlationId,
+          dedupeKey: `life-event:${updated.id}`,
+          payload: {
+            lifeEventId: updated.id,
+            employeeId: updated.employeeId,
+            eventType: updated.eventType,
+            effectiveDate: updated.eventDate.toISOString().slice(0, 10),
+          },
+        });
+      }
+
       return serializeLifeEvent(updated);
     },
-  );
+  ).then(async (result) => {
+    if (input.decision === "APPLIED") {
+      await enqueueIntegrationJob(
+        {
+          correlationId: auth.correlationId,
+          tenantId: auth.tenantId,
+          vendorKey: VENDOR_KEYS.BENEFITS_CARRIER,
+          jobType: JOB_TYPES.BENEFITS_CARRIER_NOTIFY,
+          data: { lifeEventId: result.id },
+        },
+        `carrier:${result.id}`,
+      );
+    }
+    return result;
+  });
 }
 
 function serializeLifeEvent(row: {
@@ -184,6 +223,9 @@ function serializeLifeEvent(row: {
   status: string;
   hrNote: string | null;
   cobraEventId: string | null;
+  carrierDeliveryStatus?: string | null;
+  carrierDeliveryAt?: Date | null;
+  carrierDeliveryError?: string | null;
   createdAt: Date;
 }) {
   return {
@@ -194,6 +236,9 @@ function serializeLifeEvent(row: {
     status: row.status,
     hrNote: row.hrNote,
     cobraEventId: row.cobraEventId,
+    carrierDeliveryStatus: row.carrierDeliveryStatus ?? null,
+    carrierDeliveryAt: row.carrierDeliveryAt?.toISOString() ?? null,
+    carrierDeliveryError: row.carrierDeliveryError ?? null,
     createdAt: row.createdAt.toISOString(),
   };
 }

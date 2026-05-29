@@ -416,6 +416,7 @@ export const ModelName = {
   PayrollPeriod: 'PayrollPeriod',
   PayrollRunException: 'PayrollRunException',
   PayrollFilingArtifact: 'PayrollFilingArtifact',
+  PayrollPartnerExport: 'PayrollPartnerExport',
   PaymentInstruction: 'PaymentInstruction',
   PayoutLine: 'PayoutLine',
   FxSnapshot: 'FxSnapshot',
@@ -481,7 +482,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "employee" | "ptoRequest" | "timeOffRequest" | "hrCaseRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "payrollRunException" | "payrollFilingArtifact" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "employeeSeparationTask" | "attendancePunch" | "benefitEnrollment" | "onboardingTemplate" | "onboardingTemplateItem" | "taxYearDocument" | "benefitElectionChangeRequest" | "benefitLifeEvent" | "attendanceCorrectionRequest" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction" | "jobRequisition" | "candidate" | "jobApplication" | "jobInterview" | "performanceCycle" | "performanceGoal" | "performanceReviewV2" | "compensationCycle" | "compensationRecommendation" | "jobOffer" | "position" | "engagementSurvey" | "engagementResponse" | "webhookSubscription" | "webhookDelivery" | "learningCourse" | "learningEnrollment" | "workflowDefinition" | "workflowInstance" | "workflowStepInstance" | "cobraEvent"
+    modelProps: "organization" | "employee" | "ptoRequest" | "timeOffRequest" | "hrCaseRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "payrollRunException" | "payrollFilingArtifact" | "payrollPartnerExport" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "employeeSeparationTask" | "attendancePunch" | "benefitEnrollment" | "onboardingTemplate" | "onboardingTemplateItem" | "taxYearDocument" | "benefitElectionChangeRequest" | "benefitLifeEvent" | "attendanceCorrectionRequest" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction" | "jobRequisition" | "candidate" | "jobApplication" | "jobInterview" | "performanceCycle" | "performanceGoal" | "performanceReviewV2" | "compensationCycle" | "compensationRecommendation" | "jobOffer" | "position" | "engagementSurvey" | "engagementResponse" | "webhookSubscription" | "webhookDelivery" | "learningCourse" | "learningEnrollment" | "workflowDefinition" | "workflowInstance" | "workflowStepInstance" | "cobraEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2850,6 +2851,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PayrollFilingArtifactCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PayrollFilingArtifactCountAggregateOutputType> | number
+        }
+      }
+    }
+    PayrollPartnerExport: {
+      payload: Prisma.$PayrollPartnerExportPayload<ExtArgs>
+      fields: Prisma.PayrollPartnerExportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PayrollPartnerExportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PayrollPartnerExportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        findFirst: {
+          args: Prisma.PayrollPartnerExportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PayrollPartnerExportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        findMany: {
+          args: Prisma.PayrollPartnerExportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>[]
+        }
+        create: {
+          args: Prisma.PayrollPartnerExportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        createMany: {
+          args: Prisma.PayrollPartnerExportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PayrollPartnerExportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>[]
+        }
+        delete: {
+          args: Prisma.PayrollPartnerExportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        update: {
+          args: Prisma.PayrollPartnerExportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        deleteMany: {
+          args: Prisma.PayrollPartnerExportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PayrollPartnerExportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PayrollPartnerExportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>[]
+        }
+        upsert: {
+          args: Prisma.PayrollPartnerExportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollPartnerExportPayload>
+        }
+        aggregate: {
+          args: Prisma.PayrollPartnerExportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayrollPartnerExport>
+        }
+        groupBy: {
+          args: Prisma.PayrollPartnerExportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayrollPartnerExportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PayrollPartnerExportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayrollPartnerExportCountAggregateOutputType> | number
         }
       }
     }
@@ -7036,6 +7111,22 @@ export const PayrollFilingArtifactScalarFieldEnum = {
 export type PayrollFilingArtifactScalarFieldEnum = (typeof PayrollFilingArtifactScalarFieldEnum)[keyof typeof PayrollFilingArtifactScalarFieldEnum]
 
 
+export const PayrollPartnerExportScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  payrollPeriodId: 'payrollPeriodId',
+  integrationId: 'integrationId',
+  exportId: 'exportId',
+  payloadHash: 'payloadHash',
+  status: 'status',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayrollPartnerExportScalarFieldEnum = (typeof PayrollPartnerExportScalarFieldEnum)[keyof typeof PayrollPartnerExportScalarFieldEnum]
+
+
 export const PaymentInstructionScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7291,6 +7382,9 @@ export const BenefitLifeEventScalarFieldEnum = {
   status: 'status',
   hrNote: 'hrNote',
   cobraEventId: 'cobraEventId',
+  carrierDeliveryStatus: 'carrierDeliveryStatus',
+  carrierDeliveryAt: 'carrierDeliveryAt',
+  carrierDeliveryError: 'carrierDeliveryError',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -8170,6 +8264,20 @@ export type ListEnumPayrollRunExceptionStatusFieldRefInput<$PrismaModel> = Field
 
 
 /**
+ * Reference to a field of type 'PayrollPartnerExportStatus'
+ */
+export type EnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayrollPartnerExportStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PayrollPartnerExportStatus[]'
+ */
+export type ListEnumPayrollPartnerExportStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayrollPartnerExportStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'PayoutLineType'
  */
 export type EnumPayoutLineTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutLineType'>
@@ -8306,6 +8414,20 @@ export type EnumBenefitLifeEventStatusFieldRefInput<$PrismaModel> = FieldRefInpu
  * Reference to a field of type 'BenefitLifeEventStatus[]'
  */
 export type ListEnumBenefitLifeEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BenefitLifeEventStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CarrierDeliveryStatus'
+ */
+export type EnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarrierDeliveryStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CarrierDeliveryStatus[]'
+ */
+export type ListEnumCarrierDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarrierDeliveryStatus[]'>
     
 
 
@@ -8842,6 +8964,7 @@ export type GlobalOmitConfig = {
   payrollPeriod?: Prisma.PayrollPeriodOmit
   payrollRunException?: Prisma.PayrollRunExceptionOmit
   payrollFilingArtifact?: Prisma.PayrollFilingArtifactOmit
+  payrollPartnerExport?: Prisma.PayrollPartnerExportOmit
   paymentInstruction?: Prisma.PaymentInstructionOmit
   payoutLine?: Prisma.PayoutLineOmit
   fxSnapshot?: Prisma.FxSnapshotOmit

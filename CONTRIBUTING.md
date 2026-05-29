@@ -49,6 +49,7 @@ Merged commits on **`main` / `master`** should follow [Conventional Commits](htt
 
 - `npm run lint`  
 - `npm run format` (Prettier)
+- `npm run verify:reference-exit` (static check for reference-customer exit runbook artifacts)
 
 ## Secrets
 

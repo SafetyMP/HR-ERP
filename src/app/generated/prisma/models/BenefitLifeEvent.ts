@@ -34,6 +34,9 @@ export type BenefitLifeEventMinAggregateOutputType = {
   status: $Enums.BenefitLifeEventStatus | null
   hrNote: string | null
   cobraEventId: string | null
+  carrierDeliveryStatus: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt: Date | null
+  carrierDeliveryError: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +51,9 @@ export type BenefitLifeEventMaxAggregateOutputType = {
   status: $Enums.BenefitLifeEventStatus | null
   hrNote: string | null
   cobraEventId: string | null
+  carrierDeliveryStatus: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt: Date | null
+  carrierDeliveryError: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +68,9 @@ export type BenefitLifeEventCountAggregateOutputType = {
   status: number
   hrNote: number
   cobraEventId: number
+  carrierDeliveryStatus: number
+  carrierDeliveryAt: number
+  carrierDeliveryError: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +87,9 @@ export type BenefitLifeEventMinAggregateInputType = {
   status?: true
   hrNote?: true
   cobraEventId?: true
+  carrierDeliveryStatus?: true
+  carrierDeliveryAt?: true
+  carrierDeliveryError?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +104,9 @@ export type BenefitLifeEventMaxAggregateInputType = {
   status?: true
   hrNote?: true
   cobraEventId?: true
+  carrierDeliveryStatus?: true
+  carrierDeliveryAt?: true
+  carrierDeliveryError?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +121,9 @@ export type BenefitLifeEventCountAggregateInputType = {
   status?: true
   hrNote?: true
   cobraEventId?: true
+  carrierDeliveryStatus?: true
+  carrierDeliveryAt?: true
+  carrierDeliveryError?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +211,9 @@ export type BenefitLifeEventGroupByOutputType = {
   status: $Enums.BenefitLifeEventStatus
   hrNote: string | null
   cobraEventId: string | null
+  carrierDeliveryStatus: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt: Date | null
+  carrierDeliveryError: string | null
   createdAt: Date
   updatedAt: Date
   _count: BenefitLifeEventCountAggregateOutputType | null
@@ -228,6 +249,9 @@ export type BenefitLifeEventWhereInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFilter<"BenefitLifeEvent"> | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   cobraEventId?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
+  carrierDeliveryStatus?: Prisma.EnumCarrierDeliveryStatusNullableFilter<"BenefitLifeEvent"> | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.DateTimeNullableFilter<"BenefitLifeEvent"> | Date | string | null
+  carrierDeliveryError?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
@@ -243,6 +267,9 @@ export type BenefitLifeEventOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   hrNote?: Prisma.SortOrderInput | Prisma.SortOrder
   cobraEventId?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   employee?: Prisma.EmployeeOrderByWithRelationInput
@@ -261,6 +288,9 @@ export type BenefitLifeEventWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   status?: Prisma.EnumBenefitLifeEventStatusFilter<"BenefitLifeEvent"> | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
+  carrierDeliveryStatus?: Prisma.EnumCarrierDeliveryStatusNullableFilter<"BenefitLifeEvent"> | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.DateTimeNullableFilter<"BenefitLifeEvent"> | Date | string | null
+  carrierDeliveryError?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
@@ -276,6 +306,9 @@ export type BenefitLifeEventOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   hrNote?: Prisma.SortOrderInput | Prisma.SortOrder
   cobraEventId?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  carrierDeliveryError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.BenefitLifeEventCountOrderByAggregateInput
@@ -296,6 +329,9 @@ export type BenefitLifeEventScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumBenefitLifeEventStatusWithAggregatesFilter<"BenefitLifeEvent"> | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.StringNullableWithAggregatesFilter<"BenefitLifeEvent"> | string | null
   cobraEventId?: Prisma.StringNullableWithAggregatesFilter<"BenefitLifeEvent"> | string | null
+  carrierDeliveryStatus?: Prisma.EnumCarrierDeliveryStatusNullableWithAggregatesFilter<"BenefitLifeEvent"> | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.DateTimeNullableWithAggregatesFilter<"BenefitLifeEvent"> | Date | string | null
+  carrierDeliveryError?: Prisma.StringNullableWithAggregatesFilter<"BenefitLifeEvent"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BenefitLifeEvent"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BenefitLifeEvent"> | Date | string
 }
@@ -309,6 +345,9 @@ export type BenefitLifeEventCreateInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutBenefitLifeEventsInput
@@ -324,6 +363,9 @@ export type BenefitLifeEventUncheckedCreateInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -337,6 +379,9 @@ export type BenefitLifeEventUpdateInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutBenefitLifeEventsNestedInput
@@ -352,6 +397,9 @@ export type BenefitLifeEventUncheckedUpdateInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,6 +414,9 @@ export type BenefitLifeEventCreateManyInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -379,6 +430,9 @@ export type BenefitLifeEventUpdateManyMutationInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,6 +447,9 @@ export type BenefitLifeEventUncheckedUpdateManyInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -417,6 +474,9 @@ export type BenefitLifeEventCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   hrNote?: Prisma.SortOrder
   cobraEventId?: Prisma.SortOrder
+  carrierDeliveryStatus?: Prisma.SortOrder
+  carrierDeliveryAt?: Prisma.SortOrder
+  carrierDeliveryError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -431,6 +491,9 @@ export type BenefitLifeEventMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   hrNote?: Prisma.SortOrder
   cobraEventId?: Prisma.SortOrder
+  carrierDeliveryStatus?: Prisma.SortOrder
+  carrierDeliveryAt?: Prisma.SortOrder
+  carrierDeliveryError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -445,6 +508,9 @@ export type BenefitLifeEventMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   hrNote?: Prisma.SortOrder
   cobraEventId?: Prisma.SortOrder
+  carrierDeliveryStatus?: Prisma.SortOrder
+  carrierDeliveryAt?: Prisma.SortOrder
+  carrierDeliveryError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -499,6 +565,10 @@ export type EnumBenefitLifeEventStatusFieldUpdateOperationsInput = {
   set?: $Enums.BenefitLifeEventStatus
 }
 
+export type NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CarrierDeliveryStatus | null
+}
+
 export type BenefitLifeEventCreateWithoutEmployeeInput = {
   id?: string
   tenantId: string
@@ -508,6 +578,9 @@ export type BenefitLifeEventCreateWithoutEmployeeInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -521,6 +594,9 @@ export type BenefitLifeEventUncheckedCreateWithoutEmployeeInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -564,6 +640,9 @@ export type BenefitLifeEventScalarWhereInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFilter<"BenefitLifeEvent"> | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   cobraEventId?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
+  carrierDeliveryStatus?: Prisma.EnumCarrierDeliveryStatusNullableFilter<"BenefitLifeEvent"> | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.DateTimeNullableFilter<"BenefitLifeEvent"> | Date | string | null
+  carrierDeliveryError?: Prisma.StringNullableFilter<"BenefitLifeEvent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BenefitLifeEvent"> | Date | string
 }
@@ -577,6 +656,9 @@ export type BenefitLifeEventCreateManyEmployeeInput = {
   status?: $Enums.BenefitLifeEventStatus
   hrNote?: string | null
   cobraEventId?: string | null
+  carrierDeliveryStatus?: $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Date | string | null
+  carrierDeliveryError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -590,6 +672,9 @@ export type BenefitLifeEventUpdateWithoutEmployeeInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -603,6 +688,9 @@ export type BenefitLifeEventUncheckedUpdateWithoutEmployeeInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -616,6 +704,9 @@ export type BenefitLifeEventUncheckedUpdateManyWithoutEmployeeInput = {
   status?: Prisma.EnumBenefitLifeEventStatusFieldUpdateOperationsInput | $Enums.BenefitLifeEventStatus
   hrNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cobraEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  carrierDeliveryStatus?: Prisma.NullableEnumCarrierDeliveryStatusFieldUpdateOperationsInput | $Enums.CarrierDeliveryStatus | null
+  carrierDeliveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carrierDeliveryError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -632,6 +723,9 @@ export type BenefitLifeEventSelect<ExtArgs extends runtime.Types.Extensions.Inte
   status?: boolean
   hrNote?: boolean
   cobraEventId?: boolean
+  carrierDeliveryStatus?: boolean
+  carrierDeliveryAt?: boolean
+  carrierDeliveryError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -647,6 +741,9 @@ export type BenefitLifeEventSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   status?: boolean
   hrNote?: boolean
   cobraEventId?: boolean
+  carrierDeliveryStatus?: boolean
+  carrierDeliveryAt?: boolean
+  carrierDeliveryError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -662,6 +759,9 @@ export type BenefitLifeEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   status?: boolean
   hrNote?: boolean
   cobraEventId?: boolean
+  carrierDeliveryStatus?: boolean
+  carrierDeliveryAt?: boolean
+  carrierDeliveryError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -677,11 +777,14 @@ export type BenefitLifeEventSelectScalar = {
   status?: boolean
   hrNote?: boolean
   cobraEventId?: boolean
+  carrierDeliveryStatus?: boolean
+  carrierDeliveryAt?: boolean
+  carrierDeliveryError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BenefitLifeEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "eventType" | "eventDate" | "description" | "status" | "hrNote" | "cobraEventId" | "createdAt" | "updatedAt", ExtArgs["result"]["benefitLifeEvent"]>
+export type BenefitLifeEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "eventType" | "eventDate" | "description" | "status" | "hrNote" | "cobraEventId" | "carrierDeliveryStatus" | "carrierDeliveryAt" | "carrierDeliveryError" | "createdAt" | "updatedAt", ExtArgs["result"]["benefitLifeEvent"]>
 export type BenefitLifeEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
@@ -707,6 +810,9 @@ export type $BenefitLifeEventPayload<ExtArgs extends runtime.Types.Extensions.In
     status: $Enums.BenefitLifeEventStatus
     hrNote: string | null
     cobraEventId: string | null
+    carrierDeliveryStatus: $Enums.CarrierDeliveryStatus | null
+    carrierDeliveryAt: Date | null
+    carrierDeliveryError: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["benefitLifeEvent"]>
@@ -1142,6 +1248,9 @@ export interface BenefitLifeEventFieldRefs {
   readonly status: Prisma.FieldRef<"BenefitLifeEvent", 'BenefitLifeEventStatus'>
   readonly hrNote: Prisma.FieldRef<"BenefitLifeEvent", 'String'>
   readonly cobraEventId: Prisma.FieldRef<"BenefitLifeEvent", 'String'>
+  readonly carrierDeliveryStatus: Prisma.FieldRef<"BenefitLifeEvent", 'CarrierDeliveryStatus'>
+  readonly carrierDeliveryAt: Prisma.FieldRef<"BenefitLifeEvent", 'DateTime'>
+  readonly carrierDeliveryError: Prisma.FieldRef<"BenefitLifeEvent", 'String'>
   readonly createdAt: Prisma.FieldRef<"BenefitLifeEvent", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BenefitLifeEvent", 'DateTime'>
 }

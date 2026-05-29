@@ -65,6 +65,15 @@ export const PayrollRunExceptionStatus = {
 export type PayrollRunExceptionStatus = (typeof PayrollRunExceptionStatus)[keyof typeof PayrollRunExceptionStatus]
 
 
+export const PayrollPartnerExportStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED'
+} as const
+
+export type PayrollPartnerExportStatus = (typeof PayrollPartnerExportStatus)[keyof typeof PayrollPartnerExportStatus]
+
+
 export const OnboardingStatus = {
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -127,6 +136,16 @@ export const BenefitLifeEventStatus = {
 } as const
 
 export type BenefitLifeEventStatus = (typeof BenefitLifeEventStatus)[keyof typeof BenefitLifeEventStatus]
+
+
+export const CarrierDeliveryStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type CarrierDeliveryStatus = (typeof CarrierDeliveryStatus)[keyof typeof CarrierDeliveryStatus]
 
 
 export const AttendanceCorrectionStatus = {

@@ -75,8 +75,8 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | Integration | Status | Runbook |
 | --- | --- | --- |
 | Outbound webhooks | Shipped (ADR 0008) | Run `worker:webhooks`; verify HMAC + encryption |
-| SCIM provisioning | API substantial | Brief **023** for production hardening |
-| Payroll partner export | Partial (018 JSON) | Brief **024** for curated connector |
+| SCIM provisioning | **Shipped** (023) | [scim.md](../security/scim.md) |
+| Payroll partner export | **Shipped** (024) | `POST .../partner-export` |
 | IdP (OIDC) | Production path documented | [phase1-production-checklist.md](../operations/phase1-production-checklist.md) |
 
 ---

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
-import { requireScimBinding } from "@/lib/scim/auth";
+import { guardScimRequest } from "@/lib/scim/scim-request-guard";
 import {
   getScimUserById,
   patchScimUser,
@@ -27,18 +27,18 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const { id } = await context.params;
     const employee = await getScimUserById(prisma, binding, id);
     if (!employee) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
-        headers: { "content-type": SCIM_CONTENT_TYPE },
+        headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
       });
     }
     return NextResponse.json(employeeToScim(employee, baseUrlOf(request)), {
       status: 200,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
     });
   } catch (err) {
     return scimErrorResponse(err);
@@ -50,7 +50,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const { id } = await context.params;
     const body = await request.json().catch(() => null);
     const parsed = parseScimUser(body);
@@ -59,13 +59,13 @@ export async function PUT(
     if (!updated) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
-        headers: { "content-type": SCIM_CONTENT_TYPE },
+        headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
       });
     }
 
     return NextResponse.json(employeeToScim(updated, baseUrlOf(request)), {
       status: 200,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
     });
   } catch (err) {
     return scimErrorResponse(err);
@@ -88,7 +88,7 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const { id } = await context.params;
     const body = (await request.json().catch(() => null)) as ScimPatchBody | null;
 
@@ -96,7 +96,7 @@ export async function PATCH(
     if (!existing) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
-        headers: { "content-type": SCIM_CONTENT_TYPE },
+        headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
       });
     }
 
@@ -125,7 +125,7 @@ export async function PATCH(
     const updated = await patchScimUser(prisma, binding, id, data);
     return NextResponse.json(employeeToScim(updated ?? existing, baseUrlOf(request)), {
       status: 200,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
     });
   } catch (err) {
     return scimErrorResponse(err);
@@ -137,14 +137,14 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const { id } = await context.params;
 
     const terminated = await terminateScimUser(prisma, binding, id);
     if (!terminated) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
-        headers: { "content-type": SCIM_CONTENT_TYPE },
+        headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
       });
     }
 
@@ -156,9 +156,14 @@ export async function DELETE(
 
 function scimErrorResponse(err: unknown): NextResponse {
   if (err instanceof ApiError) {
+    const headers: Record<string, string> = { "content-type": SCIM_CONTENT_TYPE };
+    const details = err.payload.details as { retryAfterSec?: number } | undefined;
+    if (typeof details?.retryAfterSec === "number") {
+      headers["Retry-After"] = String(details.retryAfterSec);
+    }
     return NextResponse.json(scimError(err.status, err.payload.message), {
       status: err.status,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers,
     });
   }
   return NextResponse.json(scimError(500, "internal_error"), {

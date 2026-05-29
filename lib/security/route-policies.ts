@@ -354,6 +354,22 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "integrations:webhook_subscription_write",
     abac: { minMfa: "step_up", maxDataClassification: "confidential" },
   },
+  [routeKey("GET", "/api/v1/integrations/instances")]: {
+    permission: "integrations:configure",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("PUT", "/api/v1/integrations/instances")]: {
+    permission: "integrations:configure",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("POST", "/api/v1/payroll/runs/:periodId/partner-export")]: {
+    permission: "payroll:run_execute",
+    abac: { minMfa: "step_up", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/payroll/runs/:periodId/partner-export")]: {
+    permission: "payroll:run_read",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
   [routeKey("POST", "/api/v1/positions")]: {
     permission: "position:write",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
@@ -407,6 +423,14 @@ export function getRoutePolicy(
         routeKey("GET", "/api/v1/payroll/runs/:periodId/filing-artifact")
       ];
     }
+    const partnerExportGet = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/([^/]+)\/partner-export$/,
+    );
+    if (partnerExportGet && UUID_PATTERN.test(partnerExportGet[1]!)) {
+      return ROUTES[
+        routeKey("GET", "/api/v1/payroll/runs/:periodId/partner-export")
+      ];
+    }
   }
 
   if (verb === "POST") {
@@ -420,6 +444,14 @@ export function getRoutePolicy(
     if (filingPostMatch && UUID_PATTERN.test(filingPostMatch[1]!)) {
       return ROUTES[
         routeKey("POST", "/api/v1/payroll/runs/:periodId/filing-artifact")
+      ];
+    }
+    const partnerExportPost = pathname.match(
+      /^\/api\/v1\/payroll\/runs\/([^/]+)\/partner-export$/,
+    );
+    if (partnerExportPost && UUID_PATTERN.test(partnerExportPost[1]!)) {
+      return ROUTES[
+        routeKey("POST", "/api/v1/payroll/runs/:periodId/partner-export")
       ];
     }
     const interviewPostMatch = pathname.match(

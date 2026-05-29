@@ -43,7 +43,7 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 | W3 | Ownable, replayable policy | **Partial** | `packages/payroll-calc`, ADR 0005/0007; not IRS/HMRC certified |
 | W4 | Enforceable tenancy | **Met** | JWT → ABAC → RLS; SCIM/integration tests |
 | W5 | Hiring managers without separate ATS | **Met** | `/manager/recruiting` through offer (014, 020) |
-| W6 | Integrations without Zapier for core paths | **Partial** | Webhooks + SCIM API shipped; 3 curated connectors (023–025) pending |
+| W6 | Integrations without Zapier for core paths | **Met** | SCIM hardened (023), partner export (024), carrier stub (025) |
 | W7 | Benefits operational, not PDF-only | **Partial** | Life events (019); COBRA notice PDF counsel-gated |
 
 **Buyer demo target:** Prove **W1–W5** in ≤30 minutes without mock/demo routes.
@@ -75,15 +75,15 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 - Filing via **partner handoff** from 018 JSON artifacts — no live agency e-file
 - COBRA: document **workflow start** vs **notice PDF** gap ([counsel gate](../compliance/cobra-aca-counsel-gate.md))
 
-### P2 — Phase C connectors (2–4 weeks)
+### P2 — Phase C connectors ✅
 
 | Brief | Focus |
 | --- | --- |
-| [023](./feature-briefs/023-scim-idp-production-hardening.md) | SCIM/OIDC production hardening |
-| [024](./feature-briefs/024-payroll-partner-export-connector.md) | Payroll partner export (018 artifacts + webhooks) |
-| [025](./feature-briefs/025-benefits-carrier-outbound-stub.md) | Benefits carrier outbound stub (834 deferred) |
+| [023](./feature-briefs/023-scim-idp-production-hardening.md) | SCIM/OIDC production hardening — [audit](./completion-audits/features-023-025.md) |
+| [024](./feature-briefs/024-payroll-partner-export-connector.md) | Payroll partner export — [audit](./completion-audits/features-023-025.md) |
+| [025](./feature-briefs/025-benefits-carrier-outbound-stub.md) | Benefits carrier outbound stub — [audit](./completion-audits/features-023-025.md) |
 
-**Target:** W6 **Partial → Met** (3 connectors with PO briefs + smoke/integration proof).
+**Target:** W6 **Met** (3 connectors with PO briefs + smoke/integration proof).
 
 ### P3 — Product polish (ongoing)
 
@@ -108,7 +108,7 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 | --- | --- |
 | Doc drift | Zero “115 UAC” or “Tier 1 next” in active docs |
 | Buyer demo | W1–W5 in &lt;30 min without `/mock`, `/global-l10n`, `/demo` |
-| W6 | Briefs 023–025 PO-approved + integration/smoke proof |
+| W6 | Briefs 023–025 PO-approved + integration/smoke proof | **Met** — [features-023-025](./completion-audits/features-023-025.md) |
 | 022 | 8/8 UAC in completion audit |
 | Agent canon | [specs/references.md](../../specs/references.md) in-repo paths only |
 

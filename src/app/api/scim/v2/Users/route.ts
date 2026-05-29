@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
-import { requireScimBinding } from "@/lib/scim/auth";
+import { guardScimRequest } from "@/lib/scim/scim-request-guard";
 import {
   createScimUser,
   listScimUsers,
@@ -30,7 +30,7 @@ function parseFilterUserNameEq(filter: string | null): string | null {
 
 export async function GET(request: Request) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const url = new URL(request.url);
     const startIndex = Math.max(1, Number(url.searchParams.get("startIndex") ?? "1") || 1);
     const count = Math.min(200, Math.max(0, Number(url.searchParams.get("count") ?? "100") || 100));
@@ -52,7 +52,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(body, {
       status: 200,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers: { "content-type": SCIM_CONTENT_TYPE, ...rateLimitHeaders },
     });
   } catch (err) {
     return scimErrorResponse(err);
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const binding = requireScimBinding(request);
+    const { binding, rateLimitHeaders } = guardScimRequest(request);
     const json = await request.json().catch(() => null);
     const parsed = parseScimUser(json);
 
@@ -73,6 +73,7 @@ export async function POST(request: Request) {
       headers: {
         "content-type": SCIM_CONTENT_TYPE,
         location: `${baseUrl}/api/scim/v2/Users/${created.id}`,
+        ...rateLimitHeaders,
       },
     });
   } catch (err) {
@@ -88,9 +89,14 @@ export async function POST(request: Request) {
 
 function scimErrorResponse(err: unknown): NextResponse {
   if (err instanceof ApiError) {
+    const headers: Record<string, string> = { "content-type": SCIM_CONTENT_TYPE };
+    const details = err.payload.details as { retryAfterSec?: number } | undefined;
+    if (typeof details?.retryAfterSec === "number") {
+      headers["Retry-After"] = String(details.retryAfterSec);
+    }
     return NextResponse.json(scimError(err.status, err.payload.message), {
       status: err.status,
-      headers: { "content-type": SCIM_CONTENT_TYPE },
+      headers,
     });
   }
   if (err instanceof Error && err.message === "userName_required") {

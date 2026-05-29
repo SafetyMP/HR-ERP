@@ -104,7 +104,25 @@ npm run ops:verify
 
 ---
 
-## 7. Related documents
+## 8. SCIM provisioning (Phase C — brief 023)
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `SCIM_TENANT_TOKENS` | If using IdP sync | JSON map `tenantId → { token, previousToken? }` |
+| `SCIM_RATE_LIMIT_PER_MINUTE` | Optional | Default `120` per tenant |
+
+**Verify:**
+
+1. `GET /api/scim/v2/ServiceProviderConfig` returns 200 with bearer token.
+2. IdP test user creates `Employee` + `UserAccount` row under correct tenant.
+3. Cross-tenant user ID returns **404** (not foreign data).
+4. Demo routes remain blocked (`ALLOW_DEMO_API_ROUTES` unset in Production).
+
+Runbook: [docs/security/scim.md](../security/scim.md)
+
+---
+
+## 9. Related documents
 
 - [Validated ops inventory](../product/competitive-ops-inventory.md)
 - [Executive brief](../product/competitive-benchmark-executive-brief.md)

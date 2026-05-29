@@ -186,6 +186,40 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
     URL.revokeObjectURL(url);
   };
 
+  const exportToPartner = async () => {
+    setBusy(true);
+    setActionMsg(null);
+    try {
+      const res = await hrApiFetch(
+        `/api/v1/payroll/runs/${periodId}/partner-export`,
+        {
+          bearerToken,
+          method: "POST",
+          headers: { Accept: "application/json" },
+        },
+      );
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as {
+          error?: { message?: string };
+        };
+        setActionMsg(
+          body.error?.message === "payroll_partner_not_configured"
+            ? "Configure payroll partner integration first (Settings → Integrations)."
+            : "Partner export failed — ensure filing artifact exists.",
+        );
+        return;
+      }
+      const body = (await res.json()) as {
+        data?: { export?: { exportId?: string; status?: string } };
+      };
+      setActionMsg(
+        `Partner export ${body.data?.export?.status ?? "queued"} (ID ${body.data?.export?.exportId?.slice(0, 12) ?? "…"}).`,
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const runPayrollForPeriod = async () => {
     setBusy(true);
     setActionMsg(null);
@@ -474,6 +508,15 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
                       onClick={() => void downloadFilingJson()}
                     >
                       Download filing JSON
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => void exportToPartner()}
+                    >
+                      Export to partner
                     </Button>
                   </div>
                 )}
