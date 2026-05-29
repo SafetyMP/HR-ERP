@@ -1,3 +1,9 @@
+## [2.13.1](https://github.com/SafetyMP/HR-ERP/compare/v2.13.0...v2.13.1) (2026-05-29)
+
+### Bug Fixes
+
+* **auth:** allow demo preview sign-in on Production-only deploys ([68915ec](https://github.com/SafetyMP/HR-ERP/commit/68915eca4b49a0d0b018b83fcaa61d795213c0bb))
+
 ## [2.13.0](https://github.com/SafetyMP/HR-ERP/compare/v2.12.1...v2.13.0) (2026-05-29)
 
 ### Features
