@@ -5,10 +5,15 @@ import {
   type MyProfileEnvelope,
 } from "@/lib/profile/employee-self-profile-mapper";
 import { prisma } from "@/lib/prisma";
+import type { AbacConstraints } from "@/lib/security/abac-attributes";
+import type { Permission } from "@/lib/security/permissions";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
-export async function getMyProfile(auth: AuthContext): Promise<MyProfileEnvelope> {
+export async function getMyProfile(
+  auth: AuthContext,
+  policy?: { permission: Permission; abac?: AbacConstraints },
+): Promise<MyProfileEnvelope> {
   const employeeId = auth.subjectEmployeeId;
   if (!employeeId) {
     throw new ApiError(403, {
@@ -21,8 +26,12 @@ export async function getMyProfile(auth: AuthContext): Promise<MyProfileEnvelope
     prisma,
     auth,
     {
-      permission: "employees:read",
-      abac: { minMfa: "standard", maxDataClassification: "confidential" },
+      permission: policy?.permission ?? "employees:read",
+      abac:
+        policy?.abac ?? {
+          minMfa: "standard",
+          maxDataClassification: "confidential",
+        },
     },
     async (tx) => {
       const row = await tx.employee.findFirst({

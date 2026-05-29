@@ -16,10 +16,10 @@ interface ChurnRow {
 }
 
 const BUCKETS = [
-  { key: "low", min: 0, max: 0.25, label: "Low (0.00–0.25)", fill: "#22c55e" },
-  { key: "moderate", min: 0.25, max: 0.5, label: "Moderate (0.25–0.50)", fill: "#facc15" },
-  { key: "elevated", min: 0.5, max: 0.75, label: "Elevated (0.50–0.75)", fill: "#f97316" },
-  { key: "high", min: 0.75, max: 1.001, label: "High (0.75–1.00)", fill: "#ef4444" },
+  { key: "low", min: 0, max: 0.25, label: "Low (0.00–0.25)", fill: "hsl(var(--primary))" },
+  { key: "moderate", min: 0.25, max: 0.5, label: "Moderate (0.25–0.50)", fill: "hsl(var(--muted-foreground))" },
+  { key: "elevated", min: 0.5, max: 0.75, label: "Elevated (0.50–0.75)", fill: "hsl(var(--accent-foreground))" },
+  { key: "high", min: 0.75, max: 1.001, label: "High (0.75–1.00)", fill: "hsl(var(--destructive))" },
 ] as const;
 
 export function ChurnDistributionChart({ rows }: { rows: ChurnRow[] }) {
@@ -31,11 +31,11 @@ export function ChurnDistributionChart({ rows }: { rows: ChurnRow[] }) {
 
   return (
     <div
-      className="rounded-lg border border-zinc-300 bg-card p-4 shadow-sm dark:border-zinc-600"
+      className="rounded-lg border border-border bg-card p-4 shadow-sm"
       role="img"
       aria-label="Histogram of latest flight-risk scores grouped into four buckets"
     >
-      <h2 className="mb-2 text-sm font-semibold text-zinc-800 dark:text-zinc-100">
+      <h2 className="mb-2 text-sm font-semibold text-foreground">
         Score distribution
       </h2>
       <p className="mb-3 text-xs text-zinc-500 dark:text-zinc-400">

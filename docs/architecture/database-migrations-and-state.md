@@ -1,8 +1,8 @@
 # Database migrations and state custody
 
-**Cursor skill:** **`@hr-db-migration-state`** — [`.cursor/skills/hr-db-migration-state/SKILL.md`](../../.cursor/skills/hr-db-migration-state/SKILL.md). Listed in [AGENTS.md](../../AGENTS.md).
+**Cursor skill:** **`@hr-data-custody`** — [`.cursor/skills/hr-data-custody/SKILL.md`](../../.cursor/skills/hr-data-custody/SKILL.md). Listed in [AGENTS.md](../../AGENTS.md).
 
-Engineering runbook for **non-destructive** schema evolution and **historical data custody** across this repo’s Postgres surfaces. Pair with ADR [`specs/alignment/decisions/0001-postgres-kafka-context-boundaries.md`](../../specs/alignment/decisions/0001-postgres-kafka-context-boundaries.md) (no cross-database foreign keys; migrations **per** database).
+Engineering runbook for **non-destructive** schema evolution and **historical data custody** across this repo’s Postgres surfaces. Pair with ADR [`specs/alignment/decisions/0002-postgres-kafka-context-boundaries.md`](../../specs/alignment/decisions/0002-postgres-kafka-context-boundaries.md) (no cross-database foreign keys; migrations **per** database).
 
 ## Migration surfaces
 

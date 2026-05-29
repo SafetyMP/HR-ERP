@@ -9,6 +9,8 @@ import {
 import type { PatchMyProfileInput } from "@/lib/profile/patch-my-profile-schema";
 import { prisma } from "@/lib/prisma";
 import { invalidateEmployeePublicProfileCache } from "@/lib/employees/public-profile";
+import type { AbacConstraints } from "@/lib/security/abac-attributes";
+import type { Permission } from "@/lib/security/permissions";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -46,6 +48,7 @@ export type PatchMyProfileResult = MyProfileEnvelope & {
 export async function patchMyProfile(
   auth: AuthContext,
   patch: PatchMyProfileInput,
+  policy?: { permission: Permission; abac?: AbacConstraints },
 ): Promise<PatchMyProfileResult> {
   const employeeId = auth.subjectEmployeeId;
   if (!employeeId) {
@@ -74,8 +77,12 @@ export async function patchMyProfile(
     prisma,
     auth,
     {
-      permission: "profile:self_update",
-      abac: { minMfa: "standard", maxDataClassification: "confidential" },
+      permission: policy?.permission ?? "profile:self_update",
+      abac:
+        policy?.abac ?? {
+          minMfa: "standard",
+          maxDataClassification: "confidential",
+        },
     },
     async (tx) => {
       const existing = await tx.employee.findFirst({

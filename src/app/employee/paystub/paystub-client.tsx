@@ -1,7 +1,5 @@
 "use client";
 
-import { startTransition, useCallback, useEffect, useState } from "react";
-
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,124 +9,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { formatMoneyMinor } from "@/lib/paystub/format-money";
+import type { PaystubApiShape } from "@/lib/paystub/paystub-api-types";
+import { useCurrentPaystubQuery } from "@/lib/paystub/use-current-paystub-query";
 
-export type PaystubApiLine = {
-  label: string;
-  amountMinor: number;
-  lineType: string;
-};
-
-export type PaystubApiShape = {
-  paymentInstructionId?: string;
-  payPeriodStart: string;
-  payPeriodEnd: string;
-  currencyCode: string;
-  grossPayMinor: number;
-  netPayMinor: number;
-  earnings: PaystubApiLine[];
-  preTaxDeductions: PaystubApiLine[];
-  taxes: PaystubApiLine[];
-};
+export type { PaystubApiLine, PaystubApiShape } from "@/lib/paystub/paystub-api-types";
 
 type Props = {
   /** Used by Playwright / QA to inject a bearer token before hydration. */
   initialBearerToken?: string;
 };
 
-async function fetchPaystub(
-  bearerToken: string | null,
-): Promise<{
-  paystub: PaystubApiShape | null;
-  ok: boolean;
-  retryable: boolean;
-}> {
-  const res = await hrApiFetch("/api/v1/me/paystub/current", {
-    bearerToken,
-    headers: { Accept: "application/json" },
-  });
-
-  if (res.status === 401) {
-    return { paystub: null, ok: false, retryable: false };
-  }
-
-  const body = (await res.json()) as {
-    data?: { paystub: PaystubApiShape | null };
-    error?: { code?: string; message?: string };
-  };
-
-  if (!res.ok) {
-    const retryable = res.status >= 500;
-    return { paystub: null, ok: false, retryable };
-  }
-
-  return {
-    paystub: body.data?.paystub ?? null,
-    ok: true,
-    retryable: false,
-  };
-}
-
 export function PaystubClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { ready, isAuthenticated, persistBearer, signOut } =
     useHrAccess(initialBearerToken);
-  const [paystub, setPaystub] = useState<PaystubApiShape | null | undefined>(undefined);
-  const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    let cancelled = false;
-
-    startTransition(() => {
-      setLoadError(null);
-      setPaystub(undefined);
-    });
-
-    void (async () => {
-      const result = await fetchPaystub(bearerToken);
-      if (cancelled) return;
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setPaystub(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setPaystub(null);
-        return;
-      }
-      setPaystub(result.paystub);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, bearerToken]);
-
-  const retryLoad = useCallback(() => {
-    if (!isAuthenticated) return;
-    startTransition(() => {
-      setLoadError(null);
-      setPaystub(undefined);
-    });
-    void (async () => {
-      const result = await fetchPaystub(bearerToken);
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setPaystub(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setPaystub(null);
-        return;
-      }
-      setPaystub(result.paystub);
-    })();
-  }, [isAuthenticated, bearerToken]);
+  const { data: paystub, isLoading, isError, error, refetch, isFetching } =
+    useCurrentPaystubQuery();
 
   if (!ready) {
     return (
@@ -149,25 +46,28 @@ export function PaystubClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (loadError === "recoverable") {
-    return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
-        <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">
-            We couldn&apos;t load your earnings statement
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please try again in a moment. If this keeps happening, contact Payroll.
-          </p>
+  if (isError) {
+    const recoverable =
+      error instanceof Error &&
+      !error.message.includes("401") &&
+      !error.message.includes("unauthorized");
+    if (recoverable) {
+      return (
+        <div className="mx-auto w-full max-w-lg space-y-4">
+          <div role="alert">
+            <h2 className="text-lg font-semibold text-foreground">
+              We couldn&apos;t load your earnings statement
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Please try again in a moment. If this keeps happening, contact Payroll.
+            </p>
+          </div>
+          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+            Retry
+          </Button>
         </div>
-        <Button type="button" onClick={() => retryLoad()}>
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (loadError === "auth") {
+      );
+    }
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
@@ -183,7 +83,7 @@ export function PaystubClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (paystub === undefined) {
+  if (isLoading || paystub === undefined) {
     return (
       <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your earnings statement…
@@ -205,6 +105,10 @@ export function PaystubClient({ initialBearerToken }: Props) {
     );
   }
 
+  return <PaystubCard paystub={paystub} />;
+}
+
+function PaystubCard({ paystub }: { paystub: PaystubApiShape }) {
   const cc = paystub.currencyCode;
 
   return (
@@ -267,7 +171,7 @@ export function PaystubClient({ initialBearerToken }: Props) {
             )}
           </section>
 
-          <div className="border-t border-zinc-200 pt-4 dark:border-zinc-800">
+          <div className="border-t border-border pt-4">
             <div className="flex justify-between text-sm font-medium">
               <span>Gross pay</span>
               <span className="tabular-nums">{formatMoneyMinor(paystub.grossPayMinor, cc)}</span>

@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 
+import {
+  assertNonProductionDemoApi,
+  demoApiNotAvailableResponse,
+} from "@/lib/api/non-production-route";
+
 type FieldSpec = {
   id: string;
   label: string;
@@ -35,6 +40,12 @@ const EXTRA_FIELDS: Record<string, FieldSpec[]> = {
 };
 
 export function GET(request: Request) {
+  try {
+    assertNonProductionDemoApi("mock");
+  } catch {
+    return demoApiNotAvailableResponse("mock");
+  }
+
   const { searchParams } = new URL(request.url);
   const subdivision = searchParams.get("subdivision") ?? "";
   const extraFields = EXTRA_FIELDS[subdivision] ?? [];

@@ -21,19 +21,31 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run typecheck
       - run: npm run security:scan
+      - run: npm run governance:production-safety
+      - name: Dependency audit (high+)
+        run: npm audit --audit-level=high
+        continue-on-error: false
+      - name: Secret scan (gitleaks)
+        run: npx --yes gitleaks@8.24.2 detect --source . --no-git --redact
       - name: Agent governance lint (strict)
         run: npm run governance:ci
       - name: protect-mcp shadow policy check
         run: npm run governance:protect-mcp
       - name: Agent governance PR body (strict, pull_request only)
         if: github.event_name == 'pull_request'
-        run: node scripts/governance-lint.mjs pr-body --strict --body "${{ github.event.pull_request.body }}"
+        run: node scripts/governance-lint.mjs pr-body --strict --fail-on-under-tier
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
       - run: npm run contracts:drift
+      - run: npm run check:route-policies
       - run: npx prisma validate
       - run: npx prisma generate
       - run: npm run build
       - run: npm run test
+      - run: npm run test:ui
+      - run: npm run test:payroll
 
   python-pipelines:
     runs-on: ubuntu-latest

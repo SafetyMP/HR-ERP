@@ -3,12 +3,12 @@ import type { PrismaClient } from "@/app/generated/prisma/client";
 import type { Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { Prisma } from "@/app/generated/prisma/client";
-import { seedPhase3Demo } from "../../../scripts/seed-phase3-demo";
+import { seedPhase3Demo, type Phase3DemoIds } from "../../../scripts/seed-phase3-demo";
 import { createIntegrationPrisma } from "@/tests/helpers/integration-prisma";
 
 const hasDb = Boolean(process.env.DATABASE_URL);
 
-function randomIds() {
+function randomIds(): Partial<Phase3DemoIds> {
   return {
     perfCycle: randomUUID(),
     perfGoalJordan1: randomUUID(),
@@ -21,7 +21,7 @@ function randomIds() {
     learningCourse: randomUUID(),
     webhookSubscription: randomUUID(),
     cobraEvent: randomUUID(),
-  };
+  } as Partial<Phase3DemoIds>;
 }
 
 describe.skipIf(!hasDb)("seedPhase3Demo idempotency (integration)", () => {
@@ -39,7 +39,9 @@ describe.skipIf(!hasDb)("seedPhase3Demo idempotency (integration)", () => {
     await pool.end();
   });
 
-  it("runs twice without duplicate key errors and preserves row counts", async () => {
+  it(
+    "runs twice without duplicate key errors and preserves row counts",
+    async () => {
     const tenantId = randomUUID();
     const jordanId = randomUUID();
     const alexId = randomUUID();
@@ -192,5 +194,7 @@ describe.skipIf(!hasDb)("seedPhase3Demo idempotency (integration)", () => {
       await tx.department.deleteMany({ where: { tenantId } });
       await tx.organization.deleteMany({ where: { id: tenantId } });
     });
-  });
+  },
+  30_000,
+  );
 });

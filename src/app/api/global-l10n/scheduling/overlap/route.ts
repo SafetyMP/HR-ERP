@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { ApiError } from "@/lib/api/v1/errors";
+import {
+  DemoApiNotAvailableError,
+  demoApiNotAvailableResponse,
+} from "@/lib/api/non-production-route";
+import {
+  requireGlobalL10nApiAuth,
+  resolveL10nTenantId,
+} from "@/lib/l10n/global-l10n-api-auth";
 import {
   expandIntervalsToUtc,
   intersectManyIntervalSets,
 } from "@/lib/l10n/working-hours";
-import { prisma } from "@/lib/prisma";
-import { getDemoTenantId } from "@/lib/l10n/demo-tenant";
-import { withTenantRls } from "@/lib/l10n/prisma-tenant";
 import { formatDualTzPair } from "@/lib/l10n/format";
+import { prisma } from "@/lib/prisma";
+import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
 const bodySchema = z.object({
   tenantId: z.string().optional(),
@@ -20,36 +28,37 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const parsed = bodySchema.safeParse(await request.json());
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
-  }
-
-  const {
-    tenantId: bodyTenantId,
-    employeeIds,
-    rangeStartUtc,
-    rangeEndUtc,
-    viewerTz,
-    viewerLocale,
-  } = parsed.data;
-
-  const tenantId = bodyTenantId ?? getDemoTenantId();
-  const rs = new Date(rangeStartUtc);
-  const re = new Date(rangeEndUtc);
-
-  if (!(re > rs)) {
-    return NextResponse.json(
-      { error: "rangeEndUtc must be after rangeStartUtc" },
-      { status: 400 },
-    );
-  }
-
   try {
-    const enriched = await withTenantRls(
+    const auth = await requireGlobalL10nApiAuth(request);
+    const parsed = bodySchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    }
+
+    const {
+      tenantId: bodyTenantId,
+      employeeIds,
+      rangeStartUtc,
+      rangeEndUtc,
+      viewerTz,
+      viewerLocale,
+    } = parsed.data;
+
+    const tenantId = resolveL10nTenantId(auth, bodyTenantId);
+    const rs = new Date(rangeStartUtc);
+    const re = new Date(rangeEndUtc);
+
+    if (!(re > rs)) {
+      return NextResponse.json(
+        { error: "rangeEndUtc must be after rangeStartUtc" },
+        { status: 400 },
+      );
+    }
+
+    const enriched = await withAuthorizedTransaction(
       prisma,
-      tenantId,
-      "overlap-demo",
+      auth,
+      { permission: "employees:list", resourceClassification: "internal" },
       async (tx) => {
         const employees = await tx.employee.findMany({
           where: { id: { in: employeeIds }, tenantId },
@@ -129,6 +138,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json(enriched);
   } catch (e: unknown) {
+    if (e instanceof DemoApiNotAvailableError) {
+      return demoApiNotAvailableResponse("global_l10n");
+    }
+    if (e instanceof ApiError) {
+      return NextResponse.json({ error: e.payload.message }, { status: e.status });
+    }
     const msg = e instanceof Error ? e.message : "overlap_failed";
     return NextResponse.json({ error: msg }, { status: 500 });
   }

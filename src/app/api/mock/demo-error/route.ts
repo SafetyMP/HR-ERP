@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
 
+import {
+  assertNonProductionDemoApi,
+  demoApiNotAvailableResponse,
+} from "@/lib/api/non-production-route";
+
 type Body = {
   scenario?: string;
 };
 
 export async function POST(request: Request) {
+  try {
+    assertNonProductionDemoApi("mock");
+  } catch {
+    return demoApiNotAvailableResponse("mock");
+  }
   let body: Body = {};
   try {
     body = (await request.json()) as Body;

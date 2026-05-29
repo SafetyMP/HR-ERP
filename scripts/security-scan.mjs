@@ -49,7 +49,7 @@ function walk(dir, out) {
 }
 
 const targets = [
-  ...walk(join(root, "app"), []),
+  ...walk(join(root, "src", "app"), []),
   ...walk(join(root, "lib"), []),
 ];
 

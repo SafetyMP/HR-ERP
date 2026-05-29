@@ -5,6 +5,8 @@ import {
   type PaystubLinePayload,
 } from "@/lib/paystub/map-payment-instruction-row";
 import { prisma } from "@/lib/prisma";
+import type { AbacConstraints } from "@/lib/security/abac-attributes";
+import type { Permission } from "@/lib/security/permissions";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -18,6 +20,7 @@ export type { CurrentPaystubPayload, PaystubLinePayload };
  */
 export async function getCurrentPaystub(
   auth: AuthContext,
+  policy?: { permission: Permission; abac?: AbacConstraints },
 ): Promise<CurrentPaystubPayload | null> {
   const employeeId = auth.subjectEmployeeId;
   if (!employeeId) {
@@ -31,8 +34,12 @@ export async function getCurrentPaystub(
     prisma,
     auth,
     {
-      permission: "paystub:read",
-      abac: { minMfa: "standard", maxDataClassification: "confidential" },
+      permission: policy?.permission ?? "paystub:read",
+      abac:
+        policy?.abac ?? {
+          minMfa: "standard",
+          maxDataClassification: "confidential",
+        },
     },
     async (tx) => {
       const row = await tx.paymentInstruction.findFirst({

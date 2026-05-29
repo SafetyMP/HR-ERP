@@ -4,6 +4,11 @@ import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
 import { requireScimBinding } from "@/lib/scim/auth";
 import {
+  createScimUser,
+  listScimUsers,
+  ScimUserAlreadyExistsError,
+} from "@/lib/scim/users-service";
+import {
   employeeToScim,
   parseScimUser,
   scimError,
@@ -31,20 +36,11 @@ export async function GET(request: Request) {
     const count = Math.min(200, Math.max(0, Number(url.searchParams.get("count") ?? "100") || 100));
     const userNameFilter = parseFilterUserNameEq(url.searchParams.get("filter"));
 
-    const where = {
-      tenantId: binding.tenantId,
-      ...(userNameFilter ? { email: userNameFilter } : {}),
-    };
-
-    const [total, employees] = await prisma.$transaction([
-      prisma.employee.count({ where }),
-      prisma.employee.findMany({
-        where,
-        orderBy: { createdAt: "asc" },
-        skip: startIndex - 1,
-        take: count,
-      }),
-    ]);
+    const { total, employees } = await listScimUsers(prisma, binding, {
+      startIndex,
+      count,
+      userNameFilter,
+    });
 
     const baseUrl = baseUrlOf(request);
     const body = scimListResponse(
@@ -69,15 +65,7 @@ export async function POST(request: Request) {
     const json = await request.json().catch(() => null);
     const parsed = parseScimUser(json);
 
-    const created = await prisma.employee.create({
-      data: {
-        tenantId: binding.tenantId,
-        email: parsed.email,
-        firstName: parsed.firstName,
-        lastName: parsed.lastName,
-        status: parsed.active ? "ACTIVE" : "TERMINATED",
-      },
-    });
+    const created = await createScimUser(prisma, binding, parsed);
 
     const baseUrl = baseUrlOf(request);
     return NextResponse.json(employeeToScim(created, baseUrl), {
@@ -88,14 +76,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    if (
-      typeof err === "object" &&
-      err !== null &&
-      "constructor" in err &&
-      typeof (err as { constructor?: { name?: unknown } }).constructor?.name === "string" &&
-      (err as { constructor: { name: string } }).constructor.name === "PrismaClientKnownRequestError" &&
-      (err as { code?: string }).code === "P2002"
-    ) {
+    if (err instanceof ScimUserAlreadyExistsError) {
       return NextResponse.json(scimError(409, "user_already_exists", "uniqueness"), {
         status: 409,
         headers: { "content-type": SCIM_CONTENT_TYPE },

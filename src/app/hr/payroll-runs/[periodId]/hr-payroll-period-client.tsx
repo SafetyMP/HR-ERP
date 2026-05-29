@@ -5,6 +5,8 @@ import { startTransition, useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { HrPageShell } from "@/components/hr/hr-page-shell";
+
+import { HrPayrollPeriodSummary } from "./hr-payroll-period-summary";
 import { PayrollPeriodStatusBadge } from "@/components/hr/payroll-period-status";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -324,6 +326,12 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
       onReload={() => void reload()}
       onSignOut={() => signOut()}
     >
+      <HrPayrollPeriodSummary
+        periodLabel={detail.label ?? "Pay period"}
+        status={detail.status}
+        employeeCount={detail.paymentInstructions.length}
+        exceptionCount={detail.openExceptionCount}
+      />
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center gap-2">
@@ -331,8 +339,7 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
             <PayrollPeriodStatusBadge status={detail.status} />
           </div>
           <CardDescription>
-            {detail.startDate} → {detail.endDate} · {detail.paymentInstructions.length}{" "}
-            employees
+            {detail.startDate} → {detail.endDate}
             {detail.lockedAt ? ` · Locked ${detail.lockedAt.slice(0, 10)}` : ""}
           </CardDescription>
         </CardHeader>

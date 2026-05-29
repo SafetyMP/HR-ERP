@@ -4,6 +4,12 @@ import { ApiError } from "@/lib/api/v1/errors";
 import { prisma } from "@/lib/prisma";
 import { requireScimBinding } from "@/lib/scim/auth";
 import {
+  getScimUserById,
+  patchScimUser,
+  terminateScimUser,
+  updateScimUser,
+} from "@/lib/scim/users-service";
+import {
   employeeToScim,
   parseScimUser,
   scimError,
@@ -23,9 +29,7 @@ export async function GET(
   try {
     const binding = requireScimBinding(request);
     const { id } = await context.params;
-    const employee = await prisma.employee.findFirst({
-      where: { id, tenantId: binding.tenantId },
-    });
+    const employee = await getScimUserById(prisma, binding, id);
     if (!employee) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
@@ -51,26 +55,14 @@ export async function PUT(
     const body = await request.json().catch(() => null);
     const parsed = parseScimUser(body);
 
-    const existing = await prisma.employee.findFirst({
-      where: { id, tenantId: binding.tenantId },
-      select: { id: true },
-    });
-    if (!existing) {
+    const updated = await updateScimUser(prisma, binding, id, parsed);
+    if (!updated) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
         headers: { "content-type": SCIM_CONTENT_TYPE },
       });
     }
 
-    const updated = await prisma.employee.update({
-      where: { id },
-      data: {
-        email: parsed.email,
-        firstName: parsed.firstName,
-        lastName: parsed.lastName,
-        status: parsed.active ? "ACTIVE" : "TERMINATED",
-      },
-    });
     return NextResponse.json(employeeToScim(updated, baseUrlOf(request)), {
       status: 200,
       headers: { "content-type": SCIM_CONTENT_TYPE },
@@ -100,9 +92,7 @@ export async function PATCH(
     const { id } = await context.params;
     const body = (await request.json().catch(() => null)) as ScimPatchBody | null;
 
-    const existing = await prisma.employee.findFirst({
-      where: { id, tenantId: binding.tenantId },
-    });
+    const existing = await getScimUserById(prisma, binding, id);
     if (!existing) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
@@ -132,15 +122,8 @@ export async function PATCH(
       }
     }
 
-    if (Object.keys(data).length === 0) {
-      return NextResponse.json(employeeToScim(existing, baseUrlOf(request)), {
-        status: 200,
-        headers: { "content-type": SCIM_CONTENT_TYPE },
-      });
-    }
-
-    const updated = await prisma.employee.update({ where: { id }, data });
-    return NextResponse.json(employeeToScim(updated, baseUrlOf(request)), {
+    const updated = await patchScimUser(prisma, binding, id, data);
+    return NextResponse.json(employeeToScim(updated ?? existing, baseUrlOf(request)), {
       status: 200,
       headers: { "content-type": SCIM_CONTENT_TYPE },
     });
@@ -157,21 +140,14 @@ export async function DELETE(
     const binding = requireScimBinding(request);
     const { id } = await context.params;
 
-    const existing = await prisma.employee.findFirst({
-      where: { id, tenantId: binding.tenantId },
-      select: { id: true },
-    });
-    if (!existing) {
+    const terminated = await terminateScimUser(prisma, binding, id);
+    if (!terminated) {
       return NextResponse.json(scimError(404, "user_not_found"), {
         status: 404,
         headers: { "content-type": SCIM_CONTENT_TYPE },
       });
     }
 
-    await prisma.employee.update({
-      where: { id },
-      data: { status: "TERMINATED", terminationDate: new Date() },
-    });
     return new NextResponse(null, { status: 204 });
   } catch (err) {
     return scimErrorResponse(err);

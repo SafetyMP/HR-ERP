@@ -3,6 +3,9 @@ import type { PrismaClient } from "@/app/generated/prisma/client";
 
 /**
  * Sets Postgres RLS session GUCs for the tenant (required whenever FORCE ROW LEVEL SECURITY is enabled).
+ *
+ * @deprecated Prefer `withAuthorizedTransaction` for product paths (RBAC + RLS).
+ * Retained for scripts and legacy demo callers migrating to authorized transactions.
  */
 export async function withTenantRls<T>(
   prisma: PrismaClient,
