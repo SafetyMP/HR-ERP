@@ -1,3 +1,9 @@
+## [2.12.1](https://github.com/SafetyMP/HR-ERP/compare/v2.12.0...v2.12.1) (2026-05-29)
+
+### Bug Fixes
+
+* **auth:** resolve Neon OAuth callbackURL from browser origin ([7d65768](https://github.com/SafetyMP/HR-ERP/commit/7d65768e4c8f4a950e3b1eebf13d17b1052eca3e))
+
 ## [2.12.0](https://github.com/SafetyMP/HR-ERP/compare/v2.11.0...v2.12.0) (2026-05-29)
 
 ### Features
