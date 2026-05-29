@@ -4,6 +4,11 @@ import Link from "next/link";
 import { Calendar, Clock, DollarSign, Heart } from "lucide-react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import {
+  demoPreviewBootstrapHref,
+  demoPreviewSignInUiEnabled,
+  type DemoPreviewPersona,
+} from "@/lib/auth/demo-preview-config";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,14 +28,35 @@ const QUICK_ACTIONS = [
   { href: "/employee/benefits", label: "Benefits", icon: Heart },
 ] as const;
 
-const ROLE_HUBS = [
-  { href: "/employee/paystub", title: "Employee", description: "Pay, time off, benefits, and profile." },
-  { href: "/manager/team-attendance", title: "Manager", description: "Team attendance, leave, and recruiting." },
-  { href: "/hr/dashboard", title: "HR operations", description: "Dashboard, payroll runs, and queues." },
+const ROLE_HUBS: ReadonlyArray<{
+  href: string;
+  title: string;
+  description: string;
+  persona: DemoPreviewPersona;
+}> = [
+  {
+    href: "/employee/paystub",
+    title: "Employee",
+    description: "Pay, time off, benefits, and profile.",
+    persona: "employee",
+  },
+  {
+    href: "/manager/team-attendance",
+    title: "Manager",
+    description: "Team attendance, leave, and recruiting.",
+    persona: "manager",
+  },
+  {
+    href: "/hr/dashboard",
+    title: "HR operations",
+    description: "Dashboard, payroll runs, and queues.",
+    persona: "hr",
+  },
 ] as const;
 
 export function HomeLandingClient() {
   const { ready, isAuthenticated, persistBearer } = useHrAccess();
+  const demoPreviewEnabled = demoPreviewSignInUiEnabled();
 
   if (!ready) {
     return <p className="text-sm text-muted-foreground">Loading…</p>;
@@ -58,7 +84,15 @@ export function HomeLandingClient() {
               </CardHeader>
               <CardFooter className="pt-0">
                 <Button asChild variant="outline" size="sm">
-                  <Link href={hub.href}>Preview hub</Link>
+                  <Link
+                    href={
+                      demoPreviewEnabled
+                        ? demoPreviewBootstrapHref(hub.persona, hub.href)
+                        : hub.href
+                    }
+                  >
+                    {demoPreviewEnabled ? "Preview signed in" : "Preview hub"}
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>

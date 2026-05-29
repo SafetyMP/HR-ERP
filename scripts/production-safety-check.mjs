@@ -36,6 +36,11 @@ for (const rel of envFiles) {
       `${rel} sets NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN=true — must not be enabled for production`,
     );
   }
+  if (/NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN\s*=\s*true/i.test(active)) {
+    issues.push(
+      `${rel} sets NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN=true — must not be enabled for production`,
+    );
+  }
 }
 
 const signInCard = join(root, "src/components/auth/hr-sign-in-card.tsx");
@@ -51,6 +56,10 @@ if (existsSync(signInCard)) {
 
 if (process.env.CI === "true" && process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true") {
   issues.push("CI build has NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN=true");
+}
+
+if (process.env.CI === "true" && process.env.NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN === "true") {
+  issues.push("CI build has NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN=true");
 }
 
 for (const msg of issues) console.error(`ERROR: ${msg}`);

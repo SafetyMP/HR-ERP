@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 
+import {
+  DEMO_PREVIEW_PERSONAS,
+  demoPreviewBootstrapHref,
+  demoPreviewSignInUiEnabled,
+  type DemoPreviewPersona,
+} from "@/lib/auth/demo-preview-config";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +25,8 @@ type Props = {
   onDevTokenPaste?: (token: string) => void;
 };
 
+const DEMO_PREVIEW_ORDER: DemoPreviewPersona[] = ["employee", "manager", "hr"];
+
 export function HrSignInCard({
   title,
   description,
@@ -26,6 +34,7 @@ export function HrSignInCard({
   onDevTokenPaste,
 }: Props) {
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+  const showDemoPreview = demoPreviewSignInUiEnabled();
   const showDevTokenPaste =
     process.env.NODE_ENV !== "production" &&
     (process.env.NODE_ENV === "development" ||
@@ -41,6 +50,27 @@ export function HrSignInCard({
         <Button asChild className="w-full" size="lg">
           <Link href={loginHref}>Sign in with your organization account</Link>
         </Button>
+        {showDemoPreview ? (
+          <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
+            <p className="font-medium text-foreground">Preview signed-in demo</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              One-click demo personas for buyer previews and Vercel Preview deploys. Not
+              available on Production.
+            </p>
+            <div className="mt-3 flex flex-col gap-2">
+              {DEMO_PREVIEW_ORDER.map((persona) => {
+                const spec = DEMO_PREVIEW_PERSONAS[persona];
+                return (
+                  <Button key={persona} asChild variant="secondary" size="sm">
+                    <Link href={demoPreviewBootstrapHref(persona, returnTo)}>
+                      {spec.label}
+                    </Link>
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
         {showDevTokenPaste && onDevTokenPaste ? (
           <details className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
             <summary className="cursor-pointer font-medium text-muted-foreground">

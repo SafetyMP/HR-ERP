@@ -1,0 +1,61 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import {
+  demoPreviewBootstrapHref,
+  demoPreviewSignInUiEnabled,
+  parseDemoPreviewPersona,
+} from "@/lib/auth/demo-preview-config";
+import {
+  demoPreviewSignInServerEnabled,
+  demoPreviewTenantId,
+} from "@/lib/auth/demo-preview";
+
+describe("demo-preview", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("parses allowed personas", () => {
+    expect(parseDemoPreviewPersona("employee")).toBe("employee");
+    expect(parseDemoPreviewPersona("manager")).toBe("manager");
+    expect(parseDemoPreviewPersona("hr")).toBe("hr");
+    expect(parseDemoPreviewPersona("admin")).toBeNull();
+  });
+
+  it("builds bootstrap href with returnTo", () => {
+    expect(demoPreviewBootstrapHref("employee", "/employee/paystub")).toBe(
+      "/api/auth/demo-preview?persona=employee&returnTo=%2Femployee%2Fpaystub",
+    );
+  });
+
+  it("enables server gate on preview when ALLOW_DEMO_PREVIEW_SIGNIN=1", () => {
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NODE_ENV", "production");
+    expect(demoPreviewSignInServerEnabled()).toBe(true);
+  });
+
+  it("blocks server gate on production", () => {
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NODE_ENV", "production");
+    expect(demoPreviewSignInServerEnabled()).toBe(false);
+  });
+
+  it("enables UI gate from NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN", () => {
+    vi.stubEnv("NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN", "true");
+    expect(demoPreviewSignInUiEnabled()).toBe(true);
+  });
+
+  it("resolves demo tenant id", () => {
+    vi.stubEnv("DEMO_TENANT_ID", "tenant-a");
+    expect(demoPreviewTenantId()).toBe("tenant-a");
+  });
+});
+
+describe("demo-preview route gate", () => {
+  it("imports route module", async () => {
+    const mod = await import("@/app/api/auth/demo-preview/route");
+    expect(typeof mod.GET).toBe("function");
+  });
+});
