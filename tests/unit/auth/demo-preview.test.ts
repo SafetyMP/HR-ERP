@@ -35,11 +35,19 @@ describe("demo-preview", () => {
     expect(demoPreviewSignInServerEnabled()).toBe(true);
   });
 
-  it("blocks server gate on production", () => {
+  it("blocks server gate on production by default", () => {
     vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("NODE_ENV", "production");
     expect(demoPreviewSignInServerEnabled()).toBe(false);
+  });
+
+  it("allows server gate on production with explicit break-glass flag", () => {
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_ON_PRODUCTION", "1");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NODE_ENV", "production");
+    expect(demoPreviewSignInServerEnabled()).toBe(true);
   });
 
   it("enables UI gate from NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN", () => {

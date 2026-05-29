@@ -22,16 +22,26 @@ export function demoPreviewTenantId(): string {
   );
 }
 
-/** Server gate: one-click demo sessions (Preview / local only). */
+/**
+ * Server gate: one-click demo sessions.
+ *
+ * Default: Vercel Preview + local dev. When the project only deploys Production
+ * (pushes to `main`), set ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1 with Human authorization.
+ */
 export function demoPreviewSignInServerEnabled(): boolean {
   if (process.env.ALLOW_DEMO_PREVIEW_SIGNIN !== "1") return false;
-  if (process.env.VERCEL_ENV === "production") return false;
+
+  if (process.env.VERCEL_ENV === "production") {
+    return process.env.ALLOW_DEMO_PREVIEW_ON_PRODUCTION === "1";
+  }
+
   if (
     process.env.NODE_ENV === "production" &&
     process.env.VERCEL_ENV !== "preview"
   ) {
     return false;
   }
+
   return true;
 }
 

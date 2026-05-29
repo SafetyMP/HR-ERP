@@ -54,8 +54,8 @@ export function HrSignInCard({
           <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
             <p className="font-medium text-foreground">Preview signed-in demo</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              One-click demo personas for buyer previews and Vercel Preview deploys. Not
-              available on Production.
+              One-click demo personas for buyer walkthroughs. Requires explicit env on
+              Preview or Production (see docs).
             </p>
             <div className="mt-3 flex flex-col gap-2">
               {DEMO_PREVIEW_ORDER.map((persona) => {

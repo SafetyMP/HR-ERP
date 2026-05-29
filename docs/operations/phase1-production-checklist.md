@@ -55,7 +55,7 @@ Do **not** run Kafka, Schema Registry, or second Postgres instances in productio
 
 **Verify:** Sign in from the exact Production hostname; on `Invalid callbackURL`, add `window.location.origin` shown in the error hint to Neon trusted origins.
 
-**Preview demo sign-in:** On Vercel **Preview** only, set `ALLOW_DEMO_PREVIEW_SIGNIN=1` and `NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN=true` to enable one-click Employee / Manager / HR demo sessions via `/api/auth/demo-preview` (no OAuth). Never set these on Production.
+**Demo sign-in (buyer preview):** Set `ALLOW_DEMO_PREVIEW_SIGNIN=1` and `NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN=true`. Vercel **Preview** deploys (PR branches) pick this up automatically. If the project **only deploys Production** (pushes to `main` with no PR previews), also set `ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1` on the Production environment (Human authorization). One-click personas: `/api/auth/demo-preview?persona=employee|manager|hr`.
 
 ---
 
