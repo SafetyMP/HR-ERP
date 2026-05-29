@@ -32,8 +32,32 @@ jobs:
             const fs = require('fs');
             const pr = context.payload.pull_request;
             const existing = pr.body ?? '';
-            if (/riskTier:/i.test(existing) && /Golden thread|Risk or requirement/i.test(existing)) {
-              core.info('PR body already has governance sections — skipping autofill');
+            function hasSubstantiveGovernance(body) {
+              if (!/riskTier:/i.test(body)) return false;
+              if (!/Golden thread|Risk or requirement/i.test(body)) return false;
+              if (!/PO orchestration checkpoint/i.test(body) && !/step 1 chore N\/A/i.test(body)) {
+                return false;
+              }
+              const rows = body.split('\n').filter((l) => l.trim().startsWith('|') && !l.includes('---'));
+              let filledRow = false;
+              for (const row of rows) {
+                const cells = row.split('|').map((c) => c.trim()).filter(Boolean);
+                if (
+                  cells[0] &&
+                  !cells[0].toLowerCase().includes('risk or requirement') &&
+                  cells.some((c) => c.length > 2 && c !== 'N/A')
+                ) {
+                  filledRow = true;
+                  break;
+                }
+              }
+              if (!filledRow) return false;
+              if (/PO gate complete:\s*Y/i.test(body) || /step 1 chore N\/A/i.test(body)) return true;
+              if (/UAC count:\s*\d+/i.test(body)) return true;
+              return false;
+            }
+            if (hasSubstantiveGovernance(existing)) {
+              core.info('PR body already has substantive governance sections — skipping autofill');
               return;
             }
             const stub = fs.readFileSync(process.env.STUB_PATH, 'utf8');

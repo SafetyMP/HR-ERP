@@ -90,6 +90,10 @@ flowchart LR
 | **Shared MCP + per-request tokens** | Strong (when stateless) | Medium |
 | **Single MCP multi-tenant** (bad) | Weak | — **Do not use** without hardware-enforced separation |
 
+## IDE team MCP (Cursor `.cursor/mcp.json`)
+
+The **IDE plane** is separate from the in-app product copilot. Allowlisted servers (e.g. Prisma MCP) can introspect or mutate via `DATABASE_URL` when configured. Hooks block non-local Prisma MCP by default; treat production connection strings as **high risk** for agent sessions.
+
 ## Review checklist (before production)
 
 - [ ] Orchestrator strips inbound `tenant_id` from untrusted channels.

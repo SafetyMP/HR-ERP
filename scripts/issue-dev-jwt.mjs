@@ -18,6 +18,19 @@
  */
 import dotenv from "dotenv";
 
+const argvJoined = process.argv.join(" ");
+const usesVercelProduction =
+  process.env.VERCEL_ENV === "production" ||
+  argvJoined.includes("vercel env run") ||
+  (process.env.npm_lifecycle_event ?? "").includes(":vercel");
+
+if (usesVercelProduction && process.env.ALLOW_PRODUCTION_JWT_MINT !== "1") {
+  console.error(
+    "Refusing to mint JWT against production secrets. Set ALLOW_PRODUCTION_JWT_MINT=1 only with explicit Human authorization.",
+  );
+  process.exit(1);
+}
+
 dotenv.config();
 const jwtAfterPrimary = (process.env.JWT_SECRET ?? "").trim();
 

@@ -27,8 +27,9 @@ export function HrSignInCard({
 }: Props) {
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
   const showDevTokenPaste =
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true";
+    process.env.NODE_ENV !== "production" &&
+    (process.env.NODE_ENV === "development" ||
+      process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true");
 
   return (
     <Card className="mx-auto w-full max-w-lg shadow-sm">

@@ -71,4 +71,4 @@ From [repo-boundaries.mdc](../../.cursor/rules/repo-boundaries.mdc) and ADR 0010
 | `.cursor/mcp.json` | Team MCP allowlist |
 | `governance-manifest.yaml` v3 | `runtimeProfile: cursor-3-native`, `maxSkillBodies: 3` |
 | `scripts/governance-generate-pr-body.mjs` | PR template auto-fill |
-| `lib/copilot/mcp-server.ts` | Product MCP Phase 3 transport scaffold |
+| `scripts/copilot-mcp-server.ts` | Product MCP Phase 3 transport scaffold |

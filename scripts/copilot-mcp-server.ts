@@ -2,9 +2,12 @@
  * Minimal stdio MCP server for HR ERP product copilot (Phase 3 transport scaffold).
  * Exposes COPILOT_TOOL_CATALOG tools via JSON-RPC over stdin/stdout.
  *
- * Run: npx tsx scripts/copilot-mcp-server.ts
- * Shadow gateway: npx protect-mcp --policy lib/copilot/governance/policy.cedar -- npx tsx scripts/copilot-mcp-server.ts
+ * Run: COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
+ * Shadow gateway: npx protect-mcp --policy lib/copilot/governance/policy.cedar -- env COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
  */
+import { z } from "zod";
+
+import { zodToMcpInputSchema } from "../lib/copilot/mcp-json-schema";
 import { COPILOT_TOOL_CATALOG, getCopilotTool } from "../lib/copilot/mcp-tools";
 
 type JsonRpcRequest = {
@@ -18,6 +21,18 @@ function send(msg: unknown) {
   process.stdout.write(JSON.stringify(msg) + "\n");
 }
 
+function stdioGateDenied(id: number | string | undefined) {
+  send({
+    jsonrpc: "2.0",
+    id,
+    error: {
+      code: -32603,
+      message:
+        "tools/call disabled: set COPILOT_MCP_ALLOW_STDIO=1 for local dev only (no production DB)",
+    },
+  });
+}
+
 function toolListResponse(id: number | string | undefined) {
   return {
     jsonrpc: "2.0",
@@ -26,10 +41,7 @@ function toolListResponse(id: number | string | undefined) {
       tools: COPILOT_TOOL_CATALOG.map((t) => ({
         name: t.name,
         description: t.description,
-        inputSchema: {
-          type: "object",
-          properties: {},
-        },
+        inputSchema: zodToMcpInputSchema(t.inputSchema as z.ZodType),
       })),
     },
   };
@@ -63,6 +75,11 @@ function handleLine(line: string) {
   }
 
   if (req.method === "tools/call") {
+    if (process.env.COPILOT_MCP_ALLOW_STDIO !== "1") {
+      stdioGateDenied(req.id);
+      return;
+    }
+
     const name = (req.params?.name as string) ?? "";
     const tool = getCopilotTool(name);
     if (!tool) {
@@ -73,6 +90,20 @@ function handleLine(line: string) {
       });
       return;
     }
+
+    const rawArgs = (req.params?.arguments as Record<string, unknown>) ?? {};
+    try {
+      tool.inputSchema.parse(rawArgs);
+    } catch (err) {
+      const message = err instanceof z.ZodError ? err.message : "invalid_arguments";
+      send({
+        jsonrpc: "2.0",
+        id: req.id,
+        error: { code: -32602, message },
+      });
+      return;
+    }
+
     send({
       jsonrpc: "2.0",
       id: req.id,

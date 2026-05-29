@@ -6,13 +6,13 @@
  * Usage:
  *   node governance-lint.mjs diff [--base main] [--strict]
  *   node governance-lint.mjs pr-body [--file path] [--body text] [--strict]
- *   node governance-lint.mjs handoff --file handoff.json [--strict]
+ *   node governance-lint.mjs handoff --file handoff.json [--strict] [--discover]
  *   node governance-lint.mjs plan [--base main] [--strict] [--json] [--quiet]
  *   node governance-lint.mjs pr-body-generate [--base main]
  */
 
 import { execSync } from "node:child_process";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -43,6 +43,7 @@ function parseArgs(argv) {
     json: false,
     quiet: false,
     failOnUnderTier: false,
+    discover: false,
   };
   const positional = [];
   for (let i = 2; i < argv.length; i++) {
@@ -51,6 +52,7 @@ function parseArgs(argv) {
     else if (a === "--json") args.json = true;
     else if (a === "--quiet") args.quiet = true;
     else if (a === "--fail-on-under-tier") args.failOnUnderTier = true;
+    else if (a === "--discover") args.discover = true;
     else if (a === "--base") args.base = argv[++i];
     else if (a === "--file") args.file = argv[++i];
     else if (a === "--body") args.body = argv[++i];
@@ -334,7 +336,36 @@ function getDiffFiles(base) {
   return [...files];
 }
 
-function validatePrBody(body, suggestedTier, strict) {
+const PLACEHOLDER_RE = /(?:^|\s)(___|TBD|\bN\/A\s*or\s*brief\s*path\b)(?:\s|$)/im;
+
+function goldenThreadHasFilledRow(body) {
+  const rows = body.split("\n").filter((line) => line.trim().startsWith("|") && !line.includes("---"));
+  for (const row of rows) {
+    const cells = row.split("|").map((c) => c.trim()).filter(Boolean);
+    if (cells.length < 2) continue;
+    if (cells[0].toLowerCase().includes("risk or requirement")) continue;
+    const hasContent = cells.some((c) => c.length > 0 && !PLACEHOLDER_RE.test(c) && c !== "N/A");
+    if (hasContent) return true;
+  }
+  return false;
+}
+
+function poCheckpointHasContent(body) {
+  if (/step 1 chore N\/A/i.test(body)) return true;
+  if (/PO gate complete:\s*Y/i.test(body)) return true;
+  if (/UAC count:\s*\d+/i.test(body)) return true;
+  const brief = body.match(/Feature brief[^:]*:\s*(\S+)/i);
+  if (brief?.[1] && !PLACEHOLDER_RE.test(brief[1])) return true;
+  return false;
+}
+
+function prBodyReferencesLane(body, lane) {
+  const re = new RegExp(`\\*\\*${lane}\\*\\*|\\b${lane}\\b`, "i");
+  return re.test(body);
+}
+
+function validatePrBody(body, suggestedTier, strict, options = {}) {
+  const { failOnUnderTier = false, requiredLanes = [] } = options;
   const issues = [];
   const warnings = [];
 
@@ -346,7 +377,7 @@ function validatePrBody(body, suggestedTier, strict) {
     const declared = tierM[1].toUpperCase();
     if (TIER_ORDER.indexOf(declared) < TIER_ORDER.indexOf(suggestedTier)) {
       const msg = `Declared ${declared} is below suggested ${suggestedTier} from diff paths`;
-      if (strict) issues.push(msg);
+      if (strict || failOnUnderTier) issues.push(msg);
       else warnings.push(msg);
     }
   }
@@ -363,10 +394,88 @@ function validatePrBody(body, suggestedTier, strict) {
     issues.push("PR body missing PO orchestration checkpoint block or chore N/A");
   }
 
+  if (strict && suggestedTier !== "T0") {
+    if (!poCheckpointHasContent(body)) {
+      issues.push(
+        "PR body PO checkpoint appears empty or placeholder-only (fill brief path, UAC, gate Y/N)",
+      );
+    }
+    if (!goldenThreadHasFilledRow(body)) {
+      issues.push("PR body golden thread must include at least one filled data row");
+    }
+    for (const lane of requiredLanes) {
+      if (["ai_governance_reviewer", "sentinel", "counsel", "custodian"].includes(lane)) {
+        if (!prBodyReferencesLane(body, lane)) {
+          issues.push(`PR body must reference required lane "${lane}" in golden thread or sign-off`);
+        }
+      }
+    }
+  }
+
   for (const msg of warnings) console.warn(`WARN: ${msg}`);
   for (const msg of issues) console.error(`ERROR: ${msg}`);
 
   return strict && issues.length > 0 ? 1 : issues.length > 0 && !strict ? 0 : 0;
+}
+
+function handoffsSatisfyRequiredLanes(requiredLanes) {
+  if (!requiredLanes.length) return true;
+  const paths = discoverHandoffFiles();
+  if (!paths.length) return false;
+  for (const fp of paths) {
+    try {
+      const data = JSON.parse(readFileSync(fp, "utf8"));
+      const plan = data.delegatedTaskPlan ?? [];
+      const functionsInPlan = new Set(plan.map((p) => p.function).filter(Boolean));
+      if (requiredLanes.every((lane) => functionsInPlan.has(lane))) return true;
+    } catch {
+      /* skip invalid json */
+    }
+  }
+  return false;
+}
+
+function validateDiffStrict(result) {
+  const issues = [];
+  const triggerIds = new Set(result.matchedTriggers.map((t) => t.id));
+
+  if (tierAtLeast(result.suggestedTier, "T2") && result.requiredLanes.length > 0) {
+    if (!handoffsSatisfyRequiredLanes(result.requiredLanes)) {
+      issues.push(
+        `Diff suggests ${result.suggestedTier} with required lanes: ${result.requiredLanes.join(", ")} — add specs/**/orchestrator*.json handoff with delegatedTaskPlan`,
+      );
+    }
+  }
+
+  if (triggerIds.has("product_runtime_mcp")) {
+    if (!result.requiredLanes.includes("ai_governance_reviewer")) {
+      issues.push("product_runtime_mcp trigger must require ai_governance_reviewer lane");
+    }
+  }
+
+  for (const msg of issues) console.error(`ERROR: ${msg}`);
+  return issues.length > 0 ? 1 : 0;
+}
+
+function walkJsonFiles(dir, out, root = dir) {
+  if (!existsSync(dir)) return out;
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    const st = statSync(p);
+    if (st.isDirectory()) walkJsonFiles(p, out, root);
+    else if (name.endsWith(".json") && name.includes("orchestrator")) out.push(p);
+  }
+  return out;
+}
+
+function discoverHandoffFiles() {
+  const specsDir = join(process.cwd(), "specs");
+  const found = walkJsonFiles(specsDir, []);
+  return found.filter(
+    (p) =>
+      !p.includes(`${join("specs", "templates")}`) &&
+      !p.endsWith(".schema.json"),
+  );
 }
 
 function planFromHandoff(data, manifest) {
@@ -681,6 +790,9 @@ function main() {
       console.log(
         `Files (${files.length}): ${files.slice(0, 10).join(", ")}${files.length > 10 ? "…" : ""}`,
       );
+      if (args.strict) {
+        return validateDiffStrict(result);
+      }
       return 0;
     }
 
@@ -707,7 +819,8 @@ function main() {
         }
       }
       const files = getDiffFiles(args.base);
-      const { suggestedTier } = classifyFiles(files, manifest);
+      const classification = classifyFiles(files, manifest);
+      const { suggestedTier, requiredLanes } = classification;
       if (!body.trim() && !args.strict) {
         console.log("governance-lint: empty pr-body (skipped non-strict)");
         return 0;
@@ -716,16 +829,60 @@ function main() {
         console.error("ERROR: pr-body empty");
         return 1;
       }
-      return validatePrBody(body, suggestedTier, args.strict);
+      return validatePrBody(body, suggestedTier, args.strict, {
+        failOnUnderTier: args.failOnUnderTier,
+        requiredLanes,
+      });
     }
 
     if (args.command === "handoff") {
-      if (!args.file) {
-        console.error("handoff requires --file");
+      const fallback = join(
+        process.cwd(),
+        "specs",
+        "templates",
+        "orchestrator-human-issue-handoff.example.json",
+      );
+      const paths = args.discover ? discoverHandoffFiles() : [];
+      const filesToValidate =
+        paths.length > 0 ? paths : args.file ? [resolve(args.file)] : args.discover ? [fallback] : [];
+
+      if (!filesToValidate.length) {
+        console.error("handoff requires --file or --discover");
         return 1;
       }
-      const data = JSON.parse(readFileSync(resolve(args.file), "utf8"));
-      return validateHandoff(data, manifest, args.strict);
+
+      if (args.discover && paths.length === 0) {
+        console.log(`governance-lint: no discovered handoffs; validating ${fallback}`);
+      }
+
+      let exit = 0;
+      for (const fp of filesToValidate) {
+        const data = JSON.parse(readFileSync(fp, "utf8"));
+        const code = validateHandoff(data, manifest, args.strict);
+        if (code !== 0) exit = code;
+      }
+
+      if (args.strict && args.discover && paths.length === 0) {
+        const diffFiles = getDiffFiles(args.base);
+        const { requiredLanes, suggestedTier } = classifyFiles(diffFiles, manifest);
+        if (tierAtLeast(suggestedTier, "T2") && requiredLanes.length > 0) {
+          const diffFiles2 = getDiffFiles(args.base);
+          const handoffData = JSON.parse(readFileSync(fallback, "utf8"));
+          const plan = handoffData.delegatedTaskPlan ?? [];
+          const functionsInPlan = new Set(plan.map((p) => p.function).filter(Boolean));
+          for (const lane of requiredLanes) {
+            if (!functionsInPlan.has(lane)) {
+              console.error(
+                `ERROR: example handoff missing lane "${lane}" required by diff (${suggestedTier}); add specs/**/orchestrator*.json handoff`,
+              );
+              exit = 1;
+            }
+          }
+          void diffFiles2;
+        }
+      }
+
+      return exit;
     }
 
     console.error(`Unknown command: ${args.command}`);

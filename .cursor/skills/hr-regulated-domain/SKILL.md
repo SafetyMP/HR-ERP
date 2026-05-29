@@ -17,7 +17,7 @@ disable-model-invocation: true
 - Pay, time, earnings, jurisdiction matrices, `COMPLIANCE_*` errors
 - `packages/payroll-calc/`, fingerprints, gross-to-net replay
 - ML screening, scoring, governance APIs, `docs/ai-governance/`
-- Product MCP / inference paths with employment impact
+- Product MCP / inference paths with employment impact — co-load `@hr-product-mcp-governance` and [references/product-mcp.md](references/product-mcp.md) when `lib/copilot/**` changes
 
 ## Do not use this skill when
 

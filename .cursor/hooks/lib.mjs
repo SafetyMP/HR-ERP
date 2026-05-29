@@ -61,10 +61,30 @@ export function enforceOrLog(violation, userMessage, agentMessage) {
   process.exit(0);
 }
 
+function redactAuditPayload(payload) {
+  const out = { ...payload };
+  if (typeof out.command === "string") {
+    let cmd = out.command.replace(/\/Users\/[^/\s]+/g, "~");
+    cmd = cmd.replace(/\/home\/[^/\s]+/g, "~");
+    if (cmd.length > 200) cmd = `${cmd.slice(0, 200)}…`;
+    out.command = cmd;
+  }
+  if (typeof out.prompt === "string") {
+    out.prompt_length = out.prompt.length;
+    delete out.prompt;
+  }
+  return out;
+}
+
 export function logHook(event, payload = {}) {
   const dir = join(process.cwd(), ".cursor", "hooks-output");
   mkdirSync(dir, { recursive: true });
-  const line = JSON.stringify({ ts: new Date().toISOString(), event, mode: HOOK_MODE, ...payload });
+  const line = JSON.stringify({
+    ts: new Date().toISOString(),
+    event,
+    mode: HOOK_MODE,
+    ...redactAuditPayload(payload),
+  });
   appendFileSync(join(dir, "audit.log"), line + "\n");
 }
 
@@ -80,10 +100,13 @@ export function loadMcpAllowlist() {
 }
 
 const DESTRUCTIVE_PATTERNS = [
-  /\bgit\s+(push\s+--force|reset\s+--hard|clean\s+-fd)\b/,
+  /\bgit\s+(push\s+--force|push\s+--force-with-lease|reset\s+--hard|clean\s+-fd)\b/,
+  /\bgit\s+.*--no-verify\b/,
   /\bprisma\s+migrate\s+reset\b/,
+  /\bprisma\s+db\s+(push|execute)\b/,
   /\bdrop\s+(database|schema|table)\b/i,
   /\btruncate\s+table\b/i,
+  /\bjwt:dev:demo-[^:]+:vercel\b/,
 ];
 
 export function isDestructiveShell(command) {

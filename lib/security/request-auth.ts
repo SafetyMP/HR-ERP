@@ -17,6 +17,18 @@ function readAccessTokenFromRequest(request: Request): string | null {
 
 export async function requireBearerAuth(request: Request): Promise<AuthContext> {
   const correlationId = readCorrelationId(request);
+  const authorization = request.headers.get("authorization");
+  if (
+    process.env.NODE_ENV === "production" &&
+    authorization?.startsWith("Bearer ") &&
+    process.env.ALLOW_PRODUCTION_BEARER !== "1"
+  ) {
+    throw new ApiError(401, {
+      code: "unauthorized",
+      message: "bearer_not_allowed_in_production",
+    });
+  }
+
   const token = readAccessTokenFromRequest(request);
 
   if (!token) {

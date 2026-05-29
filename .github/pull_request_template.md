@@ -55,6 +55,10 @@ Check each lane in `delegatedTaskPlan` and paste **links** (spec paths, CI jobs)
 
 <!-- known risks, feature flags, data migrations -->
 
+### Known residual risks (governance / MCP)
+
+<!-- If touching lib/copilot/** or hooks: link lib/copilot/governance/README.md accepted residual table; note shadow protect-mcp and stdio dev gate. -->
+
 ## FAILURE_SUMMARY
 
 <!-- if fixing a failure, paste block from qa-plan template -->

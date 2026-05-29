@@ -50,7 +50,7 @@ The `subagentStart` hook injects tier preamble from this output. Paste into hand
 
 ## Hooks (shadow → enforce)
 
-Set `GOVERNANCE_HOOK_MODE=shadow` (default) to log without blocking. Set `enforce` after 2-week burn-in.
+Canonical schedule: [`.cursor/governance/hook-mode.json`](../../.cursor/governance/hook-mode.json) (`defaultMode`, `enforceAfter`). Override with `GOVERNANCE_HOOK_MODE=shadow|enforce`. IDE `beforeMCPExecution` uses `failClosed: true` when hooks are enabled.
 
 | Hook | Replaces |
 |------|----------|

@@ -1,0 +1,74 @@
+{
+  "ticketId": "governance-alarp-full-repo",
+  "source": "ALARP risk reduction plan",
+  "summary": "Close governance/MCP/CI gaps, harden production demo-auth, add supply-chain scanning.",
+  "riskTier": "T3",
+  "poCheckpoint": "Feature brief / spike ADR: docs/meta/cursor-3-native-runtime.md | UAC: governance CI gates | gate Y | phase ADR: 0001",
+  "impact": "Reduces false assurance from shadow-only controls and production demo JWT exposure.",
+  "reproduction": {
+    "steps": ["Run npm run governance:ci on branch with lib/copilot changes"]
+  },
+  "expectedVsActual": {
+    "expected": "Strict diff and handoff validate T3 copilot lanes",
+    "actual": "diff --strict always exited 0"
+  },
+  "environment": {
+    "os": "darwin",
+    "nodeVersion": "22.x",
+    "branch": "main"
+  },
+  "suspectedPaths": [
+    "lib/copilot/**",
+    "scripts/governance-lint.mjs",
+    ".cursor/hooks/**",
+    "scripts/copilot-mcp-server.ts"
+  ],
+  "orchestratorHints": [
+    "ai_governance_reviewer readonly on Cedar/policy",
+    "sentinel on hooks and MCP transport"
+  ],
+  "conditionalSkills": [
+    "hr-product-mcp-governance",
+    "hr-regulated-domain",
+    "cc-skill-security-review"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "scout",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "architect",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "riskTier": "T3",
+      "readonly": true
+    },
+    {
+      "function": "builder",
+      "riskTier": "T3",
+      "dependsOn": ["architect"]
+    },
+    {
+      "function": "sentinel",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate",
+      "readonly": true
+    },
+    {
+      "function": "verifier",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate"
+    }
+  ],
+  "requiresPoCheckpoint": true,
+  "reproStatus": "reproduced"
+}

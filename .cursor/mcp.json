@@ -1,6 +1,6 @@
 {
   "$schema": "https://cursor.com/schemas/mcp.json",
-  "description": "HR ERP team MCP allowlist — IDE plane only (not product copilot)",
+  "description": "HR ERP team MCP allowlist — IDE plane only (not product copilot). Prisma MCP can mutate/introspect DATABASE_URL; blocked in enforce mode when DB is non-local (see docs/security/agent-mcp-threat-model.md).",
   "mcpServers": {
     "context7": {
       "command": "npx",

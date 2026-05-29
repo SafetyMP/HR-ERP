@@ -4,7 +4,7 @@
   "hooks": {
     "beforeShellExecution": [{ "command": "node .cursor/hooks/before-shell.mjs", "timeout": 10 }],
     "beforeMCPExecution": [
-      { "command": "node .cursor/hooks/before-mcp.mjs", "timeout": 10, "failClosed": false }
+      { "command": "node .cursor/hooks/before-mcp.mjs", "timeout": 10, "failClosed": true }
     ],
     "subagentStart": [{ "command": "node .cursor/hooks/subagent-start.mjs", "timeout": 30 }],
     "afterFileEdit": [{ "command": "node .cursor/hooks/after-file-edit.mjs", "timeout": 5 }],
