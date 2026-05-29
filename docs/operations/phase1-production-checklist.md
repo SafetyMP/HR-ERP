@@ -43,6 +43,18 @@ Do **not** run Kafka, Schema Registry, or second Postgres instances in productio
 
 **Verify:** `GET /api/auth/oidc/login` redirects to IdP; callback sets session cookie; employee routes accept cookie without `Authorization` header. Dev-only: `POST /api/auth/dev-bootstrap` must be **disabled** in Production.
 
+### Neon Auth / Google (when `NEON_AUTH_BASE_URL` is set)
+
+| Variable | Purpose |
+| --- | --- |
+| `NEON_AUTH_BASE_URL` | Neon Auth proxy base (from Neon Console → Auth) |
+| `NEON_AUTH_COOKIE_SECRET` | Cookie signing secret (min 32 chars) |
+| `AUTH_PUBLIC_ORIGIN` | Optional canonical origin when Vercel aliases differ from `request.url` |
+
+**Trusted origins:** In Neon Console → Auth → Domains, add every Production URL users may visit (e.g. `https://<project>.vercel.app`). The OAuth callback path is `/api/auth/neon/complete` — Better Auth validates the full callback URL against this list. Enable **Allow localhost** for local dev, or add `http://localhost:3000` explicitly.
+
+**Verify:** Sign in from the exact Production hostname; on `Invalid callbackURL`, add `window.location.origin` shown in the error hint to Neon trusted origins.
+
 ---
 
 ## 3. Pre-deploy checklist

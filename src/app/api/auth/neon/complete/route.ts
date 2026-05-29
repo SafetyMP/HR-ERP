@@ -7,6 +7,7 @@ import {
 import { getNeonAuth } from "@/lib/auth/neon-auth-server";
 import { neonAuthConfigured } from "@/lib/auth/neon-auth-config";
 import { buildSessionSetCookieHeader } from "@/lib/auth/session-cookie";
+import { resolvePublicOrigin } from "@/lib/auth/public-origin";
 
 export const dynamic = "force-dynamic";
 
@@ -97,7 +98,7 @@ export async function GET(request: Request) {
       "Set-Cookie",
       "hrerp_auth_return=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
     );
-    return NextResponse.redirect(new URL(returnTo, request.url), { headers });
+    return NextResponse.redirect(new URL(returnTo, resolvePublicOrigin(request)), { headers });
   } catch (err) {
     const code = err instanceof Error ? err.message : "neon_provision_failed";
     const detail =
