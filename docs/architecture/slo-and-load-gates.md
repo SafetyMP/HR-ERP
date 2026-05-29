@@ -36,5 +36,5 @@ Document expected **writes per second per aggregate** (e.g. employee patches, pu
 
 ## References
 
-- ADR [`0001-postgres-kafka-context-boundaries.md`](../../specs/alignment/decisions/0001-postgres-kafka-context-boundaries.md)
+- ADR [`0002-postgres-kafka-context-boundaries.md`](../../specs/alignment/decisions/0002-postgres-kafka-context-boundaries.md)
 - Outbox publisher [`workers/outbox-publisher/README.md`](../../workers/outbox-publisher/README.md)

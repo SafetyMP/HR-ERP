@@ -1,18 +1,23 @@
-# Governance references (canon)
+# Governance references (in-repo canon)
 
-Use these **Cursor plan files** on disk as non-repo sources of truth until excerpted into specs. Paths are for **this machine**; adjust if plans move.
+Use **only** these paths for agent and human planning. External `~/.cursor/plans/*.plan.md` files are archived; excerpts live under [`docs/_archived/planning/2026-05-28-stakeholder-reset/`](../../docs/_archived/planning/2026-05-28-stakeholder-reset/).
 
 | Topic | Path |
 | --- | --- |
-| Agent scaffold (this repo’s process) | `~/.cursor/plans/hr_erp_agent_scaffold_557905dc.plan.md` |
-| Architecture governance | `~/.cursor/plans/hr_erp_architecture_governance_d57fbc82.plan.md` |
-| Security blueprint | `~/.cursor/plans/hr_erp_security_blueprint_a116263a.plan.md` |
-| Compliance rule framework | `~/.cursor/plans/hr_compliance_rule_framework_434cfbdc.plan.md` |
-| Integrations platform | `~/.cursor/plans/hr_erp_integrations_platform_5ef4776a.plan.md` |
-| QA / chaos blueprint | `~/.cursor/plans/hr_erp_qa_chaos_blueprint_f34d4da4.plan.md` |
-| PO operating model | `~/.cursor/plans/hr_po_operating_model_f1fcd270.plan.md` |
-| Greenfield R&D (innovation lane) | `~/.cursor/plans/hr_erp_greenfield_r&d_1e4b62cf.plan.md` |
+| **Forward plan (single source)** | [`docs/product/stakeholder-value-plan.md`](../docs/product/stakeholder-value-plan.md) |
+| Product north star | [`docs/product/goal-beat-bamboohr-plus-payroll-stack.md`](../docs/product/goal-beat-bamboohr-plus-payroll-stack.md) |
+| UAC measurement | [`docs/product/codebase-completion-baseline.md`](../docs/product/codebase-completion-baseline.md) |
+| Completion audits | [`docs/product/completion-audits/`](../docs/product/completion-audits/) |
+| Deferred / demo scope | [`docs/product/deferred-platform-track.md`](../docs/product/deferred-platform-track.md) |
+| PO operating model | [`docs/product/hr-product-owner-operating-model.md`](../docs/product/hr-product-owner-operating-model.md) |
+| Competitive roadmap | [`specs/competitive-analysis-roadmap.md`](competitive-analysis-roadmap.md) |
+| ADRs | [`specs/alignment/decisions/`](alignment/decisions/) |
+| Agent orchestration | [`AGENTS.md`](../AGENTS.md) |
+| Architecture (runtime) | [`docs/architecture/bounded-contexts.md`](../docs/architecture/bounded-contexts.md) |
+| Security | [`docs/security/policy-catalog.md`](../docs/security/policy-catalog.md) |
+| QA | [`docs/QA.md`](../docs/QA.md) |
+| Templates | [`specs/templates/`](templates/) |
 
-**In-repo:** `AGENTS.md`, `specs/alignment/decisions/`, `specs/templates/`, `.cursor/rules/`.
+When archived docs and ADRs disagree, **ADRs in `specs/alignment/decisions/` win** for execution phase.
 
-When plans and ADRs disagree, **ADRs in `specs/alignment/decisions/` win** for this repository’s execution phase.
+Historical external plan excerpts: [`docs/_archived/planning/2026-05-28-stakeholder-reset/external-plans/`](../../docs/_archived/planning/2026-05-28-stakeholder-reset/external-plans/)

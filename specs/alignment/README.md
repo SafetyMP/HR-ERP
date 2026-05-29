@@ -1,4 +1,18 @@
-# Vision alignment
+# Governance references (in-repo canon)
+
+## ADR index (0000–0014)
+
+| ID | Decision |
+| --- | --- |
+| 0000 | ADR process template |
+| 0001 | [Phase 1 scope — single app, single Postgres](decisions/0001-phase1-scope.md) |
+| 0002 | [Postgres-per-context + Kafka target topology](decisions/0002-postgres-kafka-context-boundaries.md) |
+| 0003 | [Container supply chain](decisions/0003-container-supply-chain.md) |
+| 0004 | [Modular monolith Phase 1](decisions/0004-modular-monolith-phase1.md) |
+| 0005–0013 | Pay/compliance/platform ADRs — see `decisions/` |
+| 0014 | [GitHub OSS governance spike](decisions/0014-github-oss-governance-spike.md) |
+
+**Redirect:** [0001-postgres-kafka-context-boundaries.md](decisions/0001-postgres-kafka-context-boundaries.md) → use **0002**.
 
 When Architecture, Security, Integrations, QA, or Legal-process guidance **conflicts**:
 

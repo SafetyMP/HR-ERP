@@ -40,22 +40,22 @@ A prospect should agree with **all** of the following after a 30-minute demo + s
 | W6 | **Integration is outbound + inbound without Zapier for core paths** | Webhooks shipped; Phase C connectors live |
 | W7 | **Benefits are operational**, not a PDF summary only | Phase B election + COBRA path (counsel-gated) |
 
-**Product “overtake” for demo = W1–W5 met; W6–W7 partial until Phase C briefs 023–025 and counsel paths complete.**
+**Product “overtake” = W1–W5 today (partial on W5 depth), W6–W7 on roadmap below.**
 
 ---
 
 ## Scorecard (today vs target)
 
-| Dimension | vs BambooHR alone | vs BambooHR + payroll | Status |
+| Dimension | vs BambooHR alone | vs BambooHR + payroll | Target by |
 | --- | --- | --- | --- |
-| Employee ESS | **Parity / win** on security story | **Win** (unified pay data) | **Met** (001–022) |
+| Employee ESS | **Parity / win** on security story | **Win** (unified pay data) | **Met** (115 UAC) |
 | Manager workforce | Near parity | **Win** (same app as pay) | **Met** |
-| Payroll ops | Gap (they partner) | **Parity** (console + lock); **gap** agency filing | **Partial** — 018 artifact + partner |
-| Benefits | Gap | **Partial** (life events 019) | **Partial** — COBRA PDF counsel-gated |
-| Recruiting | Behind Pro ATS | **Win** vs no ATS / **lose** vs Greenhouse | **Met** for standard reqs (014, 020) |
-| Performance | Behind full suite | **Win** vs goals-only add-ons | **Met** (015, 020) |
-| Integrations | Behind | **Partial** (webhooks + SCIM) | Phase C **023–025** |
-| Admin analytics | Behind | **Partial** (021 dashboard) | **Met** for ops summary |
+| Payroll ops | Gap (they partner) | **Parity** (console); **gap** filing | Phase B partner |
+| Benefits | Gap | **Gap** | Phase B |
+| Recruiting | Behind Pro ATS | **Win** vs no ATS / **lose** vs Greenhouse | Phase B depth |
+| Performance | Behind full suite | **Win** vs goals-only add-ons | Phase B |
+| Integrations | Behind | **Gap** | Phase C |
+| Admin analytics | Behind | **Gap** | Phase C |
 
 ---
 
@@ -69,22 +69,24 @@ A prospect should agree with **all** of the following after a 30-minute demo + s
 
 **Do not re-fund Phase A except regression and depth called out below.**
 
-### Phase B — **Met** (briefs 018–021)
+### Phase B — **Beat the bundle** (next product waves)
 
-| Wave | Brief | Status |
-| --- | --- | --- |
-| **B1 Payroll trust** | [018](./feature-briefs/018-in-house-payroll-close-and-filing-artifacts.md) | **Shipped** — [audit](./completion-audits/features-018-021.md) |
-| **B2 Benefits ops** | [019](./feature-briefs/019-benefits-life-events-mvp.md) | **Shipped** — COBRA notice PDF counsel-gated |
-| **B3 Talent depth** | [020](./feature-briefs/020-talent-depth-wave.md) | **Shipped** |
-| **B4 HR intelligence** | [021](./feature-briefs/021-hr-ops-dashboards.md) | **Shipped** |
+Each wave needs a Feature brief with PO gate + UAC before build.
 
-**Exit criteria:** [reference-customer-exit-runbook.md](./reference-customer-exit-runbook.md)
+| Wave | Outcome vs stitched stack | Suggested brief slug | Deps |
+| --- | --- | --- | --- |
+| **B1 Payroll trust** | **In-house** period lock, exception queue, audit export, filing **artifact** JSON (not live agency e-file) | `018-in-house-payroll-close-and-filing-artifacts` | Counsel on transmission |
+| **B2 Benefits ops** | Open enrollment + life event **beyond summary**; COBRA workflow start (counsel) | `019-benefits-life-events-mvp` | [cobra-aca-counsel-gate](../compliance/cobra-aca-counsel-gate.md) |
+| **B3 Talent depth** | Recruiting: interview loop + scorecard; Performance: review form + sign-off | `020-talent-depth-wave` | 014, 015 |
+| **B4 HR intelligence** | Headcount, turnover, time-to-hire dashboards (no black-box scoring in prod) | `021-hr-ops-dashboards` | Reporting APIs |
+
+**Exit criteria for Phase B:** A reference customer can **cancel BambooHR + payroll vendor portal access** for ESS and routine pay runs (filing still via partner), with written runbooks.
 
 ### Phase C — **Defensible moat** (integrations + scale)
 
 | Wave | Outcome | Artifact |
 | --- | --- | --- |
-| **C1 Connectors** | IdP (OIDC/SCIM), payroll partner, benefits carrier — briefs [023](./feature-briefs/023-scim-idp-production-hardening.md)–[025](./feature-briefs/025-benefits-carrier-outbound-stub.md) | 3 shipped connectors |
+| **C1 Connectors** | IdP (OIDC/SCIM), payroll partner, benefits carrier — implement [vendor-connector-rfc](../integrations/vendor-connector-rfc.md) | 3 shipped connectors |
 | **C2 Scale** | 2k+ employees on one tenant; perf SLOs documented | Load test + ADR if Kafka trigger |
 
 ### Explicit non-goals (even for this goal)
@@ -122,5 +124,4 @@ For each Phase B/C brief, PO adds one row to the brief:
 - [competitive-benchmark-executive-brief.md](./competitive-benchmark-executive-brief.md)  
 - [specs/competitive-analysis-roadmap.md](../../specs/competitive-analysis-roadmap.md)  
 - [deferred-platform-track.md](./deferred-platform-track.md)  
-- [stakeholder-value-plan.md](./stakeholder-value-plan.md)
-- [reference-customer-exit-runbook.md](./reference-customer-exit-runbook.md)
+- [vendor-connector-rfc.md](../integrations/vendor-connector-rfc.md)

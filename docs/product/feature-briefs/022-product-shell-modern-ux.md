@@ -1,7 +1,7 @@
 # Feature brief: Product shell and modern UX
 
 **ID:** 022-product-shell-modern-ux  
-**Status:** PO approved  
+**Status:** Done  
 **Last updated:** 2026-05-18  
 
 ## PO gate (required before Engineering)

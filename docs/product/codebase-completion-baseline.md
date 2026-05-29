@@ -2,7 +2,7 @@
 
 **Purpose:** Define how to answer “what percent complete?” without inventing a single orphan number. Aligns with the PO operating model (Feature briefs + numbered UAC).
 
-**Last inventory:** 2026-05-18 (Features **001**–**021** shipped; Track A **147/147** UAC)
+**Last inventory:** 2026-05-28 (Features **001**–**022**; Track A **155 UAC** total; **147** audited through **021** + **022** shell shipped)
 
 **Shippable vs platform:** **Track A (Feature UAC)** is the authoritative bar for “product shipped.” Routes, demos, kernels, and docs in tree that are **not** tied to an approved Feature brief’s numbered UAC count as **platform / scaffold / demo** capability — useful, but not closure of PO scope.
 
@@ -14,7 +14,7 @@
 | --- | --- | --- | --- |
 | **A — Feature UAC** | Sum of numbered UAC rows across approved Feature briefs under [`feature-briefs/`](./feature-briefs/) | `% = (UAC met ÷ UAC total) × 100`; optional **partial = 0.5** if explicitly scored | Shippable HR product progress; primary signal for this repo |
 | **B — Phase architecture** | Checklist items you choose (e.g. [`docs/architecture/01-phase-a-core-boundaries.md`](../architecture/01-phase-a-core-boundaries.md)) | Manual count of satisfied items | Platform / “Phase A” readiness, not employee features |
-| **C — AI platform** | Phases in [`docs/ml/implementation-sequence.md`](../ml/implementation-sequence.md) | Qualitative per phase (exit criteria met Y/N) | Inference / scoring / agents only |
+| **C — AI platform** | Phases in archived [ML implementation sequence](../ml/implementation-sequence.md) | Qualitative per phase (exit criteria met Y/N) | Inference / scoring / agents only — **deferred** |
 
 **Do not use:** LOC, file counts, or vague “ERP parity” without a written backlog — they do not measure shippable value.
 
@@ -26,19 +26,22 @@
 
 | Source | Count |
 | --- | ---: |
-| Feature briefs in `docs/product/feature-briefs/` | **21** (**001**–**021**) |
+| Feature briefs in `docs/product/feature-briefs/` | **22** (**001**–**022**) |
 | Total numbered UAC (sum across briefs **001**–**013**, audited) | **85** |
 | Shipped / verified UAC (audited **001**–**013**) | **85** / **85** |
 | Shipped / verified UAC (audited **014**–**017**) | **30** / **30** |
 | Shipped / verified UAC (audited **018**–**021**, Phase B) | **32** / **32** |
-| **Cumulative Track A** | **147** / **147** |
+| Product shell (**022**) | **8** UAC — audit [features-022.md](./completion-audits/features-022.md) |
+| **Cumulative Track A** | **155** / **155** |
 
 Per brief UAC counts: **001**–**005** — 6 each · **006**–**010** — 6 each · **011** — 12 · **012** — 6 · **013** — 7.
 
 Wave **001**–**005** audits: **§3**–**§3e** below. Wave **006**–**013** audits: [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).  
-Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./completion-audits/features-014-017.md).
+Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./completion-audits/features-014-017.md).  
+Wave **018**–**021** audits: [`completion-audits/features-018-021.md`](./completion-audits/features-018-021.md).  
+Wave **022** audit: [`completion-audits/features-022.md`](./completion-audits/features-022.md).
 
-**Primary product gap (prioritization):** Track A **001**–**021** closed (**147/147** UAC) including Phase B in-house payroll close. **North star:** [BambooHR + separate payroll](./goal-beat-bamboohr-plus-payroll-stack.md) — Phase B **exit** for reference customers; Phase C (connector catalog) remains deferred. Platform: [`deferred-platform-track.md`](./deferred-platform-track.md).
+**Primary product gap (prioritization):** Phase C connectors (**023–025**) and reference customer exit execution. **Forward plan:** [stakeholder-value-plan.md](./stakeholder-value-plan.md).
 
 ---
 

@@ -16,6 +16,7 @@ This repository uses **Cursor 3 native runtime** + tier-gated skills (revamp 202
 
 Before new capabilities, read:
 
+- **[Stakeholder value plan](docs/product/stakeholder-value-plan.md)** — single active forward plan (2026-05-28 reset)
 - [HR Product Owner operating model](docs/product/hr-product-owner-operating-model.md)
 - Feature briefs: [docs/product/feature-briefs/](docs/product/feature-briefs/) · [template](docs/product/feature-brief-template.md)
 - Compliance: [docs/compliance/](docs/compliance/) — load `@hr-regulated-domain` (T3)
@@ -44,7 +45,9 @@ Legacy 15-skill stack: `.cursor/skills/_archived/2026-05-28-revamp/`
 
 **Native runtime:** [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md) · `/multitask`, `/worktree`, `/best-of-n` · hooks enforce process.
 
-Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-hr-erp.mdc) · [ADR 0011](specs/alignment/decisions/0011-function-lane-orchestration.md). **Harness:** `npm run governance:lint` → `npm run governance:plan` → parallel native subagents → `npm run governance:ci`.
+Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-hr-erp.mdc) · [ADR 0011](specs/alignment/decisions/0011-function-lane-orchestration.md). **Harness:** `npm run governance:lint` → `npm run governance:plan` → parallel native subagents → `npm run governance:ci` (includes `governance:production-safety`; hooks are IDE-only).
+
+**Safety:** Do not set `NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN` on Vercel Production. Production JWT mint scripts require `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization).
 
 **Rules of engagement**
 

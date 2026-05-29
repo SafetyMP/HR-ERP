@@ -1,22 +1,18 @@
-# Executive brief — HR ERP competitive benchmark (operations + multi-segment)
+# Executive brief — HR ERP competitive benchmark
 
-**Date:** 2026-05-18 (refreshed)  
+**Date:** 2026-05-28 (stakeholder reset)  
 **Audience:** Leadership, platform engineering, finance  
-**Scope:** Multi-segment product comparison with **primary lens on cost to operate** (self-host scaffold vs vendor-hosted SaaS).
+**Forward plan:** [stakeholder-value-plan.md](./stakeholder-value-plan.md)
 
-**Supporting artifacts:** [Validated ops inventory](./competitive-ops-inventory.md) · [TCO worksheet](./competitive-ops-tco-worksheet.md) · [Competitive roadmap](../../specs/competitive-analysis-roadmap.md) · [Phase 1 production checklist](../operations/phase1-production-checklist.md) · [ADR 0009 mid-market strategy](../../specs/alignment/decisions/0009-mid-market-segment-strategy.md)
+**Supporting artifacts:** [ops inventory](./competitive-ops-inventory.md) · [TCO worksheet](./competitive-ops-tco-worksheet.md) · [competitive roadmap](../../specs/competitive-analysis-roadmap.md) · [reference customer exit](./reference-customer-exit-runbook.md)
 
 ---
 
 ## Summary
 
-HR ERP is a **Phase 1 modular monolith** with **115/115** shipped Track A user-acceptance criteria (Features **001–017**), including Tier 1 mid-market surfaces: recruiting pipeline, performance cycle MVP, payroll pay-run console, and employee learning. It offers **strong security architecture** and a **deterministic payroll math kernel** with US federal v1 tables and a **UK PAYE/NI bootstrap path** in pay runs (engineering spikes — **not** production tax filing or HMRC RTI).
+HR ERP is a **Phase 1 modular monolith** with **155/155 UAC** across Features **001–022**. It delivers unified ESS, manager workforce, HR/payroll ops, recruiting through offer, performance cycles, pay-run console with period lock, benefits life events, HR ops dashboard, and product shell — with **strong security** and a **deterministic payroll kernel** (US v1 + UK bootstrap spikes; **not** production tax filing).
 
-**Bottom line:** The product wins on **control, extensibility, and compliance-ready design**. It loses on **operational cost per employee** versus SaaS for almost all buyers unless you already fund a platform team. The monthly Vercel bill is not the decision driver — **engineering and compliance headcount are**.
-
-**Primary segment (ADR 0009):** Mid-market **250–5,000 employees**, **US + UK**, build-platform buyers — not SMB low-ops or enterprise Workday replacement.
-
-**Product goal:** Overtake the **BambooHR + separate payroll** bundle on unified experience and ownable pay policy — [goal doc](./goal-beat-bamboohr-plus-payroll-stack.md).
+**Bottom line:** Wins on **control, unified portal, and compliance-ready design**. Loses on **operate cost per employee** vs SaaS unless the buyer funds a platform team. **Mid-market 250–5k** is the target segment ([ADR 0009](../../specs/alignment/decisions/0009-mid-market-segment-strategy.md)).
 
 ---
 
@@ -24,51 +20,39 @@ HR ERP is a **Phase 1 modular monolith** with **115/115** shipped Track A user-a
 
 | Dimension | Status |
 | --- | --- |
-| **Track A (001–017)** | **115/115** audited UAC — ESS, manager workforce, HR ops, recruiting UI, performance goals + cycles, pay-run console, learning self-service |
-| **Tier 1 routes** | `/manager/recruiting`, `/manager/team-performance`, `/hr/payroll-runs`, `/employee/learning` (see [completion audit](./completion-audits/features-014-017.md)) |
-| **Payroll** | Deterministic kernel; `runPayroll` uses US federal v1 by default; **GB/UK** orgs use PAYE/NI bootstrap deductions; **no** IRS/HMRC filing |
-| **Integrations** | Webhook HTTP delivery (ADR 0008); connector RFC drafted ([vendor-connector-rfc.md](../integrations/vendor-connector-rfc.md)) |
-| **Production topology** | Vercel (`iad1`) + one Postgres + Redis; **separate workers** for webhooks and integrations |
-| **Deferred** | Kafka, DB-per-context, production ML (per ADRs and ML sequence) |
+| **Track A (001–021)** | **147/147** audited UAC |
+| **Product shell (022)** | **8/8** audited UAC — [audit](./completion-audits/features-022.md) |
+| **Phase B (018–021)** | Payroll close, life events, talent depth, HR dashboard — [audit](./completion-audits/features-018-021.md) |
+| **Payroll** | In-app pay runs + lock + filing JSON artifact; partner handoff — no IRS/HMRC e-file |
+| **Integrations** | Webhooks (ADR 0008) + SCIM API; Phase C connectors **023–025** next |
+| **Production topology** | Vercel + **one Postgres** + Redis workers |
+| **Deferred** | Kafka, multi-DB, production ML, Track D API scaffolds |
 
 ---
 
-## Competitive position by segment
+## Win scorecard (buyer demo)
 
-### SMB (10–250 employees)
+| Claim | Status |
+| --- | --- |
+| W1 One portal | **Met** |
+| W2 Native payroll | **Met** |
+| W3 Ownable policy | **Partial** (counsel path documented) |
+| W4 Enforceable tenancy | **Met** |
+| W5 No separate ATS | **Met** |
+| W6 Integrations | **Partial** (webhooks + SCIM; 3 connectors pending) |
+| W7 Benefits ops | **Partial** (life events; COBRA PDF counsel-gated) |
 
-| | HR ERP | Gusto / BambooHR |
-| --- | --- | --- |
-| **Value** | Customizable monolith; weak payroll filing and benefits | Fast US HR + payroll; employees adopt the portal |
-| **Operate cost** | High — minimum platform attention + payroll partner | Low — vendor runs tax updates and filings |
-| **Verdict** | **Do not position** as low-ops SMB HRIS | **Default buy** for cost and time-to-value |
-
-### Mid-market (250–5,000 employees)
-
-| | HR ERP | Rippling / UKG / BambooHR Pro |
-| --- | --- | --- |
-| **Value** | Credible ESS + partial talent/payroll ops; gaps in benefits admin, integration catalog, statutory filing | Full modules and integrations |
-| **Operate cost** | Illustrative **~$38/employee/month** TCO at 500 EE vs **~$14** SaaS | Dominated by vendor ops, not infra |
-| **Verdict** | **Viable build platform** with Tier 2 statutory + connectors **if** sovereignty/customization justifies investment | **Default buy** for predictable ops |
-
-### Enterprise (5,000+ employees)
-
-| | HR ERP | Workday / SAP |
-| --- | --- | --- |
-| **Value** | No global HCM, workforce planning, or SI ecosystem | Deep analytics and global compliance |
-| **Verdict** | **Not a near-term replacement** | Incumbent unless strategic sovereignty mandate |
+**30-minute demo:** Cover **W1–W5** without `/mock`, `/demo`, or `/global-l10n` routes.
 
 ---
 
-## Operations: what you must run
+## Competitive position (mid-market)
 
-See [phase1-production-checklist.md](../operations/phase1-production-checklist.md):
-
-1. **Vercel** — Next.js app; Production env (`JWT_SECRET`, `DATABASE_URL`, optional OIDC).
-2. **Postgres** — Single database; `db:verify` after migrate.
-3. **Redis + workers** — `npm run worker:webhooks` and `npm run worker:integrations` (required when integrations matter).
-4. **CI** — Layered gate; Python churn smoke **path-filtered** on PRs (see [competitive-ops-inventory.md](./competitive-ops-inventory.md)).
-5. **Counsel** — Own wage/hour and tax table releases; COBRA/834 gated ([cobra-aca-counsel-gate.md](../compliance/cobra-aca-counsel-gate.md)).
+| | HR ERP | Rippling / UKG / BambooHR + payroll |
+| --- | --- | --- |
+| **Value** | Unified portal + in-app pay runs + light ATS | Full modules, filing, carrier integrations |
+| **Operate cost** | Higher self-operate (platform team) | Lower vendor-operated PEPM |
+| **Verdict** | **Viable build platform** with Phase C + partner filing | **Default buy** for predictable ops |
 
 ---
 
@@ -76,16 +60,17 @@ See [phase1-production-checklist.md](../operations/phase1-production-checklist.m
 
 | Priority | Action | Status |
 | --- | --- | --- |
-| **P0** | Production checklist (workers, Redis, OIDC) | Checklist published |
-| **P0** | Hold Phase 1 monolith until ADR trigger | Unchanged |
-| **P1** | Tier 1 briefs 014–017 | **Shipped** (115/115 UAC) |
-| **P1** | Tier 2 statutory depth + counsel | In progress (US v1 wired; UK bootstrap in `runPayroll`; COBRA counsel gate) |
-| **P1** | Webhook secret encryption | ADR 0008 follow-up |
-| **P2** | Vendor connector RFC + module depth | RFC + CSV export, reject pipeline, learning filters |
-| **P3** | SMB: partner payroll filing | Strategy doc ADR 0009 |
+| **P0** | Stakeholder value plan + doc reset | **Done** |
+| **P0** | Production checklist (workers, OIDC) | Published |
+| **P1** | Reference customer exit runbook | Published |
+| **P1** | Briefs 023–025 (connectors) | Draft |
+| **P2** | 022 completion audit + E2E depth | **Done** |
+| **P3** | Payroll DB cutover | After reference exit |
 
 ---
 
 ## Conclusion
 
-HR ERP is an **enterprise HR scaffold with credible Phase 1–Tier 1 self-service**, approaching mid-market credibility on talent and payroll ops surfaces while **still behind** SaaS on statutory filing, benefits carriers, and integration breadth. SaaS wins **operate cost per employee** for most buyers; HR ERP wins when a **platform team** needs **deep control** over payroll logic, tenancy, and governance ([roadmap](../../specs/competitive-analysis-roadmap.md)).
+HR ERP is a **credible mid-market HR+payroll platform** for buyers replacing a **stitched BambooHR + payroll stack**. Remaining gaps: **partner filing certification**, **full COBRA/carrier flows**, and **connector catalog** — not core ESS or pay-run mechanics.
+
+See [stakeholder-value-plan.md](./stakeholder-value-plan.md) for funded priorities.

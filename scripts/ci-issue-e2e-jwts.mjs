@@ -58,6 +58,7 @@ const specs = [
   ["HR_ERP_HR_CASE_E2E_JWT", ["employee"], employeeId, "hr-case"],
   ["HR_ERP_RECRUITING_E2E_JWT", ["manager"], managerId, "recruiting"],
   ["HR_ERP_PAYROLL_RUNS_E2E_JWT", ["hr_admin"], employeeId, "payroll-runs"],
+  ["HR_ERP_HR_DASHBOARD_E2E_JWT", ["hr_admin"], employeeId, "hr-dashboard"],
   ["HR_ERP_LEARNING_E2E_JWT", ["employee"], employeeId, "learning"],
   ["HR_ERP_PERFORMANCE_E2E_JWT", ["employee"], employeeId, "performance"],
   ["HR_ERP_MANAGER_PERF_E2E_JWT", ["manager"], managerId, "manager-perf"],

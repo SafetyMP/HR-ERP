@@ -117,5 +117,5 @@ From [`.env.example`](../../.env.example) — non-exhaustive:
 - [Operations TCO worksheet](./competitive-ops-tco-worksheet.md)
 - [Executive brief](./competitive-benchmark-executive-brief.md)
 - [Phase 1 production checklist](../operations/phase1-production-checklist.md)
-- [Vendor connector RFC](../integrations/vendor-connector-rfc.md)
+- Phase C connectors: briefs [023](./feature-briefs/023-scim-idp-production-hardening.md)–[025](./feature-briefs/025-benefits-carrier-outbound-stub.md) (archived RFC: [vendor-connector-rfc](../integrations/vendor-connector-rfc.md))
 - [Deferred platform track](./deferred-platform-track.md)

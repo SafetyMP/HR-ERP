@@ -1,7 +1,7 @@
 # ADR 0004: Modular monolith for Phase 1; deferred per-context Postgres split
 
 **Date:** 2026-05-09
-**Status:** Accepted (supersedes the operational guidance in [`0001-postgres-kafka-context-boundaries.md`](0001-postgres-kafka-context-boundaries.md) for Phase 1)
+**Status:** Accepted (supersedes the operational guidance in [`0002-postgres-kafka-context-boundaries.md`](0002-postgres-kafka-context-boundaries.md) for Phase 1)
 **Tags:** data, messaging, scalability, deployment
 
 ## Context
@@ -81,6 +81,6 @@ Specifically, for Phase 1:
 
 ## References
 
-- [`0001-postgres-kafka-context-boundaries.md`](0001-postgres-kafka-context-boundaries.md)
+- [`0002-postgres-kafka-context-boundaries.md`](0002-postgres-kafka-context-boundaries.md)
 - [`docs/architecture/README.md`](../../../docs/architecture/README.md)
 - [`docs/architecture/database-migrations-and-state.md`](../../../docs/architecture/database-migrations-and-state.md)

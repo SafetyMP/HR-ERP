@@ -1,4 +1,4 @@
-# ADR 0002 — Spike: GitHub OSS governance & CI alignment
+# ADR 0014 — Spike: GitHub OSS governance & CI alignment
 
 **Status:** Accepted (spike)  
 **Phase:** aligns with Phase 1 product scope boundaries per [0001-phase1-scope](./0001-phase1-scope.md) — governance only  

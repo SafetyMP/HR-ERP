@@ -6,7 +6,7 @@
 
 ## Context
 
-Competitive analysis ([`specs/competitive-analysis-roadmap.md`](../../specs/competitive-analysis-roadmap.md)) compared HR ERP to Gusto, BambooHR, Rippling, UKG, and Workday. Track A product UAC (**115/115**) and Tier 2 compliance spikes are in flight; we must choose **who we sell to** and **what we refuse to build**.
+Competitive analysis ([`specs/competitive-analysis-roadmap.md`](../../specs/competitive-analysis-roadmap.md)) compared HR ERP to Gusto, BambooHR, Rippling, UKG, and Workday. Track A product UAC (**155/155**, briefs **001–022**) and Tier 2 compliance spikes are in flight; we must choose **who we sell to** and **what we refuse to build**.
 
 ## Decision
 

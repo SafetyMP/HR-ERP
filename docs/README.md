@@ -55,6 +55,8 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 
 | Doc | Purpose |
 | --- | --- |
+| [product/stakeholder-value-plan.md](./product/stakeholder-value-plan.md) | **Single active forward plan** — truth baseline, W1–W7, P0–P3 priorities |
+| [product/reference-customer-exit-runbook.md](./product/reference-customer-exit-runbook.md) | Phase B exit checklist for reference customers |
 | [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | How Feature briefs and UAC work |
 | [product/feature-brief-template.md](./product/feature-brief-template.md) | Template for shippable capabilities |
 | [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); section 2c platform inventory + diagram; section 2d skills gap lens; Feature 001 backlog / audit sections |
