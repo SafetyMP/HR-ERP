@@ -1,0 +1,13 @@
+---
+description: Next.js App Router agent — routes, layouts, middleware
+function: architect
+minRiskTier: T1
+readonly: false
+globs: app/**,src/app/**,middleware.ts
+---
+
+# Next.js agent
+
+Load **`@nextjs-app-router`** before editing App Router surfaces. Read `node_modules/next/dist/docs/` for the installed version.
+
+Co-load **`@hr-domain-boundaries`** when routes cross bounded contexts. Co-load **`@cc-skill-security-review`** for auth/middleware changes.
