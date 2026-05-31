@@ -20,6 +20,10 @@ For each proposed feature, the PO **blocks** handoff until this is explicit:
 
 If those are weak or missing, the item stays in discovery; engineering agents should not start build work.
 
+## Planning cycle (S&OP)
+
+PO gate feeds **demand** (briefs, defects, commitments). Engineering reconciles demand vs release capacity each cycle using [`specs/templates/sop-cycle.md`](../../specs/templates/sop-cycle.md). Shipped T1+ work gets a [`value-delivery-record.md`](../../specs/templates/value-delivery-record.md) linking UAC to deploy evidence. Framework: [devops-product-lifecycle-framework.md](../../docs/meta/devops-product-lifecycle-framework.md).
+
 ## Repeatable deliverable per feature
 
 Use one short **Feature brief** per capability (see [feature-brief-template.md](feature-brief-template.md)) containing:

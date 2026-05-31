@@ -23,13 +23,14 @@ alwaysApply: true
 |------|---------|
 | scout + architect | `/multitask` |
 | custodian (DDL) | `/worktree` |
+| release_ops (ops/CI) | `/multitask` after architect when lint shows `devops_lifecycle` trigger |
 | sentinel + verifier | `/multitask` post-builder |
 | T4 swarm | Cloud handoff + `/multitask` |
 | Premium repair | `/best-of-n` (Human auth per ADR 0010) |
 
 ## T3+ path triggers
 
-Pay/compliance → counsel (readonly). `lib/copilot/**` → ai_governance_reviewer + sentinel. See manifest `pathTriggers`.
+Pay/compliance → counsel (readonly). `lib/copilot/**` → ai_governance_reviewer + sentinel. **Ops paths** (`.github/workflows/**`, `vercel.json`, `docs/operations/**`) → `release_ops` + `@hr-devops-lifecycle`. See manifest `pathTriggers`.
 
 ## CI
 

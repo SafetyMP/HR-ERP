@@ -14,11 +14,13 @@ Google **Antigravity 2.0** (May 2026) centers a **single agent harness** with pa
 
 ## Decision
 
-1. **Function lanes** — Map each Cursor delegated Task to a manifest `agentFunction` (scout, architect, builder, custodian, sentinel, verifier, counsel, finops_coordinator, etc.) with `minRiskTier`, `readonly`, and `taskBundle` bindings.
+1. **Function lanes** — Map each Cursor delegated Task to a manifest `agentFunction` (scout, architect, builder, custodian, packaging, release_ops, sentinel, verifier, counsel, finops_coordinator, etc.) with `minRiskTier`, `readonly`, and `taskBundle` bindings.
 2. **DAG handoffs** — `delegatedTaskPlan[]` supports `function`, `dependsOn`, `parallelGroup`; validated by `governance-lint handoff --strict`.
 3. **Scope router** — `pathTriggers` elevate tier and declare `requiredLanes` (e.g. `security_plane` → sentinel mandatory before merge).
 4. **Parallel fan-out** — Scout + Architect may run in parallel at T1; Sentinel + Verifier in parallel after Builder; Counsel does not block Builder on non-regulated paths.
 5. **Strict CI** — `npm run governance:ci` is **blocking** in reusable-ci (no advisory burn-in for this repo).
+
+**Release ops lane:** `release_ops` covers CI/CD, deploy config, and ops runbooks (T2+). It pairs with the global `@devops-product-lifecycle` skill for S&OP, IBP, and value delivery — see [ADR 0015](0015-devops-product-lifecycle-framework.md).
 
 ## Antigravity × Cursor mapping
 
@@ -54,4 +56,5 @@ Unchanged from ADR 0010: Human-authorized emergency repair may skip full lane fa
 
 - [cursor-antigravity-harness.md](../../../docs/meta/cursor-antigravity-harness.md)
 - [global-agent-governance-overlay.md](../../../docs/meta/global-agent-governance-overlay.md)
+- [0015-devops-product-lifecycle-framework.md](0015-devops-product-lifecycle-framework.md)
 - Manifest: `.cursor/governance/governance-manifest.yaml` (v2)

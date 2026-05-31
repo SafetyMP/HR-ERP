@@ -660,13 +660,13 @@ function cmdPlan(manifest, args) {
       plan.push({ function: "finops_coordinator", riskTier: "T4" });
     }
     for (const lane of suggestedLanes) {
-      if (["counsel", "custodian", "packaging", "ai_governance_reviewer", "mlops_reviewer"].includes(lane)) {
+      if (["counsel", "custodian", "packaging", "release_ops", "ai_governance_reviewer", "mlops_reviewer"].includes(lane)) {
         if (!plan.some((p) => p.function === lane)) {
           plan.push({
             function: lane,
             riskTier: suggestedTier,
-            dependsOn: lane === "custodian" ? ["architect"] : [],
-            readonly: true,
+            dependsOn: ["custodian", "release_ops"].includes(lane) ? ["architect"] : [],
+            readonly: lane !== "release_ops",
           });
         }
       }

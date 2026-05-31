@@ -31,11 +31,13 @@ disable-model-invocation: true
 3. Confirm PO gate: user, pain, outcome, scope boundary filled.
 4. Emit **PO checkpoint** (≤6 lines) before Architecture.
 5. Use standard HR terms (paystub, earnings statement, headcount — not invented jargon).
+6. **Value delivery hook (T1+)** — When the brief ships this cycle, note S&OP cycle ID and point to [`specs/templates/value-delivery-record.md`](../../../specs/templates/value-delivery-record.md); defer supply/reconcile to `@devops-product-lifecycle`.
 
 ## Resources
 
 - [references/operating-model.md](references/operating-model.md)
 - [docs/product/feature-brief-template.md](../../../docs/product/feature-brief-template.md)
+- [docs/product/stakeholder-value-plan.md](../../../docs/product/stakeholder-value-plan.md) §3 — demand priorities
 
 ## Limitations
 

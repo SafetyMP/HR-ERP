@@ -26,7 +26,7 @@ Risk tiers: [governance-manifest.yaml](../governance/governance-manifest.yaml) (
 
 ## Global essentials (install separately)
 
-Installed in `~/.cursor/skills/`: `cursor-harness-scope`, `protect-mcp-governance`, `skill-router`, `governance-tier-gate`, `concise-planning`, `lint-and-validate`, `systematic-debugging`, `cc-skill-security-review`, `repo-architect`, `testing-patterns`, `subagent-orchestrator`.
+Installed in `~/.cursor/skills/`: `cursor-harness-scope`, `devops-product-lifecycle`, `protect-mcp-governance`, `skill-router`, `governance-tier-gate`, `concise-planning`, `lint-and-validate`, `systematic-debugging`, `cc-skill-security-review`, `repo-architect`, `testing-patterns`, `subagent-orchestrator`.
 
 ## Workspace grounding
 
