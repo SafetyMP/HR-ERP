@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
+import { toast } from "sonner";
 
 type Review = {
   id: string;
@@ -25,18 +27,26 @@ type Cycle = {
 };
 
 export function ManagerTeamReviewsClient() {
-  const { bearerToken, isAuthenticated } = useHrAccess();
+  const { bearerToken, isAuthenticated, ready } = useHrAccess();
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [cycle, setCycle] = useState<Cycle | null>(null);
+  const [cycle, setCycle] = useState<Cycle | null | undefined>(undefined);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [ratings, setRatings] = useState<Record<string, number>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = async () => {
+    setLoadFailed(false);
     const res = await hrApiFetch("/api/v1/manager/performance/reviews", {
       bearerToken,
       headers: { Accept: "application/json" },
     });
-    if (!res.ok) return;
+    if (!res.ok) {
+      setCycle(null);
+      setReviews([]);
+      setLoadFailed(true);
+      return;
+    }
     const body = (await res.json()) as {
       data?: { cycle?: Cycle | null; reviews?: Review[] };
     };
@@ -60,22 +70,61 @@ export function ManagerTeamReviewsClient() {
 
   const submit = async (id: string) => {
     const managerRating = ratings[id] ?? 3;
-    await hrApiFetch(`/api/v1/manager/performance/reviews/${id}`, {
-      bearerToken,
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        managerRating,
-        managerNote: notes[id]?.trim() || undefined,
-      }),
-    });
-    await load();
+    setBusyId(id);
+    try {
+      const res = await hrApiFetch(`/api/v1/manager/performance/reviews/${id}`, {
+        bearerToken,
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          managerRating,
+          managerNote: notes[id]?.trim() || undefined,
+        }),
+      });
+      if (!res.ok) {
+        toast.error(
+          await readApiErrorMessage(
+            res,
+            "We couldn't submit that manager review. Refresh and try again.",
+          ),
+        );
+        return;
+      }
+      toast.success("Manager review submitted.");
+      await load();
+    } finally {
+      setBusyId(null);
+    }
   };
 
-  if (!cycle) return null;
+  if (!ready || !isAuthenticated) return null;
+
+  if (cycle === undefined) {
+    return <p className="text-sm text-muted-foreground">Loading team reviews…</p>;
+  }
+
+  if (loadFailed) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        Could not load team reviews.{" "}
+        <Button type="button" variant="link" className="h-auto p-0" onClick={() => void load()}>
+          Retry
+        </Button>
+      </p>
+    );
+  }
+
+  if (!cycle) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        No open performance cycle — team reviews appear when HR opens a cycle.
+      </p>
+    );
+  }
+
   if (reviews.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">No direct reports with reviews in this cycle.</p>
@@ -146,10 +195,13 @@ export function ManagerTeamReviewsClient() {
                     type="button"
                     size="sm"
                     className="self-start"
+                    disabled={busyId === r.id}
                     onClick={() => void submit(r.id)}
                   >
                     Submit manager review
                   </Button>
+                ) : r.status === "MANAGER_SUBMITTED" ? (
+                  <p className="text-xs text-muted-foreground">Manager review submitted.</p>
                 ) : null}
               </div>
             </div>

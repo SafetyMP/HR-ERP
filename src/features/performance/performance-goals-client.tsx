@@ -237,11 +237,13 @@ export function PerformanceGoalsClient({ variant, initialBearerToken }: Props) {
               </>
             ) : null}
           </p>
-        ) : goals?.length === 0 ? (
+        ) : goals === undefined ? (
+          <p className="text-sm text-muted-foreground">Loading goals…</p>
+        ) : goals.length === 0 ? (
           <p className="text-sm text-muted-foreground">No goals yet for this cycle.</p>
         ) : (
           <ul className="divide-y divide-border rounded-md border border-border" role="list">
-            {goals!.map((g) => (
+            {goals.map((g) => (
               <li key={g.id} className="list-none px-4 py-3 text-sm">
                 {variant === "manager" && "employeeDisplayName" in g ? (
                   <p className="font-medium text-foreground">

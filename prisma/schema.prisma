@@ -1364,7 +1364,7 @@ model JobRequisition {
   openings        Int                  @default(1)
   /// ISO-3166-1 alpha-2 — used to gate jurisdiction-aware AI screening defaults.
   locationCountry String?              @map("location_country")
-  employmentType  EmploymentType       @default(FULL_TIME)
+  employmentType  EmploymentType       @default(FULL_TIME) @map("employment_type")
   /// Free-text job description; AI screening must operate on a redacted copy (see lib/recruiting/redact.ts).
   description     String?
   closedAt        DateTime?            @map("closed_at")

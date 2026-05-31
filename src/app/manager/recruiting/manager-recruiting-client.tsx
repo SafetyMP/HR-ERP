@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
 
 type Requisition = {
   id: string;
@@ -118,7 +119,12 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
         }),
       });
       if (!res.ok) {
-        setMsg("Could not create requisition. Check your permissions and try again.");
+        setMsg(
+          await readApiErrorMessage(
+            res,
+            "Could not create requisition. Check your permissions and try again.",
+          ),
+        );
         return;
       }
       setTitle("");
