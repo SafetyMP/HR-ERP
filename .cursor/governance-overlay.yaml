@@ -33,6 +33,9 @@ templates:
   goldenThreadPayrollDrill: specs/templates/golden-thread-regulated-payroll-drill.md
   swarmChecklist: specs/templates/swarm-multiagent-rerun-checklist.md
   handoffSchema: specs/templates/orchestrator-human-issue-handoff.schema.json
+  devopsSopCycle: specs/templates/sop-cycle.md
+  devopsIbpCheckpoint: specs/templates/ibp-checkpoint.md
+  valueDeliveryRecord: specs/templates/value-delivery-record.md
 
 additionalPathTriggers:
   - id: product_runtime_mcp
@@ -57,6 +60,14 @@ additionalPathTriggers:
     attachSkills:
       - hr-domain-boundaries
       - hr-data-custody
+  - id: hr_devops_framework_docs
+    paths:
+      - "docs/meta/devops-product-lifecycle-framework.md"
+      - "specs/alignment/decisions/0015-devops-product-lifecycle-framework.md"
+    minTier: T2
+    attachSkills:
+      - hr-devops-lifecycle
+      - devops-product-lifecycle
 
 workspaceGrounding:
   requiredPaths:

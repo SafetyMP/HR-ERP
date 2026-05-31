@@ -38,6 +38,12 @@ Payroll / Compliance / Math: N/A or brief path
 - Feature brief / UAC: <!-- link -->
 - Phase ADRs: <!-- e.g. specs/alignment/decisions/0001-phase1-scope.md -->
 
+## Lifecycle (S&OP / value) — required when riskTier ≥ T1
+
+- **S&OP cycle ID:** <!-- e.g. 2026-W22 or N/A for ops-only -->
+- **Release train:** <!-- in-cycle | deferred -->
+- **Value delivery record:** <!-- specs/templates/value-delivery-record.md path or N/A -->
+
 ## Agent lane sign-off (parallel — ADR 0011)
 
 Check each lane in `delegatedTaskPlan` and paste **links** (spec paths, CI jobs):
@@ -49,6 +55,7 @@ Check each lane in `delegatedTaskPlan` and paste **links** (spec paths, CI jobs)
 - [ ] **verifier** — `qa-plan.md` + CI / manual evidence
 - [ ] **counsel** — `legal-checklist.md` (T3+ regulated paths)
 - [ ] **custodian** — migration runbook (T2+ DDL)
+- [ ] **release_ops** — ops/CI impact + rollback (T2+ `.github/workflows`, deploy, `docs/operations`)
 - [ ] **code health** — `npm run lint` + `npm run test`; contracts drift if API changed
 
 ## Risk / rollback

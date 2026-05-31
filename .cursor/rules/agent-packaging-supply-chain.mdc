@@ -8,4 +8,6 @@ globs: Dockerfile,.github/workflows/publish-ghcr.yml,docker-compose*.yml
 
 # Packaging agent
 
-Load **`@hr-data-custody`** for Dockerfile/GHCR changes. ADR 0003: distroless, SBOM, Cosign.
+Load **`@devops-product-lifecycle`** for Dockerfile/GHCR and supply-chain release work. ADR 0003: distroless, SBOM, Cosign.
+
+Co-load **`@hr-data-custody`** only when the image change couples to schema/migrations (dual custody + release_ops handoff).

@@ -299,6 +299,7 @@ function buildSuggestedLanes(tier, requiredLanes, matchedTriggers) {
     lanes.add("builder");
   }
   if (ids.has("packaging_supply_chain")) lanes.add("packaging");
+  if (ids.has("devops_lifecycle")) lanes.add("release_ops");
   if (ids.has("compliance_pay_time") || ids.has("ai_governance") || ids.has("mlops_inference")) {
     lanes.add("counsel");
     if (ids.has("ai_governance")) lanes.add("ai_governance_reviewer");
@@ -404,12 +405,20 @@ function validatePrBody(body, suggestedTier, strict, options = {}) {
       issues.push("PR body golden thread must include at least one filled data row");
     }
     for (const lane of requiredLanes) {
-      if (["ai_governance_reviewer", "sentinel", "counsel", "custodian"].includes(lane)) {
+      if (
+        ["ai_governance_reviewer", "sentinel", "counsel", "custodian", "release_ops"].includes(lane)
+      ) {
         if (!prBodyReferencesLane(body, lane)) {
           issues.push(`PR body must reference required lane "${lane}" in golden thread or sign-off`);
         }
       }
     }
+  }
+
+  if (tierAtLeast(suggestedTier, "T1") && !body.match(/Lifecycle \(S&OP|value delivery|value-delivery-record/i)) {
+    warnings.push(
+      "PR body missing Lifecycle (S&OP / value) section or value delivery record link (advisory for T1+)",
+    );
   }
 
   for (const msg of warnings) console.warn(`WARN: ${msg}`);

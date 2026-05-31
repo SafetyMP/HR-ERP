@@ -273,6 +273,24 @@ skills:
     portable: false
     coLoad:
       - cursor-harness-scope
+  devops-product-lifecycle:
+    invoke: "@devops-product-lifecycle"
+    orchestratorTier: conditional
+    minRiskTier: T2
+    agentRule: agent-devops-lifecycle
+    portable: true
+    path: ~/.cursor/skills/devops-product-lifecycle
+    coLoad:
+      - governance-tier-gate
+      - lint-and-validate
+  hr-devops-lifecycle:
+    invoke: "@hr-devops-lifecycle"
+    orchestratorTier: conditional
+    minRiskTier: T2
+    agentRule: agent-devops-lifecycle
+    portable: false
+    coLoad:
+      - devops-product-lifecycle
 
 agentRules:
   agent-architecture:
@@ -344,7 +362,17 @@ agentRules:
       - "Dockerfile"
       - ".github/workflows/publish-ghcr.yml"
       - "docker-compose*.yml"
-    skill: hr-data-custody
+    skill: devops-product-lifecycle
+    note: Co-load hr-data-custody when image ties to schema/migrations
+  agent-devops-lifecycle:
+    globs:
+      - ".github/workflows/**"
+      - "vercel.json"
+      - "Dockerfile"
+      - "docker/**"
+      - "deploy/**"
+      - "docs/operations/**"
+    skill: devops-product-lifecycle
   agent-developer-advocate:
     globs:
       - "README.md"
@@ -387,9 +415,26 @@ pathTriggers:
       - ".github/workflows/publish-ghcr.yml"
     minTier: T2
     attachSkills:
+      - devops-product-lifecycle
       - hr-data-custody
     attachAgentRules:
       - agent-packaging-supply-chain
+  - id: devops_lifecycle
+    paths:
+      - ".github/workflows/**"
+      - "vercel.json"
+      - "Dockerfile"
+      - "docker/**"
+      - "deploy/**"
+      - "docs/operations/**"
+    minTier: T2
+    requiredLanes:
+      - release_ops
+    attachSkills:
+      - devops-product-lifecycle
+      - hr-devops-lifecycle
+    attachAgentRules:
+      - agent-devops-lifecycle
   - id: compliance_pay_time
     paths:
       - "docs/compliance/**"
@@ -493,6 +538,20 @@ agentFunctions:
     maxSkillBodies: 2
     taskBundle: packaging
     agentRule: agent-packaging-supply-chain
+  release_ops:
+    subagentType: generalPurpose
+    readonly: false
+    minRiskTier: T2
+    maxSkillBodies: 3
+    taskBundle: release_ops
+    writePaths:
+      - ".github/workflows/**"
+      - "vercel.json"
+      - "Dockerfile"
+      - "docker/**"
+      - "deploy/**"
+      - "docs/operations/**"
+    agentRule: agent-devops-lifecycle
   integrator:
     subagentType: generalPurpose
     readonly: true
@@ -617,9 +676,17 @@ taskBundles:
   packaging:
     minTier: T2
     skills:
+      - devops-product-lifecycle
       - hr-data-custody
     agentRules:
       - agent-packaging-supply-chain
+  release_ops:
+    minTier: T2
+    skills:
+      - devops-product-lifecycle
+      - lint-and-validate
+    agentRules:
+      - agent-devops-lifecycle
   integrations:
     minTier: T1
     skills:
@@ -641,6 +708,7 @@ functionIds:
   - builder
   - custodian
   - packaging
+  - release_ops
   - integrator
   - counsel
   - ai_governance_reviewer
@@ -675,3 +743,5 @@ skillIds:
   - hr-orchestration-lanes
   - hr-product-mcp-governance
   - protect-mcp-governance
+  - devops-product-lifecycle
+  - hr-devops-lifecycle

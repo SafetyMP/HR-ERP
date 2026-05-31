@@ -173,6 +173,27 @@ Google Antigravity separates **IDE MCP plugins** from **product-runtime agent to
 
 When bumping global manifest for `productMcpToolClass`, re-pin the project copy per **Pinning manifest version** above — the HR ERP pinned file retains full HR path triggers and `hr-product-mcp-governance` skill registration.
 
+## DevOps product lifecycle (global)
+
+Software-native **S&OP**, **IBP**, and **value delivery** for agents managing CI/CD and release planning — not manufacturing planning.
+
+| Layer | Global (`~/.cursor/`) | Project overlay (HR ERP example) |
+|-------|----------------------|----------------------------------|
+| Skill | `@devops-product-lifecycle` in `~/.cursor/skills/devops-product-lifecycle/` | `@hr-devops-lifecycle` in `.cursor/skills/hr-devops-lifecycle/` |
+| Rules | `core-devops-lifecycle.mdc`, `agent-devops-lifecycle.mdc` | Same agent rule copied for repo portability |
+| Lane | `release_ops` in manifest `agentFunctions` | Path trigger `devops_lifecycle` → required `release_ops` |
+| Templates | `references/sop-cycle.md` in skill folder | `specs/templates/sop-cycle.md`, `value-delivery-record.md` |
+| ADR | — | [0015](../alignment/decisions/0015-devops-product-lifecycle-framework.md) |
+
+**Adoption on a new repo:**
+
+1. Install global skill + rules (once per machine).
+2. Pin manifest v3+ with `devops_lifecycle` path trigger (or rely on base manifest after sync).
+3. Add overlay templates pointing at your ops docs and stakeholder plan.
+4. PR template: Lifecycle (S&OP / value) section (copy from HR ERP).
+
+Co-load community `@cicd-automation-workflow-automate` / `@devops-troubleshooter` per skill `co-load-map.md` — max three bodies per Task.
+
 ## Related artifacts
 
 - Global manifest: `~/.cursor/governance/governance-manifest.yaml` (v2)

@@ -30,14 +30,15 @@ Before new capabilities, read:
 |-------|------|
 | `@hr-product-gate` | PO gate, UAC, friction (T1+) |
 | `@hr-domain-boundaries` | Architecture, bounded contexts |
-| `@hr-data-custody` | DDL, migrations, packaging (T2+) |
+| `@hr-data-custody` | DDL, migrations (T2+) |
+| `@hr-devops-lifecycle` | CI/CD, Vercel, S&OP/IBP/value delivery (T2+); co-loads `@devops-product-lifecycle` |
 | `@hr-regulated-domain` | Pay/compliance/AI/MLOps (T3+) |
 | `@hr-product-mcp-governance` | In-app copilot MCP catalog/transport (T3) |
 | `@hr-quality-lab` | Tests, QA.md |
 | `@hr-swarm-governance` | ≥2 Tasks, post-mortems (T4) |
 | `@hr-orchestration-lanes` | Lane recipes, sentinel SLA (T1+) |
 
-Global: `@cursor-harness-scope`, `@protect-mcp-governance` (Cedar/receipts at MCP transport). See [antigravity-product-mcp-governance.md](docs/meta/antigravity-product-mcp-governance.md).
+Global: `@cursor-harness-scope`, `@protect-mcp-governance` (Cedar/receipts at MCP transport), `@devops-product-lifecycle` (S&OP, IBP, value delivery). See [devops-product-lifecycle-framework.md](docs/meta/devops-product-lifecycle-framework.md) and [antigravity-product-mcp-governance.md](docs/meta/antigravity-product-mcp-governance.md).
 
 Legacy 15-skill stack: `.cursor/skills/_archived/2026-05-28-revamp/`
 

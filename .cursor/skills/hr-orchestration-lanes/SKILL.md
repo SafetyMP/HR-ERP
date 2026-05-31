@@ -22,12 +22,13 @@ disable-model-invocation: true
 1. Run `npm run governance:lint` — note `Required lanes` and `Suggested lanes`.
 2. **Greenfield T1:** parallel `scout` + `architect` → `builder` → parallel `sentinel` + `verifier`.
 3. **DDL (T2+):** `architect` readonly → `custodian` (migrations only) → `builder` app code.
-4. **Security plane:** `sentinel` mandatory before merge (`middleware.ts`, `lib/security/**`).
-5. **Payroll/compliance (T3):** add readonly `counsel`; load `@hr-regulated-domain` (max 3 bodies with product-gate in v3).
-6. **AI governance paths:** add readonly `ai_governance_reviewer` (`docs/ai-governance/`, `lib/governance/`, threat model doc).
-7. **Product MCP (`lib/copilot/**`):** `ai_governance_reviewer` + `sentinel` after `builder` — do **not** route catalog-only work to `mlops_reviewer` alone; load `@hr-product-mcp-governance` (max 3 bodies with `@hr-product-gate` in v3).
-8. **MLOps inference only (`docs/ml/`, `services/ml-serving/`):** add `mlops_reviewer` readonly Task.
-9. **T4 ≥2 Tasks:** `finops_coordinator` + `@hr-swarm-governance` FinOps note.
+4. **Ops / CI / deploy (T2+):** `release_ops` after architect when `.github/workflows`, `vercel.json`, `docs/operations/**` change; load `@devops-product-lifecycle` + `@hr-devops-lifecycle`.
+5. **Security plane:** `sentinel` mandatory before merge (`middleware.ts`, `lib/security/**`).
+6. **Payroll/compliance (T3):** add readonly `counsel`; load `@hr-regulated-domain` (max 3 bodies with product-gate in v3).
+7. **AI governance paths:** add readonly `ai_governance_reviewer` (`docs/ai-governance/`, `lib/governance/`, threat model doc).
+8. **Product MCP (`lib/copilot/**`):** `ai_governance_reviewer` + `sentinel` after `builder` — do **not** route catalog-only work to `mlops_reviewer` alone; load `@hr-product-mcp-governance` (max 3 bodies with `@hr-product-gate` in v3).
+9. **MLOps inference only (`docs/ml/`, `services/ml-serving/`):** add `mlops_reviewer` readonly Task.
+10. **T4 ≥2 Tasks:** `finops_coordinator` + `@hr-swarm-governance` FinOps note.
 
 ## Resources
 

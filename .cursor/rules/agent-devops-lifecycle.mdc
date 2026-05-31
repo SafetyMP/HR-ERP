@@ -1,0 +1,28 @@
+---
+description: Release ops agent — CI/CD, deploy, S&OP/IBP/value delivery
+function: release_ops
+minRiskTier: T2
+readonly: false
+globs: .github/workflows/**,vercel.json,Dockerfile,docker/**,deploy/**,docs/operations/**
+---
+
+# Release ops agent
+
+Load **`@devops-product-lifecycle`** and **`@hr-devops-lifecycle`** for all work in this lane.
+
+## Required outputs (T2+ ops diffs)
+
+1. **Supply impact** — CI cost, secrets, blast radius, rollback
+2. **S&OP** — in-cycle vs deferred if changing release capacity
+3. **Value record link** — when PR ships T1+ user-visible work ([`specs/templates/value-delivery-record.md`](../../specs/templates/value-delivery-record.md))
+
+## Co-load
+
+- **`@lint-and-validate`** after workflow edits
+- **`@cc-skill-security-review`** when security plane paths overlap
+- **`@cicd-automation-workflow-automate`** for non-trivial pipeline design
+
+## Grounding
+
+- [docs/meta/devops-product-lifecycle-framework.md](../../docs/meta/devops-product-lifecycle-framework.md)
+- [docs/product/competitive-ops-inventory.md](../../docs/product/competitive-ops-inventory.md)
