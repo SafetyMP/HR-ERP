@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ApiError } from "@/lib/api/v1/errors";
+import { defineV1Route } from "@/lib/api/v1/define-v1-route";
 import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import {
   createPerformanceGoal,
@@ -8,6 +9,8 @@ import {
 } from "@/lib/performance/goals";
 import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
 import { getRoutePolicy } from "@/lib/security/route-policies";
+
+const GET_PATH = "/api/v1/me/performance/goals";
 
 const CreateSelfGoalSchema = z.object({
   cycleId: z.string().uuid(),
@@ -67,19 +70,11 @@ export async function POST(request: Request) {
   });
 }
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
-  return safeRouteAuth(request, async (auth) => {
-    const policy = getRoutePolicy("GET", url.pathname);
-    if (!policy) {
-      throw new ApiError(404, {
-        code: "not_found",
-        message: "route_policy_missing",
-      });
-    }
-    assertPermission(auth, policy.permission);
-    assertAbac(auth, policy.abac, "internal");
-
+export const GET = defineV1Route({
+  method: "GET",
+  pathname: GET_PATH,
+  classification: "internal",
+  handler: async ({ auth, request }) => {
     const employeeId = auth.subjectEmployeeId ?? auth.subjectId;
     if (!employeeId) {
       throw new ApiError(403, {
@@ -88,21 +83,18 @@ export async function GET(request: Request) {
       });
     }
 
-    const cycleId = url.searchParams.get("cycleId") ?? undefined;
+    const cycleId = new URL(request.url).searchParams.get("cycleId") ?? undefined;
     const rows = await listGoalsForEmployee(auth, employeeId, cycleId);
-    return jsonV1(
-      {
-        goals: rows.map((g) => ({
-          id: g.id,
-          cycleId: g.cycleId,
-          title: g.title,
-          status: g.status,
-          weightBp: g.weightBp,
-          percentCompleteBp: g.percentCompleteBp,
-          dueDate: g.dueDate ? g.dueDate.toISOString().slice(0, 10) : null,
-        })),
-      },
-      auth.correlationId,
-    );
-  });
-}
+    return {
+      goals: rows.map((g) => ({
+        id: g.id,
+        cycleId: g.cycleId,
+        title: g.title,
+        status: g.status,
+        weightBp: g.weightBp,
+        percentCompleteBp: g.percentCompleteBp,
+        dueDate: g.dueDate ? g.dueDate.toISOString().slice(0, 10) : null,
+      })),
+    };
+  },
+});

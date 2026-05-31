@@ -1,6 +1,6 @@
 import { ApiError } from "@/lib/api/v1/errors";
 import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
-import { prisma } from "@/lib/prisma";
+import { prismaRead } from "@/lib/prisma";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     }
 
     const payload = await withAuthorizedTransaction(
-      prisma,
+      prismaRead,
       auth,
       {
         permission: policy.permission,

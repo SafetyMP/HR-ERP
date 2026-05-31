@@ -1,6 +1,7 @@
 "use client";
 
 import type { TodayAttendanceApi } from "@/lib/attendance/today-attendance-types";
+import { meQueryKeys } from "@/lib/ess/me-query-keys";
 import { useAuthenticatedResource } from "@/lib/hooks/use-authenticated-resource";
 
 type TodayAttendanceResponse = {
@@ -9,7 +10,7 @@ type TodayAttendanceResponse = {
 
 export function useTodayAttendanceQuery() {
   return useAuthenticatedResource(
-    ["me", "attendance", "today"],
+    meQueryKeys.attendanceToday,
     "/api/v1/me/attendance/today",
     async (res) => {
       const body = (await res.json()) as TodayAttendanceResponse;

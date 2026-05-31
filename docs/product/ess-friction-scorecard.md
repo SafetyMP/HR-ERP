@@ -48,8 +48,8 @@ Per-feature env vars (`HR_ERP_PAYSTUB_E2E_JWT`, etc.) remain supported in indivi
 
 | Signal | Action |
 | --- | --- |
-| Paystub >10s | Prefer RSC prefetch + `useCurrentPaystubQuery`; audit paystub API p95 |
-| Benefits/PTO/Time > budget | Migrate client to `useAuthenticatedResource`; dedupe waterfall fetches |
+| Paystub >10s | Prefer RSC prefetch + `useCurrentPaystubQuery`; audit paystub API p95 (`ess_api_timing` logs when >300ms) |
+| Benefits/PTO/Time > budget | Migrate client to `useAuthenticatedResource`; dedupe waterfall fetches; RSC prefetch on employee pages |
 | Profile >90s | Reduce section count above fold or server-prefetch profile GET |
 
 **Related:** [codebase-completion-baseline.md](./codebase-completion-baseline.md) Track B buyer-ready OKRs in [stakeholder-value-plan.md](./stakeholder-value-plan.md).

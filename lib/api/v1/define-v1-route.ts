@@ -4,6 +4,7 @@ import type { z } from "zod";
 
 import { ApiError } from "@/lib/api/v1/errors";
 import { jsonV1, safeRouteAuth, type V1SuccessBody } from "@/lib/api/v1/http";
+import { logEssRouteTiming } from "@/lib/api/v1/route-timing";
 import { parseJsonBody } from "@/lib/api/v1/json-body";
 import type { AuthContext } from "@/lib/security/auth-context";
 import type { DataClassification } from "@/lib/security/abac-attributes";
@@ -54,7 +55,9 @@ export function defineV1Route<TData, TBody = undefined>(
         body = await parseJsonBody(request, config.bodySchema);
       }
 
+      const started = performance.now();
       const data = await config.handler({ auth, request, body });
+      logEssRouteTiming(config.pathname, performance.now() - started, auth.correlationId);
       return jsonV1(data, auth.correlationId);
     });
 }

@@ -79,6 +79,8 @@ jobs:
       - name: Mint e2e JWTs for feature UAC specs
         run: node scripts/ci-issue-e2e-jwts.mjs --github-env >> $GITHUB_ENV
       - run: npm run test:e2e
+      - name: ESS friction scorecard (Track B)
+        run: npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts
       - name: FAILURE_SUMMARY reminder
         if: failure()
         run: bash scripts/qa-print-failure-envelope.sh

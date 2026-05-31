@@ -47,6 +47,7 @@ async function sign(roles, subjectEmployeeId, subSuffix) {
 }
 
 const specs = [
+  ["HR_ERP_ESS_E2E_JWT", ["employee"], employeeId, "ess-friction"],
   ["HR_ERP_PAYSTUB_E2E_JWT", ["employee"], employeeId, "paystub"],
   ["HR_ERP_TIME_E2E_JWT", ["employee"], employeeId, "time"],
   ["HR_ERP_BENEFITS_E2E_JWT", ["employee"], employeeId, "benefits"],

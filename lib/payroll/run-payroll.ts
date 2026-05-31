@@ -35,7 +35,7 @@ import {
   applyUkStatutoryDeductions,
   grossPeriodMinorFromComputation,
 } from "@/lib/payroll/uk-statutory-deductions";
-import { prisma } from "@/lib/prisma";
+import { prismaBatch } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -120,7 +120,7 @@ export async function runPayroll(
   input: RunPayrollInput,
 ): Promise<RunPayrollSummary> {
   return withAuthorizedTransaction(
-    prisma,
+    prismaBatch,
     auth,
     {
       permission: "payroll:run_execute",

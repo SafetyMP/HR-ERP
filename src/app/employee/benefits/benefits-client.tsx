@@ -18,9 +18,9 @@ import type {
   BenefitEnrollmentApiItem,
   BenefitsSummaryApiShape,
 } from "@/lib/benefits/benefits-summary-types";
+import { useBenefitsLifeEventsQuery } from "@/lib/benefits/use-benefits-life-events-query";
 import { useBenefitsSummaryQuery } from "@/lib/benefits/use-benefits-summary-query";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
-import { useHrQuery } from "@/lib/hooks/use-hr-query";
 
 export type { BenefitEnrollmentApiItem, BenefitsSummaryApiShape } from "@/lib/benefits/benefits-summary-types";
 
@@ -48,14 +48,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     isFetching,
   } = useBenefitsSummaryQuery();
 
-  const { data: lifeEvents } = useHrQuery(
-    ["me", "benefits", "life-events"],
-    "/api/v1/me/benefits/life-events",
-    async (res) => {
-      const body = (await res.json()) as { data?: { events?: { status: string }[] } };
-      return body.data?.events ?? [];
-    },
-  );
+  const { data: lifeEvents } = useBenefitsLifeEventsQuery();
 
   const pendingLifeEvent = useMemo(
     () =>

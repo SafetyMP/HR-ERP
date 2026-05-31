@@ -1,6 +1,7 @@
 "use client";
 
-import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
@@ -13,32 +14,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { meQueryKeys } from "@/lib/ess/me-query-keys";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import type { EmployeeSelfProfilePayload } from "@/lib/profile/employee-self-profile-mapper";
+import { useProfileQuery } from "@/lib/profile/use-profile-query";
 
 type FieldPolicyMap = Record<string, "hr_maintained" | "self_editable">;
 
-export type EmployeeSelfProfileApi = {
-  legalGivenName: string | null;
-  legalFamilyName: string | null;
-  preferredName: string | null;
-  workEmail: string;
-  personalEmail: string | null;
-  phone: string | null;
-  mailingAddress: {
-    line1: string | null;
-    line2: string | null;
-    city: string | null;
-    region: string | null;
-    postalCode: string | null;
-    country: string | null;
-  };
-  emergencyContact: {
-    name: string | null;
-    phone: string | null;
-    relationship: string | null;
-  };
-};
+export type EmployeeSelfProfileApi = EmployeeSelfProfilePayload;
 
 type EditableDraft = {
   preferredName: string;
@@ -115,47 +99,6 @@ type Props = {
   initialBearerToken?: string;
 };
 
-async function fetchProfile(bearerToken: string | null): Promise<{
-  profile: EmployeeSelfProfileApi | null;
-  ok: boolean;
-  retryable: boolean;
-  apiMessage?: string;
-}> {
-  const res = await hrApiFetch("/api/v1/me/profile", {
-    bearerToken,
-    headers: { Accept: "application/json" },
-  });
-
-  let body: {
-    data?: { profile: EmployeeSelfProfileApi; fieldPolicy: FieldPolicyMap };
-    error?: { code?: string; message?: string };
-  } = {};
-
-  try {
-    body = (await res.json()) as typeof body;
-  } catch {
-    body = {};
-  }
-
-  const apiMessage =
-    typeof body.error?.message === "string" ? body.error.message : undefined;
-
-  if (!res.ok) {
-    return {
-      profile: null,
-      ok: false,
-      retryable: res.status >= 500,
-      apiMessage,
-    };
-  }
-
-  return {
-    profile: body.data?.profile ?? null,
-    ok: true,
-    retryable: false,
-  };
-}
-
 async function saveProfile(
   bearerToken: string | null,
   draft: EditableDraft,
@@ -219,99 +162,37 @@ function HrNote() {
 }
 
 export function EmployeeProfileClient({ initialBearerToken }: Props) {
+  const queryClient = useQueryClient();
   const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
     useHrAccess(initialBearerToken);
-  const [profile, setProfile] = useState<EmployeeSelfProfileApi | null | undefined>(undefined);
+  const {
+    data: envelope,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useProfileQuery();
+  const profile = envelope?.profile;
   const [draft, setDraft] = useState<EditableDraft>(emptyDraft());
-  const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
-  const [authHint, setAuthHint] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<"recoverable" | null>(null);
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  const applyLoadedProfile = useCallback((p: EmployeeSelfProfileApi) => {
-    setProfile(p);
-    setDraft(draftFromProfile(p));
-  }, []);
-
   useEffect(() => {
-    if (!isAuthenticated) return;
-
-    let cancelled = false;
-
-    startTransition(() => {
-      setLoadError(null);
-      setAuthHint(null);
-      setProfile(undefined);
-      setDraft(emptyDraft());
-      setConfirmationMessage(null);
-    });
-
-    void (async () => {
-      const result = await fetchProfile(bearerToken);
-      if (cancelled) return;
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setAuthHint(result.apiMessage ?? null);
-        setProfile(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setProfile(null);
-        return;
-      }
-      if (!result.profile) {
-        setLoadError("recoverable");
-        setProfile(null);
-        return;
-      }
-      applyLoadedProfile(result.profile);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, bearerToken, applyLoadedProfile]);
-
-  const retryLoad = useCallback(() => {
-    if (!isAuthenticated) return;
-    startTransition(() => {
-      setLoadError(null);
-      setAuthHint(null);
-      setProfile(undefined);
-    });
-    void (async () => {
-      const result = await fetchProfile(bearerToken);
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setAuthHint(result.apiMessage ?? null);
-        setProfile(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setProfile(null);
-        return;
-      }
-      if (!result.profile) {
-        setLoadError("recoverable");
-        setProfile(null);
-        return;
-      }
-      applyLoadedProfile(result.profile);
-    })();
-  }, [isAuthenticated, bearerToken, applyLoadedProfile]);
+    if (!profile) return;
+    setDraft(draftFromProfile(profile));
+  }, [profile]);
 
   const onSave = useCallback(async () => {
-    if (!isAuthenticated || profile === undefined || profile === null) return;
+    if (!isAuthenticated || !profile) return;
     setSaving(true);
     setSaveError(null);
     setConfirmationMessage(null);
     const result = await saveProfile(bearerToken, draft);
     setSaving(false);
     if (!result.ok && !result.retryable) {
-      setLoadError("auth");
+      void signOut();
       return;
     }
     if (!result.ok) {
@@ -319,10 +200,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       return;
     }
     if (result.profile) {
-      applyLoadedProfile(result.profile);
+      await queryClient.invalidateQueries({ queryKey: meQueryKeys.profile });
     }
     setConfirmationMessage(result.confirmationMessage ?? "Your profile updates were saved.");
-  }, [isAuthenticated, bearerToken, profile, draft, applyLoadedProfile]);
+  }, [isAuthenticated, bearerToken, profile, draft, queryClient, signOut]);
 
   const emergencyUnset = useMemo(() => {
     if (!profile) return true;
@@ -353,23 +234,26 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (loadError === "recoverable") {
-    return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
-        <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your profile</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please try again in a moment. If this keeps happening, contact HR Operations.
-          </p>
+  if (isError) {
+    const recoverable =
+      error instanceof Error &&
+      !error.message.includes("401") &&
+      !error.message.toLowerCase().includes("unauthorized");
+    if (recoverable) {
+      return (
+        <div className="mx-auto w-full max-w-lg space-y-4">
+          <div role="alert">
+            <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your profile</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Please try again in a moment. If this keeps happening, contact HR Operations.
+            </p>
+          </div>
+          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+            Retry
+          </Button>
         </div>
-        <Button type="button" onClick={() => retryLoad()}>
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (loadError === "auth") {
+      );
+    }
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
@@ -377,11 +261,6 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
           <p className="mt-2 text-sm text-muted-foreground">
             Your session could not be verified. Sign in again and return to your profile.
           </p>
-          {authHint ? (
-            <p className="mt-3 rounded-md border border-zinc-200 bg-zinc-50 p-2 font-mono text-xs text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-              {authHint}
-            </p>
-          ) : null}
         </div>
         <Button type="button" variant="outline" onClick={() => signOut()}>
           Sign out and start over
@@ -390,7 +269,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (profile === undefined) {
+  if (isLoading || profile === undefined) {
     return (
       <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your profile…
@@ -398,7 +277,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (profile === null) {
+  if (!profile) {
     return null;
   }
 

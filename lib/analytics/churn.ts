@@ -1,6 +1,6 @@
 import type { Prisma } from "@/app/generated/prisma/client";
 
-import { prisma } from "@/lib/prisma";
+import { prismaRead } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import type { AuthorizedTxOptions } from "@/lib/security/with-authorized-transaction";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -24,7 +24,7 @@ export async function listChurnScoresForTenant(
   txOpts: Pick<AuthorizedTxOptions, "permission" | "abac">,
 ): Promise<ChurnScoreRow[]> {
   return withAuthorizedTransaction(
-    prisma,
+    prismaRead,
     auth,
     {
       permission: txOpts.permission,

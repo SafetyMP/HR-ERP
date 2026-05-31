@@ -45,6 +45,7 @@ jobs:
           GITHUB_EVENT_PATH: ${{ github.event_path }}
       - run: npm run contracts:drift
       - run: npm run check:route-policies
+      - run: npm run check:lib-boundaries
       - run: npx prisma validate
       - run: npx prisma generate
       - run: npm run build
