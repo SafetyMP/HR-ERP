@@ -34,6 +34,27 @@ Document expected **writes per second per aggregate** (e.g. employee patches, pu
 3. Outbox relay keeps **publish lag** (max `now() - created_at` for unpublished) under agreed threshold.
 4. Kafka consumer **lag** bounded per partition key class (employee / tenant).
 
+## Phase C2 — ESS read paths (2k+ employees per tenant)
+
+Mid-market target per [ADR 0009](../../specs/alignment/decisions/0009-mid-market-segment-strategy.md). Run after reference customer exit documented.
+
+| Surface | Target | Probe |
+| --- | --- | --- |
+| `/api/v1/me/paystub/current` | p95 ≤ 300 ms | `npm run load-test:ess` |
+| `/api/v1/me/benefits/summary` | p95 ≤ 300 ms | same |
+| `/api/v1/me/pto/summary` | p95 ≤ 300 ms | same |
+| `/api/v1/me/attendance/today` | p95 ≤ 300 ms | same |
+| `/api/v1/me/profile` | p95 ≤ 300 ms | same |
+| ESS navigation (Playwright) | Paystub ≤ 10 s; others per [ess-friction-scorecard.md](../product/ess-friction-scorecard.md) | `ess-friction-budgets.spec.ts` |
+
+**Default probe:** 20 concurrent workers, 20 s duration, error rate < 0.1%:
+
+```bash
+BASE_URL=http://localhost:3000 BEARER_TOKEN=<jwt> npm run load-test:ess
+```
+
+Tune `CONCURRENCY` and `DURATION_SEC` for tenant size; record results in module proposal or release notes.
+
 ## References
 
 - ADR [`0002-postgres-kafka-context-boundaries.md`](../../specs/alignment/decisions/0002-postgres-kafka-context-boundaries.md)

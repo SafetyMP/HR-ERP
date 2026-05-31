@@ -25,6 +25,7 @@ type Summary = {
   openPayrollExceptions: number;
   periodsAwaitingLock: number;
   openLifeEvents: number;
+  pendingElectionIntents: number;
 };
 
 type Props = { initialBearerToken?: string };
@@ -101,7 +102,8 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
   const needsAction =
     summary.openPayrollExceptions > 0 ||
     summary.periodsAwaitingLock > 0 ||
-    summary.openLifeEvents > 0;
+    summary.openLifeEvents > 0 ||
+    summary.pendingElectionIntents > 0;
 
   const payrollFirst = summary.openPayrollExceptions > 0;
 
@@ -137,6 +139,14 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
                   <Link href="/hr/benefits/life-events" className="font-medium underline">
                     {summary.openLifeEvents} pending life event
                     {summary.openLifeEvents === 1 ? "" : "s"}
+                  </Link>
+                </li>
+              ) : null}
+              {summary.pendingElectionIntents > 0 ? (
+                <li>
+                  <Link href="/hr/benefits/election-change-requests" className="font-medium underline">
+                    {summary.pendingElectionIntents} election change intent
+                    {summary.pendingElectionIntents === 1 ? "" : "s"}
                   </Link>
                 </li>
               ) : null}
@@ -256,11 +266,21 @@ function BenefitsCard({ summary }: { summary: Summary }) {
         <CardTitle>Benefits</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        <p className="text-3xl font-semibold tabular-nums">{summary.openLifeEvents}</p>
-        <p className="text-sm text-muted-foreground">Pending life events</p>
-        <Button type="button" size="sm" asChild>
-          <Link href="/hr/benefits/life-events">Open life event queue</Link>
-        </Button>
+        <p className="text-sm">
+          Pending life events:{" "}
+          <span className="text-2xl font-semibold tabular-nums">{summary.openLifeEvents}</span>
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Election change intents: {summary.pendingElectionIntents}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Button type="button" size="sm" asChild>
+            <Link href="/hr/benefits/life-events">Life event queue</Link>
+          </Button>
+          <Button type="button" size="sm" variant="outline" asChild>
+            <Link href="/hr/benefits/election-change-requests">Election intents</Link>
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

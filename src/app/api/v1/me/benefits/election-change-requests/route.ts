@@ -1,8 +1,5 @@
-import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
+import { defineV1Route } from "@/lib/api/v1/define-v1-route";
 import { createBenefitElectionChangeRequest } from "@/lib/benefits/create-benefit-election-change-request";
-import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
-import { getRoutePolicy } from "@/lib/security/route-policies";
 import { z } from "zod";
 
 const bodySchema = z.object({
@@ -10,39 +7,13 @@ const bodySchema = z.object({
   summary: z.string().min(8).max(2000),
 });
 
-export async function POST(request: Request) {
-  const pathname = new URL(request.url).pathname;
-
-  return safeRouteAuth(request, async (auth) => {
-    const policy = getRoutePolicy("POST", pathname);
-    if (!policy) {
-      throw new ApiError(404, {
-        code: "not_found",
-        message: "route_policy_missing",
-      });
-    }
-    assertPermission(auth, policy.permission);
-    assertAbac(auth, policy.abac, "confidential");
-
-    let raw: unknown;
-    try {
-      raw = await request.json();
-    } catch {
-      throw new ApiError(400, {
-        code: "validation_error",
-        message: "benefit_intent_invalid_body",
-      });
-    }
-
-    const parsed = bodySchema.safeParse(raw);
-    if (!parsed.success) {
-      throw new ApiError(400, {
-        code: "validation_error",
-        message: "benefit_intent_invalid_body",
-      });
-    }
-
-    const row = await createBenefitElectionChangeRequest(auth, parsed.data);
-    return jsonV1({ benefitElectionChangeRequest: row }, auth.correlationId);
-  });
-}
+export const POST = defineV1Route({
+  method: "POST",
+  pathname: "/api/v1/me/benefits/election-change-requests",
+  classification: "confidential",
+  bodySchema,
+  handler: async ({ auth, body }) => {
+    const row = await createBenefitElectionChangeRequest(auth, body);
+    return { benefitElectionChangeRequest: row };
+  },
+});

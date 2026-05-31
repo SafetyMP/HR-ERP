@@ -17,7 +17,7 @@ Routes and surfaces that support demos, QA, or architecture previews but are **n
 
 ## Track D — API scaffold (no Feature brief) — **quarantined in production**
 
-**PO decision (2026-05-30):** Quarantine until brief **029** funds one surface or code is removed. Production returns **404** `track_d_api_not_shipped` unless `TRACK_D_API_ENABLED=1` (Human authorization).
+**PO decision (2026-05-30):** Quarantine until brief **029** funds one surface or code is removed. Production returns **404** `track_d_api_not_shipped` unless `TRACK_D_API_ENABLED=1` (Human authorization). **Decision record:** [track-d-po-decision.md](./track-d-po-decision.md) — remain quarantined; Brief 029 not funded.
 
 Implementation: [`lib/api/v1/track-d-guard.ts`](../../lib/api/v1/track-d-guard.ts) at route entry.
 
@@ -37,10 +37,10 @@ Implementation: [`lib/api/v1/track-d-guard.ts`](../../lib/api/v1/track-d-guard.t
 
 | Brief | Theme | Status |
 | --- | --- | --- |
-| [026](./feature-briefs/026-benefits-election-change-intent.md) | In-app election change intent | **Approved** — UI + API wired |
-| 027 (planned) | COBRA notice PDF | Counsel-gated — [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) |
-| 028 (planned) | Production payroll counsel + partner filing UX | W3 |
-| 029 (optional) | Promote **one** Track D surface with UAC or delete scaffold | PO choice |
+| [026](./feature-briefs/026-benefits-election-change-intent.md) | In-app election change intent | **Shipped** — [audit](./completion-audits/features-026.md) |
+| 027 (planned) | COBRA notice PDF | Counsel-gated — [027 brief](./feature-briefs/027-cobra-notice-pdf.md) |
+| 028 (planned) | Production payroll counsel + partner filing UX | W3 — [028 brief](./feature-briefs/028-partner-filing-ux-counsel-package.md) |
+| 029 (optional) | Promote **one** Track D surface with UAC or delete scaffold | **Deferred** — [track-d-po-decision.md](./track-d-po-decision.md) |
 
 ## Archived future-platform docs
 

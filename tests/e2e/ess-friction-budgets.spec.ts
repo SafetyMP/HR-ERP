@@ -15,7 +15,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("paystub: home → earnings statement ≤10s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /earnings statement/i }).click();
+    await page.getByRole("link", { name: /^Paystub$/ }).click();
     await expect(page.getByRole("heading", { name: /current earnings statement/i })).toBeVisible({
       timeout: 15_000,
     });
@@ -30,7 +30,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
       timeout: 30_000,
     });
     await expect(
-      page.getByText(/You’re clocked in|You’re not clocked in|No punches yet today/),
+      page.getByText(/You’re clocked in|You’re not clocked in|No punches yet today/).first(),
     ).toBeVisible({ timeout: 30_000 });
     expect(elapsedMs(start)).toBeLessThan(60_000);
   });
@@ -49,7 +49,8 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("profile: home → primary sections ≤90s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^My profile$/ }).click();
+    await page.getByRole("link", { name: /^Paystub$/ }).click();
+    await page.getByRole("link", { name: /^Profile$/ }).click();
     await expect(page.getByRole("heading", { name: /^My profile$/ })).toBeVisible({
       timeout: 30_000,
     });

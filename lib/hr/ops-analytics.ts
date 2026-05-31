@@ -10,6 +10,7 @@ export type HrOpsSummary = {
   openPayrollExceptions: number;
   periodsAwaitingLock: number;
   openLifeEvents: number;
+  pendingElectionIntents: number;
 };
 
 export async function getHrOpsSummary(auth: AuthContext): Promise<HrOpsSummary> {
@@ -79,6 +80,13 @@ export async function getHrOpsSummary(auth: AuthContext): Promise<HrOpsSummary> 
         },
       });
 
+      const pendingElectionIntents = await tx.benefitElectionChangeRequest.count({
+        where: {
+          tenantId,
+          status: "SUBMITTED",
+        },
+      });
+
       return {
         headcountActive,
         headcountByDepartment: byDept.map((d) => ({
@@ -90,6 +98,7 @@ export async function getHrOpsSummary(auth: AuthContext): Promise<HrOpsSummary> 
         openPayrollExceptions,
         periodsAwaitingLock,
         openLifeEvents,
+        pendingElectionIntents,
       };
     },
   );

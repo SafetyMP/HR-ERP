@@ -1,7 +1,7 @@
 # Feature brief: Employee benefits election change intent
 
 **ID:** 026-benefits-election-change-intent  
-**Status:** PO approved  
+**Status:** PO approved — **Shipped** (audit [features-026](./completion-audits/features-026.md))  
 **Last updated:** 2026-05-30  
 
 ## PO gate (required before Engineering)

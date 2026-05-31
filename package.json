@@ -69,6 +69,7 @@
     "ops:smoke": "node scripts/ops-staging-smoke.mjs",
     "ops:verify": "npm run ops:smoke && npm run db:verify",
     "verify:reference-exit": "node scripts/reference-customer-exit-verify.mjs",
+    "load-test:ess": "node scripts/load-test-ess-reads.mjs",
     "webhooks:encrypt-secrets": "tsx scripts/backfill-webhook-secret-encryption.ts",
     "integrations:replay-dlq": "tsx scripts/dlq-replay.ts",
     "outbox:kafka": "tsx workers/outbox-publisher/index.ts",

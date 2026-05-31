@@ -206,6 +206,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "case:hr_triage",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
+  [routeKey("GET", "/api/v1/hr/benefits/election-change-requests")]: {
+    permission: "case:hr_triage",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
   [routeKey("GET", "/api/v1/recruiting/applications/:id/interviews")]: {
     permission: "recruiting:application_read",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },

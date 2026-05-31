@@ -1,34 +1,46 @@
 # Reference customer exit — validation audit
 
-**Date:** 2026-05-28  
+**Date:** 2026-05-30 (updated)  
 **Runbook:** [reference-customer-exit-runbook.md](../reference-customer-exit-runbook.md)  
+**Pilot checklist:** [reference-customer-exit-pilot-checklist.md](../reference-customer-exit-pilot-checklist.md)  
 **Verifier:** `npm run verify:reference-exit`
 
 ## Result
 
 | # | Exit criterion | Verified | Evidence |
 | --- | --- | --- | --- |
-| 1 | Employee ESS portal (pay, time, PTO, profile, benefits, learning) | **Yes** | `/employee/*` routes + `/api/v1/me/*` APIs |
+| 1 | Employee ESS portal (pay, time, PTO, profile, benefits, learning) | **Yes** | `/employee/*` routes + RSC prefetch + `/api/v1/me/*` |
 | 2 | Manager workforce without third ATS | **Yes** | `/manager/recruiting`, briefs 014–020 |
 | 3 | HR pay periods in-app | **Yes** | `/hr/payroll-runs`, `POST /api/v1/payroll/runs` |
 | 4 | Period lock + exception queue | **Yes** | Brief 018 APIs + UI |
 | 5 | Filing handoff to partner | **Yes** | Filing artifact + `POST .../partner-export` (brief 024) |
-| 6 | Benefits life events | **Yes** | Brief 019 routes |
-| 7 | COBRA workflow start | **Yes** | `PENDING_NOTICE` on loss-of-coverage; notice PDF counsel-gated |
+| 6 | Benefits life events + election intent | **Yes** | Briefs 019 + **026** ([audit](./features-026.md)) |
+| 7 | COBRA workflow start | **Yes** | `PENDING_NOTICE` on loss-of-coverage; notice PDF counsel-gated (027) |
 | 8 | Webhooks + workers | **Yes** | ADR 0008 + worker scripts |
 | 9 | OIDC production auth | **Documented** | [phase1-production-checklist.md](../../operations/phase1-production-checklist.md) |
-| 10 | Customer sign-off template | **Yes** | Runbook § Customer sign-off |
+| 10 | Customer sign-off template | **Yes** | Runbook + appendix template + pilot checklist |
+| 11 | ESS friction scorecard (optional) | **Yes** | [ess-friction-scorecard.md](../ess-friction-scorecard.md) + CI gate |
 
 ## Automated check
 
 ```bash
 npm run verify:reference-exit
+HR_ERP_ESS_E2E_JWT=<token> npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts
 ```
 
-Static file/route presence — does not substitute for E2E or production smoke.
+Static file/route presence — does not substitute for pilot walkthrough or production smoke.
 
 ## Remaining counsel gates
 
-- Partner transmission: [filing-partner-transmission-gate.md](../../compliance/filing-partner-transmission-gate.md)
-- COBRA notice PDF: [cobra-aca-counsel-gate.md](../../compliance/cobra-aca-counsel-gate.md)
+- Partner transmission: [filing-partner-transmission-gate.md](../../compliance/filing-partner-transmission-gate.md) — Brief **028**
+- COBRA notice PDF: [cobra-aca-counsel-gate.md](../../compliance/cobra-aca-counsel-gate.md) — Brief **027**
 - UK RTI path: [uk-rti-transmission-path.md](../../compliance/uk-rti-transmission-path.md)
+- W3 counsel signoff: [us-federal-withholding-placeholder.md](../../compliance/us-federal-withholding-placeholder.md)
+
+## Track B status
+
+| OKR | Status |
+| --- | --- |
+| Platform artifacts verified | **Met** — `verify:reference-exit` (35 checks) |
+| Signed customer appendix | **Pending** — requires pilot customer walkthrough |
+| ESS friction green in CI | **Met** — when JWT provided in reusable-qa |

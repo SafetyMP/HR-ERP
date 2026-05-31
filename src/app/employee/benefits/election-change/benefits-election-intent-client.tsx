@@ -46,7 +46,13 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
         setMsg("Could not submit intent — check spelling length (min 8 chars).");
         return;
       }
-      setMsg("Recorded — Benefits administration still validates eligibility & payroll cutoff dates.");
+      const body = (await res.json()) as {
+        data?: { benefitElectionChangeRequest?: { id: string; createdAt: string } };
+      };
+      const row = body.data?.benefitElectionChangeRequest;
+      const ref = row?.id ? `Request ${row.id.slice(0, 8)}…` : "Request recorded";
+      const when = row?.createdAt ? ` at ${new Date(row.createdAt).toLocaleString()}` : "";
+      setMsg(`${ref}${when} — Benefits administration validates eligibility and payroll cutoff dates.`);
       setSummary("");
     } finally {
       setBusy(false);

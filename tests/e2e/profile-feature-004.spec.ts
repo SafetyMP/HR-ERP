@@ -16,7 +16,8 @@ test.describe("Feature 004 employee profile self-service", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^My profile$/ }).click();
+    await page.getByRole("link", { name: /^Paystub$/ }).click();
+    await page.getByRole("link", { name: /^Profile$/ }).click();
     await expect(page.getByRole("heading", { name: /^My profile$/ })).toBeVisible({
       timeout: 30_000,
     });

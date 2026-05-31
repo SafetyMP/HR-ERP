@@ -35,6 +35,7 @@ export const HR_NAV: NavItem[] = [
   { href: "/hr/dashboard", label: "Dashboard" },
   { href: "/hr/payroll-runs", label: "Pay runs", matchPrefix: "/hr/payroll-runs" },
   { href: "/hr/benefits/life-events", label: "Life events" },
+  { href: "/hr/benefits/election-change-requests", label: "Election intents" },
   { href: "/hr/review-queue", label: "Review queue" },
   { href: "/hr/onboarding-templates", label: "Onboarding templates" },
 ];
