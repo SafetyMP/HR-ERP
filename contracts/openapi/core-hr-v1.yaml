@@ -94,6 +94,53 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /attendance/clock-out:
+    post:
+      operationId: clockOutSelf
+      summary: Self-service clock-out (server clock); idempotent on `(tenant, idempotencyKey)`.
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Correlation-Id
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [idempotencyKey]
+              properties:
+                idempotencyKey:
+                  type: string
+                  format: uuid
+      responses:
+        "200":
+          description: Accepted or idempotent replay
+          headers:
+            X-Correlation-Id:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClockOutEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Conflict — not clocked in or bad idempotency replay
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /me/attendance/today:
     get:
       operationId: getTodayAttendanceSelf
@@ -2338,6 +2385,36 @@ components:
                   format: date-time
                 idempotentReplay:
                   type: boolean
+    ClockOutEnvelope:
+      type: object
+      required: [apiVersion, data]
+      properties:
+        apiVersion:
+          type: string
+          enum: [v1]
+        data:
+          type: object
+          required: [punch]
+          properties:
+            punch:
+              type: object
+              required:
+                [id, employeeId, kind, occurredAt, idempotentReplay]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                employeeId:
+                  type: string
+                  format: uuid
+                kind:
+                  type: string
+                  enum: [CLOCK_OUT]
+                occurredAt:
+                  type: string
+                  format: date-time
+                idempotentReplay:
+                  type: boolean
     TodayAttendanceEnvelope:
       type: object
       required: [apiVersion, data]
@@ -2359,6 +2436,11 @@ components:
                 timeZone:
                   type: string
                 clockedIn:
+                  type: boolean
+                openShiftStartedAt:
+                  type: ["string", "null"]
+                  format: date-time
+                openShiftFromPriorDay:
                   type: boolean
                 punches:
                   type: array

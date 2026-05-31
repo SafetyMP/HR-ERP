@@ -1,6 +1,7 @@
 import type { AttendanceCorrectionStatus, PunchKind } from "@/app/generated/prisma/client";
 
 import { ApiError } from "@/lib/api/v1/errors";
+import { applyApprovedCorrectionPunch } from "@/lib/attendance/apply-approved-correction-punch";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -17,6 +18,7 @@ export type AttendanceCorrectionPayload = {
   decidedAt: string | null;
   decisionNote: string | null;
   createdAt: string;
+  appliedPunchId?: string | null;
 };
 
 function displayName(e: {
@@ -241,6 +243,18 @@ export async function reviewAttendanceCorrection(
         ? input.note.trim().slice(0, 1000)
         : null;
 
+      let appliedPunchId: string | null = null;
+
+      if (input.decision === "APPROVED") {
+        const applied = await applyApprovedCorrectionPunch(tx, auth.tenantId, {
+          id: row.id,
+          employeeId: row.employeeId,
+          punchKind: row.punchKind,
+          requestedOccurredAt: row.requestedOccurredAt,
+        });
+        appliedPunchId = applied.punchId;
+      }
+
       const updated = await tx.attendanceCorrectionRequest.update({
         where: { id: row.id },
         data: {
@@ -272,6 +286,7 @@ export async function reviewAttendanceCorrection(
         decidedAt: updated.decidedAt ? updated.decidedAt.toISOString() : null,
         decisionNote: updated.decisionNote,
         createdAt: updated.createdAt.toISOString(),
+        appliedPunchId,
       };
     },
   );

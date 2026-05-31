@@ -8,6 +8,8 @@ describe("route policy registry (integration smoke)", () => {
       ["GET", "/api/v1/me/paystub/current"],
       ["GET", "/api/v1/me/profile"],
       ["GET", "/api/v1/me/pto/summary"],
+      ["POST", "/api/v1/attendance/clock-in"],
+      ["POST", "/api/v1/attendance/clock-out"],
       ["POST", "/api/v1/me/time-off/requests"],
       ["GET", "/api/v1/payroll/runs"],
     ];

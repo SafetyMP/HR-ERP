@@ -81,12 +81,52 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
 
       const raw = body.error?.message;
       if (raw === "already_clocked_in") {
-        setClockMessage("You’re already clocked in for your current shift.");
+        setClockMessage("You’re already on the clock. Clock out to end your current shift.");
+        void refetch();
       } else {
         setClockMessage("We couldn’t record your clock-in. Please try again.");
       }
     } catch {
       setClockMessage("We couldn’t record your clock-in. Please try again.");
+    } finally {
+      setClockBusy(false);
+    }
+  }, [isAuthenticated, bearerToken, refetch]);
+
+  const clockOut = useCallback(async () => {
+    if (!isAuthenticated) return;
+    setClockBusy(true);
+    setClockMessage(null);
+    try {
+      const res = await hrApiFetch("/api/v1/attendance/clock-out", {
+        bearerToken,
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idempotencyKey: crypto.randomUUID() }),
+      });
+
+      const body = (await res.json()) as {
+        error?: { message?: string };
+      };
+
+      if (res.ok) {
+        setClockMessage("Your clock-out was recorded.");
+        void refetch();
+        return;
+      }
+
+      const raw = body.error?.message;
+      if (raw === "not_clocked_in") {
+        setClockMessage("You’re not on the clock right now.");
+        void refetch();
+      } else {
+        setClockMessage("We couldn’t record your clock-out. Please try again.");
+      }
+    } catch {
+      setClockMessage("We couldn’t record your clock-out. Please try again.");
     } finally {
       setClockBusy(false);
     }
@@ -157,8 +197,24 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
       ? `Times use your organization calendar (${summary.timeZone}).`
       : "Times use the UTC calendar until a work location time zone is on file.";
 
+  const openShiftStartedLabel =
+    summary.openShiftStartedAt && summary.timeZone
+      ? formatPunchClock(summary.openShiftStartedAt, summary.timeZone)
+      : null;
+
   return (
     <div className="space-y-6">
+      {summary.openShiftFromPriorDay && summary.clockedIn ? (
+        <div
+          className="rounded-lg border border-amber-500/30 bg-amber-50/50 px-4 py-3 text-sm text-foreground dark:bg-amber-950/20"
+          role="status"
+        >
+          You’re still on the clock from a prior work day
+          {openShiftStartedLabel ? ` (since ${openShiftStartedLabel})` : ""}. Clock out to close
+          that shift before starting today.
+        </div>
+      ) : null}
+
       <div
         className={`rounded-xl border p-6 shadow-sm ${
           summary.clockedIn
@@ -178,20 +234,34 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
             </div>
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
               {summary.clockedIn
-                ? "Your latest punch today is a clock-in. Clock out when your shift ends."
+                ? summary.openShiftFromPriorDay
+                  ? "Close your open shift with clock-out, then clock in again when today’s work starts."
+                  : "Your latest punch today is a clock-in. Clock out when your shift ends."
                 : "Start your shift with clock-in when you're ready."}{" "}
               {tzNote}
             </p>
           </div>
-          <Button
-            type="button"
-            size="lg"
-            disabled={clockBusy || summary.clockedIn}
-            onClick={() => void clockIn()}
-            className="shrink-0"
-          >
-            {clockBusy ? "Recording…" : "Clock in"}
-          </Button>
+          <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+            <Button
+              type="button"
+              size="lg"
+              disabled={clockBusy || summary.clockedIn}
+              onClick={() => void clockIn()}
+              className="w-full sm:w-auto"
+            >
+              {clockBusy && !summary.clockedIn ? "Recording…" : "Clock in"}
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              variant="outline"
+              disabled={clockBusy || !summary.clockedIn}
+              onClick={() => void clockOut()}
+              className="w-full sm:w-auto"
+            >
+              {clockBusy && summary.clockedIn ? "Recording…" : "Clock out"}
+            </Button>
+          </div>
         </div>
         {clockMessage ? (
           <p className="mt-4 text-sm font-medium text-foreground">{clockMessage}</p>

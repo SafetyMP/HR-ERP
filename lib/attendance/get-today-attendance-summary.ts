@@ -2,14 +2,20 @@ import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { ApiError } from "@/lib/api/v1/errors";
 import { inferAttendanceTimeZone } from "@/lib/attendance/infer-attendance-timezone";
+import {
+  deriveOpenShiftState,
+  findLatestAttendancePunch,
+} from "@/lib/attendance/open-shift";
+import { type PunchDto } from "@/lib/attendance/punch-summary";
 import { zonedCalendarDayUtcBounds } from "@/lib/attendance/zoned-calendar-day";
-import { deriveClockedIn, type PunchDto } from "@/lib/attendance/punch-summary";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
 export type TodayAttendancePayload = {
   calendarDate: string;
   timeZone: string;
   clockedIn: boolean;
+  openShiftStartedAt: string | null;
+  openShiftFromPriorDay: boolean;
   punches: PunchDto[];
 };
 
@@ -78,10 +84,15 @@ export async function getTodayAttendanceSummary(
         occurredAt: r.occurredAt.toISOString(),
       }));
 
+      const latest = await findLatestAttendancePunch(tx, auth.tenantId, employeeId);
+      const openShift = deriveOpenShiftState(latest, calendarDate, timeZone);
+
       return {
         calendarDate,
         timeZone,
-        clockedIn: deriveClockedIn(punches),
+        clockedIn: openShift.clockedIn,
+        openShiftStartedAt: openShift.openShiftStartedAt,
+        openShiftFromPriorDay: openShift.openShiftFromPriorDay,
         punches,
       };
     },

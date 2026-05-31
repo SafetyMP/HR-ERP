@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
-
-
+import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
+import { toast } from "sonner";
 type CaseRow = {
   id: string;
   employeeDisplayName: string;
@@ -42,6 +42,7 @@ export function HrReviewQueueClient({ initialBearerToken }: Props) {
   const [cases, setCases] = useState<CaseRow[] | undefined>(undefined);
   const [corrs, setCorrs] = useState<CorrRow[] | undefined>(undefined);
   const [forbidden, setForbidden] = useState(false);
+  const [busyCorrId, setBusyCorrId] = useState<string | null>(null);
 
   const reload = () => {
     if (!isAuthenticated) return;
@@ -99,16 +100,42 @@ export function HrReviewQueueClient({ initialBearerToken }: Props) {
 
   const patchCorr = async (correctionId: string, decision: "APPROVED" | "DENIED") => {
     if (!isAuthenticated) return;
-    await hrApiFetch("/api/v1/hr/attendance/correction-requests/review", {
-      bearerToken,
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ correctionId, decision }),
-    });
-    reload();
+    setBusyCorrId(correctionId);
+    try {
+      const res = await hrApiFetch("/api/v1/hr/attendance/correction-requests/review", {
+        bearerToken,
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ correctionId, decision }),
+      });
+      if (!res.ok) {
+        toast.error(
+          await readApiErrorMessage(
+            res,
+            "We couldn't record that correction decision. Refresh and try again.",
+          ),
+        );
+        return;
+      }
+      if (decision === "APPROVED") {
+        const body = (await res.json()) as {
+          data?: { attendanceCorrectionRequest?: { appliedPunchId?: string | null } };
+        };
+        if (body.data?.attendanceCorrectionRequest?.appliedPunchId) {
+          toast.success("Correction approved — punch recorded in attendance.");
+        } else {
+          toast.success("Correction approved.");
+        }
+      } else {
+        toast.success("Correction denied.");
+      }
+      reload();
+    } finally {
+      setBusyCorrId(null);
+    }
   };
 
   if (!ready) {
@@ -161,7 +188,9 @@ export function HrReviewQueueClient({ initialBearerToken }: Props) {
 
       <section>
         <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">Attendance correction proposals</h2>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Manager-submitted adjustments awaiting HR/Payroll decision.</p>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Manager-submitted adjustments awaiting HR/Payroll decision. Approving writes an authoritative attendance punch.
+        </p>
         <div className="mt-4 space-y-4">
           {corrs === undefined ? (
             <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading…</p>
@@ -179,10 +208,21 @@ export function HrReviewQueueClient({ initialBearerToken }: Props) {
                 <CardContent className="space-y-3 text-sm">
                   <p className="text-zinc-700 dark:text-zinc-300">{r.reason}</p>
                   <div className="flex flex-wrap gap-2">
-                    <Button type="button" size="sm" onClick={() => void patchCorr(r.id, "APPROVED")}>
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={busyCorrId === r.id}
+                      onClick={() => void patchCorr(r.id, "APPROVED")}
+                    >
                       Approve record
                     </Button>
-                    <Button type="button" size="sm" variant="outline" onClick={() => void patchCorr(r.id, "DENIED")}>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={busyCorrId === r.id}
+                      onClick={() => void patchCorr(r.id, "DENIED")}
+                    >
                       Deny
                     </Button>
                   </div>

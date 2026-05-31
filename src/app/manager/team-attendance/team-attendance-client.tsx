@@ -24,6 +24,7 @@ type Member = {
   calendarDate: string;
   timeZone: string;
   clockedIn: boolean;
+  openShiftFromPriorDay?: boolean;
   punches: PunchDto[];
 };
 
@@ -214,6 +215,11 @@ export function TeamAttendanceClient({ initialBearerToken }: Props) {
                 </CardHeader>
                 <CardContent className="text-sm text-zinc-700 dark:text-zinc-300">
                   <div className="font-medium">{m.clockedIn ? "Clocked in" : "Not clocked in"}</div>
+                  {m.openShiftFromPriorDay && m.clockedIn ? (
+                    <div className="mt-1 text-amber-700 dark:text-amber-300">
+                      Open shift carried over from a prior work day
+                    </div>
+                  ) : null}
                   <div className="mt-1 text-zinc-600 dark:text-zinc-400">
                     {m.punches.length} punch{m.punches.length === 1 ? "" : "es"} recorded today
                   </div>

@@ -1,4 +1,8 @@
-import { deriveClockedIn, type PunchDto } from "@/lib/attendance/punch-summary";
+import {
+  deriveOpenShiftState,
+  findLatestAttendancePunch,
+} from "@/lib/attendance/open-shift";
+import { type PunchDto } from "@/lib/attendance/punch-summary";
 import { inferAttendanceTimeZone } from "@/lib/attendance/infer-attendance-timezone";
 import { zonedCalendarDayUtcBounds } from "@/lib/attendance/zoned-calendar-day";
 import { ApiError } from "@/lib/api/v1/errors";
@@ -12,6 +16,7 @@ export type TeamMemberTodayAttendancePayload = {
   calendarDate: string;
   timeZone: string;
   clockedIn: boolean;
+  openShiftFromPriorDay: boolean;
   punches: PunchDto[];
 };
 
@@ -88,12 +93,16 @@ export async function getManagerTeamTodayAttendance(
           occurredAt: r.occurredAt.toISOString(),
         }));
 
+        const latest = await findLatestAttendancePunch(tx, auth.tenantId, emp.id);
+        const openShift = deriveOpenShiftState(latest, calendarDate, timeZone);
+
         members.push({
           employeeId: emp.id,
           displayName: displayName(emp),
           calendarDate,
           timeZone,
-          clockedIn: deriveClockedIn(punches),
+          clockedIn: openShift.clockedIn,
+          openShiftFromPriorDay: openShift.openShiftFromPriorDay,
           punches,
         });
       }

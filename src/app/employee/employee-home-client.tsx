@@ -94,7 +94,9 @@ export function EmployeeHomeClient({ initialBearerToken }: Props) {
           value={attendance.data?.clockedIn ? "Clocked in" : "Not clocked in"}
           detail={
             attendance.data
-              ? `${attendance.data.punches.length} punch${attendance.data.punches.length === 1 ? "" : "es"} on ${attendance.data.calendarDate}`
+              ? attendance.data.openShiftFromPriorDay && attendance.data.clockedIn
+                ? "Open shift from prior day — clock out on Time"
+                : `${attendance.data.punches.length} punch${attendance.data.punches.length === 1 ? "" : "es"} on ${attendance.data.calendarDate}`
               : "View attendance"
           }
         />

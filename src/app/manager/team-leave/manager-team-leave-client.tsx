@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
-
+import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
+import { toast } from "sonner";
 
 type Row = {
   id: string;
@@ -90,7 +91,18 @@ export function ManagerTeamLeaveClient({ initialBearerToken }: Props) {
         },
         body: JSON.stringify({ requestId, decision }),
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        toast.error(
+          await readApiErrorMessage(
+            res,
+            "We couldn't record that leave decision. Refresh and try again.",
+          ),
+        );
+        return;
+      }
+      toast.success(
+        decision === "APPROVED" ? "Leave request approved." : "Leave request denied.",
+      );
       const refreshed = await fetchRows(bearerToken);
       if (refreshed.rows) setRows(refreshed.rows);
     } finally {

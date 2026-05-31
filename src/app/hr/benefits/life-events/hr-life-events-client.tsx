@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
 import {
   benefitLifeEventStatusLabel,
   benefitLifeEventTypeLabel,
@@ -68,12 +69,23 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
           hrNote: hrNotes[id]?.trim() || undefined,
         }),
       });
-      if (res.ok && decision === "APPLIED") {
+      if (!res.ok) {
+        toast.error(
+          await readApiErrorMessage(
+            res,
+            "We couldn't record that life event decision. Refresh and try again.",
+          ),
+        );
+        return;
+      }
+      if (decision === "APPLIED") {
         const body = (await res.json()) as {
           data?: { carrierDeliveryStatus?: string | null };
         };
         const status = body.data?.carrierDeliveryStatus ?? "PENDING";
         toast.success(`Life event approved — carrier delivery ${status.toLowerCase()}.`);
+      } else {
+        toast.success("Life event denied.");
       }
       await load();
     } finally {

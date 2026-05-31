@@ -88,8 +88,8 @@ export function ManagerPunchCorrectionsClient({ initialBearerToken }: Props) {
       <CardHeader>
         <CardTitle>Propose a punch correction</CardTitle>
         <CardDescription>
-          Escalates to HR / Payroll — does not mutate authoritative punches automatically. Use Core HR employee IDs
-          (UUIDs).
+          Escalates to HR / Payroll for review. When HR approves, the correction becomes an authoritative punch in
+          attendance. Use Core HR employee IDs (UUIDs).
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">

@@ -26,6 +26,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "attendance:clock",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("POST", "/api/v1/attendance/clock-out")]: {
+    permission: "attendance:clock",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("GET", "/api/v1/me/attendance/today")]: {
     permission: "attendance:clock",
     abac: { minMfa: "standard", maxDataClassification: "internal" },

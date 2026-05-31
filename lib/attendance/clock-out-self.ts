@@ -6,23 +6,23 @@ import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
-export type ClockInResponse = {
+export type ClockOutResponse = {
   punch: {
     id: string;
     employeeId: string;
-    kind: "CLOCK_IN";
+    kind: "CLOCK_OUT";
     occurredAt: string;
     idempotentReplay: boolean;
   };
 };
 
 /**
- * Self-service clock-in: server clock, Serializable txn, idempotent via `(tenantId, idempotencyKey)`.
+ * Self-service clock-out: server clock, Serializable txn, idempotent via `(tenantId, idempotencyKey)`.
  */
-export async function clockInSelf(
+export async function clockOutSelf(
   auth: AuthContext,
   idempotencyKey: string,
-): Promise<ClockInResponse> {
+): Promise<ClockOutResponse> {
   if (!auth.subjectEmployeeId) {
     throw new ApiError(403, {
       code: "forbidden",
@@ -58,7 +58,7 @@ export async function clockInSelf(
             message: "idempotency_key_scope_mismatch",
           });
         }
-        if (existing.kind !== "CLOCK_IN") {
+        if (existing.kind !== "CLOCK_OUT") {
           throw new ApiError(409, {
             code: "conflict",
             message: "idempotency_key_kind_mismatch",
@@ -68,7 +68,7 @@ export async function clockInSelf(
           punch: {
             id: existing.id,
             employeeId: existing.employeeId,
-            kind: "CLOCK_IN" as const,
+            kind: "CLOCK_OUT" as const,
             occurredAt: existing.occurredAt.toISOString(),
             idempotentReplay: true,
           },
@@ -88,10 +88,10 @@ export async function clockInSelf(
 
       const latest = await findLatestAttendancePunch(tx, auth.tenantId, employee.id);
 
-      if (isOpenShift(latest)) {
+      if (!isOpenShift(latest)) {
         throw new ApiError(409, {
           code: "conflict",
-          message: "already_clocked_in",
+          message: "not_clocked_in",
         });
       }
 
@@ -101,7 +101,7 @@ export async function clockInSelf(
           data: {
             tenantId: employee.tenantId,
             employeeId: employee.id,
-            kind: "CLOCK_IN",
+            kind: "CLOCK_OUT",
             occurredAt: new Date(),
             source: "api_v1",
             idempotencyKey,
@@ -123,13 +123,13 @@ export async function clockInSelf(
           if (
             replay &&
             replay.employeeId === auth.subjectEmployeeId &&
-            replay.kind === "CLOCK_IN"
+            replay.kind === "CLOCK_OUT"
           ) {
             return {
               punch: {
                 id: replay.id,
                 employeeId: replay.employeeId,
-                kind: "CLOCK_IN" as const,
+                kind: "CLOCK_OUT" as const,
                 occurredAt: replay.occurredAt.toISOString(),
                 idempotentReplay: true,
               },
@@ -147,7 +147,7 @@ export async function clockInSelf(
         punch: {
           id: row.id,
           employeeId: row.employeeId,
-          kind: "CLOCK_IN" as const,
+          kind: "CLOCK_OUT" as const,
           occurredAt: row.occurredAt.toISOString(),
           idempotentReplay: false,
         },
