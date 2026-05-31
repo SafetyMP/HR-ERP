@@ -6,7 +6,7 @@ export const DEMO_PREVIEW_PERSONAS = {
     roles: ["employee"],
     subjectId: "22222222-2222-2222-2222-222222222222",
     subjectEmployeeId: "b0000001-0001-4000-8000-000000000011",
-    defaultReturnTo: "/employee/paystub",
+    defaultReturnTo: "/employee",
   },
   manager: {
     label: "Manager",

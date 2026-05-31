@@ -1,6 +1,7 @@
 "use client";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { PageStateLoading } from "@/components/product/page-state";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -87,11 +88,7 @@ export function PtoClient({ initialBearerToken }: Props) {
   }
 
   if (isLoading || summary === undefined) {
-    return (
-      <p className="text-sm text-muted-foreground" aria-live="polite">
-        Loading your PTO summary…
-      </p>
-    );
+    return <PageStateLoading label="Loading your PTO summary…" />;
   }
 
   if (summary === null) {
@@ -102,76 +99,74 @@ export function PtoClient({ initialBearerToken }: Props) {
     summary.balanceHours === null &&
     (!summary.recentTimeOff || summary.recentTimeOff.length === 0);
 
+  if (fullyEmpty) {
+    return (
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>No PTO data on file yet</CardTitle>
+          <CardDescription>
+            We don&apos;t see a posted balance or recorded time-off dates for you. HR may still be
+            setting up your leave plan. Check back after HR posts data or contact HR Operations.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      <p className="text-sm text-muted-foreground">
-        Read-only snapshot of what HR has posted for you. To request new time off or fix an exception, use your usual HR
-        or manager channel — not this screen.
-      </p>
-
-      {fullyEmpty ? (
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>No PTO data on file yet</CardTitle>
-            <CardDescription>
-              We don&apos;t see a posted balance or recorded time-off dates for you. HR may still be setting up your
-              leave plan, or your balances live in another system. Nothing is wrong with your account — check back after
-              HR posts data or reach out to HR Operations if you expected numbers already.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      ) : null}
-
-      {!fullyEmpty ? (
-        <Card className="shadow-sm">
-          <CardHeader>
+      {summary.balanceHours !== null && summary.balanceAsOfDate ? (
+        <Card className="overflow-hidden shadow-sm">
+          <CardHeader className="border-b border-border bg-muted/20">
             <CardTitle>PTO balance</CardTitle>
             <CardDescription>Hours available according to the latest balance HR posted.</CardDescription>
           </CardHeader>
-          <CardContent>
-            {summary.balanceHours !== null && summary.balanceAsOfDate ? (
-              <div>
-                <p className="text-3xl font-semibold tabular-nums text-foreground">
-                  {formatBalanceHoursDisplay(summary.balanceHours)}{" "}
-                  <span className="text-base font-normal text-muted-foreground">hours</span>
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Balance as of {formatCalendarDay(summary.balanceAsOfDate)}.
-                </p>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                HR hasn&apos;t posted a PTO balance to your profile yet. You may still see recent recorded dates below if
-                time off was logged on individual days.
-              </p>
-            )}
+          <CardContent className="pt-6">
+            <p className="text-3xl font-semibold tabular-nums text-foreground">
+              {formatBalanceHoursDisplay(summary.balanceHours)}{" "}
+              <span className="text-base font-normal text-muted-foreground">hours</span>
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Balance as of {formatCalendarDay(summary.balanceAsOfDate)}.
+            </p>
           </CardContent>
         </Card>
-      ) : null}
-
-      {!fullyEmpty ? (
+      ) : (
         <Card className="shadow-sm">
           <CardHeader>
-            <CardTitle>Recorded time off</CardTitle>
-            <CardDescription>Days HR recorded as time off for you (newest first).</CardDescription>
+            <CardTitle>PTO balance</CardTitle>
+            <CardDescription>
+              HR hasn&apos;t posted a PTO balance to your profile yet. You may still see recorded
+              dates below if time off was logged on individual days.
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            {!summary.recentTimeOff?.length ? (
-              <p className="text-sm text-muted-foreground">
-                No recorded time-off dates appear in your visible history yet.
-              </p>
-            ) : (
-              <ul className="divide-y divide-border" role="list">
-                {summary.recentTimeOff.map((row) => (
-                  <li key={row.requestDate} className="py-3 text-sm text-foreground">
-                    {formatCalendarDay(row.requestDate)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
         </Card>
-      ) : null}
+      )}
+
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>Recorded time off</CardTitle>
+          <CardDescription>Days HR recorded as time off for you (newest first).</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!summary.recentTimeOff?.length ? (
+            <p className="text-sm text-muted-foreground">
+              No recorded time-off dates appear in your visible history yet.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border rounded-lg border border-border" role="list">
+              {summary.recentTimeOff.map((row) => (
+                <li
+                  key={row.requestDate}
+                  className="list-none px-4 py-3 text-sm font-medium text-foreground"
+                >
+                  {formatCalendarDay(row.requestDate)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

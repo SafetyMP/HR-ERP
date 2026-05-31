@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { PageStateLoading } from "@/components/product/page-state";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -128,11 +129,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
   }
 
   if (isLoading || summary === undefined) {
-    return (
-      <p className="text-sm text-muted-foreground" aria-live="polite">
-        Loading your Benefits summary…
-      </p>
-    );
+    return <PageStateLoading label="Loading your Benefits summary…" />;
   }
 
   if (!summary || summary.enrollments.length === 0) {
@@ -182,35 +179,41 @@ export function BenefitsClient({ initialBearerToken }: Props) {
         Effective dates use {summary.calendarBasis === "UTC" ? "UTC calendar dates" : "the noted calendar basis"}.
       </p>
       {grouped.map((section) => (
-        <Card key={section.category} className="shadow-sm">
-          <CardHeader>
+        <Card key={section.category} className="overflow-hidden shadow-sm">
+          <CardHeader className="border-b border-border bg-muted/20">
             <CardTitle className="text-lg">{section.categoryLabel}</CardTitle>
             <CardDescription>Current elections we have on record.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="grid gap-4 p-6 sm:grid-cols-2">
             {section.rows.map((row, idx) => (
               <div
                 key={`${row.category}-${row.planLabel}-${idx}`}
-                className="border-b border-border pb-6 last:border-b-0 last:pb-0"
+                className="rounded-xl border border-border bg-background/60 p-4"
               >
                 <h3 className="text-base font-semibold text-foreground">{row.planLabel}</h3>
                 {row.carrierName ? (
                   <p className="mt-1 text-sm text-muted-foreground">{row.carrierName}</p>
                 ) : null}
-                <p className="mt-3 text-sm text-foreground">
-                  <span className="font-medium text-foreground">Effective: </span>
-                  {formatEffectiveRange(row.effectiveFrom, row.effectiveTo)}
-                </p>
-                {row.dependentCount !== null && row.dependentCount !== undefined ? (
-                  <p className="mt-2 text-sm text-foreground">
-                    Dependents covered: {row.dependentCount}
-                  </p>
-                ) : null}
-                {row.electiveDeferralPercent !== null && row.electiveDeferralPercent !== undefined ? (
-                  <p className="mt-2 text-sm text-foreground">
-                    Elective deferral (payroll): {row.electiveDeferralPercent}%
-                  </p>
-                ) : null}
+                <dl className="mt-4 space-y-2 text-sm">
+                  <div>
+                    <dt className="text-muted-foreground">Effective</dt>
+                    <dd className="font-medium text-foreground">
+                      {formatEffectiveRange(row.effectiveFrom, row.effectiveTo)}
+                    </dd>
+                  </div>
+                  {row.dependentCount !== null && row.dependentCount !== undefined ? (
+                    <div>
+                      <dt className="text-muted-foreground">Dependents covered</dt>
+                      <dd className="font-medium text-foreground">{row.dependentCount}</dd>
+                    </div>
+                  ) : null}
+                  {row.electiveDeferralPercent !== null && row.electiveDeferralPercent !== undefined ? (
+                    <div>
+                      <dt className="text-muted-foreground">Elective deferral</dt>
+                      <dd className="font-medium text-foreground">{row.electiveDeferralPercent}%</dd>
+                    </div>
+                  ) : null}
+                </dl>
               </div>
             ))}
           </CardContent>

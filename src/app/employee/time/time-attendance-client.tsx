@@ -3,12 +3,13 @@
 import { useCallback, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { PageStateLoading } from "@/components/product/page-state";
+import { StatusPill } from "@/components/product/status-pill";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -148,11 +149,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
   }
 
   if (isLoading || !summary) {
-    return (
-      <p className="text-sm text-muted-foreground" aria-live="polite">
-        Loading today’s time…
-      </p>
-    );
+    return <PageStateLoading label="Loading today's time…" />;
   }
 
   const tzNote =
@@ -162,27 +159,44 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">
-            {summary.clockedIn ? "You’re clocked in" : "You’re not clocked in"}
-          </CardTitle>
-          <CardDescription>
-            {summary.clockedIn
-              ? "Your latest punch today is a clock-in. Clock out when your shift ends (when your employer enables clock-out in this app)."
-              : "Start your shift with clock-in when you’re ready."}{" "}
-            <span className="block pt-2 text-xs text-muted-foreground">{tzNote}</span>
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
-          <Button type="button" disabled={clockBusy || summary.clockedIn} onClick={() => void clockIn()}>
+      <div
+        className={`rounded-xl border p-6 shadow-sm ${
+          summary.clockedIn
+            ? "border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20"
+            : "border-border bg-card"
+        }`}
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xl font-semibold text-foreground">
+                {summary.clockedIn ? "You\u2019re clocked in" : "You\u2019re not clocked in"}
+              </h2>
+              <StatusPill variant={summary.clockedIn ? "success" : "neutral"}>
+                {summary.clockedIn ? "On the clock" : "Off the clock"}
+              </StatusPill>
+            </div>
+            <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+              {summary.clockedIn
+                ? "Your latest punch today is a clock-in. Clock out when your shift ends."
+                : "Start your shift with clock-in when you're ready."}{" "}
+              {tzNote}
+            </p>
+          </div>
+          <Button
+            type="button"
+            size="lg"
+            disabled={clockBusy || summary.clockedIn}
+            onClick={() => void clockIn()}
+            className="shrink-0"
+          >
             {clockBusy ? "Recording…" : "Clock in"}
           </Button>
-          {clockMessage ? (
-            <p className="self-center text-sm text-foreground">{clockMessage}</p>
-          ) : null}
-        </CardFooter>
-      </Card>
+        </div>
+        {clockMessage ? (
+          <p className="mt-4 text-sm font-medium text-foreground">{clockMessage}</p>
+        ) : null}
+      </div>
 
       {summary.punches.length === 0 ? (
         <Card className="border-dashed shadow-sm">

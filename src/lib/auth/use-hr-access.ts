@@ -2,6 +2,7 @@
 
 import {
   clearDevBearerTokenFromSession,
+  HRERP_AUTH_SYNC_EVENT,
   readDevBearerTokenFromSession,
   writeDevBearerTokenToSession,
 } from "@/lib/auth/dev-bearer-session";
@@ -9,6 +10,25 @@ import {
 import { startTransition, useCallback, useEffect, useState } from "react";
 
 export type HrAccessMode = "none" | "cookie" | "bearer";
+
+export type SignOutOptions = {
+  /** When set, navigate after clearing session (full reload). */
+  redirectTo?: string;
+};
+
+function devLocalSignInEnabled(): boolean {
+  return (
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true"
+  );
+}
+
+export function switchAccountRedirectTarget(): string {
+  if (devLocalSignInEnabled()) {
+    return "/";
+  }
+  return `/api/auth/login?returnTo=${encodeURIComponent("/")}`;
+}
 
 export function useHrAccess(initialBearerToken?: string) {
   const [mode, setMode] = useState<HrAccessMode>("none");
@@ -67,6 +87,16 @@ export function useHrAccess(initialBearerToken?: string) {
     };
   }, [initialBearerToken]);
 
+  useEffect(() => {
+    const onAuthSync = (event: Event) => {
+      const token = (event as CustomEvent<{ token: string | null }>).detail?.token ?? null;
+      setBearerToken(token);
+      setMode(token ? "bearer" : "none");
+    };
+    window.addEventListener(HRERP_AUTH_SYNC_EVENT, onAuthSync);
+    return () => window.removeEventListener(HRERP_AUTH_SYNC_EVENT, onAuthSync);
+  }, []);
+
   const persistBearer = useCallback((raw: string) => {
     const t = writeDevBearerTokenToSession(raw);
     setBearerToken(t || null);
@@ -74,11 +104,18 @@ export function useHrAccess(initialBearerToken?: string) {
     return t;
   }, []);
 
-  const signOut = useCallback(() => {
+  const signOut = useCallback(async (options?: SignOutOptions) => {
     clearDevBearerTokenFromSession();
-    void fetch("/api/auth/session", { method: "DELETE", credentials: "include" });
     setBearerToken(null);
     setMode("none");
+    try {
+      await fetch("/api/auth/session", { method: "DELETE", credentials: "include" });
+    } catch {
+      /* ignore */
+    }
+    if (options?.redirectTo !== undefined) {
+      window.location.assign(options.redirectTo);
+    }
   }, []);
 
   const isAuthenticated = mode === "cookie" || Boolean(bearerToken);

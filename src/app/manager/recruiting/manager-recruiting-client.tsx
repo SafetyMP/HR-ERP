@@ -220,19 +220,19 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
               No open requisitions yet. Create one above or contact HR.
             </p>
           ) : (
-            <ul className="divide-y divide-border rounded-md border border-border" role="list">
+            <ul className="grid gap-3 sm:grid-cols-2" role="list">
               {rows.map((r) => (
-                <li key={r.id} className="list-none px-4 py-3">
+                <li key={r.id} className="list-none">
                   <Link
                     href={`/manager/recruiting/requisitions/${r.id}`}
-                    className="font-medium text-primary underline-offset-4 hover:underline"
+                    className="block rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/30 hover:bg-accent/20"
                   >
-                    {r.title}
+                    <p className="font-semibold text-foreground">{r.title}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      {r.status} · {r.openings} opening{r.openings === 1 ? "" : "s"}
+                      {r.locationCountry ? ` · ${r.locationCountry}` : ""}
+                    </p>
                   </Link>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {r.status} · {r.openings} opening{r.openings === 1 ? "" : "s"}
-                    {r.locationCountry ? ` · ${r.locationCountry}` : ""}
-                  </p>
                 </li>
               ))}
             </ul>

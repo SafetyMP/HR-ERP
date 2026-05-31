@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Briefcase, DollarSign, Heart, Users } from "lucide-react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
+import { MetricCard } from "@/components/product/metric-card";
+import { DashboardMetricsSkeleton } from "@/components/product/page-state";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,12 +33,60 @@ type Summary = {
 type Props = { initialBearerToken?: string };
 
 function DashboardSkeleton() {
+  return <DashboardMetricsSkeleton />;
+}
+
+function HeadcountCard({ summary }: { summary: Summary }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2" aria-busy="true" aria-label="Loading dashboard">
-      {[1, 2, 3, 4].map((i) => (
-        <div key={i} className="h-36 animate-pulse rounded-lg border border-border bg-muted/50" />
-      ))}
-    </div>
+    <MetricCard
+      label="Headcount"
+      icon={Users}
+      value={summary.headcountActive}
+      detail="Active employees"
+    />
+  );
+}
+
+function HiringCard({ summary }: { summary: Summary }) {
+  return (
+    <MetricCard
+      label="Open requisitions"
+      icon={Briefcase}
+      href="/manager/recruiting"
+      value={summary.openRequisitions}
+      detail={
+        summary.medianTimeToHireDays != null
+          ? `Median time to hire: ${summary.medianTimeToHireDays} days`
+          : "Hiring pipeline in-app — no separate ATS"
+      }
+    />
+  );
+}
+function PayrollCard({ summary }: { summary: Summary }) {
+  const hasIssues = summary.openPayrollExceptions > 0 || summary.periodsAwaitingLock > 0;
+  return (
+    <MetricCard
+      label="Payroll close"
+      icon={DollarSign}
+      href="/hr/payroll-runs"
+      accent={hasIssues ? "warning" : "default"}
+      value={summary.openPayrollExceptions}
+      detail={`${summary.periodsAwaitingLock} period${summary.periodsAwaitingLock === 1 ? "" : "s"} awaiting lock · native pay runs`}
+    />
+  );
+}
+
+function BenefitsCard({ summary }: { summary: Summary }) {
+  const pending = summary.openLifeEvents + summary.pendingElectionIntents;
+  return (
+    <MetricCard
+      label="Benefits queue"
+      icon={Heart}
+      href="/hr/benefits/life-events"
+      accent={pending > 0 ? "warning" : "default"}
+      value={pending}
+      detail={`${summary.openLifeEvents} life events · ${summary.pendingElectionIntents} election intents`}
+    />
   );
 }
 
@@ -78,11 +129,7 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
   }
 
   if (summary === undefined) {
-    return (
-      <div className="flex flex-col gap-6">
-        <DashboardSkeleton />
-      </div>
-    );
+    return <DashboardMetricsSkeleton />;
   }
 
   if (!summary) {
@@ -167,116 +214,33 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
           </>
         )}
       </div>
-    </div>
-  );
-}
 
-function HeadcountCard({ summary }: { summary: Summary }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Headcount</CardTitle>
-        <CardDescription>Active employees</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-semibold tabular-nums">{summary.headcountActive}</p>
-        {summary.headcountByDepartment.length > 0 ? (
-          <table className="mt-4 w-full text-sm">
-            <thead>
-              <tr className="text-left text-muted-foreground">
-                <th className="pb-1 font-medium">Department</th>
-                <th className="pb-1 text-right font-medium">Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              {summary.headcountByDepartment.map((row) => (
-                <tr key={row.departmentId ?? "none"}>
-                  <td className="py-1">{row.departmentId ?? "Unassigned"}</td>
-                  <td className="py-1 text-right tabular-nums">{row.count}</td>
+      {summary.headcountByDepartment.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Headcount by department</CardTitle>
+            <CardDescription>Active employees grouped by department.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-muted-foreground">
+                  <th className="pb-2 font-medium">Department</th>
+                  <th className="pb-2 text-right font-medium">Count</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : null}
-      </CardContent>
-    </Card>
-  );
-}
-
-function HiringCard({ summary }: { summary: Summary }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Hiring</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        <p className="text-3xl font-semibold tabular-nums">{summary.openRequisitions}</p>
-        <p className="text-sm text-muted-foreground">Open requisitions</p>
-        <p className="text-sm">
-          Median time to hire:{" "}
-          {summary.medianTimeToHireDays != null
-            ? `${summary.medianTimeToHireDays} days`
-            : "—"}
-        </p>
-        <Button type="button" size="sm" asChild>
-          <Link href="/manager/recruiting">Open recruiting</Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-function PayrollCard({ summary }: { summary: Summary }) {
-  return (
-    <Card className={summary.openPayrollExceptions > 0 ? "border-amber-500/50" : undefined}>
-      <CardHeader>
-        <CardTitle>Payroll close</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        <p className="text-sm">
-          Open exceptions:{" "}
-          <span className="text-2xl font-semibold tabular-nums">
-            {summary.openPayrollExceptions}
-          </span>
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Periods awaiting lock: {summary.periodsAwaitingLock}
-        </p>
-        <Button type="button" size="sm" asChild>
-          <Link href="/hr/payroll-runs">
-            {summary.openPayrollExceptions > 0
-              ? "Review exceptions"
-              : "Open pay runs"}
-          </Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-function BenefitsCard({ summary }: { summary: Summary }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Benefits</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        <p className="text-sm">
-          Pending life events:{" "}
-          <span className="text-2xl font-semibold tabular-nums">{summary.openLifeEvents}</span>
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Election change intents: {summary.pendingElectionIntents}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" size="sm" asChild>
-            <Link href="/hr/benefits/life-events">Life event queue</Link>
-          </Button>
-          <Button type="button" size="sm" variant="outline" asChild>
-            <Link href="/hr/benefits/election-change-requests">Election intents</Link>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+              </thead>
+              <tbody>
+                {summary.headcountByDepartment.map((row) => (
+                  <tr key={row.departmentId ?? "none"} className="border-t border-border">
+                    <td className="py-2">{row.departmentId ?? "Unassigned"}</td>
+                    <td className="py-2 text-right tabular-nums font-medium">{row.count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      ) : null}
+    </div>
   );
 }

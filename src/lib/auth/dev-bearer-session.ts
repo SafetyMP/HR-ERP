@@ -4,6 +4,15 @@
  */
 export const HRERP_BEARER_STORAGE_KEY = "hrerp_bearer_token";
 
+export const HRERP_AUTH_SYNC_EVENT = "hrerp:auth-sync";
+
+export function broadcastAuthSync(token: string | null): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent(HRERP_AUTH_SYNC_EVENT, { detail: { token } }),
+  );
+}
+
 export function normalizeDevBearerToken(raw: string): string {
   let s = raw.trim();
   if (!s) return "";
@@ -39,6 +48,7 @@ export function writeDevBearerTokenToSession(raw: string): string {
   }
   if (t) sessionStorage.setItem(HRERP_BEARER_STORAGE_KEY, t);
   else sessionStorage.removeItem(HRERP_BEARER_STORAGE_KEY);
+  broadcastAuthSync(t || null);
   return t;
 }
 
@@ -46,4 +56,5 @@ export function clearDevBearerTokenFromSession(): void {
   if (typeof window !== "undefined" && typeof sessionStorage !== "undefined") {
     sessionStorage.removeItem(HRERP_BEARER_STORAGE_KEY);
   }
+  broadcastAuthSync(null);
 }

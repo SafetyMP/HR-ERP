@@ -23,6 +23,8 @@ type Props = {
   description: string;
   returnTo?: string;
   onDevTokenPaste?: (token: string) => void;
+  /** When true, omit embedded demo persona buttons (e.g. home page shows them separately). */
+  hideDemoPreview?: boolean;
 };
 
 const DEMO_PREVIEW_ORDER: DemoPreviewPersona[] = ["employee", "manager", "hr"];
@@ -32,9 +34,10 @@ export function HrSignInCard({
   description,
   returnTo = "/",
   onDevTokenPaste,
+  hideDemoPreview = false,
 }: Props) {
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
-  const showDemoPreview = useDemoPreviewEnabled();
+  const showDemoPreview = useDemoPreviewEnabled() && !hideDemoPreview;
   const showDevTokenPaste =
     process.env.NODE_ENV !== "production" &&
     (process.env.NODE_ENV === "development" ||

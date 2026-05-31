@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { switchAccountRedirectTarget, useHrAccess } from "@/lib/auth/use-hr-access";
 
 type Props = {
   breadcrumbs?: ReactNode;
@@ -58,11 +58,21 @@ export function AppTopBar({ breadcrumbs, onOpenMobileNav }: Props) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <a href="/api/auth/oidc/login?returnTo=/">Switch account</a>
+              <DropdownMenuItem
+                onSelect={() => {
+                  void signOut({ redirectTo: switchAccountRedirectTarget() });
+                }}
+              >
+                Switch account
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => signOut()}>Sign out</DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => {
+                  void signOut({ redirectTo: "/" });
+                }}
+              >
+                Sign out
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}

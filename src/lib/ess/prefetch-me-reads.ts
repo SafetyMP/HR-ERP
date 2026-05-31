@@ -109,3 +109,13 @@ export async function prefetchEssTimePage(queryClient: QueryClient) {
 export async function prefetchEssProfilePage(queryClient: QueryClient) {
   await prefetchProfile(queryClient);
 }
+
+/** Employee home — pay, time, PTO, benefits snapshot. */
+export async function prefetchEssHomePage(queryClient: QueryClient) {
+  await Promise.all([
+    prefetchPaystub(queryClient),
+    prefetchPtoSummary(queryClient),
+    prefetchAttendanceToday(queryClient),
+    prefetchBenefitsSummary(queryClient),
+  ]);
+}

@@ -8,6 +8,7 @@ export type NavItem = {
 };
 
 export const EMPLOYEE_NAV: NavItem[] = [
+  { href: "/employee", label: "Home" },
   { href: "/employee/paystub", label: "Paystub" },
   { href: "/employee/paystub/history", label: "Pay history" },
   { href: "/employee/time", label: "Time & attendance" },

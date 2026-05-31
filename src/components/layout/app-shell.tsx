@@ -34,7 +34,7 @@ export function AppShell({ role, children, breadcrumbs, className }: Props) {
           <AppTopBar breadcrumbs={breadcrumbs} onOpenMobileNav={() => setMobileOpen(true)} />
           <main
             id="main-content"
-            className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8"
+            className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:px-8"
             tabIndex={-1}
           >
             {children}

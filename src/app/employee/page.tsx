@@ -4,36 +4,36 @@ import { dehydrate } from "@tanstack/react-query";
 import { PageHeader } from "@/components/layout/page-header";
 import { MeQueryHydrator } from "@/components/ess/me-query-hydrator";
 import { redirectDevJwtToSession } from "@/lib/auth/redirect-dev-jwt";
-import { prefetchEssBenefitsPage } from "@/lib/ess/prefetch-me-reads";
+import { prefetchEssHomePage } from "@/lib/ess/prefetch-me-reads";
 import { getQueryClient } from "@/lib/query/get-query-client";
 
-import { BenefitsClient } from "./benefits-client";
+import { EmployeeHomeClient } from "./employee-home-client";
 
 export const metadata: Metadata = {
-  title: "Benefits",
-  description: "View your current benefit enrollments",
+  title: "Home",
+  description: "Your pay, time, leave, and benefits in one place",
 };
 
 type Props = {
   searchParams?: Promise<{ devJwt?: string }>;
 };
 
-export default async function EmployeeBenefitsPage(props: Props) {
+export default async function EmployeeHomePage(props: Props) {
   const sp = props.searchParams ? await props.searchParams : {};
-  redirectDevJwtToSession(sp.devJwt, "/employee/benefits");
+  redirectDevJwtToSession(sp.devJwt, "/employee");
 
   const queryClient = getQueryClient();
-  await prefetchEssBenefitsPage(queryClient);
+  await prefetchEssHomePage(queryClient);
 
   return (
     <MeQueryHydrator state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-8">
         <PageHeader
-          eyebrow="Benefits"
-          title="Your enrollments"
-          description="Your current elections on file. To request a change during open enrollment or after a qualifying event, use Request election change — your Benefits team reviews in-app."
+          eyebrow="Employee"
+          title="Home"
+          description="Pay, time off, benefits, and profile — one portal instead of juggling HRIS and payroll tools."
         />
-        <BenefitsClient />
+        <EmployeeHomeClient />
       </div>
     </MeQueryHydrator>
   );

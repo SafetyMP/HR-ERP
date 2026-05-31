@@ -5,6 +5,7 @@ import {
   buildSessionSetCookieHeader,
   parseSessionTokenFromCookieHeader,
 } from "@/lib/auth/session-cookie";
+import { inferDemoPersonaFromSession } from "@/lib/demo/infer-demo-persona";
 import { verifyHrJwt } from "@/lib/security/jwt";
 
 export async function GET(request: Request) {
@@ -13,8 +14,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ authenticated: false });
   }
   try {
-    await verifyHrJwt(token);
-    return NextResponse.json({ authenticated: true, mode: "cookie" });
+    const claims = await verifyHrJwt(token);
+    const roles = Array.isArray(claims.roles) ? claims.roles.map(String) : [];
+    const subjectId = typeof claims.sub === "string" ? claims.sub : undefined;
+    return NextResponse.json({
+      authenticated: true,
+      mode: "cookie",
+      demoPersona: inferDemoPersonaFromSession(subjectId, roles),
+    });
   } catch {
     const headers = new Headers();
     headers.append("Set-Cookie", buildSessionClearCookieHeader());
