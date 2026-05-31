@@ -22,7 +22,7 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | 8 | Webhooks + workers running in prod | `npm run worker:webhooks`, `worker:integrations` | Platform | No |
 | 9 | OIDC/Neon production auth (no demo sign-in) | Production env checklist | Security | No |
 | 10 | Written runbook signed by customer HR + payroll lead | This document + [appendix template](./reference-customer-exit-appendix-template.md) | CS | No |
-| 11 | ESS friction scorecard within budgets (optional gate) | [ess-friction-scorecard.md](./ess-friction-scorecard.md) | Product + QA | No |
+| 11 | ESS friction scorecard within budgets (**required** gate) | [ess-friction-scorecard.md](./ess-friction-scorecard.md) | Product + QA | No |
 
 **Platform verification:** `npm run verify:reference-exit` (static artifacts) · [pilot checklist](./reference-customer-exit-pilot-checklist.md) · `HR_ERP_ESS_E2E_JWT=… npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts`
 

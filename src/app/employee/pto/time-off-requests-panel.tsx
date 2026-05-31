@@ -265,7 +265,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
               <input
                 id="leave-start"
                 type="date"
-                className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
@@ -277,7 +277,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
               <input
                 id="leave-end"
                 type="date"
-                className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
@@ -289,7 +289,7 @@ export function TimeOffRequestsPanel({ initialBearerToken }: Props) {
             </label>
             <textarea
               id="leave-note"
-              className="mt-1 w-full rounded-md border border-zinc-300 bg-white p-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+              className="mt-1 w-full rounded-md border border-border bg-background p-2 text-sm"
               rows={2}
               maxLength={500}
               value={note}

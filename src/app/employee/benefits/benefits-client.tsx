@@ -191,14 +191,14 @@ export function BenefitsClient({ initialBearerToken }: Props) {
             {section.rows.map((row, idx) => (
               <div
                 key={`${row.category}-${row.planLabel}-${idx}`}
-                className="border-b border-zinc-100 pb-6 last:border-b-0 last:pb-0 dark:border-zinc-800"
+                className="border-b border-border pb-6 last:border-b-0 last:pb-0"
               >
                 <h3 className="text-base font-semibold text-foreground">{row.planLabel}</h3>
                 {row.carrierName ? (
                   <p className="mt-1 text-sm text-muted-foreground">{row.carrierName}</p>
                 ) : null}
                 <p className="mt-3 text-sm text-foreground">
-                  <span className="font-medium text-zinc-800 dark:text-zinc-200">Effective: </span>
+                  <span className="font-medium text-foreground">Effective: </span>
                   {formatEffectiveRange(row.effectiveFrom, row.effectiveTo)}
                 </p>
                 {row.dependentCount !== null && row.dependentCount !== undefined ? (

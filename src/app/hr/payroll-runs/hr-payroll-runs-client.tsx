@@ -4,7 +4,6 @@ import Link from "next/link";
 import { startTransition, useEffect, useMemo, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
-import { HrPageShell } from "@/components/hr/hr-page-shell";
 import { PayrollPeriodStatusBadge } from "@/components/hr/payroll-period-status";
 import { Button } from "@/components/ui/button";
 import {
@@ -185,11 +184,7 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
   }
 
   return (
-    <HrPageShell
-      activePath="/hr/payroll-runs"
-      onReload={() => void reload()}
-      onSignOut={() => signOut()}
-    >
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Pay periods</CardTitle>
@@ -320,6 +315,6 @@ export function HrPayrollRunsClient({ initialBearerToken }: Props) {
           ) : null}
         </CardContent>
       </Card>
-    </HrPageShell>
+    </div>
   );
 }

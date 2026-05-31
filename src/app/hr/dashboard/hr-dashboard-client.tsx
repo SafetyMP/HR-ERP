@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
-import { HrPageShell } from "@/components/hr/hr-page-shell";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -80,22 +79,22 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
 
   if (summary === undefined) {
     return (
-      <HrPageShell activePath="/hr/dashboard" onSignOut={() => signOut()}>
+      <div className="flex flex-col gap-6">
         <DashboardSkeleton />
-      </HrPageShell>
+      </div>
     );
   }
 
   if (!summary) {
     return (
-      <HrPageShell activePath="/hr/dashboard" onReload={() => void load()} onSignOut={() => signOut()}>
+      <div className="flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Could not load dashboard.{" "}
           <Button type="button" variant="link" className="h-auto p-0" onClick={() => void load()}>
             Retry
           </Button>
         </p>
-      </HrPageShell>
+      </div>
     );
   }
 
@@ -108,11 +107,7 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
   const payrollFirst = summary.openPayrollExceptions > 0;
 
   return (
-    <HrPageShell
-      activePath="/hr/dashboard"
-      onReload={() => void load()}
-      onSignOut={() => signOut()}
-    >
+    <div className="flex flex-col gap-6">
       {needsAction ? (
         <Alert>
           <AlertTitle>Needs action</AlertTitle>
@@ -172,7 +167,7 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
           </>
         )}
       </div>
-    </HrPageShell>
+    </div>
   );
 }
 

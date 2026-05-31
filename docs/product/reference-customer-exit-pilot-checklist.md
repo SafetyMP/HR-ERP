@@ -16,11 +16,13 @@ Use this checklist when walking a **pilot reference customer** through Phase B e
 | 2 | Production env: no `NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN` | Security |
 | 3 | OIDC/Neon per [phase1-production-checklist.md](../operations/phase1-production-checklist.md) | Platform |
 | 4 | Workers: `worker:webhooks`, `worker:integrations` running | Platform |
-| 5 | ESS friction (optional gate): `HR_ERP_ESS_E2E_JWT=… npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts` | QA |
+| 5 | ESS friction (**required** gate): `HR_ERP_ESS_E2E_JWT=… npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts` — must pass on demo employee JWT before pilot sign-off | QA |
 
 ---
 
 ## Customer walkthrough (1–2 sessions)
+
+**Timed ESS walkthrough:** Record `Date.now()` deltas or use Playwright output from the friction suite. Capture confusion points and quotes for the appendix.
 
 ### Session A — Employee self-service (cancel BambooHR ESS)
 
@@ -50,7 +52,7 @@ Use this checklist when walking a **pilot reference customer** through Phase B e
 ## Sign-off
 
 1. Copy [reference-customer-exit-appendix-template.md](./reference-customer-exit-appendix-template.md) per customer.
-2. Mark runbook criteria 1–10 Y/N with evidence links.
+2. Mark runbook criteria 1–11 Y/N with evidence links (criterion 11 requires green ESS friction suite on pilot JWT).
 3. Obtain HR lead + payroll lead signatures.
 4. Record in Track B OKR: reference exit signed.
 

@@ -41,6 +41,7 @@
 | 8 | Webhooks + workers prod | | |
 | 9 | OIDC prod (no demo sign-in) | | [phase1-production-checklist.md](../operations/phase1-production-checklist.md) |
 | 10 | Signed by HR + payroll leads | | This appendix |
+| 11 | ESS friction scorecard green on pilot JWT | | `ess-friction-budgets.spec.ts` output |
 
 ---
 

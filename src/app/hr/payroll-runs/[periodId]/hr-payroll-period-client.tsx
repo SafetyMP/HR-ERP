@@ -4,7 +4,6 @@ import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
-import { HrPageShell } from "@/components/hr/hr-page-shell";
 
 import { HrPayrollPeriodSummary } from "./hr-payroll-period-summary";
 import { PayrollPeriodStatusBadge } from "@/components/hr/payroll-period-status";
@@ -69,6 +68,20 @@ type Detail = {
   paymentInstructions: Instruction[];
 };
 
+type FilingArtifactMeta = {
+  jurisdiction: string;
+  versionId: string;
+  payloadHash: string;
+};
+
+type PartnerExportConfirmation = {
+  exportId: string;
+  status: string;
+  payloadHash: string;
+  jurisdiction: string;
+  policyReleaseId: string;
+};
+
 type Props = {
   periodId: string;
   initialBearerToken?: string;
@@ -91,6 +104,9 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
   const [actionMsg, setActionMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [resolveNotes, setResolveNotes] = useState<Record<string, string>>({});
+  const [filingArtifact, setFilingArtifact] = useState<FilingArtifactMeta | null>(null);
+  const [partnerExportConfirmation, setPartnerExportConfirmation] =
+    useState<PartnerExportConfirmation | null>(null);
 
   const reload = async () => {
     const res = await hrApiFetch(`/api/v1/payroll/runs/${periodId}`, {
@@ -115,6 +131,33 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
       setExceptions(exBody.data?.exceptions ?? []);
     } else {
       setExceptions([]);
+    }
+
+    const periodStatus = body.data?.status;
+    if (periodStatus === "LOCKED" || periodStatus === "ARTIFACT_GENERATED") {
+      const artRes = await hrApiFetch(
+        `/api/v1/payroll/runs/${periodId}/filing-artifact`,
+        { bearerToken, headers: { Accept: "application/json" } },
+      );
+      if (artRes.ok) {
+        const artBody = (await artRes.json()) as {
+          data?: { jurisdiction?: string; versionId?: string; payloadHash?: string };
+        };
+        const art = artBody.data;
+        if (art?.jurisdiction && art.versionId && art.payloadHash) {
+          setFilingArtifact({
+            jurisdiction: art.jurisdiction,
+            versionId: art.versionId,
+            payloadHash: art.payloadHash,
+          });
+        } else {
+          setFilingArtifact(null);
+        }
+      } else {
+        setFilingArtifact(null);
+      }
+    } else {
+      setFilingArtifact(null);
     }
   };
 
@@ -155,9 +198,18 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
         setActionMsg("Could not generate filing package — lock the period first.");
         return;
       }
-      const body = (await res.json()) as { data?: { payloadHash?: string } };
+      const body = (await res.json()) as {
+        data?: { payloadHash?: string; jurisdiction?: string; versionId?: string };
+      };
+      if (body.data?.payloadHash && body.data.jurisdiction && body.data.versionId) {
+        setFilingArtifact({
+          jurisdiction: body.data.jurisdiction,
+          versionId: body.data.versionId,
+          payloadHash: body.data.payloadHash,
+        });
+      }
       setActionMsg(
-        `Filing artifact generated (hash ${body.data?.payloadHash?.slice(0, 12) ?? "…"}). Not agency-submitted.`,
+        `Filing artifact generated (hash ${body.data?.payloadHash?.slice(0, 12) ?? "…"}). Partner handoff ready — not agency-submitted.`,
       );
       await reload();
     } finally {
@@ -198,23 +250,49 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
           headers: { Accept: "application/json" },
         },
       );
+      if (res.status === 403) {
+        setActionMsg("You do not have permission to export payroll to a partner.");
+        return;
+      }
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as {
           error?: { message?: string };
         };
-        setActionMsg(
-          body.error?.message === "payroll_partner_not_configured"
-            ? "Configure payroll partner integration first (Settings → Integrations)."
-            : "Partner export failed — ensure filing artifact exists.",
-        );
+        const code = body.error?.message;
+        if (code === "payroll_partner_not_configured") {
+          setActionMsg("Configure payroll partner integration first (Settings → Integrations).");
+        } else if (code === "payroll_period_must_be_locked") {
+          setActionMsg("Lock this period before exporting to your filing partner.");
+        } else if (code === "filing_artifact_required") {
+          setActionMsg("Generate the filing package before exporting to your partner.");
+        } else {
+          setActionMsg("Partner export failed — try again or contact platform support.");
+        }
         return;
       }
       const body = (await res.json()) as {
-        data?: { export?: { exportId?: string; status?: string } };
+        data?: {
+          export?: {
+            exportId?: string;
+            status?: string;
+            payloadHash?: string;
+          };
+        };
       };
-      setActionMsg(
-        `Partner export ${body.data?.export?.status ?? "queued"} (ID ${body.data?.export?.exportId?.slice(0, 12) ?? "…"}).`,
+      const exp = body.data?.export;
+      const meta = filingArtifact;
+      const confirmation: PartnerExportConfirmation = {
+        exportId: exp?.exportId ?? "—",
+        status: exp?.status ?? "queued",
+        payloadHash: exp?.payloadHash ?? meta?.payloadHash ?? "—",
+        jurisdiction: meta?.jurisdiction ?? "—",
+        policyReleaseId: meta?.versionId ?? "—",
+      };
+      setPartnerExportConfirmation(confirmation);
+      toast.success(
+        `Partner handoff ${confirmation.status.toLowerCase()} — not agency e-file.`,
       );
+      setActionMsg(null);
     } finally {
       setBusy(false);
     }
@@ -355,11 +433,12 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
   const closeProgress = (stepsComplete / 4) * 100;
 
   return (
-    <HrPageShell
-      activePath="/hr/payroll-runs"
-      onReload={() => void reload()}
-      onSignOut={() => signOut()}
-    >
+    <div className="flex flex-col gap-6">
+      <p className="text-sm text-muted-foreground">
+        <Link href="/hr/payroll-runs" className="font-medium text-primary underline">
+          ← Pay runs
+        </Link>
+      </p>
       <HrPayrollPeriodSummary
         periodLabel={detail.label ?? "Pay period"}
         status={detail.status}
@@ -388,6 +467,18 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
             <h2 id="close-checklist-heading" className="text-sm font-semibold text-foreground">
               Period close checklist
             </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Filing is partner handoff only — review the{" "}
+              <Link
+                href="https://github.com/SafetyMP/HR-ERP/blob/main/docs/compliance/us-federal-withholding-placeholder.md"
+                className="font-medium text-primary underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                counsel withholding checklist
+              </Link>{" "}
+              before production claims.
+            </p>
             <Progress className="mt-3" value={closeProgress} aria-label="Close progress" />
             <p className="mt-1 text-xs text-muted-foreground">
               {stepsComplete} of 4 steps complete
@@ -482,42 +573,83 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
               </li>
               <li className="list-none rounded-md border border-border p-4">
                 <p className="text-sm font-medium">
-                  {step4Done ? "✓" : "4."} Filing package
+                  {step4Done ? "✓" : "4."} Partner filing handoff
                 </p>
                 <Alert className="mt-2">
-                  <AlertTitle>Not agency-submitted</AlertTitle>
+                  <AlertTitle>Partner handoff — not agency e-file</AlertTitle>
                   <AlertDescription>
-                    This JSON artifact is for counsel review and audit. It is not IRS e-file or
-                    HMRC RTI transmission.
+                    Export sends the locked filing package to your payroll partner. This is not IRS
+                    e-file or HMRC RTI transmission. Review the{" "}
+                    <Link
+                      href="https://github.com/SafetyMP/HR-ERP/blob/main/docs/compliance/us-federal-withholding-placeholder.md"
+                      className="font-medium underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      counsel withholding checklist
+                    </Link>{" "}
+                    before production claims.
                   </AlertDescription>
                 </Alert>
                 {(detail.status === "LOCKED" || detail.status === "ARTIFACT_GENERATED") && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <Button
-                      type="button"
-                      size="sm"
-                      disabled={busy}
-                      onClick={() => void generateFiling()}
-                    >
-                      Generate filing package
-                    </Button>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      onClick={() => void downloadFilingJson()}
-                    >
-                      Download filing JSON
-                    </Button>
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="secondary"
-                      disabled={busy}
-                      onClick={() => void exportToPartner()}
-                    >
-                      Export to partner
-                    </Button>
+                  <div className="mt-3 flex flex-col gap-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={busy}
+                        onClick={() => void exportToPartner()}
+                      >
+                        Export for partner
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={busy}
+                        onClick={() => void generateFiling()}
+                      >
+                        Generate filing package
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => void downloadFilingJson()}
+                      >
+                        Download filing JSON
+                      </Button>
+                    </div>
+                    {partnerExportConfirmation ? (
+                      <div
+                        className="rounded-md border border-border bg-muted/40 p-3 text-sm"
+                        data-testid="partner-export-confirmation"
+                      >
+                        <p className="font-medium text-foreground">Partner export confirmation</p>
+                        <ul className="mt-2 space-y-1 text-muted-foreground">
+                          <li>
+                            Export ID:{" "}
+                            <span className="font-mono text-foreground">
+                              {partnerExportConfirmation.exportId.slice(0, 12)}…
+                            </span>
+                          </li>
+                          <li>Status: {partnerExportConfirmation.status}</li>
+                          <li>Jurisdiction: {partnerExportConfirmation.jurisdiction}</li>
+                          <li>
+                            Policy release:{" "}
+                            <span className="font-mono text-foreground">
+                              {partnerExportConfirmation.policyReleaseId}
+                            </span>
+                          </li>
+                          <li>
+                            Payload hash:{" "}
+                            <span className="font-mono text-foreground">
+                              {partnerExportConfirmation.payloadHash.slice(0, 16)}…
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    ) : null}
                   </div>
                 )}
               </li>
@@ -575,6 +707,6 @@ export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
           )}
         </CardContent>
       </Card>
-    </HrPageShell>
+    </div>
   );
 }

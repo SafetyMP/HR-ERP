@@ -19,7 +19,7 @@
 | 8 | Webhooks + workers | **Yes** | ADR 0008 + worker scripts |
 | 9 | OIDC production auth | **Documented** | [phase1-production-checklist.md](../../operations/phase1-production-checklist.md) |
 | 10 | Customer sign-off template | **Yes** | Runbook + appendix template + pilot checklist |
-| 11 | ESS friction scorecard (optional) | **Yes** | [ess-friction-scorecard.md](../ess-friction-scorecard.md) + CI gate |
+| 11 | ESS friction scorecard (**required**) | **Yes** | [ess-friction-scorecard.md](../ess-friction-scorecard.md) + CI gate; required for pilot sign-off |
 
 ## Automated check
 
@@ -32,8 +32,8 @@ Static file/route presence — does not substitute for pilot walkthrough or prod
 
 ## Remaining counsel gates
 
-- Partner transmission: [filing-partner-transmission-gate.md](../../compliance/filing-partner-transmission-gate.md) — Brief **028**
-- COBRA notice PDF: [cobra-aca-counsel-gate.md](../../compliance/cobra-aca-counsel-gate.md) — Brief **027**
+- Partner transmission: [filing-partner-transmission-gate.md](../../compliance/filing-partner-transmission-gate.md) — Brief **028** UX shipped ([audit](./features-028.md)); transmission counsel gate remains
+- COBRA notice PDF: [cobra-aca-counsel-gate.md](../../compliance/cobra-aca-counsel-gate.md) — Brief **027** blocked ([audit](./features-027.md))
 - UK RTI path: [uk-rti-transmission-path.md](../../compliance/uk-rti-transmission-path.md)
 - W3 counsel signoff: [us-federal-withholding-placeholder.md](../../compliance/us-federal-withholding-placeholder.md)
 
@@ -41,6 +41,6 @@ Static file/route presence — does not substitute for pilot walkthrough or prod
 
 | OKR | Status |
 | --- | --- |
-| Platform artifacts verified | **Met** — `verify:reference-exit` (35 checks) |
-| Signed customer appendix | **Pending** — requires pilot customer walkthrough |
-| ESS friction green in CI | **Met** — when JWT provided in reusable-qa |
+| Platform artifacts verified | **Met** — `verify:reference-exit` (45 checks) |
+| Signed customer appendix | **Pending** — requires pilot customer walkthrough ([pilot checklist](../reference-customer-exit-pilot-checklist.md)) |
+| ESS friction green in CI | **Met** — required gate; JWT in reusable-qa |

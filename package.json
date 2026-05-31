@@ -78,6 +78,7 @@
     "contracts:drift": "node scripts/check-openapi-drift.mjs",
     "check:route-policies": "node scripts/check-route-policy-parity.mjs",
     "check:lib-boundaries": "node scripts/check-lib-module-boundaries.mjs",
+    "check:ess-design-tokens": "node scripts/check-ess-design-tokens.mjs",
     "format": "prettier --write .",
     "holiday:sync": "tsx scripts/sync-holidays.ts",
     "test:e2e": "playwright test",

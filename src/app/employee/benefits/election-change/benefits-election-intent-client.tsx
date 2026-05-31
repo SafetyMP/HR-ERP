@@ -94,7 +94,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
           </label>
           <select
             id="ben-cat"
-            className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-950"
+            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2"
             value={category}
             onChange={(e) => setCategory(e.target.value as typeof category)}
           >
@@ -112,7 +112,7 @@ export function BenefitsElectionIntentClient({ initialBearerToken }: Props) {
           <textarea
             id="ben-sum"
             rows={5}
-            className="mt-1 w-full rounded-md border border-zinc-300 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-950"
+            className="mt-1 w-full rounded-md border border-border bg-background p-2"
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             placeholder="Example: Switch medical tier from Silver to Gold effective next open enrollment."

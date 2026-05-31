@@ -155,7 +155,7 @@ async function saveProfile(
 
 function HrNote() {
   return (
-    <p className="mt-1 text-xs text-muted-foreground dark:text-zinc-400">
+    <p className="mt-1 text-xs text-muted-foreground">
       Maintained by HR — contact HR Operations to request a change.
     </p>
   );
@@ -330,7 +330,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
           </div>
           <div>
             <Label htmlFor="preferred">Preferred name</Label>
-            <p className="mt-1 text-xs text-muted-foreground dark:text-zinc-400">
+            <p className="mt-1 text-xs text-muted-foreground">
               Shown on badges and internal tools — not your legal tax name.
             </p>
             <Input
@@ -478,7 +478,7 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent className="space-y-4">
           {emergencyUnset ? (
-            <p className="rounded-md border border-dashed border-zinc-300 bg-zinc-50 px-3 py-2 text-sm text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
+            <p className="rounded-md border border-dashed border-border bg-muted px-3 py-2 text-sm text-foreground">
               You haven&apos;t added an emergency contact yet. Adding one helps your team respond quickly if you ever
               need assistance during work hours.
             </p>

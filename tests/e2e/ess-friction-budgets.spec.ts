@@ -22,7 +22,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
     expect(elapsedMs(start)).toBeLessThan(10_000);
   });
 
-  test("time: home → clock status ≤60s", async ({ page }) => {
+  test("time: home → clock status ≤30s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
     await page.getByRole("link", { name: /^Time$/ }).click();
@@ -32,10 +32,10 @@ test.describe("ESS friction budgets (scorecard)", () => {
     await expect(
       page.getByText(/You’re clocked in|You’re not clocked in|No punches yet today/).first(),
     ).toBeVisible({ timeout: 30_000 });
-    expect(elapsedMs(start)).toBeLessThan(60_000);
+    expect(elapsedMs(start)).toBeLessThan(30_000);
   });
 
-  test("PTO: home → balance and recorded time off ≤60s", async ({ page }) => {
+  test("PTO: home → balance and recorded time off ≤30s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
     await page.getByRole("link", { name: /^PTO$/ }).click();
@@ -43,7 +43,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
       timeout: 30_000,
     });
     await expect(page.getByRole("heading", { name: /^PTO balance$/ })).toBeVisible({ timeout: 30_000 });
-    expect(elapsedMs(start)).toBeLessThan(60_000);
+    expect(elapsedMs(start)).toBeLessThan(30_000);
   });
 
   test("profile: home → primary sections ≤90s", async ({ page }) => {

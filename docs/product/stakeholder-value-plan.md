@@ -55,7 +55,7 @@ Track A **155/155** measures **feature audit closure**. Track B measures **refer
 | OKR | Target | Evidence |
 | --- | --- | --- |
 | Reference exit signed | 1 customer appendix complete | [reference-customer-exit-appendix-template.md](./reference-customer-exit-appendix-template.md) + `npm run verify:reference-exit` |
-| ESS friction | Top-5 tasks within scorecard budgets | [ess-friction-scorecard.md](./ess-friction-scorecard.md) + `tests/e2e/ess-friction-budgets.spec.ts` |
+| ESS friction | Top-5 tasks within scorecard budgets (**required** gate) | [ess-friction-scorecard.md](./ess-friction-scorecard.md) + `tests/e2e/ess-friction-budgets.spec.ts` |
 | W3 counsel | `w3_counsel_signoff_date` recorded | [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) + [us-federal-withholding-placeholder.md](../compliance/us-federal-withholding-placeholder.md) |
 | W7 COBRA | `w7_cobra_notice_state` = `workflow_only` until 027 | [cobra-aca-counsel-gate.md](../compliance/cobra-aca-counsel-gate.md) |
 | Honest demo | Zero Track D / mock / global-l10n in buyer script | [deferred-platform-track.md](./deferred-platform-track.md) |
@@ -131,7 +131,7 @@ Track A **155/155** measures **feature audit closure**. Track B measures **refer
 | --- | --- |
 | Doc drift | Zero “115 UAC” or “Tier 1 next” in active docs |
 | **Track B** reference exit | Signed appendix for ≥1 reference customer |
-| **Track B** friction | ESS scorecard green in CI when JWT provided |
+| **Track B** friction | ESS scorecard **required** for reference exit; green in CI when JWT provided |
 | Buyer demo | W1–W5 in &lt;30 min without `/mock`, `/global-l10n`, `/demo`, Track D |
 | W6 | Briefs 023–025 PO-approved + integration/smoke proof | **Met** — [features-023-025](./completion-audits/features-023-025.md) |
 | 022 | 8/8 UAC in completion audit |

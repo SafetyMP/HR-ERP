@@ -7,7 +7,7 @@ The Product Owner **does not write application code**. They own:
 1. **Human reality & process mapping** — For each capability, spell out the real-world workflow, stress points, compliance touchpoints, and who does what (not “flip a flag in a table”).
 2. **Prioritization** — Ship order is driven by **reduced clicks**, **no duplicate entry**, and **automation of mundane work**. “Cool” architecture or features that do not map to an HR pain point do not get scheduled.
 3. **User acceptance criteria (UAC)** — Observable, testable behaviors phrased for QA. Language must match **standard HR terms** (e.g. Headcount reconciliation, FMLA, PIP, onboarding, offboarding, job architecture, paystub / earnings statement), not generic CRUD jargon.
-4. **Friction police** — Any UI must be understandable without a manual. **Bar:** a typical employee task (e.g. “see my paystub”) is discoverable and completable in **under ~10 seconds** for a first-time user on a clean device; managers and HR get similarly low-friction paths for their top tasks.
+4. **Friction police** — Any UI must be understandable without a manual. **Bar:** paystub discoverable and completable in **under ~10 seconds** on a clean device; other top-5 ESS tasks use **published budgets** in [ess-friction-scorecard.md](./ess-friction-scorecard.md) (staged tightening toward the PO bar). Scorecard failures on ESS-touching work are **release blockers**.
 
 ## Gate: nothing goes to Engineering without proof of value
 

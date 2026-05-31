@@ -109,7 +109,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
           {ctx.managerChain.length === 0 ? (
             <p className="text-sm text-muted-foreground">No manager recorded.</p>
           ) : (
-            <ol className="list-decimal space-y-2 pl-5 text-sm text-zinc-800 dark:text-zinc-200">
+            <ol className="list-decimal space-y-2 pl-5 text-sm text-foreground">
               {ctx.managerChain.map((m) => (
                 <li key={m.employeeId}>{m.displayName}</li>
               ))}
@@ -127,7 +127,7 @@ export function OrganizationContextClient({ initialBearerToken }: Props) {
           {ctx.peers.length === 0 ? (
             <p className="text-sm text-muted-foreground">No peers found or you&apos;re the only report.</p>
           ) : (
-            <ul className="space-y-2 text-sm text-zinc-800 dark:text-zinc-200" role="list">
+            <ul className="space-y-2 text-sm text-foreground" role="list">
               {ctx.peers.map((p) => (
                 <li key={p.employeeId}>{p.displayName}</li>
               ))}

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
-import { HrPageShell } from "@/components/hr/hr-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -95,11 +94,7 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
   }
 
   return (
-    <HrPageShell
-      activePath="/hr/benefits/life-events"
-      onReload={() => void load()}
-      onSignOut={() => signOut()}
-    >
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Pending life events</CardTitle>
@@ -176,6 +171,6 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
           )}
         </CardContent>
       </Card>
-    </HrPageShell>
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
-import { HrPageShell } from "@/components/hr/hr-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,18 +61,14 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
 
   if (requests === null) {
     return (
-      <HrPageShell activePath="/hr/benefits/election-change-requests" onSignOut={() => signOut()}>
+      <div className="flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">Loading election change requests…</p>
-      </HrPageShell>
+      </div>
     );
   }
 
   return (
-    <HrPageShell
-      activePath="/hr/benefits/election-change-requests"
-      onReload={() => void load()}
-      onSignOut={() => signOut()}
-    >
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-semibold text-foreground">Election change requests</h1>
@@ -114,6 +109,6 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
           <Link href="/hr/dashboard">Back to HR dashboard</Link>
         </Button>
       </div>
-    </HrPageShell>
+    </div>
   );
 }

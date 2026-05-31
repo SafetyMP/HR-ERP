@@ -15,7 +15,7 @@ Engineering ships **workflow and artifacts**; counsel signs **statutory and noti
 | 1 | Engineering | `packages/payroll-calc` golden vectors + `policyReleaseId` on pay runs | Fingerprint replay documented |
 | 2 | Legal | Sign-off on [us-federal-withholding-placeholder.md](../compliance/us-federal-withholding-placeholder.md) checklist | Dated approval in compliance pack |
 | 3 | Payroll ops | Partner export (Feature 024) as default filing path | Successful handoff in staging |
-| 4 | Product | Feature brief **028** (partner filing UX + counsel package) PO-approved | UAC for HR ops demo — [028 brief](./feature-briefs/028-partner-filing-ux-counsel-package.md) |
+| 4 | Product | Feature brief **028** (partner filing UX + counsel package) | **Shipped** — [028 audit](./completion-audits/features-028.md) |
 
 **Do not claim:** IRS/HMRC certified in-app e-file. Buyer messaging: **partner handoff** from Feature 018 JSON artifacts.
 

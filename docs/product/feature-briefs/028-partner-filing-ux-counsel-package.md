@@ -1,7 +1,7 @@
 # Feature brief: Partner filing UX and counsel package (W3)
 
 **ID:** 028-partner-filing-ux-counsel-package  
-**Status:** PO approved  
+**Status:** PO approved — **Shipped** (audit [features-028](./completion-audits/features-028.md))  
 **Last updated:** 2026-05-30  
 
 ## PO gate (required before Engineering)

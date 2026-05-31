@@ -45,7 +45,7 @@ Mid-market target per [ADR 0009](../../specs/alignment/decisions/0009-mid-market
 | `/api/v1/me/pto/summary` | p95 ≤ 300 ms | same |
 | `/api/v1/me/attendance/today` | p95 ≤ 300 ms | same |
 | `/api/v1/me/profile` | p95 ≤ 300 ms | same |
-| ESS navigation (Playwright) | Paystub ≤ 10 s; others per [ess-friction-scorecard.md](../product/ess-friction-scorecard.md) | `ess-friction-budgets.spec.ts` |
+| ESS navigation (Playwright) | Paystub ≤ 10 s; time/PTO ≤ 30 s; others per [ess-friction-scorecard.md](../product/ess-friction-scorecard.md) | `ess-friction-budgets.spec.ts` |
 
 **Default probe:** 20 concurrent workers, 20 s duration, error rate < 0.1%:
 
