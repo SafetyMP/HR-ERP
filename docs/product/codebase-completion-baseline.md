@@ -2,7 +2,7 @@
 
 **Purpose:** Define how to answer “what percent complete?” without inventing a single orphan number. Aligns with the PO operating model (Feature briefs + numbered UAC).
 
-**Last inventory:** 2026-05-28 (Features **001**–**022**; Track A **155 UAC** total; **147** audited through **021** + **022** shell shipped)
+**Last inventory:** 2026-05-31 (Track A **001**–**022** = **155 UAC** met; briefs **023**–**028** audited separately — see §2d)
 
 **Shippable vs platform:** **Track A (Feature UAC)** is the authoritative bar for “product shipped.” Routes, demos, kernels, and docs in tree that are **not** tied to an approved Feature brief’s numbered UAC count as **platform / scaffold / demo** capability — useful, but not closure of PO scope.
 
@@ -26,7 +26,8 @@
 
 | Source | Count |
 | --- | ---: |
-| Feature briefs in `docs/product/feature-briefs/` | **22** (**001**–**022**) |
+| Feature briefs in `docs/product/feature-briefs/` (Track A denominator) | **22** (**001**–**022**) |
+| Extension briefs **023**–**028** (separate audits; not in 155) | **6** — see §2d |
 | Total numbered UAC (sum across briefs **001**–**013**, audited) | **85** |
 | Shipped / verified UAC (audited **001**–**013**) | **85** / **85** |
 | Shipped / verified UAC (audited **014**–**017**) | **30** / **30** |
@@ -41,7 +42,18 @@ Wave **014**–**017** audits: [`completion-audits/features-014-017.md`](./compl
 Wave **018**–**021** audits: [`completion-audits/features-018-021.md`](./completion-audits/features-018-021.md).  
 Wave **022** audit: [`completion-audits/features-022.md`](./completion-audits/features-022.md).
 
-**Primary product gap (prioritization):** Phase C connectors (**023–025**) and reference customer exit execution. **Forward plan:** [stakeholder-value-plan.md](./stakeholder-value-plan.md).
+**Primary product gap (prioritization):** **Track B** execution — reference customer exit appendix, ESS friction CI gate, W3 counsel signoff date, W7 COBRA PDF (027 blocked). Phase C (**023–025**) is **complete**. **Forward plan:** [stakeholder-value-plan.md](./stakeholder-value-plan.md).
+
+---
+
+## 2d. Extension briefs 023–028 (outside Track A 155)
+
+| Brief | Theme | Audit status |
+| --- | --- | --- |
+| 023–025 | SCIM/OIDC hardening, partner export, carrier stub | **Met** — [features-023-025.md](./completion-audits/features-023-025.md) |
+| 026 | Election change intent | **Met** — [features-026.md](./completion-audits/features-026.md) |
+| 027 | COBRA notice PDF | **Blocked** (counsel) — [features-027.md](./completion-audits/features-027.md) |
+| 028 | Partner filing UX | **Met** — [features-028.md](./completion-audits/features-028.md) |
 
 ---
 
@@ -65,7 +77,8 @@ Point-in-time inventory of what exists **in-repo** beneath track A — UAC closu
 
 ### Web application (Next.js App Router)
 
-- **Home:** [`src/app/page.tsx`](../../src/app/page.tsx) — employee CTAs (**001**–**007**, **009**–**010**, **012**), manager/HR links for **008** and Feature **011** bundle (team leave, punch corrections, review queue, onboarding templates, tax docs, org context, separation).
+- **Employee home:** [`src/app/employee/page.tsx`](../../src/app/employee/page.tsx) — portal landing with Feature **022** shell ([`layout.tsx`](../../src/app/employee/layout.tsx)), prefetch for ESS reads (`prefetchEssHomePage`).
+- **Marketing home:** [`src/app/page.tsx`](../../src/app/page.tsx) — links to `/employee`, manager/HR paths, Feature **011** bundle (team leave, punch corrections, review queue, onboarding templates, tax docs, org context, separation).
 - **Employee profile:** [`src/app/employee/profile/page.tsx`](../../src/app/employee/profile/page.tsx) — HR profile read / guarded self-update (`EmployeeProfileClient`).
 - **Employee benefits:** [`src/app/employee/benefits/page.tsx`](../../src/app/employee/benefits/page.tsx) — enrollment summary (`BenefitsClient`).
 - **Employee PTO:** [`src/app/employee/pto/page.tsx`](../../src/app/employee/pto/page.tsx) — read-only balance + recorded dates (`PtoClient`).
@@ -149,7 +162,7 @@ flowchart LR
 
 ---
 
-## 2d. Repo agent skills — gap lens versus inventory above
+## 2e. Repo agent skills — gap lens versus inventory above
 
 Skills live under [`.cursor/skills/*/SKILL.md`](../../.cursor/skills/). They are **orchestration lenses** applied when touching certain paths — not a second product backlog. “Still needed” means the skill stays relevant because the domain is **partially implemented** or **thin** versus production intent.
 
@@ -167,11 +180,11 @@ The long global **Cursor marketplace** skill list does **not** replace the revam
 
 ---
 
-## 2e. Primary product backlog (track A recap)
+## 2f. Primary product backlog (recap)
 
-**Features 001–013** are **closed** against numbered UAC (85/85) — see **§3**–**§3e** and [`completion-audits/features-006-013.md`](./completion-audits/features-006-013.md).
+**Track A (001–022):** **155/155** UAC met — audits through [`features-022.md`](./completion-audits/features-022.md).
 
-**Next:** Implement Feature briefs **014**–**017**; platform deferrals reaffirmed in [`deferred-platform-track.md`](./deferred-platform-track.md) (2026-05-18 gap analysis).
+**Extension (023–028):** Phase C and Track B briefs per §2d; primary forward work is **Track B** (reference exit, ESS friction, counsel gates) — [`stakeholder-value-plan.md`](./stakeholder-value-plan.md). Platform deferrals: [`deferred-platform-track.md`](./deferred-platform-track.md).
 
 ---
 

@@ -12,7 +12,7 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 
 | # | Criterion | Route / artifact | Owner | Counsel? |
 | --- | --- | --- | --- | --- |
-| 1 | Employees access pay, time, PTO, profile, benefits, learning in one portal | `/employee/*`, briefs 001–007, 017, 022 shell | Product | No |
+| 1 | Employees access pay, time, PTO, profile, benefits, learning in one portal | `/employee` home + `/employee/*`, briefs 001–007, 017, 022 shell | Product | No |
 | 2 | Managers run workforce without third ATS for standard reqs | `/manager/recruiting`, `/manager/team-attendance`, 014–020 | Product | No |
 | 3 | HR runs pay periods in-app | `/hr/payroll-runs`, `/hr/payroll-runs/[periodId]` | Payroll ops | No |
 | 4 | Period lock + exception queue operational | `POST .../lock`, exception APIs, brief 018 | Payroll ops | No |
@@ -32,6 +32,7 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 
 | Capability | URL | API | Brief |
 | --- | --- | --- | --- |
+| Employee home | `/employee` | Aggregated `/api/v1/me/*` reads (prefetch) | 022 |
 | Current paystub | `/employee/paystub` | `GET /api/v1/me/paystub/current` | 001 |
 | Pay history | `/employee/paystub/history` | `GET /api/v1/me/paystub/history` | 007 |
 | Time clock | `/employee/time` | `/me/attendance/*` | 002 |
@@ -39,6 +40,7 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | Profile | `/employee/profile` | `/me/profile` | 004 |
 | Benefits | `/employee/benefits` | `/me/benefits/summary` | 003 |
 | Life events | `/employee/benefits/life-events` | life-events CRUD | 019 |
+| Election change intent | `/employee/benefits/election-change` | election-change requests | 026 |
 | Learning | `/employee/learning` | `/me/learning/enrollments` | 017 |
 
 **Shell:** Feature 022 — persistent nav on all `/employee/*` routes.
@@ -53,8 +55,9 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | 2 | Review period detail | `/hr/payroll-runs/[periodId]` | 016, 018 |
 | 3 | Resolve exceptions | Exception queue APIs | 018 |
 | 4 | Lock period | `POST .../lock` | 018 |
-| 5 | Export filing artifact | Filing JSON download (partner handoff) | 018 |
-| 6 | Employee paystub reflects same `PaymentInstruction` rows | Cross-check 001 vs 016 | W2 |
+| 5 | Export filing artifact | Filing JSON download (partner handoff) | 018, 028 |
+| 6 | Partner export from period UI | **Export for partner** on locked period | 024, 028 |
+| 7 | Employee paystub reflects same `PaymentInstruction` rows | Cross-check 001 vs 016 | W2 |
 
 **Not in scope for exit:** IRS/HMRC live e-file, certified statutory tables, W-2 PDF delivery to employees.
 
@@ -67,6 +70,7 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | Capability | Status | Gap |
 | --- | --- | --- |
 | Enrollment summary | Shipped (003) | — |
+| Election change intent | Shipped (026) | — |
 | Life event submit + HR queue | Shipped (019) | — |
 | COBRA notice PDF | **Not shipped** | Counsel gate — workflow creates `PENDING_NOTICE` only |
 | Carrier 834 | **Deferred** | Brief 025 outbound stub; full 834 Phase C+ |

@@ -14,6 +14,7 @@ node_modules.bak.*/
 
 # testing
 /coverage
+/test-results/
 /tests/generated/
 
 # next.js

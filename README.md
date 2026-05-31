@@ -7,7 +7,7 @@ The repo supports **human contributors and Cursor-orchestrated agents**; orchest
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node.js-22+-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-**Jump to:** [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
+**Jump to:** [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
 
 ---
 
@@ -15,7 +15,8 @@ The repo supports **human contributors and Cursor-orchestrated agents**; orchest
 
 | Area | Location |
 | --- | --- |
-| **Web app** | [`src/app/`](src/app/) — dashboards (`/analytics`), **Phase 3 capability hub** (`/demo/capabilities` when `ANALYTICS_DEMO_MODE=1`), L10n lab, governance APIs, versioned REST under `/api/v1`. |
+| **Web app** | [`src/`](src/README.md) — **employee home** ([`/employee`](src/app/employee/)) with Feature **022** shell; manager/HR routes; dashboards (`/analytics`); **Phase 3 capability hub** (`/demo/capabilities` when `ANALYTICS_DEMO_MODE=1`); L10n lab; governance APIs; versioned REST under `/api/v1`. |
+| **Server modules** | [`lib/`](lib/README.md) — domain logic, security, integrations ([`CODEBASE.md`](CODEBASE.md)) |
 | **Data plane** | [`prisma/`](prisma/) — app DB and RLS-oriented migrations; optional **bounded-context** Postgres via Docker ([`docker-compose.yml`](docker-compose.yml)). |
 | **Security** | [`middleware.ts`](middleware.ts) for `/api/v1/*`; tenant session GUCs via [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts). |
 | **Contracts** | OpenAPI in [`contracts/openapi/`](contracts/openapi/) and Protobuf in [`proto/`](proto/) (see `npm run contracts:*`). |
@@ -52,27 +53,58 @@ npm run dev
 - **`demo:bootstrap`** applies Prisma migrations (unless you pass `--skip-migrate`), predictive HR seed, global L10n demo data, US/JP holiday import, and the **Phase 3** snapshot slice (performance, compensation, LMS, workflow, engagement, webhooks, COBRA).
 - Set **`ANALYTICS_DEMO_MODE=1`** and **`DEMO_TENANT_ID`** (must match your seeded tenant) in `.env` to enable **read-only demo Postgres surfaces**: predictive dashboards under [`src/app/analytics`](src/app/analytics) and the **[capability hub](http://localhost:3000/demo/capabilities)** (`/demo/capabilities`).
 
-Open [http://localhost:3000](http://localhost:3000). From home, use **Platform capabilities (Phase 3)** for the hub and **Analytics & global labs** for churn/skills/benchmarks/L10n.
+Open [http://localhost:3000/employee](http://localhost:3000/employee) for the **employee portal** (pay, time, PTO, benefits, profile). The marketing home at `/` links manager/HR paths; with `ANALYTICS_DEMO_MODE=1`, use **Platform capabilities (Phase 3)** at `/demo/capabilities` and **Analytics & global labs** for churn/skills/benchmarks/L10n.
 
+**Buyer demos:** Use W1–W5 ESS paths only — do not list Track D, `/mock`, or `/global-l10n` as shipped product ([`docs/product/deferred-platform-track.md`](docs/product/deferred-platform-track.md)).
 
-**Deeper setup** (multiple databases, Kafka, workers): [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
+**Deeper setup** (multiple databases, Kafka, workers, sign-in): [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
 ---
 
 ## Documentation
 
+Full index: **[`docs/README.md`](docs/README.md)**.
+
+### Getting started
+
 | Resource | Description |
 | --- | --- |
-| **[`docs/README.md`](docs/README.md)** | Index of human-written docs (architecture, security, product, operations). |
-| **[`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md)** | Local dev, scripts, layout, troubleshooting. |
-| **[`AGENTS.md`](AGENTS.md)** | Cursor/agent orchestration, skills, Definition of Done. |
-| **[`CONTRIBUTING.md`](CONTRIBUTING.md)** | Branches, conventional commits, PR bar, migrations, synthetic data. |
-| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** | Community norms (Contributor Covenant). |
-| **[`SECURITY.md`](SECURITY.md)** | Vulnerability disclosure (private reporting). |
-| **[`CHANGELOG.md`](CHANGELOG.md)** | Release history (semantic-release on `main` / `master`). |
-| **[`docs/QA.md`](docs/QA.md)** | Tests, fixtures, `FAILURE_SUMMARY` handoffs. |
-| **[`FRONTEND.md`](FRONTEND.md)** | UI state, accessibility, API error handling. |
-| **[`docker/README.md`](docker/README.md)** | OCI image usage and Compose overlay for the app. |
+| [`CODEBASE.md`](CODEBASE.md) | Where code lives: `lib/`, `src/`, `scripts/`, `tests/` |
+| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Local dev, auth, scripts, layout, troubleshooting |
+| [`docs/QA.md`](docs/QA.md) | Tests, fixtures, `FAILURE_SUMMARY` handoffs |
+| [`FRONTEND.md`](FRONTEND.md) | UI patterns, employee shell (022), a11y, API errors |
+| [`docker/README.md`](docker/README.md) | OCI image and Compose overlay |
+
+### Product and agents
+
+| Resource | Description |
+| --- | --- |
+| [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md) | Active forward plan (Track A/B/C, W1–W7) |
+| [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit |
+| [`AGENTS.md`](AGENTS.md) | Cursor orchestration, skills, Definition of Done |
+| [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md) | Operator loop (`governance:*`, `/multitask`) |
+
+### Engineering and community
+
+| Resource | Description |
+| --- | --- |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Branches, PR bar, migrations, synthetic data |
+| [`SECURITY.md`](SECURITY.md) | Vulnerability disclosure |
+| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community norms |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release history (semantic-release) |
+
+---
+
+## Authentication & API access
+
+| Context | How |
+| --- | --- |
+| **Local API** | `npm run jwt:dev` (or `jwt:dev:demo-employee`, `jwt:dev:demo-manager`, `jwt:dev:demo-hr`) — signs with `JWT_SECRET` in `.env`; see [`.env.example`](.env.example). |
+| **Vercel production API** | `npm run jwt:dev:vercel` uses deployment secrets; production mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization). |
+| **Browser sign-in** | Neon Auth (Google) or OIDC when configured — [phase 1 production checklist](docs/operations/phase1-production-checklist.md). |
+| **Demo preview** | Automatic on Vercel Preview and local dev; Production requires explicit flags — see checklist and [`AGENTS.md`](AGENTS.md) safety notes. |
+
+`/api/v1/*` expects `Authorization: Bearer <JWT>` unless a route documents session/cookie auth.
 
 ---
 
@@ -89,20 +121,35 @@ Open [http://localhost:3000](http://localhost:3000). From home, use **Platform c
 
 ## npm scripts (shortlist)
 
+### App and quality
+
 | Command | Use |
 | --- | --- |
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm run start` | Start production server (after `build`) |
+| `npm run dev` / `build` / `start` | Dev server, production build, serve |
 | `npm run lint` | ESLint |
-| `npm run test` / `npm run test:e2e` | Vitest / Playwright |
+| `npm run test` / `test:e2e` | Vitest / Playwright |
 | `npm run security:scan` | Repository security scan |
-| `npm run db:up` / `npm run db:up:arch` | Docker: default stack vs architecture profile |
-| `npm run db:migrate:deploy` | Apply migrations (CI / deploy-style) |
-| `npm run demo:bootstrap` | One-shot local demo data |
-| `npm run db:migrate` | Author migrations interactively (`migrate dev`) |
-| `npm run db:studio` | Prisma Studio |
 | `npm run contracts:openapi` / `contracts:buf` | Contract lint |
+
+### Database and demo
+
+| Command | Use |
+| --- | --- |
+| `npm run db:up` / `db:up:arch` | Docker: default stack vs architecture profile |
+| `npm run db:migrate:deploy` / `db:migrate` | Deploy vs author migrations |
+| `npm run demo:bootstrap` | One-shot local demo data |
+| `npm run db:studio` | Prisma Studio |
+
+### Auth, governance, and ops
+
+| Command | Use |
+| --- | --- |
+| `npm run jwt:dev` / `jwt:dev:demo-*` | Dev JWT — [Authentication](#authentication--api-access) |
+| `npm run governance:lint` / `governance:ci` | Agent harness tier + merge gates |
+| `npm run check:lib-boundaries` | Forbidden cross-import check |
+| `npm run verify:reference-exit` | Reference-customer exit artifact check |
+| `npm run ops:smoke` | Staging smoke — [phase 1 checklist](docs/operations/phase1-production-checklist.md) |
+| `npm run worker:integrations` / `worker:webhooks` | BullMQ workers |
 
 See [`package.json`](package.json) for the full list.
 
@@ -112,7 +159,7 @@ See [`package.json`](package.json) for the full list.
 
 - **Docs:** [`docs/security/stack-decision.md`](docs/security/stack-decision.md), [`docs/security/policy-catalog.md`](docs/security/policy-catalog.md), [`docs/security/rls-session-contract.md`](docs/security/rls-session-contract.md), [`docs/security/tls-and-data-at-rest.md`](docs/security/tls-and-data-at-rest.md)
 - **CI:** [`npm run security:scan`](scripts/security-scan.mjs); ESLint rules around unsafe raw SQL ([`eslint.config.mjs`](eslint.config.mjs))
-- **Dev JWT:** `node scripts/issue-dev-jwt.mjs` (requires `JWT_SECRET` in `.env`)
+- **Dev JWT:** `npm run jwt:dev` (requires `JWT_SECRET` in `.env`)
 
 ---
 

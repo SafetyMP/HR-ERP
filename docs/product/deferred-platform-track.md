@@ -38,8 +38,8 @@ Implementation: [`lib/api/v1/track-d-guard.ts`](../../lib/api/v1/track-d-guard.t
 | Brief | Theme | Status |
 | --- | --- | --- |
 | [026](./feature-briefs/026-benefits-election-change-intent.md) | In-app election change intent | **Shipped** — [audit](./completion-audits/features-026.md) |
-| 027 (planned) | COBRA notice PDF | Counsel-gated — [027 brief](./feature-briefs/027-cobra-notice-pdf.md) |
-| 028 (planned) | Production payroll counsel + partner filing UX | W3 — [028 brief](./feature-briefs/028-partner-filing-ux-counsel-package.md) |
+| [027](./feature-briefs/027-cobra-notice-pdf.md) | COBRA notice PDF | **Blocked (counsel)** — [audit](./completion-audits/features-027.md) |
+| [028](./feature-briefs/028-partner-filing-ux-counsel-package.md) | Partner filing UX + counsel package (W3) | **Shipped** — [audit](./completion-audits/features-028.md) |
 | 029 (optional) | Promote **one** Track D surface with UAC or delete scaffold | **Deferred** — [track-d-po-decision.md](./track-d-po-decision.md) |
 
 ## Archived future-platform docs

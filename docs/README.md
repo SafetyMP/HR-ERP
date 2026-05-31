@@ -2,6 +2,8 @@
 
 Start here to navigate human-written docs. Cursor agent orchestration and skills live under [`.cursor/`](../.cursor/).
 
+**Product status (quick map):** Track A **001–022** = **155/155 UAC** met → Phase C **023–025** met → Track B (reference exit, ESS friction, counsel) — [stakeholder-value-plan.md](./product/stakeholder-value-plan.md).
+
 ## Legal / licensing
 
 | Resource | Purpose |
@@ -23,6 +25,22 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Branches, PR bar, synthetic data, migration rules |
 | [community/README.md](./community/README.md) | External contributors, bug → Orchestrator handoffs |
 | [QA.md](./QA.md) | Test layers, fixtures, `FAILURE_SUMMARY` for CI failures |
+
+## Meta / agent orchestration
+
+| Doc | Purpose |
+| --- | --- |
+| [meta/agent-team-map.md](./meta/agent-team-map.md) | Team roster, lanes, skills |
+| [meta/cursor-3-native-runtime.md](./meta/cursor-3-native-runtime.md) | Cursor 3 operator loop (`governance:lint`, `/multitask`, `/worktree`) |
+| [../specs/templates/collaboration-plan.md](../specs/templates/collaboration-plan.md) | Harness HITL collaboration phases (ADR 0020) |
+
+## Code navigation
+
+| Resource | Purpose |
+| --- | --- |
+| [../CODEBASE.md](../CODEBASE.md) | Repo-wide map: `lib/`, `src/`, `scripts/`, `tests/` |
+| [../lib/README.md](../lib/README.md) | Server module folders and boundaries |
+| [../src/README.md](../src/README.md) | App Router segments and conventions |
 
 ## Architecture and alignment
 
@@ -53,17 +71,51 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 
 ## Product
 
+### Forward plan and buyer-ready (Track B)
+
 | Doc | Purpose |
 | --- | --- |
-| [product/stakeholder-value-plan.md](./product/stakeholder-value-plan.md) | **Single active forward plan** — truth baseline, W1–W7, P0–P3 priorities |
-| [product/reference-customer-exit-runbook.md](./product/reference-customer-exit-runbook.md) | Phase B exit checklist for reference customers |
-| [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | How Feature briefs and UAC work |
+| [product/stakeholder-value-plan.md](./product/stakeholder-value-plan.md) | **Single active forward plan** — W1–W7, P0–P3, briefs 023–028 status |
+| [product/reference-customer-exit-runbook.md](./product/reference-customer-exit-runbook.md) | Reference customer exit checklist (`/employee`, payroll, integrations) |
+| [product/reference-customer-exit-pilot-checklist.md](./product/reference-customer-exit-pilot-checklist.md) | Pilot gate before signed exit appendix |
+| [product/ess-friction-scorecard.md](./product/ess-friction-scorecard.md) | ESS task budgets + Playwright friction specs (**required** exit gate) |
+| [product/counsel-track-w3-w7.md](./product/counsel-track-w3-w7.md) | W3 withholding + W7 COBRA counsel gates |
+| [product/deferred-platform-track.md](./product/deferred-platform-track.md) | Track D quarantine, demo routes, briefs 026–029 backlog |
+
+### PO process and measurement
+
+| Doc | Purpose |
+| --- | --- |
+| [product/hr-product-owner-operating-model.md](./product/hr-product-owner-operating-model.md) | Feature briefs and numbered UAC |
 | [product/feature-brief-template.md](./product/feature-brief-template.md) | Template for shippable capabilities |
-| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Completion measurement (tracks A/B/C); section 2c platform inventory + diagram; section 2d skills gap lens; Feature 001 backlog / audit sections |
-| [product/competitive-benchmark-executive-brief.md](./product/competitive-benchmark-executive-brief.md) | Multi-segment competitive benchmark (operations lens) — executive summary |
-| [product/competitive-ops-tco-worksheet.md](./product/competitive-ops-tco-worksheet.md) | Illustrative operate TCO vs SaaS PEPM by segment |
-| [product/competitive-ops-inventory.md](./product/competitive-ops-inventory.md) | Validated production/CI/worker inventory for benchmark |
-| [../specs/competitive-analysis-roadmap.md](../specs/competitive-analysis-roadmap.md) | Competitive parity matrix, roadmap tiers, strategic priorities |
+| [product/feature-briefs/](./product/feature-briefs/) | Briefs **001**–**028** (canonical specs) |
+| [product/codebase-completion-baseline.md](./product/codebase-completion-baseline.md) | Tracks A/B/C; §2c platform inventory; §2d briefs 023–028; per-feature audits §3+ |
+
+### Completion audits
+
+Index: [product/completion-audits/README.md](./product/completion-audits/README.md).
+
+| Wave | Audit |
+| --- | --- |
+| **001–013** | [codebase-completion-baseline.md](./product/codebase-completion-baseline.md) §3–§3e |
+| **006–013** | [features-006-013.md](./product/completion-audits/features-006-013.md) |
+| **014–017** | [features-014-017.md](./product/completion-audits/features-014-017.md) |
+| **018–021** | [features-018-021.md](./product/completion-audits/features-018-021.md) |
+| **022** (shell) | [features-022.md](./product/completion-audits/features-022.md) |
+| **023–025** (Phase C) | [features-023-025.md](./product/completion-audits/features-023-025.md) |
+| **026** | [features-026.md](./product/completion-audits/features-026.md) |
+| **027** (blocked) | [features-027.md](./product/completion-audits/features-027.md) |
+| **028** | [features-028.md](./product/completion-audits/features-028.md) |
+| Exit validation | [reference-customer-exit-validation.md](./product/completion-audits/reference-customer-exit-validation.md) |
+
+### Competitive and market
+
+| Doc | Purpose |
+| --- | --- |
+| [product/competitive-benchmark-executive-brief.md](./product/competitive-benchmark-executive-brief.md) | Executive summary (operations lens) |
+| [product/competitive-ops-tco-worksheet.md](./product/competitive-ops-tco-worksheet.md) | Illustrative operate TCO vs SaaS PEPM |
+| [product/competitive-ops-inventory.md](./product/competitive-ops-inventory.md) | Production/CI/worker inventory for benchmark |
+| [../specs/competitive-analysis-roadmap.md](../specs/competitive-analysis-roadmap.md) | Parity matrix and strategic priorities |
 
 ## Operations
 

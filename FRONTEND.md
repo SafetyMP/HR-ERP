@@ -2,6 +2,13 @@
 
 Patterns introduced with the enterprise UI scaffold live under [`src/app`](/src/app) plus feature folders in [`src/features`](/src/features).
 
+## Employee shell (Feature 022)
+
+- **Layout:** [`src/app/employee/layout.tsx`](src/app/employee/layout.tsx) — persistent nav for all `/employee/*` routes.
+- **Home:** [`src/app/employee/page.tsx`](src/app/employee/page.tsx) — portal landing; server-side `prefetchEssHomePage` + [`MeQueryHydrator`](src/components/ess/me-query-hydrator.tsx) hydrate TanStack Query for common `/api/v1/me/*` reads.
+- **Route errors:** Per-route `error.tsx` under `src/app/employee/*` keeps failures localized.
+- **UX budgets:** Top ESS tasks and Playwright friction specs — [ess-friction-scorecard.md](docs/product/ess-friction-scorecard.md).
+
 ## State layering
 
 - **TanStack Query**: server state (caches, retries). Global mutation errors surface polite toasts via Sonner in [`src/app/providers.tsx`](src/app/providers.tsx).

@@ -34,17 +34,28 @@
 
 Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-audits/features-022.md).
 
+### Track A extension — briefs 023–028 (separate UAC audits)
+
+Not merged into the **155** Track A denominator unless PO re-baselines. Status from completion audits:
+
+| Briefs | Theme | Status | Audit |
+| --- | --- | --- | --- |
+| 023–025 | Phase C connectors (SCIM, partner export, carrier stub) | **Met** | [features-023-025](./completion-audits/features-023-025.md) |
+| 026 | Benefits election change intent (W7 UX) | **Shipped** | [features-026](./completion-audits/features-026.md) |
+| 027 | COBRA notice PDF | **Blocked** (counsel gates 1–4) | [features-027](./completion-audits/features-027.md) |
+| 028 | Partner filing UX + counsel package (W3) | **Shipped** (UX; counsel signoff pending) | [features-028](./completion-audits/features-028.md) |
+
 ### Win scorecard (W1–W7)
 
 | # | Claim | Status | Evidence |
 | --- | --- | --- | --- |
-| W1 | One portal (pay, time, leave, profile, benefits, learning) | **Met** | Briefs 001–007, 017; `/employee/*` shell (022) |
+| W1 | One portal (pay, time, leave, profile, benefits, learning) | **Met** | Briefs 001–007, 017; `/employee` home + `/employee/*` shell (022) |
 | W2 | Native payroll, not CSV circus | **Met** | `/hr/payroll-runs`, kernel fingerprints, paystub from same rows |
 | W3 | Ownable, replayable policy | **Partial** | `packages/payroll-calc`, ADR 0005/0007; not IRS/HMRC certified |
 | W4 | Enforceable tenancy | **Met** | JWT → ABAC → RLS; SCIM/integration tests |
 | W5 | Hiring managers without separate ATS | **Met** | `/manager/recruiting` through offer (014, 020) |
 | W6 | Integrations without Zapier for core paths | **Met** | SCIM hardened (023), partner export (024), carrier stub (025) |
-| W7 | Benefits operational, not PDF-only | **Partial** | Life events (019); COBRA notice PDF counsel-gated |
+| W7 | Benefits operational, not PDF-only | **Partial** | Life events (019); election intent (026); COBRA PDF blocked (027) |
 
 **Buyer demo target:** Prove **W1–W5** in ≤30 minutes without mock/demo routes.
 
@@ -103,14 +114,16 @@ Track A **155/155** measures **feature audit closure**. Track B measures **refer
 | [024](./feature-briefs/024-payroll-partner-export-connector.md) | Payroll partner export — [audit](./completion-audits/features-023-025.md) |
 | [025](./feature-briefs/025-benefits-carrier-outbound-stub.md) | Benefits carrier outbound stub — [audit](./completion-audits/features-023-025.md) |
 
-**Target:** W6 **Met** (3 connectors with PO briefs + smoke/integration proof).
+**Complete:** W6 **Met** — [features-023-025](./completion-audits/features-023-025.md).
 
-### P3 — Value + efficiency (ongoing)
+### P3 — Track B buyer-ready (ongoing)
 
-- [ess-friction-scorecard.md](./ess-friction-scorecard.md) — Playwright budgets for top-5 ESS
-- Brief **026** election change intent (W7 UX) — [026-benefits-election-change-intent.md](./feature-briefs/026-benefits-election-change-intent.md)
-- [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) — W3/W7 gates before production claims
-- `defineV1Route` + `useAuthenticatedResource` on `/api/v1/me/*` reads — **in progress / largely complete**
+- [reference-customer-exit-runbook.md](./reference-customer-exit-runbook.md) + `npm run verify:reference-exit` — signed appendix for ≥1 reference customer
+- [ess-friction-scorecard.md](./ess-friction-scorecard.md) — Playwright budgets for top-5 ESS (**required** exit gate)
+- Brief **026** election change intent — **shipped** — [features-026](./completion-audits/features-026.md)
+- Brief **028** partner filing UX — **shipped** — [features-028](./completion-audits/features-028.md); record `w3_counsel_signoff_date` via [counsel-track-w3-w7.md](./counsel-track-w3-w7.md)
+- Brief **027** COBRA notice PDF — **blocked** on counsel gates — [features-027](./completion-audits/features-027.md)
+- `defineV1Route` + shared query hooks on `/api/v1/me/*` reads — largely complete
 - [lib-module-boundaries.md](../architecture/lib-module-boundaries.md) + `npm run check:lib-boundaries`
 - **Do not** fund Core HR DB extraction (ADR 0013 Proposed) or payroll cutover until reference customer exit is documented
 
@@ -135,6 +148,8 @@ Track A **155/155** measures **feature audit closure**. Track B measures **refer
 | Buyer demo | W1–W5 in &lt;30 min without `/mock`, `/global-l10n`, `/demo`, Track D |
 | W6 | Briefs 023–025 PO-approved + integration/smoke proof | **Met** — [features-023-025](./completion-audits/features-023-025.md) |
 | 022 | 8/8 UAC in completion audit |
+| 026 / 028 | Shipped per completion audits (not in 155 denominator) |
+| 027 | Blocked until counsel gates — `w7_cobra_notice_state` = `workflow_only` |
 | **Track C** lib boundaries | `check:lib-boundaries` in CI |
 | Agent canon | [specs/references.md](../../specs/references.md) in-repo paths only |
 
@@ -142,8 +157,10 @@ Track A **155/155** measures **feature audit closure**. Track B measures **refer
 
 ## 6. Related documents
 
-- [goal-beat-bamboohr-plus-payroll-stack.md](./goal-beat-bamboohr-plus-payroll-stack.md) — north star
-- [codebase-completion-baseline.md](./codebase-completion-baseline.md) — UAC math
-- [competitive-analysis-roadmap.md](../../specs/competitive-analysis-roadmap.md) — parity matrix
-- [deferred-platform-track.md](./deferred-platform-track.md) — demo + Track D
-- [reference-customer-exit-runbook.md](./reference-customer-exit-runbook.md) — Phase B exit
+| Track | Documents |
+| --- | --- |
+| **North star** | [goal-beat-bamboohr-plus-payroll-stack.md](./goal-beat-bamboohr-plus-payroll-stack.md) |
+| **Track A (155 UAC)** | [codebase-completion-baseline.md](./codebase-completion-baseline.md) · [completion-audits/README.md](./completion-audits/README.md) |
+| **Phase C / 023–028** | [completion-audits/features-023-025.md](./completion-audits/features-023-025.md) · [features-026.md](./completion-audits/features-026.md) · [features-027.md](./completion-audits/features-027.md) · [features-028.md](./completion-audits/features-028.md) |
+| **Track B exit** | [reference-customer-exit-runbook.md](./reference-customer-exit-runbook.md) · [ess-friction-scorecard.md](./ess-friction-scorecard.md) · [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) |
+| **Platform / demo** | [deferred-platform-track.md](./deferred-platform-track.md) · [competitive-analysis-roadmap.md](../../specs/competitive-analysis-roadmap.md) |

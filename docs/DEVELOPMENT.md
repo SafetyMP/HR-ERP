@@ -4,7 +4,7 @@ This guide gets a **working app + database** on your machine. For architecture t
 
 ## Prerequisites
 
-- **Node.js** 20+ (matches `@types/node` in `package.json`).
+- **Node.js** 22+ (matches CI, production container, and [`README.md`](../README.md)).
 - **npm** (repo uses `package-lock.json`).
 - **Docker Desktop** (or compatible engine) for Postgres and Redis.
 
@@ -91,61 +91,55 @@ Verify migration hygiene (orphan checks, optional advanced flows): `npm run db:v
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). With `ANALYTICS_DEMO_MODE=1` and `DEMO_TENANT_ID` set, open [http://localhost:3000/demo/capabilities](http://localhost:3000/demo/capabilities) for the Phase 3 seed snapshot (counts align after `npm run demo:bootstrap`).
+Open [http://localhost:3000/employee](http://localhost:3000/employee) for the **employee portal home** (Feature 022 shell; server prefetch for common `/api/v1/me/*` reads). Marketing links live at `/`; manager and HR routes are linked from there.
 
-### Authenticated API smoke tests
+With `ANALYTICS_DEMO_MODE=1` and `DEMO_TENANT_ID` set, open [http://localhost:3000/demo/capabilities](http://localhost:3000/demo/capabilities) for the Phase 3 seed snapshot (counts align after `npm run demo:bootstrap`). Buyer demos should use ESS paths only — see [deferred-platform-track.md](./product/deferred-platform-track.md).
 
-`/api/v1/*` expects `Authorization: Bearer <JWT>`. Issue a dev token (requires `JWT_SECRET` in `.env`):
+## 6. Sign-in and tokens
 
-```bash
-node scripts/issue-dev-jwt.mjs
-```
-
-Use the printed token in `curl` or API clients.
-
-## Repository layout (where code lives)
-
-| Path | Role |
+| Mode | Setup |
 | --- | --- |
-| `src/app/` | Next.js App Router: pages, layouts, route handlers |
-| `src/components/` | Shared UI primitives (Radix-based) |
-| `src/features/` | Feature-oriented UI modules |
-| `lib/` | Server libraries shared by API routes (security, Prisma helpers, integrations) |
-| `src/lib/` | Client-oriented helpers (`fetch`, errors, utils) |
-| `prisma/` | App database schema and migrations |
-| `packages/payroll-calc/` | Deterministic payroll calculation package (workspace) |
-| `services/` | Python pipelines, ML serving, bounded-context SQL migrations |
-| `workers/` | Kafka outbox publisher and related workers |
-| `contracts/` | OpenAPI specs (Spectral lint) |
-| `proto/` | Protobuf + Buf config |
-| `tests/` | Vitest unit/integration + Playwright e2e |
-| `scripts/` | One-off tooling (seed, security scan, QA helpers) |
+| **Dev JWT (API/scripts)** | `npm run jwt:dev` — requires `JWT_SECRET` in `.env`. Personas: `jwt:dev:demo-employee`, `jwt:dev:demo-manager`, `jwt:dev:demo-hr`. Against Vercel Production secrets: `jwt:dev:vercel` (Human ack: `ALLOW_PRODUCTION_JWT_MINT=1` for production mint). |
+| **Neon Auth / Google** | `NEON_AUTH_*` in `.env` — trusted origins and callback URL rules in [phase1-production-checklist.md](./operations/phase1-production-checklist.md). |
+| **OIDC** | `OIDC_*` when Neon Auth is unset — see `.env.example`. |
+| **Demo preview (browser)** | Automatic on Preview deploys and local dev; Production flags in checklist — never set `NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN` on Production. |
 
-Generated Prisma client output may appear under `src/app/generated/prisma/` after `prisma generate`; treat it as build output unless your team standardizes otherwise.
+Use the printed Bearer token in `curl` or API clients for `/api/v1/*` smoke tests.
 
-## Common npm scripts
+## 7. Repository layout (where code lives)
 
-| Script | Purpose |
+**Code map:** [`CODEBASE.md`](../CODEBASE.md) — links to per-tree indexes below.
+
+| Path | Index |
 | --- | --- |
-| `npm run dev` | Next.js dev server |
-| `npm run build` | `prisma generate` + production build |
-| `npm run lint` | ESLint |
-| `npm run test` | Vitest (unit/integration per config) |
-| `npm run test:e2e` | Playwright |
-| `npm run security:scan` | Custom security scan (see `scripts/security-scan.mjs`) |
-| `npm run contracts:openapi` | Spectral lint on `contracts/openapi/` |
-| `npm run contracts:buf` | Buf lint on `proto/` |
-| `npm run db:studio` | Prisma Studio |
-| `npm run db:migrate:deploy` | Apply migrations (`prisma migrate deploy`) |
-| `npm run db:migrate` | Interactive migration authoring (`prisma migrate dev`) |
-| `npm run demo:bootstrap` | Migrate + predictive seed + L10n + US/JP holidays (see flags in §4) |
-| `npm run db:seed:predictive` | Seed predictive HR demo data |
-| `npm run outbox:kafka` | Run outbox publisher (needs Kafka + `OUTBOX_DATABASE_URL` / env from `.env.example`) |
-| `npm run worker:integrations` | Integration worker entry (Redis / BullMQ) |
+| [`lib/`](../lib/README.md) | Server domain modules (payroll, benefits, security, …) |
+| [`src/`](../src/README.md) | App Router UI + client `src/lib/` |
+| [`scripts/`](../scripts/README.md) | CLI grouped by database, auth, governance, workers |
+| [`tests/`](../tests/README.md) | Vitest + Playwright layout |
+| [`packages/`](../packages/README.md) | `@hr-erp/payroll-calc` workspace |
+| `prisma/` | App DB schema and migrations |
+| `services/` | Python ML + bounded-context SQL |
+| `workers/` | Kafka outbox publisher |
+| `contracts/` · `proto/` | OpenAPI + Buf |
 
-Full list: root `package.json` → `"scripts"`.
+Generated Prisma client may appear under `src/app/generated/prisma/` after `prisma generate`; treat it as build output.
 
-## Contracts and quality gates
+## 8. Common npm scripts
+
+Grouped shortlist — full list in root `package.json`.
+
+| Group | Scripts |
+| --- | --- |
+| **App** | `dev`, `build`, `lint`, `test`, `test:e2e`, `security:scan` |
+| **Database** | `db:up`, `db:up:arch`, `db:migrate:deploy`, `db:migrate`, `db:studio`, `demo:bootstrap`, `db:seed:predictive`, `db:verify` |
+| **Auth** | `jwt:dev`, `jwt:dev:demo-*`, `jwt:dev:vercel` (see §6) |
+| **Contracts** | `contracts:openapi`, `contracts:buf` |
+| **Workers** | `worker:integrations`, `worker:webhooks`, `outbox:kafka` |
+| **Governance / ops** | `governance:lint`, `governance:ci`, `check:lib-boundaries`, `verify:reference-exit`, `ops:smoke` |
+
+**Playwright ESS friction:** set `HR_ERP_ESS_E2E_JWT` ([QA.md](./QA.md)), then `npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts`.
+
+## 9. Contracts and quality gates
 
 Before opening a PR that changes HTTP shapes or protos:
 
@@ -156,7 +150,7 @@ npm run contracts:buf
 
 OpenAPI lives in `contracts/openapi/`; Spectral rules in `contracts/.spectral.yaml`.
 
-## Troubleshooting
+## 10. Troubleshooting
 
 | Symptom | Check |
 | --- | --- |
@@ -169,5 +163,7 @@ OpenAPI lives in `contracts/openapi/`; Spectral rules in `contracts/.spectral.ya
 ## Further reading
 
 - [README.md](../README.md) — overview and links
-- [FRONTEND.md](../FRONTEND.md) — UI patterns
+- [FRONTEND.md](../FRONTEND.md) — UI patterns (employee shell, ESS prefetch)
+- [product/stakeholder-value-plan.md](./product/stakeholder-value-plan.md) — active forward plan
+- [product/reference-customer-exit-runbook.md](./product/reference-customer-exit-runbook.md) — reference customer exit
 - [security/agent-mcp-threat-model.md](./security/agent-mcp-threat-model.md) — agents and MCP boundaries
