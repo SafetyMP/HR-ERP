@@ -3,8 +3,8 @@
 # Per-project overlays: <repo>/.cursor/governance-overlay.yaml
 # Normative ADR: 0010 tiers, 0011 function-lane orchestration
 
-version: 3
-schema: governance-manifest/v3
+version: 4
+schema: governance-manifest/v4
 
 runtimeProfile: cursor-3-native
 delegationMode: native-subagents
@@ -273,6 +273,15 @@ skills:
     portable: false
     coLoad:
       - cursor-harness-scope
+  hr-foundation-governance:
+    invoke: "@hr-foundation-governance"
+    orchestratorTier: conditional
+    minRiskTier: T3
+    agentRule: null
+    portable: false
+    coLoad:
+      - hr-orchestration-lanes
+      - hr-swarm-governance
   devops-product-lifecycle:
     invoke: "@devops-product-lifecycle"
     orchestratorTier: conditional
@@ -313,8 +322,8 @@ agentRules:
       - "lib/**"
       - "app/**"
       - "src/app/**"
-    skill: null
-    note: Rule-only lane; integration-rfc.md template
+    skill: hr-domain-boundaries
+    note: Integration RFC template; co-load domain boundaries
   agent-ai-governance:
     globs:
       - "docs/ai-governance/**"
@@ -636,15 +645,26 @@ taskBundles:
       - hr-regulated-domain
     agentRules:
       - agent-legal-hr-compliance
-  implementation:
+  implementation_core:
     minTier: T1
     skills:
       - hr-product-gate
       - lint-and-validate
-      - cc-skill-security-review
     agentRules:
       - agent-code-health
+  implementation_security:
+    minTier: T1
+    skills:
+      - cc-skill-security-review
+    agentRules:
       - agent-security
+  foundation:
+    minTier: T3
+    skills:
+      - hr-foundation-governance
+      - hr-orchestration-lanes
+    agentRules:
+      - agent-ai-governance
   security_review:
     minTier: T1
     skills:
@@ -691,6 +711,7 @@ taskBundles:
     minTier: T1
     skills:
       - hr-product-gate
+      - hr-domain-boundaries
     agentRules:
       - agent-integrations
   product_mcp:
@@ -741,6 +762,7 @@ skillIds:
   - hr-swarm-governance
   - cursor-harness-scope
   - hr-orchestration-lanes
+  - hr-foundation-governance
   - hr-product-mcp-governance
   - protect-mcp-governance
   - devops-product-lifecycle

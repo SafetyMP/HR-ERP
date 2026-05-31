@@ -3,5 +3,10 @@
   "enforceAfter": "2026-05-28",
   "burnInStarted": "2026-05-28",
   "enforcedAt": "2026-05-28",
-  "notes": "Burn-in complete — hooks deny on violation. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
+  "v4Rollout": {
+    "laneStateShadowUntil": "2026-06-06",
+    "handoffDiscoverStrictFrom": "2026-06-13",
+    "preToolUseDenyT3From": "2026-06-20"
+  },
+  "notes": "v4 foundation: session lane state (shadow week 1), handoff discover strict week 2, preToolUse T3 deny week 3. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
 }

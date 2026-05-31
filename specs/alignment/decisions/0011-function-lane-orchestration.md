@@ -26,7 +26,7 @@ Google **Antigravity 2.0** (May 2026) centers a **single agent harness** with pa
 
 | Antigravity | HR ERP Cursor |
 |-------------|----------------|
-| Agent harness | `core-orchestrator` + `governance-manifest.yaml` v2 + overlay |
+| Agent harness | `core-orchestrator` + `governance-manifest.yaml` v4 + overlay |
 | Parallel subagents | `Task` + `agentFunctions[].subagentType` |
 | Dynamic pipeline | `delegatedTaskPlan` DAG |
 | Saved agent profile | `taskBundles` + `agent-*.mdc` |
@@ -57,4 +57,4 @@ Unchanged from ADR 0010: Human-authorized emergency repair may skip full lane fa
 - [cursor-antigravity-harness.md](../../../docs/meta/cursor-antigravity-harness.md)
 - [global-agent-governance-overlay.md](../../../docs/meta/global-agent-governance-overlay.md)
 - [0015-devops-product-lifecycle-framework.md](0015-devops-product-lifecycle-framework.md)
-- Manifest: `.cursor/governance/governance-manifest.yaml` (v2)
+- Manifest: `.cursor/governance/governance-manifest.yaml` (v4) · [0016-agent-harness-foundation.md](0016-agent-harness-foundation.md)

@@ -2,8 +2,7 @@
 name: hr-orchestration-lanes
 description: >-
   HR ERP function-lane recipes: payroll T3 counsel, migration custodian isolation,
-  security sentinel SLA, parallel scout+architect greenfield. Use with manifest v2
-  and ADR 0011.
+  security sentinel SLA, parallel scout+architect greenfield. Use with   manifest v4 and ADR 0011 / 0016.
 risk: medium
 minRiskTier: T1
 source: project
@@ -20,8 +19,10 @@ disable-model-invocation: true
 ## Instructions
 
 1. Run `npm run governance:lint` — note `Required lanes` and `Suggested lanes`.
-2. **Greenfield T1:** parallel `scout` + `architect` → `builder` → parallel `sentinel` + `verifier`.
-3. **DDL (T2+):** `architect` readonly → `custodian` (migrations only) → `builder` app code.
+2. Run `npm run governance:plan` — use `regulatedGraph` + `delegatedTaskPlan` for `/multitask`.
+3. **Plan Mode bridge:** save `.cursor/plans/*.md` → approve → `governance:plan` → `/multitask`.
+4. **Greenfield T1:** parallel `scout` + `architect` → `builder` → parallel `sentinel` + `verifier`.
+3. **DDL (T2+):** `/worktree` + [worktrees.json](../../worktrees.json); `architect` readonly → `custodian` → `builder`.
 4. **Ops / CI / deploy (T2+):** `release_ops` after architect when `.github/workflows`, `vercel.json`, `docs/operations/**` change; load `@devops-product-lifecycle` + `@hr-devops-lifecycle`.
 5. **Security plane:** `sentinel` mandatory before merge (`middleware.ts`, `lib/security/**`).
 6. **Payroll/compliance (T3):** add readonly `counsel`; load `@hr-regulated-domain` (max 3 bodies with product-gate in v3).

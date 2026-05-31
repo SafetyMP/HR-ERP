@@ -21,7 +21,9 @@
     "governance:lint:strict": "node scripts/governance-lint.mjs diff --strict",
     "governance:plan": "node scripts/governance-lint.mjs plan --json",
     "governance:pr-body": "node scripts/governance-generate-pr-body.mjs",
-    "governance:ci": "node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json",
+    "governance:ci": "node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --discover && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json",
+    "governance:sync-check": "node scripts/governance-lint.mjs sync-check --warn-only",
+    "governance:sync-check:strict": "node scripts/governance-lint.mjs sync-check",
     "governance:hooks:status": "node --input-type=module -e \"import { resolveHookMode } from './.cursor/hooks/lib.mjs'; console.log('GOVERNANCE_HOOK_MODE=' + resolveHookMode())\"",
     "governance:protect-mcp": "node scripts/protect-mcp-shadow-check.mjs",
     "postinstall": "prisma generate",
@@ -133,6 +135,7 @@
     "tailwindcss": "^4",
     "tsx": "^4.19.2",
     "typescript": "^6",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.5",
+    "yaml": "^2.9.0"
   }
 }

@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hr-erp.local/schemas/governance-manifest.schema.json",
+  "title": "GovernanceManifestV4",
+  "type": "object",
+  "required": ["version", "schema", "riskTiers", "pathTriggers", "functionIds", "skillIds"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 4 },
+    "schema": { "const": "governance-manifest/v4" },
+    "runtimeProfile": { "type": "string" },
+    "hookEnforcement": { "type": "boolean" },
+    "maxSkillBodies": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "nativeCommands": { "type": "object" },
+    "executionGraph": {
+      "type": "object",
+      "properties": {
+        "default": { "type": "array" },
+        "regulated": { "type": "array" }
+      }
+    },
+    "riskTiers": { "type": "object" },
+    "pathTriggers": { "type": "array" },
+    "agentFunctions": { "type": "object" },
+    "taskBundles": { "type": "object" },
+    "functionIds": { "type": "array", "items": { "type": "string" } },
+    "skillIds": { "type": "array", "items": { "type": "string" } }
+  }
+}

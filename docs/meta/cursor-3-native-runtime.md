@@ -56,10 +56,50 @@ Canonical schedule: [`.cursor/governance/hook-mode.json`](../../.cursor/governan
 |------|----------|
 | `beforeShellExecution` | Destructive git/db guardrails in prose |
 | `beforeMCPExecution` | MCP allowlist from `.cursor/mcp.json` |
-| `subagentStart` | Verbatim Task preamble in every delegation |
-| `afterFileEdit` | Post-edit lint reminder |
+| `subagentStart` / `subagentStop` | Lane state → `session-lane-state.json` |
+| `preToolUse` (Task) | T3+ counsel-before-builder gate |
 | `beforeSubmitPrompt` | PO checkpoint injection (T1+) |
-| `stop` | PR body stub → `.cursor/hooks-output/pr-body-stub.md` |
+| `stop` | PR stub + `lane-gap-report.json` |
+
+## Foundation rearchitecture (ADR 0016)
+
+Three-plane harness: **policy** (manifest v4) · **runtime** (hooks + lane state) · **evidence** (CI + handoffs).
+
+### Worktree + cloud verify
+
+- [`.cursor/worktrees.json`](../../.cursor/worktrees.json) — `npm ci` + `.env` copy on `/worktree`
+- [`.cursor/environment.json`](../../.cursor/environment.json) — Cloud Agent `install` hook
+
+### Plan Mode bridge
+
+1. Plan Mode (`Shift+Tab`) → save `.cursor/plans/*.md`
+2. `npm run governance:plan` → machine DAG
+3. Approve both → `/multitask`
+
+PO gate accepts Plan Mode artifact for harness/meta work (see `@hr-foundation-governance`).
+
+### Automations catalog (release_ops)
+
+| Automation | Trigger | Action |
+|------------|---------|--------|
+| `governance-pr-body-lint` | GitHub PR opened | Cloud: `governance:pr-body --strict` |
+| `governance-drift-weekly` | Cron weekly | `governance:sync-check` + audit |
+| `post-merge-smoke` | PR merged | Cloud smoke tests |
+| `t4-swarm-handoff` | Webhook | Cloud multitask for T4 |
+
+Configure at [cursor.com/automations](https://cursor.com/automations). No `auto_apply` on T2+ code paths.
+
+### Operator commands
+
+```bash
+npm run governance:lint
+npm run governance:plan
+npm run governance:ci              # diff --strict + handoff --discover + schema fixture
+npm run governance:sync-check      # global vs repo manifest (warn)
+npm run governance:hooks:status
+```
+
+Industry mapping: [cursor-industry-alignment.md](cursor-industry-alignment.md).
 
 ## CI alignment
 
@@ -75,6 +115,8 @@ Canonical schedule: [`.cursor/governance/hook-mode.json`](../../.cursor/governan
 | **Product runtime** | `lib/copilot/mcp-server.ts` | Cedar + RBAC; see [hr-copilot-mcp.md](../architecture/hr-copilot-mcp.md) |
 
 Do not conflate IDE MCP plugins with in-app copilot tools.
+
+**Hooks vs permissions:** `~/.cursor/permissions.json` controls auto-run allowlists; hooks (`beforeShellExecution`, `preToolUse`) enforce conditional policy. Do not duplicate the same rule in both without documenting precedence (hooks win on conflict).
 
 ## Related
 

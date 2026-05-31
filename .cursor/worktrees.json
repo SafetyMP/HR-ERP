@@ -1,0 +1,10 @@
+{
+  "setup-worktree-unix": [
+    "npm ci",
+    "cp \"$ROOT_WORKTREE_PATH/.env\" .env 2>/dev/null || true"
+  ],
+  "setup-worktree-windows": [
+    "npm ci",
+    "copy \"%ROOT_WORKTREE_PATH%\\.env\" .env"
+  ]
+}

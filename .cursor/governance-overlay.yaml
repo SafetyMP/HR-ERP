@@ -2,9 +2,9 @@
 # See specs/alignment/decisions/0010-agent-risk-tier-governance.md
 
 extends: ~/.cursor/governance/governance-manifest.yaml
-version: 2
+version: 3
 manifestPin: .cursor/governance/governance-manifest.yaml
-manifestVersion: 3
+manifestVersion: 4
 
 project:
   id: hr-erp
@@ -38,16 +38,20 @@ templates:
   valueDeliveryRecord: specs/templates/value-delivery-record.md
 
 additionalPathTriggers:
-  - id: product_runtime_mcp
+  - id: harness_foundation
     paths:
-      - "lib/copilot/**"
-      - "tests/unit/copilot/**"
-      - "docs/architecture/hr-copilot-mcp.md"
+      - ".cursor/**"
+      - "scripts/governance-*"
+      - "docs/meta/cursor-*"
+      - "specs/alignment/decisions/001*.md"
     minTier: T3
     attachSkills:
-      - hr-regulated-domain
-      - hr-product-mcp-governance
+      - hr-orchestration-lanes
+      - hr-foundation-governance
+      - hr-swarm-governance
     requiredLanes:
+      - scout
+      - architect
       - ai_governance_reviewer
       - sentinel
   - id: hr_bounded_context_migrations

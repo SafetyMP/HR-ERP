@@ -34,7 +34,7 @@ Ensure these exist on the developer machine:
 | `~/.cursor/rules/core-orchestrator.mdc` | Tier-agnostic sequencing (`alwaysApply: true`) |
 | `~/.cursor/scripts/governance-lint.mjs` | Diff classifier + PR/handoff validator |
 
-HR ERP copies the manifest to [`.cursor/governance/governance-manifest.yaml`](../../.cursor/governance/governance-manifest.yaml) for **CI portability** on GitHub runners (no home-dir manifest). Keep global and project copies in sync when manifest version bumps (**v3** adds `runtimeProfile`, `hookEnforcement`, `nativeCommands`).
+HR ERP copies the manifest to [`.cursor/governance/governance-manifest.yaml`](../../.cursor/governance/governance-manifest.yaml) for **CI portability** on GitHub runners (no home-dir manifest). Keep global and project copies in sync when manifest version bumps (**v4** adds YAML loader, `executionGraph.regulated` in plan, handoff `--discover`). Run `npm run governance:sync-check` locally.
 
 ## Step 2 — Add project overlay
 

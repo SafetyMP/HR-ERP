@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "updated": "2026-05-31",
+  "skills": {
+    "skill-router": {
+      "path": "~/.cursor/skills/skill-router/SKILL.md",
+      "sha256": "ce74bff4686a810ffc873236ab8ec044d1ea3d9b614484ec17fb8a61722088d3"
+    },
+    "governance-tier-gate": {
+      "path": "~/.cursor/skills/governance-tier-gate/SKILL.md",
+      "sha256": "c82464a6e60fd151ab56948b8cf62c464a4c708a1bae89ad0f3ceacf66d3db09"
+    },
+    "devops-product-lifecycle": {
+      "path": "~/.cursor/skills/devops-product-lifecycle/SKILL.md",
+      "sha256": "8d963ab012850b65ff932e2fdc9ba293a89e016aaeb59afc313232d92009e667"
+    },
+    "concise-planning": {
+      "path": "~/.cursor/skills/concise-planning/SKILL.md",
+      "sha256": "cf59a1206b6a10e6293b8c036d5cc35fa24187e5e44416b61d5509a2e7a3ec5e"
+    },
+    "lint-and-validate": {
+      "path": "~/.cursor/skills/lint-and-validate/SKILL.md",
+      "sha256": "2c3ce9214e57bc8942e52bc0e2cff8f46dc111e89d8bdd1b475d6af17f8cb9c7"
+    },
+    "cc-skill-security-review": {
+      "path": "~/.cursor/skills/cc-skill-security-review/SKILL.md",
+      "sha256": "09269f5bf3d0d038642740c6af358a06fbc9290782bdf1802c947350108d313e"
+    }
+  }
+}

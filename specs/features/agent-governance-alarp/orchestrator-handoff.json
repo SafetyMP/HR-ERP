@@ -2,6 +2,7 @@
   "ticketId": "governance-alarp-full-repo",
   "source": "ALARP risk reduction plan",
   "summary": "Close governance/MCP/CI gaps, harden production demo-auth, add supply-chain scanning.",
+  "humanReadableOriginal": "Implement agent harness foundation rearchitecture per ADR 0016.",
   "riskTier": "T3",
   "poCheckpoint": "Feature brief / spike ADR: docs/meta/cursor-3-native-runtime.md | UAC: governance CI gates | gate Y | phase ADR: 0001",
   "impact": "Reduces false assurance from shadow-only controls and production demo JWT exposure.",
@@ -21,7 +22,8 @@
     "lib/copilot/**",
     "scripts/governance-lint.mjs",
     ".cursor/hooks/**",
-    "scripts/copilot-mcp-server.ts"
+    "scripts/copilot-mcp-server.ts",
+    ".github/workflows/reusable-ci.yml"
   ],
   "orchestratorHints": [
     "ai_governance_reviewer readonly on Cedar/policy",
@@ -35,28 +37,47 @@
   "delegatedTaskPlan": [
     {
       "function": "scout",
+      "intent": "Discover governance gaps",
       "riskTier": "T3",
       "parallelGroup": "discover",
       "readonly": true
     },
     {
       "function": "architect",
+      "intent": "Foundation three-plane design",
       "riskTier": "T3",
       "parallelGroup": "discover",
       "readonly": true
     },
     {
-      "function": "ai_governance_reviewer",
+      "function": "counsel",
+      "intent": "Regulated path checklist",
       "riskTier": "T3",
+      "dependsOn": ["architect"],
       "readonly": true
     },
     {
-      "function": "builder",
+      "function": "ai_governance_reviewer",
+      "intent": "MCP/Cedar policy review",
+      "riskTier": "T3",
+      "dependsOn": ["architect"],
+      "readonly": true
+    },
+    {
+      "function": "release_ops",
+      "intent": "CI workflow and governance:ci gates",
       "riskTier": "T3",
       "dependsOn": ["architect"]
     },
     {
+      "function": "builder",
+      "intent": "Implement harness v4",
+      "riskTier": "T3",
+      "dependsOn": ["counsel", "ai_governance_reviewer"]
+    },
+    {
       "function": "sentinel",
+      "intent": "Hooks and MCP security",
       "riskTier": "T3",
       "dependsOn": ["builder"],
       "parallelGroup": "validate",
@@ -64,11 +85,16 @@
     },
     {
       "function": "verifier",
+      "intent": "governance:ci evidence",
       "riskTier": "T3",
       "dependsOn": ["builder"],
       "parallelGroup": "validate"
     }
   ],
   "requiresPoCheckpoint": true,
-  "reproStatus": "reproduced"
+  "reproStatus": "reproduced",
+  "compliancePosture": "NIST AI RMF",
+  "delegationDepth": 1,
+  "toolClasses": ["read_internal"],
+  "principal": "Human PO"
 }

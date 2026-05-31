@@ -54,6 +54,7 @@
         "hr-swarm-governance",
         "cursor-harness-scope",
         "hr-orchestration-lanes",
+        "hr-foundation-governance",
         "hr-product-mcp-governance",
         "protect-mcp-governance",
         "devops-product-lifecycle",
@@ -176,6 +177,16 @@
     "reproStatus": {
       "type": "string",
       "enum": ["reproduced", "could_not_reproduce", "not_attempted"]
-    }
+    },
+    "compliancePosture": {
+      "type": "string",
+      "enum": ["NIST AI RMF", "EU AI Act employment-AI", "ISO 42001-ready"]
+    },
+    "delegationDepth": { "type": "integer", "minimum": 0 },
+    "toolClasses": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "principal": { "type": "string" }
   }
 }

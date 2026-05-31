@@ -1,10 +1,25 @@
 #!/usr/bin/env node
 import { execSync } from "node:child_process";
 import { readHookInput, allow, logHook } from "./lib.mjs";
+import { loadLaneState, recordSubagentStart, syncPlanFromLint } from "./lane-state.mjs";
 
 const input = readHookInput();
-const subagentType = input.subagent_type ?? "unknown";
-const task = input.task ?? "";
+const subagentType = input.subagent_type ?? input.subagentType ?? "unknown";
+const task = input.task ?? input.prompt ?? "";
+
+const state = loadLaneState();
+const plan = syncPlanFromLint(state);
+if (!state.sessionId) {
+  state.sessionId = input.session_id ?? input.conversation_id ?? Date.now().toString(36);
+}
+
+recordSubagentStart(state, {
+  subagentType,
+  task,
+  functionId: input.function ?? input.lane,
+});
+
+logHook("subagentStart", { subagent_type: subagentType, task: task.slice(0, 120) });
 
 let planContext = "";
 try {
@@ -14,10 +29,8 @@ try {
     stdio: ["pipe", "pipe", "pipe"],
   }).trim();
 } catch {
-  planContext = "";
+  planContext = plan ? JSON.stringify(plan) : "";
 }
-
-logHook("subagentStart", { subagent_type: subagentType, task: task.slice(0, 120) });
 
 const agentMessage = planContext
   ? `Governance plan (inject into subagent context):\n${planContext}`

@@ -24,7 +24,7 @@ Before new capabilities, read:
 - Migrations: [database-migrations-and-state.md](docs/architecture/database-migrations-and-state.md) — `@hr-data-custody` (T2)
 - AI governance: [docs/ai-governance/](docs/ai-governance/) — `@hr-regulated-domain` (T3)
 
-## Project skills (8)
+## Project skills (10)
 
 | Skill | When |
 |-------|------|
@@ -37,6 +37,7 @@ Before new capabilities, read:
 | `@hr-quality-lab` | Tests, QA.md |
 | `@hr-swarm-governance` | ≥2 Tasks, post-mortems (T4) |
 | `@hr-orchestration-lanes` | Lane recipes, sentinel SLA (T1+) |
+| `@hr-foundation-governance` | Harness/meta/manifest v4 (T3+; human invoke) |
 
 Global: `@cursor-harness-scope`, `@protect-mcp-governance` (Cedar/receipts at MCP transport), `@devops-product-lifecycle` (S&OP, IBP, value delivery). See [devops-product-lifecycle-framework.md](docs/meta/devops-product-lifecycle-framework.md) and [antigravity-product-mcp-governance.md](docs/meta/antigravity-product-mcp-governance.md).
 
@@ -52,7 +53,7 @@ Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-h
 
 **Rules of engagement**
 
-- **Orchestration:** Hooks + `@skill-router` (max **3** skill bodies per sub-task in manifest v3); T0 loads zero skills.
+- **Orchestration:** Hooks + `@skill-router` (max **3** skill bodies per sub-task in manifest v4); T0 loads zero skills.
 - **Engineering:** PO gate injected via `beforeSubmitPrompt` hook when tier ≥ T1.
 - **QA:** UAC from Feature brief verbatim; `@hr-quality-lab` + [docs/QA.md](docs/QA.md).
 - **FinOps (T4):** `@hr-swarm-governance` when ≥2 delegated subagents.

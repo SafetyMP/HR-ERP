@@ -31,6 +31,11 @@ jobs:
         run: npx --yes gitleaks@8.24.2 detect --source . --no-git --redact
       - name: Agent governance lint (strict)
         run: npm run governance:ci
+      - name: Export governance tier
+        run: |
+          TIER=$(node scripts/governance-lint.mjs diff 2>/dev/null | awk '/Suggested riskTier:/ {print $3}')
+          echo "governance_tier=${TIER:-T0}" >> "$GITHUB_OUTPUT"
+        id: governance_tier
       - name: protect-mcp shadow policy check
         run: npm run governance:protect-mcp
       - name: Agent governance PR body (strict, pull_request only)
