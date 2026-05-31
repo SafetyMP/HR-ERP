@@ -29,6 +29,15 @@ const checks = [
   { label: "Webhook subscriptions API", path: "src/app/api/v1/integrations/webhooks/subscriptions/route.ts" },
   { label: "Payroll filing service", path: "lib/payroll/payroll-filing-service.ts" },
   { label: "Reference exit runbook", path: "docs/product/reference-customer-exit-runbook.md" },
+  { label: "Reference exit appendix template", path: "docs/product/reference-customer-exit-appendix-template.md" },
+  { label: "ESS friction scorecard", path: "docs/product/ess-friction-scorecard.md" },
+  { label: "Election change page", path: "src/app/employee/benefits/election-change/page.tsx" },
+  { label: "Election change API", path: "src/app/api/v1/me/benefits/election-change-requests/route.ts" },
+  { label: "Employee app shell layout", path: "src/app/employee/layout.tsx" },
+  { label: "Track D production guard", path: "lib/api/v1/track-d-guard.ts" },
+  { label: "Counsel track W3/W7", path: "docs/product/counsel-track-w3-w7.md" },
+  { label: "Brief 026 election intent", path: "docs/product/feature-briefs/026-benefits-election-change-intent.md" },
+  { label: "lib module boundaries doc", path: "docs/architecture/lib-module-boundaries.md" },
   { label: "Production checklist", path: "docs/operations/phase1-production-checklist.md" },
 ];
 

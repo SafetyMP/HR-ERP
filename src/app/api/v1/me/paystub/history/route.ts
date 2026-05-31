@@ -1,24 +1,14 @@
-import { ApiError } from "@/lib/api/v1/errors";
-import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
+import { defineV1Route } from "@/lib/api/v1/define-v1-route";
 import { getPaystubHistory } from "@/lib/paystub/get-paystub-history";
-import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
-import { getRoutePolicy } from "@/lib/security/route-policies";
 
-export async function GET(request: Request) {
-  const pathname = new URL(request.url).pathname;
+const PATH = "/api/v1/me/paystub/history";
 
-  return safeRouteAuth(request, async (auth) => {
-    const policy = getRoutePolicy("GET", pathname);
-    if (!policy) {
-      throw new ApiError(404, {
-        code: "not_found",
-        message: "route_policy_missing",
-      });
-    }
-    assertPermission(auth, policy.permission);
-    assertAbac(auth, policy.abac, "confidential");
-
-    const items = await getPaystubHistory(auth);
-    return jsonV1({ paystubHistory: items }, auth.correlationId);
-  });
-}
+export const GET = defineV1Route({
+  method: "GET",
+  pathname: PATH,
+  classification: "confidential",
+  handler: async ({ auth }) => {
+    const paystubHistory = await getPaystubHistory(auth);
+    return { paystubHistory };
+  },
+});

@@ -13,6 +13,7 @@ Principal systems architecture for bounded contexts, databases, APIs, and async 
 | [Module proposal template](./module-proposal-template.md) | Required package before build: context, schema, APIs, events, lock ordering |
 | [ADR template](../../specs/alignment/decisions/_TEMPLATE.md) | Decision record format (live ADRs numbered in same folder) |
 | [Bounded contexts](./bounded-contexts.md) | Default service map and ownership |
+| [lib/ module boundaries](./lib-module-boundaries.md) | Monolith import discipline + `npm run check:lib-boundaries` |
 | [SLO & load gates](./slo-and-load-gates.md) | Pooling, deadlock posture, observability checklist |
 | [Database migrations & state custody](./database-migrations-and-state.md) | Multi-surface migrations, expand–contract, RLS, verification & fixtures |
 | [contracts/README.md](../../contracts/README.md) | Buf (gRPC), OpenAPI (REST), lint/version policy |

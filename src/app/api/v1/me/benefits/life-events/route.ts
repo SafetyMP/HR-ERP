@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ApiError } from "@/lib/api/v1/errors";
+import { defineV1Route } from "@/lib/api/v1/define-v1-route";
 import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import {
   createBenefitLifeEvent,
@@ -9,7 +10,9 @@ import {
 import { assertAbac, assertPermission } from "@/lib/security/policy-engine";
 import { getRoutePolicy } from "@/lib/security/route-policies";
 
-const PostSchema = z.object({
+const PATH = "/api/v1/me/benefits/life-events";
+
+const postSchema = z.object({
   eventType: z.enum([
     "MARRIAGE",
     "BIRTH_ADOPTION",
@@ -21,22 +24,15 @@ const PostSchema = z.object({
   description: z.string().max(2000).optional(),
 });
 
-export async function GET(request: Request) {
-  const pathname = new URL(request.url).pathname;
-  return safeRouteAuth(request, async (auth) => {
-    const policy = getRoutePolicy("GET", pathname);
-    if (!policy) {
-      throw new ApiError(404, {
-        code: "not_found",
-        message: "route_policy_missing",
-      });
-    }
-    assertPermission(auth, policy.permission);
-    assertAbac(auth, policy.abac, "confidential");
+export const GET = defineV1Route({
+  method: "GET",
+  pathname: PATH,
+  classification: "confidential",
+  handler: async ({ auth }) => {
     const events = await listMyBenefitLifeEvents(auth);
-    return jsonV1({ events }, auth.correlationId);
-  });
-}
+    return { events };
+  },
+});
 
 export async function POST(request: Request) {
   const pathname = new URL(request.url).pathname;
@@ -50,8 +46,26 @@ export async function POST(request: Request) {
     }
     assertPermission(auth, policy.permission);
     assertAbac(auth, policy.abac, "confidential");
-    const body = PostSchema.parse(await request.json().catch(() => ({})));
-    const event = await createBenefitLifeEvent(auth, body);
-    return jsonV1(event, auth.correlationId, { status: 201 });
+
+    let raw: unknown;
+    try {
+      raw = await request.json();
+    } catch {
+      throw new ApiError(400, {
+        code: "validation_error",
+        message: "life_event_invalid_body",
+      });
+    }
+
+    const parsed = postSchema.safeParse(raw);
+    if (!parsed.success) {
+      throw new ApiError(400, {
+        code: "validation_error",
+        message: "life_event_invalid_body",
+      });
+    }
+
+    const event = await createBenefitLifeEvent(auth, parsed.data);
+    return jsonV1({ event }, auth.correlationId);
   });
 }

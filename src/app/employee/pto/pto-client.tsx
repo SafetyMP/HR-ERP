@@ -1,7 +1,5 @@
 "use client";
 
-import { startTransition, useCallback, useEffect, useState } from "react";
-
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,16 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { formatBalanceHoursDisplay } from "@/lib/pto/format-balance-hours";
+import type { PtoSummaryApiShape } from "@/lib/pto/pto-summary-types";
+import { usePtoSummaryQuery } from "@/lib/pto/use-pto-summary-query";
 
-
-export type PtoSummaryApiShape = {
-  balanceHours: number | null;
-  balanceAsOfDate: string | null;
-  recentTimeOff: { requestDate: string }[];
-};
+export type { PtoSummaryApiShape } from "@/lib/pto/pto-summary-types";
 
 type Props = {
   initialBearerToken?: string;
@@ -32,94 +26,11 @@ function formatCalendarDay(isoDate: string): string {
   );
 }
 
-async function fetchPtoSummary(bearerToken: string | null): Promise<{
-  summary: PtoSummaryApiShape | null;
-  ok: boolean;
-  retryable: boolean;
-}> {
-  const res = await hrApiFetch("/api/v1/me/pto/summary", {
-    bearerToken,
-    headers: { Accept: "application/json" },
-  });
-
-  if (res.status === 401) {
-    return { summary: null, ok: false, retryable: false };
-  }
-
-  const body = (await res.json()) as {
-    data?: { ptoSummary: PtoSummaryApiShape };
-    error?: { code?: string; message?: string };
-  };
-
-  if (!res.ok) {
-    return { summary: null, ok: false, retryable: res.status >= 500 };
-  }
-
-  return {
-    summary: body.data?.ptoSummary ?? null,
-    ok: true,
-    retryable: false,
-  };
-}
-
 export function PtoClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { ready, isAuthenticated, persistBearer, signOut } =
     useHrAccess(initialBearerToken);
-  const [summary, setSummary] = useState<PtoSummaryApiShape | null | undefined>(undefined);
-  const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    let cancelled = false;
-
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-
-    void (async () => {
-      const result = await fetchPtoSummary(bearerToken);
-      if (cancelled) return;
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setSummary(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setSummary(null);
-        return;
-      }
-      setSummary(result.summary);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, bearerToken]);
-
-  const retryLoad = useCallback(() => {
-    if (!isAuthenticated) return;
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-    void (async () => {
-      const result = await fetchPtoSummary(bearerToken);
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setSummary(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setSummary(null);
-        return;
-      }
-      setSummary(result.summary);
-    })();
-  }, [isAuthenticated, bearerToken]);
+  const { data: summary, isLoading, isError, error, refetch, isFetching } =
+    usePtoSummaryQuery();
 
   if (!ready) {
     return (
@@ -140,23 +51,26 @@ export function PtoClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (loadError === "recoverable") {
-    return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
-        <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your PTO summary</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please try again in a moment. If this keeps happening, contact HR Operations.
-          </p>
+  if (isError) {
+    const recoverable =
+      error instanceof Error &&
+      !error.message.includes("401") &&
+      !error.message.toLowerCase().includes("unauthorized");
+    if (recoverable) {
+      return (
+        <div className="mx-auto w-full max-w-lg space-y-4">
+          <div role="alert">
+            <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your PTO summary</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Please try again in a moment. If this keeps happening, contact HR Operations.
+            </p>
+          </div>
+          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+            Retry
+          </Button>
         </div>
-        <Button type="button" onClick={() => retryLoad()}>
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (loadError === "auth") {
+      );
+    }
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
@@ -172,7 +86,7 @@ export function PtoClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (summary === undefined) {
+  if (isLoading || summary === undefined) {
     return (
       <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your PTO summary…

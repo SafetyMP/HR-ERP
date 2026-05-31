@@ -1,6 +1,7 @@
 # US federal withholding — versioned table (v1)
 
-**Status:** Engineering v1 table shipped — **not** statutory advice. Counsel sign-off required before production payroll.
+**Status:** Engineering v1 table shipped — **not** statutory advice. Counsel sign-off required before production payroll.  
+**Program:** [counsel-track-w3-w7.md](../product/counsel-track-w3-w7.md) (W3) · planned Feature brief **028** for partner filing UX
 
 ## Current wiring
 

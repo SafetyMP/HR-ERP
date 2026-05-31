@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { assertTrackDApiAllowed } from "@/lib/api/v1/track-d-guard";
 import { ApiError } from "@/lib/api/v1/errors";
 import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import { submitResponse } from "@/lib/engagement/surveys";
@@ -13,6 +14,7 @@ const SubmitSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  assertTrackDApiAllowed();
   const pathname = new URL(request.url).pathname;
   return safeRouteAuth(request, async (auth) => {
     const policy = getRoutePolicy("POST", pathname);

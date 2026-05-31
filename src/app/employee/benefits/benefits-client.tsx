@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -14,25 +14,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BENEFIT_CATEGORY_SORT_ORDER } from "@/lib/benefits/category-order";
-import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
+import type {
+  BenefitEnrollmentApiItem,
+  BenefitsSummaryApiShape,
+} from "@/lib/benefits/benefits-summary-types";
+import { useBenefitsSummaryQuery } from "@/lib/benefits/use-benefits-summary-query";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { useHrQuery } from "@/lib/hooks/use-hr-query";
 
-
-export type BenefitEnrollmentApiItem = {
-  category: string;
-  categoryLabel: string;
-  planLabel: string;
-  carrierName: string | null;
-  effectiveFrom: string;
-  effectiveTo: string | null;
-  dependentCount: number | null;
-  electiveDeferralPercent: number | null;
-};
-
-export type BenefitsSummaryApiShape = {
-  calendarBasis: string;
-  enrollments: BenefitEnrollmentApiItem[];
-};
+export type { BenefitEnrollmentApiItem, BenefitsSummaryApiShape } from "@/lib/benefits/benefits-summary-types";
 
 type Props = {
   initialBearerToken?: string;
@@ -46,110 +36,32 @@ function formatEffectiveRange(fromIsoDate: string, toIsoDate: string | null): st
   return `${start} — ${end}`;
 }
 
-async function fetchBenefitsSummary(bearerToken: string | null): Promise<{
-  summary: BenefitsSummaryApiShape | null;
-  ok: boolean;
-  retryable: boolean;
-}> {
-  const res = await hrApiFetch("/api/v1/me/benefits/summary", {
-    bearerToken,
-    headers: { Accept: "application/json" },
-  });
-
-  if (res.status === 401) {
-    return { summary: null, ok: false, retryable: false };
-  }
-
-  const body = (await res.json()) as {
-    data?: { benefitsSummary: BenefitsSummaryApiShape };
-    error?: { code?: string; message?: string };
-  };
-
-  if (!res.ok) {
-    const retryable = res.status >= 500;
-    return { summary: null, ok: false, retryable };
-  }
-
-  return {
-    summary: body.data?.benefitsSummary ?? null,
-    ok: true,
-    retryable: false,
-  };
-}
-
 export function BenefitsClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { ready, isAuthenticated, persistBearer, signOut } =
     useHrAccess(initialBearerToken);
-  const [summary, setSummary] = useState<BenefitsSummaryApiShape | null | undefined>(undefined);
-  const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
-  const [pendingLifeEvent, setPendingLifeEvent] = useState(false);
+  const {
+    data: summary,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useBenefitsSummaryQuery();
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
+  const { data: lifeEvents } = useHrQuery(
+    ["me", "benefits", "life-events"],
+    "/api/v1/me/benefits/life-events",
+    async (res) => {
+      const body = (await res.json()) as { data?: { events?: { status: string }[] } };
+      return body.data?.events ?? [];
+    },
+  );
 
-    let cancelled = false;
-
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-
-    void (async () => {
-      const result = await fetchBenefitsSummary(bearerToken);
-      if (cancelled) return;
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setSummary(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setSummary(null);
-        return;
-      }
-      setSummary(result.summary);
-
-      const lifeRes = await hrApiFetch("/api/v1/me/benefits/life-events", {
-        bearerToken,
-        headers: { Accept: "application/json" },
-      });
-      if (lifeRes.ok) {
-        const lifeBody = (await lifeRes.json()) as {
-          data?: { events?: { status: string }[] };
-        };
-        const events = lifeBody.data?.events ?? [];
-        setPendingLifeEvent(
-          events.some((e) => e.status === "SUBMITTED" || e.status === "HR_REVIEW"),
-        );
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, bearerToken]);
-
-  const retryLoad = useCallback(() => {
-    if (!isAuthenticated) return;
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-    void (async () => {
-      const result = await fetchBenefitsSummary(bearerToken);
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setSummary(null);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setSummary(null);
-        return;
-      }
-      setSummary(result.summary);
-    })();
-  }, [isAuthenticated, bearerToken]);
+  const pendingLifeEvent = useMemo(
+    () =>
+      (lifeEvents ?? []).some((e) => e.status === "SUBMITTED" || e.status === "HR_REVIEW"),
+    [lifeEvents],
+  );
 
   const grouped = useMemo(() => {
     if (!summary?.enrollments?.length) return [];
@@ -185,25 +97,28 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (loadError === "recoverable") {
-    return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
-        <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">
-            We couldn&apos;t load your Benefits summary
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please try again in a moment. If this keeps happening, contact your Benefits administrator.
-          </p>
+  if (isError) {
+    const recoverable =
+      error instanceof Error &&
+      !error.message.includes("401") &&
+      !error.message.toLowerCase().includes("unauthorized");
+    if (recoverable) {
+      return (
+        <div className="mx-auto w-full max-w-lg space-y-4">
+          <div role="alert">
+            <h2 className="text-lg font-semibold text-foreground">
+              We couldn&apos;t load your Benefits summary
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Please try again in a moment. If this keeps happening, contact your Benefits administrator.
+            </p>
+          </div>
+          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+            Retry
+          </Button>
         </div>
-        <Button type="button" onClick={() => retryLoad()}>
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (loadError === "auth") {
+      );
+    }
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
@@ -219,7 +134,7 @@ export function BenefitsClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (summary === undefined) {
+  if (isLoading || summary === undefined) {
     return (
       <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading your Benefits summary…
@@ -229,16 +144,18 @@ export function BenefitsClient({ initialBearerToken }: Props) {
 
   if (!summary || summary.enrollments.length === 0) {
     return (
-      <Card className="mx-auto w-full max-w-lg shadow-sm">
-        <CardHeader>
-          <CardTitle>No enrollments on file</CardTitle>
-          <CardDescription>
-            We don&apos;t see active benefit elections for you yet. During open enrollment or after a qualifying life
-            event, contact your Benefits administrator to confirm what&apos;s available and how to enroll. Nothing is
-            wrong with your account — this page only shows enrollments already recorded for you.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="space-y-6">
+        <Card className="mx-auto w-full max-w-lg shadow-sm">
+          <CardHeader>
+            <CardTitle>No enrollments on file</CardTitle>
+            <CardDescription>
+              We don&apos;t see active benefit elections for you yet. During open enrollment or after a qualifying life
+              event, you can request a coverage change in-app — your Benefits team will review it.
+            </CardDescription>
+          </CardHeader>
+          <CardFooterLink />
+        </Card>
+      </div>
     );
   }
 
@@ -255,6 +172,19 @@ export function BenefitsClient({ initialBearerToken }: Props) {
           </AlertDescription>
         </Alert>
       ) : null}
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-base">Need a coverage change?</CardTitle>
+          <CardDescription>
+            Submit an election change request — HR will review during open enrollment or after a qualifying event.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/employee/benefits/election-change">Request election change</Link>
+          </Button>
+        </CardContent>
+      </Card>
       <p className="text-xs text-muted-foreground">
         Effective dates use {summary.calendarBasis === "UTC" ? "UTC calendar dates" : "the noted calendar basis"}.
       </p>
@@ -294,5 +224,15 @@ export function BenefitsClient({ initialBearerToken }: Props) {
         </Card>
       ))}
     </div>
+  );
+}
+
+function CardFooterLink() {
+  return (
+    <CardContent className="pt-0">
+      <Button asChild variant="outline" size="sm">
+        <Link href="/employee/benefits/election-change">Request election change</Link>
+      </Button>
+    </CardContent>
   );
 }

@@ -20,8 +20,8 @@ HR ERP is a **Phase 1 modular monolith** with **155/155 UAC** across Features **
 
 | Dimension | Status |
 | --- | --- |
-| **Track A (001–021)** | **147/147** audited UAC |
-| **Product shell (022)** | **8/8** audited UAC — [audit](./completion-audits/features-022.md) |
+| **Track A (001–022)** | **155/155** audited UAC |
+| **Track B (buyer-ready)** | Reference exit + friction + W3/W7 counsel — [stakeholder plan §1b](./stakeholder-value-plan.md) |
 | **Phase B (018–021)** | Payroll close, life events, talent depth, HR dashboard — [audit](./completion-audits/features-018-021.md) |
 | **Payroll** | In-app pay runs + lock + filing JSON artifact; partner handoff — no IRS/HMRC e-file |
 | **Integrations** | Webhooks (ADR 0008) + SCIM API; Phase C connectors **023–025** next |

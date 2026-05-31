@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
@@ -12,50 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { TodayAttendanceApi } from "@/lib/attendance/today-attendance-types";
+import { useTodayAttendanceQuery } from "@/lib/attendance/use-today-attendance-query";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 
-export type TodayAttendanceApi = {
-  calendarDate: string;
-  timeZone: string;
-  clockedIn: boolean;
-  punches: { kind: string; occurredAt: string }[];
-};
-
-async function fetchToday(bearerToken: string | null): Promise<{
-  data: TodayAttendanceApi | null;
-  ok: boolean;
-  retryable: boolean;
-}> {
-  const res = await hrApiFetch("/api/v1/me/attendance/today", {
-    bearerToken,
-    headers: { Accept: "application/json" },
-  });
-
-  if (res.status === 401) {
-    return { data: null, ok: false, retryable: false };
-  }
-
-  const body = (await res.json()) as {
-    data?: { todayAttendance: TodayAttendanceApi };
-    error?: { code?: string; message?: string };
-  };
-
-  if (!res.ok) {
-    return { data: null, ok: false, retryable: res.status >= 500 };
-  }
-
-  const summary = body.data?.todayAttendance;
-  if (!summary) {
-    return { data: null, ok: false, retryable: true };
-  }
-
-  return {
-    data: summary,
-    ok: true,
-    retryable: false,
-  };
-}
+export type { TodayAttendanceApi } from "@/lib/attendance/today-attendance-types";
 
 function punchKindLabel(kind: string): string {
   switch (kind) {
@@ -86,65 +48,10 @@ type Props = {
 export function TimeAttendanceClient({ initialBearerToken }: Props) {
   const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
     useHrAccess(initialBearerToken);
-  const [summary, setSummary] = useState<TodayAttendanceApi | undefined>(undefined);
-  const [loadError, setLoadError] = useState<"auth" | "recoverable" | null>(null);
+  const { data: summary, isLoading, isError, error, refetch, isFetching } =
+    useTodayAttendanceQuery();
   const [clockMessage, setClockMessage] = useState<string | null>(null);
   const [clockBusy, setClockBusy] = useState(false);
-
-  const applyFetchResult = useCallback(
-    (result: { data: TodayAttendanceApi | null; ok: boolean; retryable: boolean }) => {
-      if (!result.ok && !result.retryable) {
-        setLoadError("auth");
-        setSummary(undefined);
-        return;
-      }
-      if (!result.ok) {
-        setLoadError("recoverable");
-        setSummary(undefined);
-        return;
-      }
-      if (!result.data) {
-        setLoadError("recoverable");
-        setSummary(undefined);
-        return;
-      }
-      setSummary(result.data);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    let cancelled = false;
-
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-
-    void (async () => {
-      const result = await fetchToday(bearerToken);
-      if (cancelled) return;
-      applyFetchResult(result);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, bearerToken, applyFetchResult]);
-
-  const reload = useCallback(() => {
-    if (!isAuthenticated) return;
-    startTransition(() => {
-      setLoadError(null);
-      setSummary(undefined);
-    });
-    void (async () => {
-      const result = await fetchToday(bearerToken);
-      applyFetchResult(result);
-    })();
-  }, [isAuthenticated, bearerToken, applyFetchResult]);
 
   const clockIn = useCallback(async () => {
     if (!isAuthenticated) return;
@@ -167,7 +74,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
 
       if (res.ok) {
         setClockMessage("Your clock-in was recorded.");
-        reload();
+        void refetch();
         return;
       }
 
@@ -182,7 +89,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     } finally {
       setClockBusy(false);
     }
-  }, [isAuthenticated, bearerToken, reload]);
+  }, [isAuthenticated, bearerToken, refetch]);
 
   if (!ready) {
     return (
@@ -203,25 +110,28 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (loadError === "recoverable") {
-    return (
-      <div className="mx-auto w-full max-w-lg space-y-4">
-        <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">
-            We couldn’t load your attendance
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Please try again in a moment. If this keeps happening, contact Payroll.
-          </p>
+  if (isError) {
+    const recoverable =
+      error instanceof Error &&
+      !error.message.includes("401") &&
+      !error.message.toLowerCase().includes("unauthorized");
+    if (recoverable) {
+      return (
+        <div className="mx-auto w-full max-w-lg space-y-4">
+          <div role="alert">
+            <h2 className="text-lg font-semibold text-foreground">
+              We couldn&apos;t load your attendance
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Please try again in a moment. If this keeps happening, contact Payroll.
+            </p>
+          </div>
+          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+            Retry
+          </Button>
         </div>
-        <Button type="button" onClick={() => reload()}>
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (loadError === "auth") {
+      );
+    }
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
@@ -237,7 +147,7 @@ export function TimeAttendanceClient({ initialBearerToken }: Props) {
     );
   }
 
-  if (summary === undefined) {
+  if (isLoading || !summary) {
     return (
       <p className="text-sm text-muted-foreground" aria-live="polite">
         Loading today’s time…

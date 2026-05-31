@@ -2,7 +2,8 @@
 
 **Status:** Blocked on Legal / benefits counsel  
 **Design:** [us-benefits-cobra-aca-834.md](./us-benefits-cobra-aca-834.md)  
-**Roadmap:** [specs/competitive-analysis-roadmap.md](../../specs/competitive-analysis-roadmap.md) Tier 2
+**Roadmap:** [specs/competitive-analysis-roadmap.md](../../specs/competitive-analysis-roadmap.md) Tier 2  
+**Program:** [counsel-track-w3-w7.md](../product/counsel-track-w3-w7.md) (W7) · planned Feature brief **027** after gates 1–4
 
 ## Gate checklist (all required before employee-facing benefits admin)
 

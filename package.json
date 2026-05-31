@@ -76,6 +76,7 @@
     "contracts:openapi": "npx --yes @stoplight/spectral-cli@6.14.2 lint -r contracts/.spectral.yaml contracts/openapi/",
     "contracts:drift": "node scripts/check-openapi-drift.mjs",
     "check:route-policies": "node scripts/check-route-policy-parity.mjs",
+    "check:lib-boundaries": "node scripts/check-lib-module-boundaries.mjs",
     "format": "prettier --write .",
     "holiday:sync": "tsx scripts/sync-holidays.ts",
     "test:e2e": "playwright test",

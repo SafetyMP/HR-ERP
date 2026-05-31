@@ -23,8 +23,8 @@ export default async function EmployeeBenefitsPage(props: Props) {
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">Benefits</p>
         <h1 className="mt-2 text-3xl font-semibold text-foreground">Your enrollments</h1>
         <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-          A read-only summary of benefit elections on file. Changing coverage happens outside this screen during open
-          enrollment or through your Benefits team.
+          Your current elections on file. To request a change during open enrollment or after a qualifying event, use
+          Request election change — your Benefits team reviews in-app.
         </p>
       </header>
       <BenefitsClient />

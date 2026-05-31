@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { assertTrackDApiAllowed } from "@/lib/api/v1/track-d-guard";
 import { ApiError } from "@/lib/api/v1/errors";
 import { jsonV1, safeRouteAuth } from "@/lib/api/v1/http";
 import { transitionCompensationCycle } from "@/lib/compensation/cycles";
@@ -14,6 +15,7 @@ export async function PATCH(
   request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
+  assertTrackDApiAllowed();
   const pathname = new URL(request.url).pathname;
   const { id } = await context.params;
   return safeRouteAuth(request, async (auth) => {

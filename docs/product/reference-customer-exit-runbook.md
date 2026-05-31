@@ -21,7 +21,10 @@ A reference customer can **cancel BambooHR + separate payroll vendor portal acce
 | 7 | COBRA workflow **start** documented | `PENDING_NOTICE` row on loss-of-coverage | Benefits + counsel | **Yes** — [cobra-aca-counsel-gate](../compliance/cobra-aca-counsel-gate.md) |
 | 8 | Webhooks + workers running in prod | `npm run worker:webhooks`, `worker:integrations` | Platform | No |
 | 9 | OIDC/Neon production auth (no demo sign-in) | Production env checklist | Security | No |
-| 10 | Written runbook signed by customer HR + payroll lead | This document + customer-specific appendix | CS | No |
+| 10 | Written runbook signed by customer HR + payroll lead | This document + [appendix template](./reference-customer-exit-appendix-template.md) | CS | No |
+| 11 | ESS friction scorecard within budgets (optional gate) | [ess-friction-scorecard.md](./ess-friction-scorecard.md) | Product + QA | No |
+
+**Platform verification:** `npm run verify:reference-exit` (static artifacts) · `HR_ERP_ESS_E2E_JWT=… npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts`
 
 ---
 

@@ -47,6 +47,7 @@ Number each line. Use standard HR terminology. QA tests exactly these statements
 
 ## Friction checks
 
+- **Friction budget (seconds):** … *(Playwright budget in [`ess-friction-scorecard.md`](./ess-friction-scorecard.md) when task is top-5 ESS)*
 - **Task-time target:** …
 - **Empty / no data state:** …
 - **Errors:** Plain language; user knows what to do next.

@@ -48,6 +48,26 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 
 **Buyer demo target:** Prove **W1–W5** in ≤30 minutes without mock/demo routes.
 
+### Track B — Buyer-ready OKRs (distinct from UAC)
+
+Track A **155/155** measures **feature audit closure**. Track B measures **reference-customer and buyer-perceived** readiness.
+
+| OKR | Target | Evidence |
+| --- | --- | --- |
+| Reference exit signed | 1 customer appendix complete | [reference-customer-exit-appendix-template.md](./reference-customer-exit-appendix-template.md) + `npm run verify:reference-exit` |
+| ESS friction | Top-5 tasks within scorecard budgets | [ess-friction-scorecard.md](./ess-friction-scorecard.md) + `tests/e2e/ess-friction-budgets.spec.ts` |
+| W3 counsel | `w3_counsel_signoff_date` recorded | [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) + [us-federal-withholding-placeholder.md](../compliance/us-federal-withholding-placeholder.md) |
+| W7 COBRA | `w7_cobra_notice_state` = `workflow_only` until 027 | [cobra-aca-counsel-gate.md](../compliance/cobra-aca-counsel-gate.md) |
+| Honest demo | Zero Track D / mock / global-l10n in buyer script | [deferred-platform-track.md](./deferred-platform-track.md) |
+
+### Track C — Engineering health
+
+| OKR | Target | Evidence |
+| --- | --- | --- |
+| `/api/v1/me/*` reads | `defineV1Route` + shared query hooks | `src/lib/*/use-*-query.ts` |
+| lib boundaries | No forbidden cross-imports | `npm run check:lib-boundaries` |
+| Track D prod | 404 unless `TRACK_D_API_ENABLED=1` | `lib/api/v1/track-d-guard.ts` |
+
 ---
 
 ## 2. Stakeholder outcomes (balanced)
@@ -85,10 +105,13 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 
 **Target:** W6 **Met** (3 connectors with PO briefs + smoke/integration proof).
 
-### P3 — Product polish (ongoing)
+### P3 — Value + efficiency (ongoing)
 
-- Complete **022** UAC audit + E2E depth
-- Continue `defineV1Route` + `useAuthenticatedResource` on `/api/v1/me/*`
+- [ess-friction-scorecard.md](./ess-friction-scorecard.md) — Playwright budgets for top-5 ESS
+- Brief **026** election change intent (W7 UX) — [026-benefits-election-change-intent.md](./feature-briefs/026-benefits-election-change-intent.md)
+- [counsel-track-w3-w7.md](./counsel-track-w3-w7.md) — W3/W7 gates before production claims
+- `defineV1Route` + `useAuthenticatedResource` on `/api/v1/me/*` reads — **in progress / largely complete**
+- [lib-module-boundaries.md](../architecture/lib-module-boundaries.md) + `npm run check:lib-boundaries`
 - **Do not** fund Core HR DB extraction (ADR 0013 Proposed) or payroll cutover until reference customer exit is documented
 
 ---
@@ -107,9 +130,12 @@ Brief **022** shipped in v2.7.0; completion audit [features-022](./completion-au
 | Metric | Target |
 | --- | --- |
 | Doc drift | Zero “115 UAC” or “Tier 1 next” in active docs |
-| Buyer demo | W1–W5 in &lt;30 min without `/mock`, `/global-l10n`, `/demo` |
+| **Track B** reference exit | Signed appendix for ≥1 reference customer |
+| **Track B** friction | ESS scorecard green in CI when JWT provided |
+| Buyer demo | W1–W5 in &lt;30 min without `/mock`, `/global-l10n`, `/demo`, Track D |
 | W6 | Briefs 023–025 PO-approved + integration/smoke proof | **Met** — [features-023-025](./completion-audits/features-023-025.md) |
 | 022 | 8/8 UAC in completion audit |
+| **Track C** lib boundaries | `check:lib-boundaries` in CI |
 | Agent canon | [specs/references.md](../../specs/references.md) in-repo paths only |
 
 ---
