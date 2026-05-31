@@ -1,8 +1,12 @@
 # HR ERP
 
-Human Resources **enterprise scaffold**: **Next.js** (App Router) + **PostgreSQL** (Prisma) with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), **payroll calculation** ([`packages/payroll-calc`](packages/payroll-calc)), and **governance** docs (compliance, AI ethics, architecture ADRs).
+**HR ERP** is a human resources platform for **mid-market organizations** (roughly 250–5,000 employees) that want one place for people operations—not a patchwork of payroll, time, benefits, and recruiting tools.
 
-The repo supports **human contributors and Cursor-orchestrated agents**; orchestration rules live in [`AGENTS.md`](AGENTS.md).
+**Employees** get a single portal for pay, time and leave, benefits, profile, and learning. **Managers** run hiring through offer, team approvals, and workforce tasks without a separate ATS. **HR and payroll** operate pay runs, period lock, benefits life events, compliance-oriented workflows, and operational dashboards from the same application. Payroll math is **native and deterministic** ([`packages/payroll-calc`](packages/payroll-calc)) with auditable inputs; it is **not** certified IRS/HMRC e-filing. **Tenancy and access** are designed for SaaS: JWT, policy checks, and Postgres row-level security per tenant.
+
+This repository is an **open, runnable enterprise scaffold**—local demos, buyer walkthroughs (prove pay, time, leave, profile, and recruiting in one product), and extension by your team. Shipped capability and buyer-ready gates are tracked in the [**stakeholder value plan**](docs/product/stakeholder-value-plan.md); buyer demos should stick to employee and HR paths documented there (not deferred mock or lab routes).
+
+**Under the hood:** **Next.js** (App Router) + **PostgreSQL** (Prisma), with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), and **governance** docs (compliance, AI ethics, architecture ADRs). The repo supports **human contributors and Cursor-orchestrated agents**; orchestration rules live in [`AGENTS.md`](AGENTS.md).
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node.js-22+-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
