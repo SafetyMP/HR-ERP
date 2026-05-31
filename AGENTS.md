@@ -1,5 +1,7 @@
 # Agent instructions — HR ERP
 
+**Repository role:** Evergreen OSS **reference application** for multi-tenant HR SaaS with an **in-repo agent governance harness** (T0–T4 tiers, hooks, evidence). Not a certified payroll vendor — scope and demo boundaries: [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md).
+
 **Team roster:** [docs/meta/agent-team-map.md](docs/meta/agent-team-map.md) — lanes, skills, planes (load first).
 
 This repository uses **Cursor 3 native runtime** + tier-gated skills. Start with [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md); hooks in [`.cursor/hooks.json`](.cursor/hooks.json).

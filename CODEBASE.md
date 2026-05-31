@@ -1,6 +1,6 @@
 # Codebase map — HR ERP
 
-Navigation for the **modular monolith** (Next.js + `lib/` domains + Prisma). Architecture rules: [docs/architecture/](docs/architecture/README.md). Import discipline: [lib-module-boundaries.md](docs/architecture/lib-module-boundaries.md) · `npm run check:lib-boundaries`.
+Navigation for the **modular monolith** (Next.js + `lib/` domains + Prisma). **Project framing:** evergreen OSS reference — [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md). Architecture rules: [docs/architecture/](docs/architecture/README.md). Import discipline: [lib-module-boundaries.md](docs/architecture/lib-module-boundaries.md) · `npm run check:lib-boundaries`.
 
 | Path | Index |
 | --- | --- |

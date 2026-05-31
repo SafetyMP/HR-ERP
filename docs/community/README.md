@@ -1,6 +1,6 @@
 # Community & contributor experience
 
-Thank you for investing time in this project. Whether you are fixing a typo, improving onboarding docs, or tracing a tricky bug, **your contribution matters**.
+Thank you for investing time in this project. HR ERP is maintained as an **evergreen open source reference** for HR SaaS patterns and agent-governed development — see [evergreen-open-source-positioning.md](../meta/evergreen-open-source-positioning.md). Whether you are fixing a typo, improving onboarding docs, or tracing a tricky bug, **your contribution matters**.
 
 Maintainers: after the first green Actions run, mirror required checks from [**`github-branch-protection.md`**](github-branch-protection.md).
 
@@ -29,4 +29,4 @@ npx --yes ajv-cli validate -s specs/templates/orchestrator-human-issue-handoff.s
 
 ## Developer Advocate skill
 
-Agents or maintainers coordinating contributor experience load **`hr-developer-advocate`** ([`.cursor/skills/hr-developer-advocate/SKILL.md`](../../.cursor/skills/hr-developer-advocate/SKILL.md)). That skill **does not** waive security reviews, tests, or Product Owner checkpoints for real features—it keeps tone collaborative while routing work through the same gates everyone else uses.
+Agents or maintainers coordinating contributor experience load **`@hr-contributor-handoff`** ([`.cursor/skills/hr-contributor-handoff/SKILL.md`](../../.cursor/skills/hr-contributor-handoff/SKILL.md)) with **agent-developer-advocate**. That skill **does not** waive security reviews, tests, or Product Owner checkpoints for real features—it keeps tone collaborative while routing work through the same gates everyone else uses.

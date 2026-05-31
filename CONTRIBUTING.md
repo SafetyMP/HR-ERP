@@ -1,5 +1,7 @@
 # Contributing
 
+HR ERP is an **evergreen open source reference** — contributions should preserve honest scope (see [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md)): teach HR SaaS and agent-governed development patterns; do not imply certified payroll or turnkey production HRIS without explicit disclaimers.
+
 ## Community standards & security
 
 - **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** applies to Issues, discussions, reviews, and project spaces.

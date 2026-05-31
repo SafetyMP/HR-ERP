@@ -1,17 +1,43 @@
 # HR ERP
 
-**HR ERP** is a human resources platform for **mid-market organizations** (roughly 250–5,000 employees) that want one place for people operations—not a patchwork of payroll, time, benefits, and recruiting tools.
+**Evergreen open source reference** for **multi-tenant HR software** built for **agent-assisted, compliance-aware development** — a runnable scaffold you can clone, learn from, and extend. It is **not** a certified payroll vendor or turnkey HRIS replacement.
+
+**HR ERP** models a human resources platform for **mid-market organizations** (roughly 250–5,000 employees): one place for people operations—not a patchwork of payroll, time, benefits, and recruiting tools.
 
 **Employees** get a single portal for pay, time and leave, benefits, profile, and learning. **Managers** run hiring through offer, team approvals, and workforce tasks without a separate ATS. **HR and payroll** operate pay runs, period lock, benefits life events, compliance-oriented workflows, and operational dashboards from the same application. Payroll math is **native and deterministic** ([`packages/payroll-calc`](packages/payroll-calc)) with auditable inputs; it is **not** certified IRS/HMRC e-filing. **Tenancy and access** are designed for SaaS: JWT, policy checks, and Postgres row-level security per tenant.
 
-This repository is an **open, runnable enterprise scaffold**—local demos, buyer walkthroughs (prove pay, time, leave, profile, and recruiting in one product), and extension by your team. Shipped capability and buyer-ready gates are tracked in the [**stakeholder value plan**](docs/product/stakeholder-value-plan.md); buyer demos should stick to employee and HR paths documented there (not deferred mock or lab routes).
+### Two evergreen layers in one repo
 
-**Under the hood:** **Next.js** (App Router) + **PostgreSQL** (Prisma), with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), and **governance** docs (compliance, AI ethics, architecture ADRs). The repo supports **human contributors and Cursor-orchestrated agents**; orchestration rules live in [`AGENTS.md`](AGENTS.md).
+| Layer | What you learn / reuse |
+| --- | --- |
+| **HR domain reference** | ESS, manager recruiting, payroll runs, benefits flows, SCIM/partner connectors — [stakeholder value plan](docs/product/stakeholder-value-plan.md) |
+| **Agent governance harness** | Risk tiers (T0–T4), Cursor hooks, handoffs, evidence CI — [`AGENTS.md`](AGENTS.md), [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md) |
+
+Full positioning (scope, honest demo paths, pairing with external agent-security OSS): **[`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)**.
+
+**Under the hood:** **Next.js** (App Router) + **PostgreSQL** (Prisma), with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), and **governance** docs (compliance, AI ethics, architecture ADRs). Human contributors and Cursor-orchestrated agents share the same merge bar.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node.js-22+-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-**Jump to:** [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
+**Jump to:** [Open source positioning](#open-source-evergreen-project) · [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
+
+---
+
+## Open source evergreen project
+
+**Use this repo to:**
+
+- Run a **local demo** and walk **W1–W5** product paths (portal, payroll math, tenancy, hiring) in ~30 minutes — [stakeholder value plan](docs/product/stakeholder-value-plan.md)
+- Study **regulated SaaS** patterns: RLS, contracts, payroll kernel, counsel-gated compliance docs
+- Copy **agent harness** patterns: manifest overlay, `npm run governance:*`, Collaboration plane (Harness HITL)
+- **Fork and extend** — jurisdictions, IdP, connectors, bounded-context extraction per ADRs
+
+**Do not use it as-is for:** production payroll compliance, legal HR advice, or “deploy tomorrow as your company HRIS” without your own counsel and SecOps review.
+
+Companion **agent execution governance** OSS (policy simulation, sandboxed commands, attestation, forensic receipts) pairs naturally as an **optional runtime gateway**; HR ERP remains the **reference application + in-repo harness**. See [evergreen positioning](docs/meta/evergreen-open-source-positioning.md#pairing-with-agent-security-oss-eg-fidusgate).
+
+**Buyer / reference-customer demos:** stick to employee and HR paths in the value plan — not deferred mock, Track D, or lab routes ([`deferred-platform-track.md`](docs/product/deferred-platform-track.md)).
 
 ---
 
@@ -83,6 +109,7 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 
 | Resource | Description |
 | --- | --- |
+| [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md) | **OSS scope** — reference app vs certified vendor; harness + optional agent-security pairing |
 | [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md) | Active forward plan (Track A/B/C, W1–W7) |
 | [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit |
 | [`AGENTS.md`](AGENTS.md) | Cursor orchestration, skills, Definition of Done |

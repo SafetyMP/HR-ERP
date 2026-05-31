@@ -2,6 +2,8 @@
 
 Start here to navigate human-written docs. Cursor agent orchestration and skills live under [`.cursor/`](../.cursor/).
 
+**Project framing:** Evergreen **open source reference** for multi-tenant HR SaaS + in-repo agent governance — not a certified payroll product. Read [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) first if you are forking, demoing, or pairing with agent-security OSS.
+
 **Product status (quick map):** Track A **001–022** = **155/155 UAC** met → Phase C **023–025** met → Track B (reference exit, ESS friction, counsel) — [stakeholder-value-plan.md](./product/stakeholder-value-plan.md).
 
 ## Legal / licensing
@@ -30,6 +32,7 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 
 | Doc | Purpose |
 | --- | --- |
+| [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) | OSS scope, honest demo, pairing with agent-security reference projects |
 | [meta/agent-team-map.md](./meta/agent-team-map.md) | Team roster, lanes, skills |
 | [meta/cursor-3-native-runtime.md](./meta/cursor-3-native-runtime.md) | Cursor 3 operator loop (`governance:lint`, `/multitask`, `/worktree`) |
 | [../specs/templates/collaboration-plan.md](../specs/templates/collaboration-plan.md) | Harness HITL collaboration phases (ADR 0020) |

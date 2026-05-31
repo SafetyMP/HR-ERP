@@ -2,6 +2,8 @@
 
 This guide explains how to adopt the **risk-tier modular governance** framework from HR ERP in **any** repository, with canonical policy in `~/.cursor/` and project-specific domain skills locally.
 
+**HR ERP as reference consumer:** This repo is an evergreen OSS **application + harness** showcase — not only a governance adopter. Scope and pairing with external agent-security OSS: [evergreen-open-source-positioning.md](./evergreen-open-source-positioning.md).
+
 **Normative ADR (seed):** [specs/alignment/decisions/0010-agent-risk-tier-governance.md](../alignment/decisions/0010-agent-risk-tier-governance.md)
 
 ## Architecture

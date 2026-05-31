@@ -5,6 +5,8 @@
 **Audience:** Product, buyers, reference customers, engineering, finance  
 **Supersedes:** Stale competitive roadmaps, external `~/.cursor/plans/` canon, archived future-platform docs
 
+**Open source framing:** This plan tracks **shippable product depth and buyer-ready gates** inside an **evergreen reference repo** — not a claim that the public OSS tree is a certified payroll vendor. See [evergreen-open-source-positioning.md](../meta/evergreen-open-source-positioning.md).
+
 **Archive:** [docs/_archived/planning/2026-05-28-stakeholder-reset/](../_archived/planning/2026-05-28-stakeholder-reset/)
 
 ---
