@@ -12,6 +12,8 @@ disable-model-invocation: true
 
 # HR regulated domain
 
+**Collaboration plane:** Do not invoke until phase 6 (`revalidationConfirmed` in plan/handoff). Use `@hr-human-collaboration` for phases 1–5.
+
 ## Use this skill when
 
 - Pay, time, earnings, jurisdiction matrices, `COMPLIANCE_*` errors

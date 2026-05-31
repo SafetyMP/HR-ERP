@@ -9,6 +9,10 @@
 - **Suggested tier (CI):** <!-- npm run governance:lint -->
 - **Runtime:** cursor-3-native
 
+### Harness delta (Adaptation plane)
+
+- New friction / ledger signal? Y/N → signal_id: ___
+
 ### PO orchestration checkpoint (required when riskTier ≥ T1; T0 use `step 1 chore N/A`)
 
 ```
@@ -42,7 +46,12 @@ Payroll / Compliance / Math: N/A or brief path
 
 - **S&OP cycle ID:** <!-- e.g. 2026-W22 or N/A for ops-only -->
 - **Release train:** <!-- in-cycle | deferred -->
-- **Value delivery record:** <!-- specs/templates/value-delivery-record.md path or N/A -->
+- **Value delivery record:** <!-- specs/templates/value-delivery-record.md path or harness N/A -->
+
+### Evidence bundle (required when riskTier ≥ T3)
+
+- **Evidence bundle:** <!-- specs/governance/evidence/bundles/<id>.json — npm run governance:evidence:collect -->
+- **Lane sign-offs:** <!-- specs/governance/evidence/lane-signoffs/<id>.json -->
 
 ## Agent lane sign-off (parallel — ADR 0011)
 

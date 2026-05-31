@@ -8,7 +8,7 @@ globs: README.md,CONTRIBUTING.md,AGENTS.md,docs/**,.github/**
 
 # Developer Advocate agent
 
-Load **`@hr-swarm-governance`** for contributor triage and orchestrator JSON handoffs.
+Load **`@hr-contributor-handoff`** for contributor triage and orchestrator JSON handoffs.
 
 Co-load **`@lint-and-validate`** + **`@cc-skill-security-review`** when diff warrants — merge gates are not waived.
 

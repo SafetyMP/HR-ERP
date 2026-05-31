@@ -1,0 +1,33 @@
+signal_id: "a1b2c3d4-e5f6-4890-abcd-ef1234567890"
+promotionTier: L2
+principal: "Harness CI fixture"
+ctqId: composition_miss_rate
+
+metric:
+  name: composition_miss_rate
+  signalKind: composition_miss
+  pathClass: harness_foundation
+  windowDays: 14
+  baseline: 0.12
+  target: 0.05
+  warnThreshold: 0.08
+  pageThreshold: 0.15
+
+monitoring:
+  reviewCadence: weekly
+  commands:
+    - npm run governance:reflect
+
+reactionPlan:
+  ifWarn: "Keep hint in shadow; re-measure next week"
+  ifPage: "Set hint status rejected; open DMAIC charter"
+  ifImproved: "Promote hint to active after two clean windows"
+
+ownership:
+  processOwner: "Harness CI fixture"
+  backup: "Human Lead"
+
+linkedArtifacts:
+  stub: ""
+  promoted: ""
+  rca: ""

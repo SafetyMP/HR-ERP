@@ -80,3 +80,23 @@ workspaceGrounding:
     - prisma/
     - specs/
   readme: .cursor/skills/README.md
+
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: framework-nextjs-app-router
+      pathPattern: app/**
+      prefer:
+        - nextjs-app-router
+        - hr-domain-boundaries
+      deprioritize: []
+      minTier: T1
+      status: shadow
+    - id: framework-prisma-stack
+      pathPattern: prisma/**
+      prefer:
+        - prisma-7-postgres
+        - hr-data-custody
+      deprioritize: []
+      minTier: T2
+      status: shadow

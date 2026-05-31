@@ -102,9 +102,12 @@ Committed in repo:
 
 **Negative:** T3+ contributors must maintain handoff JSON; global skill lock may warn on drift until machines sync.
 
+**Extension:** Fourth Adaptation plane — [ADR 0017](0017-reflective-governance-fabric.md) (Reflective Governance Fabric).
+
 ## References
 
 - [cursor-industry-alignment.md](../../../docs/meta/cursor-industry-alignment.md)
+- [governance-continuous-learning.md](../../../docs/meta/governance-continuous-learning.md)
 - [cursor-3-native-runtime.md](../../../docs/meta/cursor-3-native-runtime.md)
 - [0010-agent-risk-tier-governance.md](0010-agent-risk-tier-governance.md)
 - [0011-function-lane-orchestration.md](0011-function-lane-orchestration.md)

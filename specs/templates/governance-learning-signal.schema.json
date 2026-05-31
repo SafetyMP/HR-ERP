@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hr-erp.local/schemas/governance-learning-signal.schema.json",
+  "title": "GovernanceLearningSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_id", "ts", "kind", "status", "source"],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique signal identifier"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "hook_deny",
+        "lane_gap",
+        "ci_fail",
+        "friction",
+        "composition_miss",
+        "tier_mismatch",
+        "cost_spike",
+        "collaboration_gate",
+        "collaboration_divergence",
+        "collaboration_timeout"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "shadow", "promoted", "rejected"]
+    },
+    "riskTier": {
+      "type": "string",
+      "enum": ["T0", "T1", "T2", "T3", "T4"]
+    },
+    "pathClass": {
+      "type": "string",
+      "description": "Manifest path trigger id when known"
+    },
+    "plannedLanes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "skillsLoaded": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "agentFunctions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plane", "artifact"],
+      "properties": {
+        "plane": { "type": "string", "enum": ["runtime", "evidence", "collaboration"] },
+        "artifact": {
+          "type": "string",
+          "enum": [
+            "audit.log",
+            "lane-gap-report",
+            "governance-lint",
+            "pre-tool-use",
+            "before-submit-prompt",
+            "subagent-stop",
+            "manual"
+          ]
+        }
+      }
+    },
+    "hypothesis": { "type": "string" },
+    "proposedPatchRef": { "type": "string" },
+    "principal": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "executionGap": { "type": "boolean" },
+        "semanticMiss": { "type": "boolean" },
+        "compositionMiss": { "type": "boolean" }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "description": "Optional structured context (missing lanes, tiers, etc.)"
+    }
+  }
+}

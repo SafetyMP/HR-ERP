@@ -1,0 +1,8 @@
+{
+  "signal_id": "6f436872-80bd-42b9-9d49-20da21203d33",
+  "promotedAt": "2026-05-31T02:48:27.542Z",
+  "tier": "L1",
+  "principal": "Harness CI",
+  "stub": "specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L1.md",
+  "artifact": ".cursor/skills/hr-orchestration-lanes/references/learning/6f436872-80bd-42b9-9d49-20da21203d33.md"
+}

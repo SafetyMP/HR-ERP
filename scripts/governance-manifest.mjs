@@ -94,6 +94,48 @@ function parseRiskTiers(raw) {
   return riskTiers;
 }
 
+function parseAdaptation(raw) {
+  if (!raw?.adaptation) return { enabled: false, skillRouterHints: [] };
+  const a = raw.adaptation;
+  return {
+    enabled: a.enabled === true,
+    skillRouterHints: (a.skillRouterHints ?? []).map((h) => ({
+      id: h.id,
+      pathPattern: h.pathPattern,
+      prefer: h.prefer ?? [],
+      deprioritize: h.deprioritize ?? [],
+      minTier: h.minTier ?? "T1",
+      sourceSignalIds: h.sourceSignalIds ?? [],
+      status: h.status ?? "shadow",
+    })),
+  };
+}
+
+function mergeAdaptation(base, overlay) {
+  if (!overlay?.enabled && !overlay?.skillRouterHints?.length) return base;
+  const byId = new Map((base.skillRouterHints ?? []).map((h) => [h.id, h]));
+  for (const hint of overlay.skillRouterHints ?? []) {
+    byId.set(hint.id, hint);
+  }
+  return {
+    enabled: base.enabled || overlay.enabled === true,
+    skillRouterHints: [...byId.values()],
+  };
+}
+
+function parseFrameworkSkills(raw) {
+  const out = {};
+  if (!raw?.frameworkSkills) return out;
+  for (const [id, cfg] of Object.entries(raw.frameworkSkills)) {
+    out[id] = {
+      paths: cfg.paths ?? [],
+      minTier: cfg.minRiskTier ?? cfg.minTier ?? "T1",
+      coLoad: cfg.coLoad ?? [],
+    };
+  }
+  return out;
+}
+
 export function parseManifestDocument(raw, path = "") {
   const doc = typeof raw === "string" ? parseYaml(raw) : raw;
   const pathTriggers = (doc.pathTriggers ?? []).map(normalizeTrigger).filter(Boolean);
@@ -107,11 +149,15 @@ export function parseManifestDocument(raw, path = "") {
     nativeCommands: doc.nativeCommands ?? {},
     executionGraph: doc.executionGraph ?? {},
     pathTriggers,
+    frameworkSkills: parseFrameworkSkills(doc),
     skillIds: doc.skillIds ?? [],
+    skills: doc.skills ?? {},
+    agentRules: doc.agentRules ?? {},
     functionIds: doc.functionIds ?? [],
     agentFunctions: parseAgentFunctions(doc),
     riskTiers: parseRiskTiers(doc),
     taskBundles: doc.taskBundles ?? {},
+    adaptation: parseAdaptation(doc),
     path,
   };
 }
@@ -129,6 +175,7 @@ export function loadManifest() {
     if (overlayTriggers.length) {
       parsed.pathTriggers = mergePathTriggers(parsed.pathTriggers, overlayTriggers);
     }
+    parsed.adaptation = mergeAdaptation(parsed.adaptation, parseAdaptation(overlayDoc));
   }
 
   return parsed;
@@ -184,6 +231,9 @@ export function buildSuggestedLanes(tier, requiredLanes, matchedTriggers) {
   }
   if (ids.has("packaging_supply_chain")) lanes.add("packaging");
   if (ids.has("devops_lifecycle") || ids.has("hr_devops_framework_docs")) lanes.add("release_ops");
+  if (ids.has("nextjs_app_router") || ids.has("contract_schemas")) lanes.add("architect");
+  if (ids.has("prisma_stack")) lanes.add("custodian");
+  if (ids.has("test_stack")) lanes.add("verifier");
   if (
     ids.has("compliance_pay_time") ||
     ids.has("ai_governance") ||
@@ -228,6 +278,18 @@ export function classifyFiles(files, manifest) {
           matchedTriggers.push({ id: trigger.id, file, minTier: trigger.minTier });
           for (const s of trigger.attachSkills ?? []) suggestedSkills.add(s);
           for (const lane of trigger.requiredLanes ?? []) requiredLanes.add(lane);
+        }
+      }
+    }
+  }
+
+  for (const [skillId, fw] of Object.entries(manifest.frameworkSkills ?? {})) {
+    for (const file of files) {
+      for (const pattern of fw.paths ?? []) {
+        if (matchPath(file, pattern)) {
+          suggestedTier = maxTier(suggestedTier, fw.minTier);
+          suggestedSkills.add(skillId);
+          for (const co of fw.coLoad ?? []) suggestedSkills.add(co);
         }
       }
     }

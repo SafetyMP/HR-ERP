@@ -1,0 +1,26 @@
+name: governance-drift-weekly
+
+on:
+  schedule:
+    - cron: "0 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Manifest sync check
+        run: npm run governance:sync-check
+      - name: Reflect dry-run and CTQ snapshot
+        run: npm run governance:reflect:dry-run
+      - name: Evidence bundle fixtures
+        run: node scripts/governance-evidence.mjs verify --discover

@@ -1,0 +1,120 @@
+{
+  "ticketId": "cursor-execution-improvement",
+  "source": "Cursor execution improvement plan",
+  "summary": "Encode operator loop, handoff strict prep, hook rollout dates, adaptation close-out, cloud parity.",
+  "humanReadableOriginal": "Implement Cursor execution improvement plan — operator discipline, lane gaps, hook rollout.",
+  "riskTier": "T3",
+  "poCheckpoint": "Plan: cursor execution improvement | UAC: governance:ci green, handoff matches Required lanes | gate Y | phase ADR: 0019",
+  "impact": "Reduces lane_gap signals and single-thread thrash on harness/meta work.",
+  "reproduction": {
+    "steps": ["Run npm run governance:lint on harness diff without handoff JSON"]
+  },
+  "expectedVsActual": {
+    "expected": "Required lanes in delegatedTaskPlan; sessionStart injects operator loop",
+    "actual": "lane_gap signals on harness_foundation paths"
+  },
+  "environment": {
+    "os": "darwin",
+    "nodeVersion": "22.x",
+    "branch": "main"
+  },
+  "suspectedPaths": [
+    ".cursor/hooks/**",
+    "docs/meta/**",
+    "scripts/governance-lint.mjs",
+    "specs/governance/learning/**"
+  ],
+  "orchestratorHints": [
+    "Load agent-team-map.md first",
+    "release_ops for CI/automation paths",
+    "sentinel on hook changes"
+  ],
+  "conditionalSkills": [
+    "hr-foundation-governance",
+    "hr-orchestration-lanes",
+    "hr-devops-lifecycle"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "scout",
+      "intent": "Audit execution gaps vs plan",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "architect",
+      "intent": "Operator loop + hook rollout design",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "counsel",
+      "intent": "T3 regulated doc paths checklist",
+      "riskTier": "T3",
+      "dependsOn": ["architect"],
+      "readonly": true
+    },
+    {
+      "function": "release_ops",
+      "intent": "CI workflows and cloud verify",
+      "riskTier": "T3",
+      "dependsOn": ["architect"]
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "intent": "Hook and MCP policy review",
+      "riskTier": "T3",
+      "dependsOn": ["architect"],
+      "readonly": true
+    },
+    {
+      "function": "builder",
+      "intent": "Implement execution improvements",
+      "riskTier": "T3",
+      "dependsOn": ["counsel", "ai_governance_reviewer"]
+    },
+    {
+      "function": "sentinel",
+      "intent": "Hook security review",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate",
+      "readonly": true
+    },
+    {
+      "function": "verifier",
+      "intent": "governance:ci + handoff strict",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate"
+    }
+  ],
+  "requiresPoCheckpoint": true,
+  "reproStatus": "reproduced",
+  "compliancePosture": "NIST AI RMF",
+  "delegationDepth": 1,
+  "toolClasses": ["read_internal"],
+  "principal": "Human PO",
+  "revalidationConfirmed": true,
+  "outputReviewPassed": true,
+  "collaborationPlan": {
+    "phase": "complete",
+    "oversightMode": "HOTL",
+    "decisionOverview": "Cursor execution improvement — operator loop and hook rollout",
+    "recommendedStrategyId": "B",
+    "revalidationRequired": true,
+    "revalidationConfirmed": true,
+    "outputReviewRequired": true,
+    "outputReviewPassed": true
+  },
+  "humanDecisionRecord": {
+    "chosenStrategy": "B",
+    "principal": "Human PO",
+    "recordedAt": "2026-05-31T12:00:00Z",
+    "rejectionHistory": []
+  },
+  "evidenceBundlePath": "specs/governance/evidence/bundles/cursor-execution-improvement.json",
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/cursor-execution-improvement.json"
+}

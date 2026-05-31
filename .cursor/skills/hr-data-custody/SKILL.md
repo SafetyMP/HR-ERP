@@ -12,6 +12,8 @@ disable-model-invocation: true
 
 # HR data custody
 
+**Collaboration plane:** Specialized skill — invoke only after phase 6 / `revalidationConfirmed`. Record DDL tradeoffs in [collaboration-plan.md](../../../specs/templates/collaboration-plan.md).
+
 ## Use this skill when
 
 - Editing `prisma/schema.prisma`, `prisma/migrations/**`, `services/*/db/migrations/**`

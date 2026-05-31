@@ -1,0 +1,17 @@
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: devops_lifecycle-composition-e7eb643c
+      pathPattern: "**/*"
+      prefer:
+        - hr-orchestration-lanes
+        - hr-quality-lab
+      deprioritize: []
+      minTier: T3
+      sourceSignalIds:
+        - e7eb643c-112b-4e81-a296-d40678cf5166
+        - e9c9242d-9d76-46e6-899a-9c68583edef6
+        - c2fb49f1-06f1-40b7-bc45-9918c766c451
+        - f7ebe3d9-89cd-48ba-b521-4e57ae8226c3
+        - 2fea5c6f-d273-4165-babd-b7541c6b81fb
+      status: shadow

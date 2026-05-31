@@ -8,4 +8,4 @@ globs: specs/**,lib/**,app/**,src/app/**
 
 # Integrations agent
 
-Cross-check Feature brief via **`@hr-product-gate`** for employee-facing copy. Draft `specs/templates/integration-rfc.md` for email, IdP, e-sign, webhooks. Secrets never logged.
+Cross-check Feature brief via **`@hr-product-gate`**. Load **`@hr-domain-boundaries`** for integration boundaries. Draft `specs/templates/integration-rfc.md` for email, IdP, e-sign, webhooks. Secrets never logged.

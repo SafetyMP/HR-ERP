@@ -1,0 +1,37 @@
+# Control plan — required for L2 promote close-out (ADR 0018)
+# Copy to specs/governance/learning/control-plans/<signal_id>-control.yaml
+
+signal_id: "" # UUID from learning ledger / promoted record
+promotionTier: L2
+principal: "" # accountable human
+ctqId: "" # from harness-ctq-tree.yaml littleY id
+
+metric:
+  name: composition_miss_rate # operational name
+  signalKind: composition_miss # ledger kind to monitor
+  pathClass: "" # optional manifest trigger id filter
+  windowDays: 14
+  baseline: null # set by governance:improve measure
+  target: null # e.g. 0.05 max rate
+  warnThreshold: null
+  pageThreshold: null
+
+monitoring:
+  reviewCadence: weekly # weekly | per_pr | monthly
+  commands:
+    - npm run governance:reflect
+    - npm run governance:learning:validate
+
+reactionPlan:
+  ifWarn: "Re-run reflect; keep router hint in shadow; notify sponsor"
+  ifPage: "Revert hint to rejected; open DMAIC charter; Human review"
+  ifImproved: "Promote hint status to active after 2 clean windows"
+
+ownership:
+  processOwner: ""
+  backup: ""
+
+linkedArtifacts:
+  stub: "" # specs/governance/learning/stubs/<id>-L2.yaml
+  promoted: "" # specs/governance/learning/promoted/<signal_id>.json
+  rca: "" # optional specs/governance/learning/rca/<signal_id>-rca.md

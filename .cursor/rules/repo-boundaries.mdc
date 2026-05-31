@@ -21,4 +21,4 @@ Canonical docs — **do not guess**; Read these paths when touching architecture
 
 ## Skills (lazy, tier-gated)
 
-Use `@skill-router` + `@governance-tier-gate` for orchestration. Domain depth: `@hr-domain-boundaries` (architecture), `@hr-regulated-domain` (T3 pay/AI).
+Dynamic loading: `~/.cursor/rules/core-dynamic-skills.mdc` → `@skill-router` + `@governance-tier-gate`. Global index: `~/.cursor/skills/README.md`. Domain depth: `@hr-domain-boundaries` (architecture), `@hr-regulated-domain` (T3 pay/AI).

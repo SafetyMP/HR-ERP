@@ -29,6 +29,7 @@ disable-model-invocation: true
 2. Derive cases from PO UAC verbatim — gaps are PO defects.
 3. Synthetic data only; no prod PII.
 4. On failure, emit `FAILURE_SUMMARY` per `specs/templates/qa-plan.md`.
+5. **Collaboration phase 7:** Compare PR diff / test scope to `humanDecisionRecord.chosenStrategy`; flag divergence (`collaboration_divergence` signal).
 
 ## Resources
 

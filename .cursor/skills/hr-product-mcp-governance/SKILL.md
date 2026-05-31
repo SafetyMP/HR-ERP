@@ -12,6 +12,8 @@ disable-model-invocation: true
 
 # HR product MCP governance
 
+**Collaboration plane:** Specialized skill — phase 6 only after human tradeoffs recorded. Distinct from Harness HITL (`@hr-human-collaboration`).
+
 ## Use this skill when
 
 - Editing [`lib/copilot/`](../../../lib/copilot/) (catalog, transport, governance config)

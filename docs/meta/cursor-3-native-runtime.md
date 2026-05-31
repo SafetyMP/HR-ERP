@@ -4,6 +4,18 @@ Operator guide for **Cursor 3.0–3.2** native agent runtime aligned with ADR [0
 
 **Prerequisites:** Cursor 3.2+, Agents Window (`Cmd+Shift+P → Agents Window`).
 
+## Operator loop (every T1+ session)
+
+0. **Collaboration plane:** phases 1–3 per [collaboration-plan.md](../../specs/templates/collaboration-plan.md) and `@hr-human-collaboration` (Harness HITL — not Product HITL)
+1. Load [agent-team-map.md](agent-team-map.md) (team roster)
+2. `npm run governance:lint` → tier + **Required lanes**
+3. `npm run governance:plan` → machine DAG for handoff / hooks
+4. `/multitask` or `/worktree` per lane table below
+5. T2+: `specs/**/orchestrator-handoff.json` matching Required lanes
+6. `npm run governance:ci` before merge
+
+Hook rollout dates: [hook-rollout-schedule.md](hook-rollout-schedule.md). Cloud T4: [cursor-cloud-agents.md](../operations/cursor-cloud-agents.md).
+
 ## Multi-root workspace (3.2)
 
 Add folders to one Agents Window session:
@@ -57,34 +69,37 @@ Canonical schedule: [`.cursor/governance/hook-mode.json`](../../.cursor/governan
 | `beforeShellExecution` | Destructive git/db guardrails in prose |
 | `beforeMCPExecution` | MCP allowlist from `.cursor/mcp.json` |
 | `subagentStart` / `subagentStop` | Lane state → `session-lane-state.json` |
-| `preToolUse` (Task) | T3+ counsel-before-builder gate |
-| `beforeSubmitPrompt` | PO checkpoint injection (T1+) |
+| `beforeSubmitPrompt` | PO + Collaboration phase inject (T1+) |
+| `preToolUse` (Task) | T3+ counsel gate; Collaboration specialized-skill gate |
 | `stop` | PR stub + `lane-gap-report.json` |
 
-## Foundation rearchitecture (ADR 0016)
+## Foundation rearchitecture (ADR 0016–0020)
 
-Three-plane harness: **policy** (manifest v4) · **runtime** (hooks + lane state) · **evidence** (CI + handoffs).
+Five-plane harness: **policy** · **collaboration (Harness HITL)** · **runtime** · **evidence** · **adaptation**. See [ADR 0020](../../specs/alignment/decisions/0020-collaboration-plane-harness-hitl.md).
+
+Cursor IDE lacks LangGraph-grade durable mid-turn interrupt; T3+ uses git-tracked handoff `revalidationConfirmed` as durable backstop.
+
+### Plan Mode + Collaboration bridge
+
+1. Plan Mode (`Shift+Tab`) → save `.cursor/plans/*.md` using [collaboration-plan.md](../../specs/templates/collaboration-plan.md)
+2. Human approves strategy (phase 3) and revalidation (phase 5)
+3. `npm run governance:plan` → machine DAG + `collaborationPlan` JSON
+4. After phase 6 specialized tools → `/multitask`
+5. Phase 7: verifier output review vs `humanDecisionRecord`
 
 ### Worktree + cloud verify
 
 - [`.cursor/worktrees.json`](../../.cursor/worktrees.json) — `npm ci` + `.env` copy on `/worktree`
-- [`.cursor/environment.json`](../../.cursor/environment.json) — Cloud Agent `install` hook
+- [`.cursor/environment.json`](../../.cursor/environment.json) — Cloud Agent `install` + **`verify`: `npm run governance:ci`**
 
-### Plan Mode bridge
-
-1. Plan Mode (`Shift+Tab`) → save `.cursor/plans/*.md`
-2. `npm run governance:plan` → machine DAG
-3. Approve both → `/multitask`
-
-PO gate accepts Plan Mode artifact for harness/meta work (see `@hr-foundation-governance`).
+PO gate accepts Plan Mode / collaboration-plan artifact for harness/meta work (see `@hr-foundation-governance`).
 
 ### Automations catalog (release_ops)
 
 | Automation | Trigger | Action |
 |------------|---------|--------|
-| `governance-pr-body-lint` | GitHub PR opened | Cloud: `governance:pr-body --strict` |
-| `governance-drift-weekly` | Cron weekly | `governance:sync-check` + audit |
-| `post-merge-smoke` | PR merged | Cloud smoke tests |
+| `governance-pr-body-lint` | GitHub PR opened (T2+) | [.github/workflows/governance-pr-autofill.yml](../../.github/workflows/governance-pr-autofill.yml) — strict `pr-body`; optional Cursor Automation mirror |
+| `governance-drift-weekly` | Cron weekly | `governance:sync-check` + reflect dry-run ([workflow](../../.github/workflows/governance-drift-weekly.yml)) |
 | `t4-swarm-handoff` | Webhook | Cloud multitask for T4 |
 
 Configure at [cursor.com/automations](https://cursor.com/automations). No `auto_apply` on T2+ code paths.
@@ -121,5 +136,6 @@ Do not conflate IDE MCP plugins with in-app copilot tools.
 ## Related
 
 - [cursor-capability-baseline.md](cursor-capability-baseline.md) — pre-unlock audit
-- [cursor-antigravity-harness.md](cursor-antigravity-harness.md) — lint CLI reference
-- [global-agent-governance-overlay.md](global-agent-governance-overlay.md) — manifest v3 sync
+- [cursor-3-native-runtime.md](cursor-3-native-runtime.md) — operator guide + lint CLI
+- [hook-rollout-schedule.md](hook-rollout-schedule.md) — v4 enforce dates
+- [global-agent-governance-overlay.md](global-agent-governance-overlay.md) — manifest v4 sync

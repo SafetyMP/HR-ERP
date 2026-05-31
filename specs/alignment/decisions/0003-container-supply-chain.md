@@ -56,4 +56,4 @@ Releases (`refs/tags/...`) and **`workflow_dispatch`** builds both match `publis
 
 - [`0002-postgres-kafka-context-boundaries.md`](0002-postgres-kafka-context-boundaries.md)
 - [`docs/architecture/03-wasm-rust-adoption-triggers.md`](../../../docs/architecture/03-wasm-rust-adoption-triggers.md)
-- Project skill: [`.cursor/skills/hr-erp-packaging-supply-chain/SKILL.md`](../../../.cursor/skills/hr-erp-packaging-supply-chain/SKILL.md)
+- Project skill: [`.cursor/skills/hr-devops-lifecycle/SKILL.md`](../../../.cursor/skills/hr-devops-lifecycle/SKILL.md) (supersedes legacy packaging skill)

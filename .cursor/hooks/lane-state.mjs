@@ -14,15 +14,46 @@ export function loadLaneState() {
       sessionId: null,
       riskTier: "T1",
       plannedLanes: [],
+      suggestedSkills: [],
       started: [],
       completed: [],
+      skillsLoaded: [],
+      signalsEmitted: [],
+      poInjectCount: 0,
       updatedAt: null,
+      collaborationPhase: "proposal",
+      humanDecisionRecord: null,
+      revalidationPending: false,
+      revalidationDeadline: null,
+      revalidationConfirmed: false,
+      specializedSkillsUnlocked: [],
+      outputReviewPassed: false,
     };
   }
   try {
-    return JSON.parse(readFileSync(STATE_PATH, "utf8"));
+    const state = JSON.parse(readFileSync(STATE_PATH, "utf8"));
+    state.skillsLoaded = state.skillsLoaded ?? [];
+    state.signalsEmitted = state.signalsEmitted ?? [];
+    state.poInjectCount = state.poInjectCount ?? 0;
+    state.collaborationPhase = state.collaborationPhase ?? "proposal";
+    state.revalidationPending = state.revalidationPending ?? false;
+    state.revalidationConfirmed = state.revalidationConfirmed ?? false;
+    state.specializedSkillsUnlocked = state.specializedSkillsUnlocked ?? [];
+    state.outputReviewPassed = state.outputReviewPassed ?? false;
+    return state;
   } catch {
-    return { plannedLanes: [], started: [], completed: [] };
+    return {
+      plannedLanes: [],
+      started: [],
+      completed: [],
+      skillsLoaded: [],
+      signalsEmitted: [],
+      poInjectCount: 0,
+      collaborationPhase: "proposal",
+      revalidationConfirmed: false,
+      specializedSkillsUnlocked: [],
+      outputReviewPassed: false,
+    };
   }
 }
 
@@ -43,10 +74,44 @@ export function syncPlanFromLint(state) {
     state.riskTier = plan.riskTier;
     state.plannedLanes = (plan.delegatedTaskPlan ?? []).map((p) => p.function).filter(Boolean);
     state.regulatedGraph = plan.regulatedGraph ?? false;
+    if (plan.matchedTriggers?.length) {
+      state.pathClass = plan.matchedTriggers[0].id;
+    }
+    if (plan.suggestedSkills?.length) {
+      state.suggestedSkills = plan.suggestedSkills;
+    }
+    saveLaneState(state);
     return plan;
   } catch {
     return null;
   }
+}
+
+export function extractSkillIdsFromText(text) {
+  const ids = new Set();
+  const re = /@([a-z0-9][a-z0-9-]*)/gi;
+  let m;
+  while ((m = re.exec(text ?? "")) !== null) {
+    ids.add(m[1].toLowerCase());
+  }
+  return [...ids];
+}
+
+export function recordSkillsLoaded(state, skillIds, { source, maxBodies = 3 } = {}) {
+  const normalized = (skillIds ?? []).map((s) => s.replace(/^@/, "").toLowerCase()).filter(Boolean);
+  if (!normalized.length) return { added: [], total: state.skillsLoaded?.length ?? 0 };
+
+  state.skillsLoaded = state.skillsLoaded ?? [];
+  const added = [];
+  for (const id of normalized) {
+    if (!state.skillsLoaded.includes(id)) {
+      state.skillsLoaded.push(id);
+      added.push(id);
+    }
+  }
+  state.lastSkillSource = source ?? "unknown";
+  saveLaneState(state);
+  return { added, total: state.skillsLoaded.length, overCap: state.skillsLoaded.length > maxBodies };
 }
 
 export function recordSubagentStart(state, { subagentType, task, functionId }) {
@@ -57,6 +122,7 @@ export function recordSubagentStart(state, { subagentType, task, functionId }) {
     taskPreview: (task ?? "").slice(0, 120),
   };
   state.started.push(entry);
+  recordSkillsLoaded(state, extractSkillIdsFromText(task), { source: "subagent-start" });
   saveLaneState(state);
   return entry;
 }
@@ -72,7 +138,9 @@ export function recordSubagentStop(state, { subagentType, task, outputPreview })
     completedAt: new Date().toISOString(),
     outputHash: hash,
   });
+  recordSkillsLoaded(state, extractSkillIdsFromText(task), { source: "subagent-stop" });
   saveLaneState(state);
+  return fn;
 }
 
 function inferFunctionFromTask(task, subagentType) {

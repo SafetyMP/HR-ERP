@@ -6,7 +6,7 @@
 import { readFileSync, existsSync, mkdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
 
-function loadHookModeConfig() {
+export function loadHookModeConfig() {
   const path = join(process.cwd(), ".cursor", "governance", "hook-mode.json");
   if (!existsSync(path)) return null;
   try {
@@ -14,6 +14,14 @@ function loadHookModeConfig() {
   } catch {
     return null;
   }
+}
+
+/** True when calendar date is on or after v4Rollout[key] (e.g. preToolUseDenyT3From). */
+export function rolloutDateReached(rolloutKey) {
+  const cfg = loadHookModeConfig();
+  const iso = cfg?.v4Rollout?.[rolloutKey];
+  if (!iso) return false;
+  return Date.now() >= Date.parse(`${iso}T00:00:00.000Z`);
 }
 
 export function resolveHookMode() {

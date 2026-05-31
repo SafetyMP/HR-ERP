@@ -10,6 +10,7 @@
  *   node governance-lint.mjs plan [--base main] [--strict] [--json] [--quiet]
  *   node governance-lint.mjs pr-body-generate [--base main]
  *   node governance-lint.mjs sync-check [--warn-only]
+ *   node governance-lint.mjs team-map [--strict]
  */
 
 import { execSync } from "node:child_process";
@@ -24,6 +25,8 @@ import {
   tierAtLeast,
   buildPlanFromExecutionGraph,
 } from "./governance-manifest.mjs";
+import { emitEvidenceSignal, matchRouterHints } from "./governance-learning.mjs";
+import { buildCollaborationPlanStub, handoffRequiresRevalidationStrict } from "../.cursor/hooks/collaboration.mjs";
 
 function parseArgs(argv) {
   const args = {
@@ -106,8 +109,41 @@ function prBodyReferencesLane(body, lane) {
   return re.test(body);
 }
 
+function isHarnessOnlyDiff(files) {
+  if (!files.length) return false;
+  const harnessPrefixes = [
+    ".cursor/",
+    "scripts/governance",
+    "docs/meta/cursor",
+    "specs/governance/",
+    "specs/alignment/decisions/001",
+  ];
+  return files.every((f) => harnessPrefixes.some((p) => f.startsWith(p)));
+}
+
+function hasValueDeliveryRecord(body, files = []) {
+  if (/value delivery record:\s*harness\s*N\/A/i.test(body)) return isHarnessOnlyDiff(files);
+  if (/value-delivery-record|valueDeliveryRecordPath/i.test(body)) return true;
+  if (/specs\/[^\s]*value-delivery[^\s]*/i.test(body)) return true;
+  return false;
+}
+
+function t3LaneSignoffsPresent(body) {
+  const hasSentinel =
+    /sentinel/i.test(body) &&
+    (/\*\*sentinel\*\*[^\n]*\S{3,}/i.test(body) ||
+      /\[x\]\s*\*\*sentinel\*\*/i.test(body) ||
+      /sentinel[^\n]+security-review/i.test(body));
+  const hasCounsel =
+    /counsel/i.test(body) &&
+    (/\*\*counsel\*\*[^\n]*\S{3,}/i.test(body) ||
+      /\[x\]\s*\*\*counsel\*\*/i.test(body) ||
+      /counsel[^\n]+legal-checklist/i.test(body));
+  return hasSentinel && hasCounsel;
+}
+
 function validatePrBody(body, suggestedTier, strict, options = {}) {
-  const { failOnUnderTier = false, requiredLanes = [] } = options;
+  const { failOnUnderTier = false, requiredLanes = [], diffFiles = [] } = options;
   const issues = [];
   const warnings = [];
 
@@ -161,9 +197,22 @@ function validatePrBody(body, suggestedTier, strict, options = {}) {
     else warnings.push("T4 PR should acknowledge human merge gate");
   }
 
-  if (tierAtLeast(suggestedTier, "T1") && !body.match(/Lifecycle \(S&OP|value delivery|value-delivery-record/i)) {
-    warnings.push(
-      "PR body missing Lifecycle (S&OP / value) section or value delivery record link (advisory for T1+)",
+  if (tierAtLeast(suggestedTier, "T1")) {
+    if (!body.match(/Lifecycle \(S&OP|value delivery|value-delivery-record/i)) {
+      const msg = "PR body missing Lifecycle (S&OP / value) section or value delivery record link";
+      if (strict) issues.push(msg);
+      else warnings.push(msg);
+    }
+    if (strict && !hasValueDeliveryRecord(body, diffFiles)) {
+      issues.push(
+        "PR body must link value-delivery-record (specs/.../value-delivery-record.md) or declare 'Value delivery record: harness N/A' for harness-only diffs",
+      );
+    }
+  }
+
+  if (strict && tierAtLeast(suggestedTier, "T3") && !t3LaneSignoffsPresent(body)) {
+    issues.push(
+      "T3+ PR body must document sentinel and counsel lane sign-off (checked box or artifact path)",
     );
   }
 
@@ -227,6 +276,18 @@ function validateDiffStrict(result) {
   }
 
   for (const msg of issues) console.error(`ERROR: ${msg}`);
+
+  if (issues.length) {
+    emitEvidenceSignal({
+      kind: "ci_fail",
+      riskTier: result.suggestedTier,
+      pathClass: result.matchedTriggers[0]?.id ?? "unknown",
+      source: { plane: "evidence", artifact: "governance-lint" },
+      hypothesis: issues[0],
+      detail: { issues, command: "diff-strict" },
+    });
+  }
+
   return issues.length > 0 ? 1 : 0;
 }
 
@@ -303,6 +364,13 @@ function validateHandoff(data, manifest, strict) {
   if (data.conditionalSkills) {
     for (const s of data.conditionalSkills) {
       if (!manifest.skillIds.includes(s)) issues.push(`unknown conditionalSkill: ${s}`);
+      if (/^hr-erp-/i.test(s)) issues.push(`banned conditionalSkill: ${s}`);
+    }
+  }
+
+  if (strict) {
+    for (const msg of bannedContentIssues(JSON.stringify(data), "handoff")) {
+      issues.push(msg);
     }
   }
 
@@ -351,8 +419,178 @@ function validateHandoff(data, manifest, strict) {
     issues.push(...planIssues);
   }
 
+  if (strict && tierAtLeast(data.riskTier, "T3") && !data.evidenceBundlePath) {
+    issues.push("T3+ handoff requires evidenceBundlePath");
+  }
+
+  if (
+    strict &&
+    tierAtLeast(data.riskTier, "T2") &&
+    data.valueDeliveryRecordPath &&
+    !data.sopCycleId
+  ) {
+    issues.push("handoff with valueDeliveryRecordPath requires sopCycleId");
+  }
+
+  if (strict && data.evidenceBundlePath) {
+    const bundlePath = join(process.cwd(), data.evidenceBundlePath);
+    if (!existsSync(bundlePath)) {
+      issues.push(`evidence bundle not found: ${data.evidenceBundlePath}`);
+    }
+  }
+
+  const collabConfig = manifest.collaboration ?? {};
+  const warnings = [];
+  if (data.riskTier !== "T0" && collabConfig.enabled !== false) {
+    const hasCollabPlan = Boolean(data.collaborationPlan?.decisionOverview);
+    const hasPlanArtifact = Boolean(data.planModeArtifact || findPlanModeArtifact());
+    if (!hasCollabPlan && !hasPlanArtifact) {
+      warnings.push(
+        "advisory: T1+ handoff should include collaborationPlan or .cursor/plans/*.md (Collaboration plane)",
+      );
+    }
+    if (strict && handoffRequiresRevalidationStrict(data.riskTier, collabConfig)) {
+      if (!data.revalidationConfirmed && !data.collaborationPlan?.revalidationConfirmed) {
+        issues.push("T3+ strict: handoff requires revalidationConfirmed: true (Collaboration plane)");
+      }
+      const record = data.humanDecisionRecord ?? data.collaborationPlan?.humanDecisionRecord;
+      const principal = record?.principal ?? data.principal;
+      if (!principal) {
+        issues.push("T3+ strict: humanDecisionRecord.principal required");
+      }
+      const outputReviewPassed =
+        data.outputReviewPassed ||
+        data.collaborationPlan?.outputReviewPassed ||
+        (data.laneSignoffPath &&
+          (() => {
+            try {
+              const signoff = JSON.parse(readFileSync(join(process.cwd(), data.laneSignoffPath), "utf8"));
+              return (signoff.lanes ?? []).some((l) => l.function === "verifier" && l.status === "complete");
+            } catch {
+              return false;
+            }
+          })());
+      if (!outputReviewPassed) {
+        issues.push(
+          "T3+ strict: outputReviewPassed or verifier lane sign-off required (Collaboration phase 7)",
+        );
+      }
+    }
+  }
+
+  for (const msg of warnings) console.error(`WARN: ${msg}`);
+  if (strict && (data.laneSignoffPath || data.evidenceBundlePath)) {
+    const signoffPath = data.laneSignoffPath
+      ? join(process.cwd(), data.laneSignoffPath)
+      : null;
+    if (signoffPath && !existsSync(signoffPath)) {
+      issues.push(`lane signoff not found: ${data.laneSignoffPath}`);
+    } else if (signoffPath) {
+      try {
+        const signoff = JSON.parse(readFileSync(signoffPath, "utf8"));
+        const functionsInPlan = new Set(plan.map((p) => p.function).filter(Boolean));
+        const attested = new Set((signoff.lanes ?? []).map((l) => l.function));
+        for (const lane of functionsInPlan) {
+          if (!attested.has(lane)) {
+            issues.push(`lane signoff missing attestation for "${lane}"`);
+          }
+        }
+      } catch {
+        issues.push(`invalid lane signoff JSON: ${data.laneSignoffPath}`);
+      }
+    }
+  }
+
   for (const msg of issues) console.error(`ERROR: ${msg}`);
+
+  if (strict && issues.length) {
+    emitEvidenceSignal({
+      kind: issues.some((m) => m.includes("riskTier")) ? "tier_mismatch" : "composition_miss",
+      riskTier: data.riskTier,
+      pathClass: data.suspectedPaths?.length
+        ? classifyFiles(data.suspectedPaths, manifest).matchedTriggers[0]?.id
+        : "unknown",
+      plannedLanes: plan.map((p) => p.function).filter(Boolean),
+      source: { plane: "evidence", artifact: "governance-lint" },
+      hypothesis: issues[0],
+      metrics: {
+        compositionMiss: issues.some((m) => m.includes("lane") || m.includes("delegatedTaskPlan")),
+        executionGap: issues.some((m) => m.includes("dependsOn")),
+      },
+      detail: { issues: issues.slice(0, 5) },
+    });
+  }
+
   return strict && issues.length ? 1 : 0;
+}
+
+const BANNED_HANDOFF_PATTERNS = [
+  { re: /@hr-erp-/i, msg: "banned legacy skill invoke @hr-erp-*" },
+  { re: /\.cursor\/skills\/hr-erp-/i, msg: "banned legacy skill path" },
+  { re: /_archived\/2026-05-28-revamp/, msg: "banned archived skill path _archived/2026-05-28-revamp" },
+];
+
+function bannedContentIssues(text, label) {
+  const issues = [];
+  for (const { re, msg } of BANNED_HANDOFF_PATTERNS) {
+    if (re.test(text)) issues.push(`${label}: ${msg}`);
+  }
+  return issues;
+}
+
+function walkMarkdownFiles(dir, out = []) {
+  if (!existsSync(dir)) return out;
+  for (const name of readdirSync(dir)) {
+    const fp = join(dir, name);
+    const st = statSync(fp);
+    if (st.isDirectory()) {
+      if (name === "_archived" || name.startsWith("_archived")) continue;
+      walkMarkdownFiles(fp, out);
+    } else if (name.endsWith(".md")) out.push(fp);
+  }
+  return out;
+}
+
+function cmdTeamMap(manifest, args) {
+  let exit = 0;
+  const teamMap = join(process.cwd(), "docs", "meta", "agent-team-map.md");
+  if (!existsSync(teamMap)) {
+    console.error("ERROR: missing docs/meta/agent-team-map.md");
+    exit = 1;
+  } else {
+    console.log("OK: agent-team-map.md present");
+  }
+
+  const skillsDir = join(process.cwd(), ".cursor", "skills");
+  for (const [skillId, meta] of Object.entries(manifest.skills ?? {})) {
+    if (meta.portable) continue;
+    const skillPath = join(skillsDir, skillId, "SKILL.md");
+    if (!existsSync(skillPath)) {
+      console.error(`ERROR: project skill missing on disk: ${skillId}`);
+      exit = 1;
+    } else {
+      console.log(`OK: skill on disk: ${skillId}`);
+    }
+  }
+
+  for (const id of manifest.skillIds ?? []) {
+    if (!manifest.skills?.[id]) {
+      console.error(`ERROR: skillIds entry "${id}" not in manifest.skills`);
+      exit = 1;
+    }
+  }
+
+  if (args.strict) {
+    for (const fp of walkMarkdownFiles(skillsDir)) {
+      const body = readFileSync(fp, "utf8");
+      for (const msg of bannedContentIssues(body, fp.replace(process.cwd() + "/", ""))) {
+        console.error(`ERROR: ${msg}`);
+        exit = 1;
+      }
+    }
+  }
+
+  return exit;
 }
 
 function findPlanModeArtifact() {
@@ -378,7 +616,7 @@ function loadSessionLaneState() {
 
 function cmdPlan(manifest, args) {
   const files = getDiffFiles(args.base);
-  const { suggestedTier, suggestedLanes, requiredLanes, matchedTriggers } = classifyFiles(
+  const { suggestedTier, suggestedLanes, requiredLanes, matchedTriggers, suggestedSkills } = classifyFiles(
     files,
     manifest,
   );
@@ -398,12 +636,18 @@ function cmdPlan(manifest, args) {
     matchedTriggers,
     requiredLanes,
     suggestedLanes,
+    suggestedSkills,
     delegatedTaskPlan: plan,
     regulatedGraph: matchedTriggers.some((t) =>
       ["compliance_pay_time", "ai_governance", "mlops_inference", "product_runtime_mcp", "harness_foundation"].includes(
         t.id,
       ),
     ),
+    routerHintsActive: matchRouterHints(files, manifest.adaptation, suggestedTier).map((h) => ({
+      id: h.id,
+      prefer: h.prefer,
+      status: h.status,
+    })),
     tierPreamble: {
       riskTier: suggestedTier,
       poCheckpoint:
@@ -413,6 +657,7 @@ function cmdPlan(manifest, args) {
       phaseAdr: "specs/alignment/decisions/0001-phase1-scope.md",
       planModeArtifact: findPlanModeArtifact(),
     },
+    collaborationPlan: buildCollaborationPlanStub({ matchedTriggers }, suggestedTier),
   };
 
   if (args.json || args.quiet) {
@@ -444,6 +689,20 @@ function generatePrBody(manifest, args) {
   const completedLanes =
     sessionState?.completed?.map((c) => c.function).join(", ") || "N/A (session state not recorded)";
 
+  const learningReport = join(process.cwd(), "specs", "governance", "learning", "reports");
+  let reflectNote = "";
+  if (existsSync(learningReport)) {
+    const reports = readdirSync(learningReport)
+      .filter((f) => f.endsWith("-reflect.json"))
+      .sort()
+      .reverse();
+    if (reports[0]) reflectNote = `\n- **Latest reflect report:** specs/governance/learning/reports/${reports[0]}`;
+  }
+
+  const gapNote = sessionState?.signalsEmitted?.length
+    ? `\n- **Harness signals (session):** ${sessionState.signalsEmitted.length} emitted`
+    : "";
+
   const body = `## Summary
 
 <!-- 2–4 sentences -->
@@ -456,7 +715,11 @@ function generatePrBody(manifest, args) {
 - **Suggested tier (CI):** ${result.suggestedTier}
 - **Runtime:** ${plan.runtimeProfile ?? "cursor-3-native"}
 - **Regulated graph:** ${plan.regulatedGraph ? "yes" : "no"}
-${planArtifact ? `- **Plan Mode artifact:** ${planArtifact}` : ""}
+${planArtifact ? `- **Plan Mode artifact:** ${planArtifact}` : ""}${reflectNote}${gapNote}
+
+### Harness delta (Adaptation plane)
+
+- New friction / ledger signal? Y/N → signal_id: ___
 
 ### PO orchestration checkpoint (required when riskTier ≥ T1; T0 use \`step 1 chore N/A\`)
 
@@ -474,6 +737,11 @@ Payroll / Compliance / Math: N/A or brief path
 - Demand (S&OP): feature brief or Plan Mode path above
 - Supply (IBP): lane completion from handoff / session state
 - Delivery: UAC checklist + CI evidence → specs/templates/value-delivery-record.md
+
+### Evidence bundle (required when riskTier ≥ T3)
+
+- Bundle: \`npm run governance:evidence:collect -- --handoff specs/.../orchestrator-handoff.json --principal "Name"\`
+- Lane sign-offs: specs/governance/evidence/lane-signoffs/
 
 ### Golden thread stub (required when riskTier ≥ T1)
 
@@ -544,6 +812,10 @@ async function main() {
     }
 
     const manifest = loadManifest();
+
+    if (args.command === "team-map") {
+      return cmdTeamMap(manifest, args);
+    }
 
     if (args.strict && manifest.version < 2) {
       console.error("ERROR: governance-manifest version must be >= 2 for strict mode");
@@ -619,6 +891,7 @@ async function main() {
       return validatePrBody(body, suggestedTier, args.strict, {
         failOnUnderTier: args.failOnUnderTier,
         requiredLanes,
+        diffFiles: files,
       });
     }
 

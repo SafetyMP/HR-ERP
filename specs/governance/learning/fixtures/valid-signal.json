@@ -1,0 +1,23 @@
+{
+  "signal_id": "a1b2c3d4-e5f6-4890-abcd-ef1234567890",
+  "ts": "2026-05-31T12:00:00.000Z",
+  "kind": "lane_gap",
+  "status": "open",
+  "riskTier": "T3",
+  "pathClass": "harness_foundation",
+  "plannedLanes": ["scout", "architect", "counsel", "builder", "sentinel"],
+  "skillsLoaded": ["hr-foundation-governance"],
+  "agentFunctions": ["builder"],
+  "source": {
+    "plane": "runtime",
+    "artifact": "lane-gap-report"
+  },
+  "hypothesis": "counsel lane not completed before builder on T3 harness work",
+  "metrics": {
+    "executionGap": true,
+    "compositionMiss": false
+  },
+  "detail": {
+    "missingLanes": ["counsel"]
+  }
+}

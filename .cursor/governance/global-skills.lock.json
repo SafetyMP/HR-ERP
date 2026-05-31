@@ -1,10 +1,10 @@
 {
-  "version": 1,
-  "updated": "2026-05-31",
+  "version": 2,
+  "updated": "2026-05-30",
   "skills": {
     "skill-router": {
       "path": "~/.cursor/skills/skill-router/SKILL.md",
-      "sha256": "ce74bff4686a810ffc873236ab8ec044d1ea3d9b614484ec17fb8a61722088d3"
+      "sha256": "1650ae600e7cb71fa20bc97cc43e60c0d444f93aaae37a1cd3c5e9c76de0e3fe"
     },
     "governance-tier-gate": {
       "path": "~/.cursor/skills/governance-tier-gate/SKILL.md",
@@ -25,6 +25,26 @@
     "cc-skill-security-review": {
       "path": "~/.cursor/skills/cc-skill-security-review/SKILL.md",
       "sha256": "09269f5bf3d0d038642740c6af358a06fbc9290782bdf1802c947350108d313e"
+    },
+    "nextjs-app-router": {
+      "path": "~/.cursor/skills/nextjs-app-router/SKILL.md",
+      "sha256": "80e9ecb6556aceb49485d0fb6706cd455af9c1337e246a5dfd9ae6f4efed83c0"
+    },
+    "prisma-7-postgres": {
+      "path": "~/.cursor/skills/prisma-7-postgres/SKILL.md",
+      "sha256": "ea9995063b72068006cbfe19f12f57bb190061edec56b9352383554c857ff2ad"
+    },
+    "vitest-playwright-qa": {
+      "path": "~/.cursor/skills/vitest-playwright-qa/SKILL.md",
+      "sha256": "258b97f179f6ef0a96b8c42721ae74915742e5cb4f83337c76ac2ee3079c9b5d"
+    },
+    "buf-openapi-contracts": {
+      "path": "~/.cursor/skills/buf-openapi-contracts/SKILL.md",
+      "sha256": "8179632e9245eb69d3a688e81cb19f04f2f15162d9e5beb7cdb6261780e56ca5"
+    },
+    "context7-doc-fetch": {
+      "path": "~/.cursor/skills/context7-doc-fetch/SKILL.md",
+      "sha256": "270c97b1f0a36931636bee65ace61ee00f4332847e5184d72ba87b12a8c67ed0"
     }
   }
 }

@@ -13,7 +13,7 @@
 | 3 | 1094-C / 1095-C field mapping validated for pilot tenant | Legal + Payroll | Sample PDF review |
 | 4 | 834 segment rules (ENR/TERM) approved per carrier | Legal + Integrations | Carrier companion guide |
 | 5 | Feature brief with numbered UAC filed under `docs/product/feature-briefs/` | Product | PO gate complete |
-| 6 | PII / PHI classification for workflow and feeds | Security | `hr-erp-security-identity` note |
+| 6 | PII / PHI classification for workflow and feeds | Security | `@cc-skill-security-review` note |
 
 ## Engineering may proceed only after gate 1–4
 

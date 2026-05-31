@@ -18,8 +18,64 @@
         "regulated": { "type": "array" }
       }
     },
+    "adaptation": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "skillRouterHints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "pathPattern", "prefer"],
+            "properties": {
+              "id": { "type": "string" },
+              "pathPattern": { "type": "string" },
+              "prefer": { "type": "array", "items": { "type": "string" } },
+              "deprioritize": { "type": "array", "items": { "type": "string" } },
+              "minTier": { "type": "string", "enum": ["T0", "T1", "T2", "T3", "T4"] },
+              "sourceSignalIds": { "type": "array", "items": { "type": "string" } },
+              "status": { "type": "string", "enum": ["shadow", "active", "rejected"] }
+            }
+          }
+        }
+      }
+    },
+    "collaboration": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "minTier": { "type": "string", "enum": ["T0", "T1", "T2", "T3", "T4"] },
+        "skillPhases": {
+          "type": "object",
+          "properties": {
+            "routing": { "type": "array", "items": { "type": "string" } },
+            "execution": { "type": "array", "items": { "type": "string" } },
+            "specialized": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "actionClasses": { "type": "object" },
+        "interruptConditions": { "type": "array" },
+        "requireRevalidationBeforeSpecialized": { "type": "boolean" },
+        "requireHandoffRevalidationAtTier": { "type": "string" },
+        "graduatedAutonomy": { "type": "object" },
+        "timeoutPolicy": { "type": "string", "enum": ["deny", "escalate_po"] },
+        "shadowUntil": { "type": "string" }
+      }
+    },
     "riskTiers": { "type": "object" },
     "pathTriggers": { "type": "array" },
+    "frameworkSkills": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "paths": { "type": "array", "items": { "type": "string" } },
+          "minRiskTier": { "type": "string", "enum": ["T0", "T1", "T2", "T3", "T4"] },
+          "minTier": { "type": "string", "enum": ["T0", "T1", "T2", "T3", "T4"] },
+          "coLoad": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
     "agentFunctions": { "type": "object" },
     "taskBundles": { "type": "object" },
     "functionIds": { "type": "array", "items": { "type": "string" } },

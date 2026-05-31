@@ -96,5 +96,25 @@
   "compliancePosture": "NIST AI RMF",
   "delegationDepth": 1,
   "toolClasses": ["read_internal"],
-  "principal": "Human PO"
+  "principal": "Human PO",
+  "revalidationConfirmed": true,
+  "outputReviewPassed": true,
+  "collaborationPlan": {
+    "phase": "complete",
+    "oversightMode": "HOTL",
+    "decisionOverview": "ALARP governance hardening with harness v4 and MCP policy gates",
+    "recommendedStrategyId": "B",
+    "revalidationRequired": true,
+    "revalidationConfirmed": true,
+    "outputReviewRequired": true,
+    "outputReviewPassed": true
+  },
+  "humanDecisionRecord": {
+    "chosenStrategy": "B",
+    "principal": "Human PO",
+    "recordedAt": "2026-05-31T12:00:00Z",
+    "rejectionHistory": []
+  },
+  "evidenceBundlePath": "specs/governance/evidence/bundles/governance-alarp-full-repo.json",
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/governance-alarp-full-repo.json"
 }

@@ -1,6 +1,6 @@
 # Antigravity × HR ERP product-runtime MCP governance
 
-Maps **Google Antigravity 2.0** harness and Enterprise governance primitives to this repo’s **two MCP planes**. Normative split: [ADR 0010](../../specs/alignment/decisions/0010-agent-risk-tier-governance.md). Cursor harness: [cursor-antigravity-harness.md](cursor-antigravity-harness.md).
+Maps **Google Antigravity 2.0** harness and Enterprise governance primitives to this repo’s **two MCP planes**. Normative split: [ADR 0010](../../specs/alignment/decisions/0010-agent-risk-tier-governance.md). Cursor harness: [cursor-3-native-runtime.md](cursor-3-native-runtime.md).
 
 ## Two MCP planes (do not conflate)
 

@@ -31,7 +31,11 @@ Google **Antigravity 2.0** (May 2026) centers a **single agent harness** with pa
 | Dynamic pipeline | `delegatedTaskPlan` DAG |
 | Saved agent profile | `taskBundles` + `agent-*.mdc` |
 | CLI | `governance-lint`, `governance:ci` |
-| Lazy skills | `@skill-router` + max 3 bodies (v3); lane `allowedPlugins` |
+| Lazy skills | `@skill-router` + max 3 bodies (v4); `frameworkSkills` facades; `core-dynamic-skills.mdc`; lane `allowedPlugins` |
+
+## Framework facade pattern (2026-05-30 addendum)
+
+Global thin skills (`nextjs-app-router`, `prisma-7-postgres`, etc.) register in manifest `frameworkSkills` with path patterns and optional `coLoad`. They replace always-on framework prose in `AGENTS.md` and plugin skill catalog dumps. Hooks inject `suggestedSkills` from the diff classifier; session `skillsLoaded[]` feeds adaptation CTQs.
 
 ## Enforcement
 
@@ -54,7 +58,8 @@ Unchanged from ADR 0010: Human-authorized emergency repair may skip full lane fa
 
 ## References
 
-- [cursor-antigravity-harness.md](../../../docs/meta/cursor-antigravity-harness.md)
+- [cursor-3-native-runtime.md](../../../docs/meta/cursor-3-native-runtime.md)
+- [hook-rollout-schedule.md](../../../docs/meta/hook-rollout-schedule.md)
 - [global-agent-governance-overlay.md](../../../docs/meta/global-agent-governance-overlay.md)
 - [0015-devops-product-lifecycle-framework.md](0015-devops-product-lifecycle-framework.md)
 - Manifest: `.cursor/governance/governance-manifest.yaml` (v4) · [0016-agent-harness-foundation.md](0016-agent-harness-foundation.md)

@@ -1,0 +1,12 @@
+{
+  "bundleId": "cursor-execution-improvement",
+  "handoffPath": "specs/features/cursor-execution-improvement/orchestrator-handoff.json",
+  "sessionLaneStateHash": null,
+  "auditLogTailHash": null,
+  "ciRunUrl": null,
+  "principal": "Harness CI",
+  "generatedAt": "2026-05-31T12:00:00.000Z",
+  "attestationVersion": 1,
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/cursor-execution-improvement.json",
+  "signature": null
+}

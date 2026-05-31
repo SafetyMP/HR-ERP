@@ -1,0 +1,12 @@
+{
+  "bundleId": "governance-alarp-full-repo",
+  "handoffPath": "specs/features/agent-governance-alarp/orchestrator-handoff.json",
+  "sessionLaneStateHash": null,
+  "auditLogTailHash": null,
+  "ciRunUrl": null,
+  "principal": "Harness CI fixture",
+  "generatedAt": "2026-05-31T12:00:00.000Z",
+  "attestationVersion": 1,
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/governance-alarp-full-repo.json",
+  "signature": null
+}

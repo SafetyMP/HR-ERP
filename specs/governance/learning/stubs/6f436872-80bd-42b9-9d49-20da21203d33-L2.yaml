@@ -1,0 +1,17 @@
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: harness_foundation-composition-6f436872
+      pathPattern: .cursor/**
+      prefer:
+        - hr-foundation-governance
+        - hr-quality-lab
+      deprioritize: []
+      minTier: T3
+      sourceSignalIds:
+        - 6f436872-80bd-42b9-9d49-20da21203d33
+        - b8eea7fe-73ef-4f97-a44b-347c995fb96e
+        - c8114ab4-7218-4cd5-8606-e952ecb8fc2f
+        - 6f7b8f75-76b2-49f3-9be6-55c2cd4d3351
+        - 9455b762-d33d-4946-908c-185172da2015
+      status: shadow

@@ -10,7 +10,7 @@
 
 For docs-only updates, external PR coaching, or turning a filed bug into an Orchestrator-ready handoff:
 
-- Cursor / maintainers may use **`@hr-developer-advocate`** — [`.cursor/skills/hr-developer-advocate/SKILL.md`](.cursor/skills/hr-developer-advocate/SKILL.md) — together with **`agent-developer-advocate`** ([`.cursor/rules/agent-developer-advocate.mdc`](.cursor/rules/agent-developer-advocate.mdc)).
+- Cursor / maintainers may use **`@hr-contributor-handoff`** — [`.cursor/skills/hr-contributor-handoff/SKILL.md`](.cursor/skills/hr-contributor-handoff/SKILL.md) — together with **`agent-developer-advocate`** ([`.cursor/rules/agent-developer-advocate.mdc`](.cursor/rules/agent-developer-advocate.mdc)).
 - **Merge bar unchanged:** substantive PRs still need lint/tests, evidence in [`.github/pull_request_template.md`](.github/pull_request_template.md), and the same Security (`agent-security`) and Code Health (`agent-code-health`) posture as internal work—the advocate adds clarity and appreciation, **not** exceptions.
 - **Bug handoffs:** JSON shape lives under [`specs/templates/orchestrator-human-issue-handoff.schema.json`](specs/templates/orchestrator-human-issue-handoff.schema.json); see **[`docs/community/README.md`](docs/community/README.md)** for the human-readable flow.
 
@@ -24,9 +24,9 @@ Merged commits on **`main` / `master`** should follow [Conventional Commits](htt
 
 ## Agent + human workflow
 
-1. Read `AGENTS.md` — follow orchestration + Definition of Done (`.cursor/rules/orchestrator.mdc` is always-on for Cursor agents).  
-2. For product scope, Feature briefs, UAC, or UX friction gates, use the project skill [`.cursor/skills/hr-product-owner/SKILL.md`](.cursor/skills/hr-product-owner/SKILL.md) (or `@hr-product-owner`) so every agent shares the same PO contract.  
-3. For **AI ethics, HITL, screening/scoring, or `docs/ai-governance/` / `lib/governance/`**, attach [`.cursor/skills/hr-ai-data-governance/SKILL.md`](.cursor/skills/hr-ai-data-governance/SKILL.md) (`@hr-ai-data-governance`) and **agent-ai-governance** on delegated Tasks when the orchestrator step applies.  
+1. Read `AGENTS.md` — follow orchestration + Definition of Done (`.cursor/rules/orchestrator-hr-erp.mdc` is always-on for Cursor agents).  
+2. For product scope, Feature briefs, UAC, or UX friction gates, use **`@hr-product-gate`** — see [`.cursor/skills/README.md`](.cursor/skills/README.md).  
+3. For **AI ethics, HITL, screening/scoring, or `docs/ai-governance/` / `lib/governance/`**, attach **`@hr-regulated-domain`** (AI L3) and **`@hr-product-mcp-governance`** when copilot/MCP paths apply; use **agent-ai-governance** on delegated Tasks when triggered.  
 4. Confirm phase ADRs under `specs/alignment/decisions/`.  
 5. Fill templates under `specs/templates/` per change type.  
 6. PR must complete `.github/pull_request_template.md` with **evidence links** (not checkboxes alone).

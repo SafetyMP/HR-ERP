@@ -1,0 +1,56 @@
+{
+  "handoffId": "governance-alarp-full-repo",
+  "ticketId": "governance-alarp-full-repo",
+  "principal": "Harness CI fixture",
+  "generatedAt": "2026-05-31T12:00:00.000Z",
+  "lanes": [
+    {
+      "function": "scout",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/meta/cursor-industry-alignment.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "architect",
+      "verifier": "Orchestrator",
+      "artifactPath": "specs/alignment/decisions/0016-agent-harness-foundation.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "verifier": "Orchestrator",
+      "artifactPath": "lib/copilot/governance/policy.cedar",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "sentinel",
+      "verifier": "Orchestrator",
+      "artifactPath": "specs/templates/security-review.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "counsel",
+      "verifier": "Orchestrator",
+      "artifactPath": "specs/templates/legal-checklist.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "builder",
+      "verifier": "Orchestrator",
+      "artifactPath": "scripts/governance-lint.mjs",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "release_ops",
+      "verifier": "Orchestrator",
+      "artifactPath": ".github/workflows/reusable-ci.yml",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "verifier",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/QA.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+# Product value CTQ drilldown — win scorecard W1–W7 (ADR 0019)
+# Big Y: buyer-demo-ready stakeholder outcomes
+
+version: 1
+updated: "2026-05-31"
+
+bigY:
+  id: buyer_demo_value
+  description: Reference customer can prove W1–W5 in ≤30 minutes without mock routes
+  source: docs/product/stakeholder-value-plan.md
+
+winScorecard:
+  - id: W1
+    claim: One portal (pay, time, leave, profile, benefits, learning)
+    status: met
+    evidencePaths:
+      - docs/product/completion-audits/features-022.md
+      - docs/product/feature-briefs/022-product-shell.md
+    metric: uac_met_ratio
+    target: ">= 1.0"
+
+  - id: W2
+    claim: Native payroll, not CSV circus
+    status: met
+    evidencePaths:
+      - docs/product/feature-briefs/018-payroll-runs-ui.md
+    metric: payroll_ui_uac_met
+    target: ">= 1.0"
+
+  - id: W3
+    claim: Ownable, replayable policy
+    status: partial
+    evidencePaths:
+      - packages/payroll-calc/
+      - specs/alignment/decisions/0005-payroll-kernel-determinism.md
+    metric: kernel_fingerprint_tests_pass
+    target: "100%"
+
+  - id: W4
+    claim: Enforceable tenancy
+    status: met
+    evidencePaths:
+      - docs/product/completion-audits/features-014-017.md
+    metric: rls_integration_tests_pass
+    target: "100%"
+
+  - id: W5
+    claim: Hiring managers without separate ATS
+    status: met
+    evidencePaths:
+      - docs/product/feature-briefs/020-talent-depth-wave.md
+    metric: recruiting_uac_met
+    target: ">= 1.0"
+
+  - id: W6
+    claim: Integrations without Zapier for core paths
+    status: met
+    evidencePaths:
+      - docs/product/feature-briefs/023-scim-hardening.md
+    metric: integration_uac_met
+    target: ">= 1.0"
+
+  - id: W7
+    claim: Benefits operational, not PDF-only
+    status: partial
+    evidencePaths:
+      - docs/product/feature-briefs/019-benefits-life-events.md
+      - docs/compliance/cobra-aca-counsel-gate.md
+    metric: benefits_workflow_uac_met
+    target: ">= 0.8"
+
+valueDelivery:
+  template: specs/templates/value-delivery-record.md
+  requiredForTier: T1
+  sopCycleTemplate: specs/templates/sop-cycle.md

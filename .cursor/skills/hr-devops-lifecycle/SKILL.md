@@ -22,7 +22,9 @@ disable-model-invocation: true
 1. Load **`@devops-product-lifecycle`** first (portable S&OP, IBP, value patterns).
 2. Read [references/hr-erp-ops.md](references/hr-erp-ops.md) before changing workflows or env contracts.
 3. Use project templates under `specs/templates/` (sop-cycle, ibp-checkpoint, value-delivery-record).
-4. **Anti-patterns:** no `vercel deploy --prebuilt` with pulled secrets; no production Kafka/multi-DB without ADR trigger.
+4. **Value gate (ADR 0019):** T1+ product ships require a filled [value-delivery-record.md](../../../specs/templates/value-delivery-record.md); T2+ handoffs link `sopCycleId` when VDR path is set. PR lint is **strict** for T1+.
+5. **Efficiency:** IBP Engineering row tracks CI duration; T4 swarms require FinOps checkpoint per `@hr-swarm-governance`.
+6. **Anti-patterns:** no `vercel deploy --prebuilt` with pulled secrets; no production Kafka/multi-DB without ADR trigger.
 
 ## Resources
 

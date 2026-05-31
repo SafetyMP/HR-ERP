@@ -16,7 +16,7 @@ In scope: resume screening assistance, ranking/scoring of candidates, performanc
 
 Out of scope (still follow security baselines): non-ML business rules, deterministic calculators with published formulas (e.g., gross-to-net modules with cited statutes).
 
-**Cursor agents:** Load the project skill [`.cursor/skills/hr-ai-data-governance/SKILL.md`](../../.cursor/skills/hr-ai-data-governance/SKILL.md) (`@hr-ai-data-governance`) when implementing or reviewing AI governance; symlink or copy that folder to `~/.cursor/skills/hr-ai-data-governance/` for reuse outside this repo.
+**Cursor agents:** Load **`@hr-regulated-domain`** (AI L3: [references/ai-governance.md](../../.cursor/skills/hr-regulated-domain/references/ai-governance.md)) when implementing or reviewing AI governance; co-load **`@hr-product-mcp-governance`** for in-app copilot MCP work.
 
 ## Documents
 

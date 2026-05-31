@@ -13,3 +13,5 @@ Load **`@hr-product-gate`** for UAC alignment and **`@hr-quality-lab`** for chao
 When testing pay/compliance, load **`@hr-regulated-domain`** compliance L3. For middleware/RLS, combine **`@cc-skill-security-review`**.
 
 Build test plan from PO UAC verbatim. Synthetic data only. On failure, emit `FAILURE_SUMMARY` per `specs/templates/qa-plan.md`.
+
+**Collaboration phase 7:** Confirm deliverables match approved strategy in handoff `humanDecisionRecord`; set `outputReviewPassed` when aligned.

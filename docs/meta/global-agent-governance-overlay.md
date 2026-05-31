@@ -30,8 +30,10 @@ Ensure these exist on the developer machine:
 
 | Path | Purpose |
 |------|---------|
-| `~/.cursor/governance/governance-manifest.yaml` | T0–T4 tiers, skill IDs, path triggers, task bundles |
+| `~/.cursor/governance/governance-manifest.yaml` | T0–T4 tiers, skill IDs, path triggers, `frameworkSkills`, task bundles |
 | `~/.cursor/rules/core-orchestrator.mdc` | Tier-agnostic sequencing (`alwaysApply: true`) |
+| `~/.cursor/rules/core-dynamic-skills.mdc` | JIT skill contract — max 3 bodies, no plugin catalog dumps |
+| `~/.cursor/skills/README.md` | Global L1 skill index (replaces per-repo skill lists) |
 | `~/.cursor/scripts/governance-lint.mjs` | Diff classifier + PR/handoff validator |
 
 HR ERP copies the manifest to [`.cursor/governance/governance-manifest.yaml`](../../.cursor/governance/governance-manifest.yaml) for **CI portability** on GitHub runners (no home-dir manifest). Keep global and project copies in sync when manifest version bumps (**v4** adds YAML loader, `executionGraph.regulated` in plan, handoff `--discover`). Run `npm run governance:sync-check` locally.
@@ -75,7 +77,7 @@ Add `.cursor/rules/orchestrator-<project>.mdc` with `alwaysApply: true` that:
 
 HR ERP example: [`.cursor/rules/orchestrator-hr-erp.mdc`](../../.cursor/rules/orchestrator-hr-erp.mdc)
 
-Thin entry point: [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc)
+Thin entry point: [`.cursor/rules/orchestrator-hr-erp.mdc`](../../.cursor/rules/orchestrator-hr-erp.mdc)
 
 ## Step 4 — Domain skills (project-local)
 
@@ -156,9 +158,18 @@ node scripts/governance-lint.mjs handoff --file specs/templates/orchestrator-hum
 node scripts/governance-lint.mjs pr-body --file .github/pull_request_template.md
 ```
 
+## Dynamic skill loading (v4)
+
+1. **Always-on contract** — `core-dynamic-skills.mdc` (global) + repo orchestrator pointer.
+2. **Framework facades** — Register in manifest `frameworkSkills` with paths and `coLoad`; wire `pathTriggers` for lanes.
+3. **Runtime** — `beforeSubmitPrompt` injects `suggestedSkills`; session tracks `skillsLoaded[]`.
+4. **Adaptation** — Promote L2 `skillRouterHints` via `@hr-governance-learning` when composition misses recur.
+
+Do not enumerate global skills in repo `AGENTS.md` — link `~/.cursor/skills/README.md` instead.
+
 ## Function-lane harness (v2)
 
-Manifest `agentFunctions` + `executionGraph` replace linear PO→Arch→Legal→Impl waterfalls. Operator guide: [cursor-antigravity-harness.md](cursor-antigravity-harness.md). ADR: [0011](../alignment/decisions/0011-function-lane-orchestration.md).
+Manifest `agentFunctions` + `executionGraph` replace linear PO→Arch→Legal→Impl waterfalls. Operator guide: [cursor-3-native-runtime.md](cursor-3-native-runtime.md). ADR: [0011](../alignment/decisions/0011-function-lane-orchestration.md).
 
 ## Product runtime MCP (Antigravity)
 

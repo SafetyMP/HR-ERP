@@ -18,24 +18,32 @@ disable-model-invocation: true
 
 ## Instructions
 
+### Phase 2 — Strategy options (HOTL)
+
+Present **≥2** lane DAG alternatives with risk, reward, rollback, and deferred specialized skills. Use [collaboration-plan.md](../../../specs/templates/collaboration-plan.md).
+
+### Phases 4–7 — Execution
+
 1. Run `npm run governance:lint` — note `Required lanes` and `Suggested lanes`.
-2. Run `npm run governance:plan` — use `regulatedGraph` + `delegatedTaskPlan` for `/multitask`.
-3. **Plan Mode bridge:** save `.cursor/plans/*.md` → approve → `governance:plan` → `/multitask`.
+2. Run `npm run governance:plan` — use `regulatedGraph` + `delegatedTaskPlan` + `collaborationPlan` for `/multitask`.
+3. **Plan Mode bridge:** save `.cursor/plans/*.md` → human revalidation → `governance:plan` → `/multitask` (phase 6+ only).
 4. **Greenfield T1:** parallel `scout` + `architect` → `builder` → parallel `sentinel` + `verifier`.
-3. **DDL (T2+):** `/worktree` + [worktrees.json](../../worktrees.json); `architect` readonly → `custodian` → `builder`.
-4. **Ops / CI / deploy (T2+):** `release_ops` after architect when `.github/workflows`, `vercel.json`, `docs/operations/**` change; load `@devops-product-lifecycle` + `@hr-devops-lifecycle`.
-5. **Security plane:** `sentinel` mandatory before merge (`middleware.ts`, `lib/security/**`).
-6. **Payroll/compliance (T3):** add readonly `counsel`; load `@hr-regulated-domain` (max 3 bodies with product-gate in v3).
-7. **AI governance paths:** add readonly `ai_governance_reviewer` (`docs/ai-governance/`, `lib/governance/`, threat model doc).
-8. **Product MCP (`lib/copilot/**`):** `ai_governance_reviewer` + `sentinel` after `builder` — do **not** route catalog-only work to `mlops_reviewer` alone; load `@hr-product-mcp-governance` (max 3 bodies with `@hr-product-gate` in v3).
-9. **MLOps inference only (`docs/ml/`, `services/ml-serving/`):** add `mlops_reviewer` readonly Task.
-10. **T4 ≥2 Tasks:** `finops_coordinator` + `@hr-swarm-governance` FinOps note.
+5. **DDL (T2+):** `/worktree` + [worktrees.json](../../worktrees.json); `architect` readonly → `custodian` → `builder`.
+6. **Ops / CI / deploy (T2+):** `release_ops` after architect when `.github/workflows`, `vercel.json`, `docs/operations/**` change; load `@devops-product-lifecycle` + `@hr-devops-lifecycle`.
+7. **Security plane:** `sentinel` mandatory before merge (`middleware.ts`, `lib/security/**`).
+8. **Payroll/compliance (T3):** add readonly `counsel`; load `@hr-regulated-domain` after revalidation (max 3 bodies with product-gate).
+9. **AI governance paths:** add readonly `ai_governance_reviewer` (`docs/ai-governance/`, `lib/governance/`, threat model doc).
+10. **Product MCP (`lib/copilot/**`):** `ai_governance_reviewer` + `sentinel` after `builder`; load `@hr-product-mcp-governance` after revalidation.
+11. **MLOps inference only (`docs/ml/`, `services/ml-serving/`):** add `mlops_reviewer` readonly Task.
+12. **T4 ≥2 Tasks:** `finops_coordinator` + `@hr-swarm-governance` FinOps note.
 
 ## Resources
 
 - [ADR 0011](../../../specs/alignment/decisions/0011-function-lane-orchestration.md)
-- [cursor-antigravity-harness.md](../../../docs/meta/cursor-antigravity-harness.md)
+- [cursor-3-native-runtime.md](../../../docs/meta/cursor-3-native-runtime.md)
+- [hook-rollout-schedule.md](../../../docs/meta/hook-rollout-schedule.md)
 - [governance-manifest.yaml](../../governance/governance-manifest.yaml)
+- Promoted learning: [references/learning/6f436872-80bd-42b9-9d49-20da21203d33.md](references/learning/6f436872-80bd-42b9-9d49-20da21203d33.md) (lane_gap harness_foundation)
 
 ## Limitations
 

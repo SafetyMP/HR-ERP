@@ -52,8 +52,6 @@ riskTiers:
     allowPremiumModel: false
     requiredSkills:
       - governance-tier-gate
-      - hr-product-gate
-      - concise-planning
     requiredAgentRules:
       - agent-architecture
       - agent-code-health
@@ -125,6 +123,42 @@ choreClasses:
     skipSkills:
       - hr-data-custody
     escapePhrase: "step 1 chore N/A"
+
+frameworkSkills:
+  nextjs-app-router:
+    paths:
+      - "app/**"
+      - "src/app/**"
+      - "middleware.ts"
+    minRiskTier: T1
+    coLoad:
+      - repo-architect
+  prisma-7-postgres:
+    paths:
+      - "prisma/**"
+      - "lib/db/**"
+    minRiskTier: T2
+    coLoad:
+      - hr-data-custody
+  vitest-playwright-qa:
+    paths:
+      - "tests/**"
+      - "vitest.config.*"
+      - "playwright.config.*"
+    minRiskTier: T1
+    coLoad:
+      - testing-patterns
+  buf-openapi-contracts:
+    paths:
+      - "proto/**"
+      - "contracts/**"
+    minRiskTier: T1
+    coLoad:
+      - repo-architect
+  context7-doc-fetch:
+    paths: []
+    minRiskTier: T1
+    coLoad: []
 
 skills:
   skill-router:
@@ -231,6 +265,23 @@ skills:
     portable: false
     coLoad:
       - hr-product-gate
+  hr-contributor-handoff:
+    invoke: "@hr-contributor-handoff"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-developer-advocate
+    portable: false
+    coLoad:
+      - lint-and-validate
+  hr-human-collaboration:
+    invoke: "@hr-human-collaboration"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: false
+    coLoad:
+      - hr-product-gate
+      - hr-orchestration-lanes
   hr-swarm-governance:
     invoke: "@hr-swarm-governance"
     orchestratorTier: conditional
@@ -282,6 +333,14 @@ skills:
     coLoad:
       - hr-orchestration-lanes
       - hr-swarm-governance
+  hr-governance-learning:
+    invoke: "@hr-governance-learning"
+    orchestratorTier: conditional
+    minRiskTier: T2
+    agentRule: null
+    portable: false
+    coLoad:
+      - hr-foundation-governance
   devops-product-lifecycle:
     invoke: "@devops-product-lifecycle"
     orchestratorTier: conditional
@@ -300,6 +359,51 @@ skills:
     portable: false
     coLoad:
       - devops-product-lifecycle
+  nextjs-app-router:
+    invoke: "@nextjs-app-router"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-nextjs
+    portable: true
+    path: ~/.cursor/skills/nextjs-app-router
+    coLoad:
+      - repo-architect
+  prisma-7-postgres:
+    invoke: "@prisma-7-postgres"
+    orchestratorTier: conditional
+    minRiskTier: T2
+    agentRule: agent-db-migration-state
+    portable: true
+    path: ~/.cursor/skills/prisma-7-postgres
+    coLoad:
+      - hr-data-custody
+  vitest-playwright-qa:
+    invoke: "@vitest-playwright-qa"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-qa
+    portable: true
+    path: ~/.cursor/skills/vitest-playwright-qa
+    coLoad:
+      - testing-patterns
+      - hr-quality-lab
+  buf-openapi-contracts:
+    invoke: "@buf-openapi-contracts"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: agent-architecture
+    portable: true
+    path: ~/.cursor/skills/buf-openapi-contracts
+    coLoad:
+      - repo-architect
+  context7-doc-fetch:
+    invoke: "@context7-doc-fetch"
+    orchestratorTier: conditional
+    minRiskTier: T1
+    agentRule: null
+    portable: true
+    path: ~/.cursor/skills/context7-doc-fetch
+    coLoad: []
 
 agentRules:
   agent-architecture:
@@ -308,7 +412,15 @@ agentRules:
       - "specs/**"
       - "app/**"
       - "src/app/**"
+      - "proto/**"
+      - "contracts/**"
     skill: hr-domain-boundaries
+  agent-nextjs:
+    globs:
+      - "app/**"
+      - "src/app/**"
+      - "middleware.ts"
+    skill: nextjs-app-router
   agent-legal-hr-compliance:
     globs:
       - "specs/**"
@@ -389,7 +501,8 @@ agentRules:
       - "AGENTS.md"
       - "docs/**"
       - ".github/**"
-    skill: hr-swarm-governance
+    skill: hr-contributor-handoff
+    note: T1 contributor triage — not swarm FinOps
   agent-finops:
     globs: []
     skill: hr-swarm-governance
@@ -497,9 +610,43 @@ pathTriggers:
       - "docs/QA.md"
     minTier: T1
     attachSkills:
+      - vitest-playwright-qa
       - hr-quality-lab
     attachAgentRules:
       - agent-qa
+    requiredLanes:
+      - verifier
+  - id: nextjs_app_router
+    paths:
+      - "app/**"
+      - "src/app/**"
+      - "middleware.ts"
+    minTier: T1
+    attachSkills:
+      - nextjs-app-router
+    attachAgentRules:
+      - agent-nextjs
+  - id: prisma_stack
+    paths:
+      - "prisma/**"
+      - "lib/db/**"
+    minTier: T2
+    attachSkills:
+      - prisma-7-postgres
+      - hr-data-custody
+    attachAgentRules:
+      - agent-db-migration-state
+    requiredLanes:
+      - custodian
+  - id: contract_schemas
+    paths:
+      - "proto/**"
+      - "contracts/**"
+    minTier: T1
+    attachSkills:
+      - buf-openapi-contracts
+    attachAgentRules:
+      - agent-architecture
 
 agentFunctions:
   scout:
@@ -748,6 +895,11 @@ precedence:
 skillIds:
   - skill-router
   - governance-tier-gate
+  - nextjs-app-router
+  - prisma-7-postgres
+  - vitest-playwright-qa
+  - buf-openapi-contracts
+  - context7-doc-fetch
   - concise-planning
   - repo-architect
   - cc-skill-security-review
@@ -759,11 +911,72 @@ skillIds:
   - hr-data-custody
   - hr-regulated-domain
   - hr-quality-lab
+  - hr-contributor-handoff
   - hr-swarm-governance
   - cursor-harness-scope
   - hr-orchestration-lanes
   - hr-foundation-governance
+  - hr-governance-learning
   - hr-product-mcp-governance
   - protect-mcp-governance
   - devops-product-lifecycle
   - hr-devops-lifecycle
+  - hr-human-collaboration
+
+adaptation:
+  enabled: true
+  skillRouterHints: []
+
+collaboration:
+  enabled: true
+  minTier: T1
+  skillPhases:
+    routing:
+      - hr-product-gate
+      - hr-orchestration-lanes
+      - hr-human-collaboration
+      - concise-planning
+      - hr-domain-boundaries
+    execution:
+      - lint-and-validate
+      - hr-quality-lab
+      - hr-contributor-handoff
+    specialized:
+      - hr-regulated-domain
+      - hr-data-custody
+      - hr-product-mcp-governance
+      - hr-devops-lifecycle
+      - hr-swarm-governance
+      - hr-foundation-governance
+      - hr-governance-learning
+  actionClasses:
+    read_only:
+      gate: none
+      examples: [scout, grep, read_file, explore]
+    reversible_write:
+      gate: revalidation
+      examples: [builder_non_regulated]
+    irreversible_or_regulated:
+      gate: hitl_specialized
+      examples: [ddl, pay_compliance, mcp_side_effect]
+  interruptConditions:
+    - id: tier_drift
+      trigger: riskTier increases mid-session
+      action: return_to_phase_5
+    - id: specialized_early_load
+      trigger: specialized skill before revalidationConfirmed
+      action: collaboration_gate_signal
+    - id: counsel_missing
+      trigger: T3+ builder Task without counsel lane
+      action: pre_tool_use_deny
+    - id: revalidation_timeout
+      trigger: revalidationPending exceeds timeout
+      action: deny_specialized_unlock
+  requireRevalidationBeforeSpecialized: true
+  requireHandoffRevalidationAtTier: T3
+  graduatedAutonomy:
+    enabled: true
+    cleanSessionThreshold: 5
+    promoteTo: adaptation_router_hint_L1
+  timeoutPolicy: deny
+  shadowUntil: "2026-06-15"

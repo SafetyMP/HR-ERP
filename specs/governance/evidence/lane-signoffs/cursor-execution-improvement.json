@@ -1,0 +1,56 @@
+{
+  "handoffId": "cursor-execution-improvement",
+  "ticketId": "cursor-execution-improvement",
+  "principal": "Harness CI",
+  "generatedAt": "2026-05-31T12:00:00.000Z",
+  "lanes": [
+    {
+      "function": "scout",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/meta/agent-team-map.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "architect",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/meta/hook-rollout-schedule.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "counsel",
+      "verifier": "Orchestrator",
+      "artifactPath": "specs/templates/legal-checklist.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "release_ops",
+      "verifier": "Orchestrator",
+      "artifactPath": ".github/workflows/governance-pr-autofill.yml",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "verifier": "Orchestrator",
+      "artifactPath": ".cursor/hooks/pre-tool-use.mjs",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "builder",
+      "verifier": "Orchestrator",
+      "artifactPath": ".cursor/hooks/session-start.mjs",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "sentinel",
+      "verifier": "Orchestrator",
+      "artifactPath": "specs/templates/security-review.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "function": "verifier",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/QA.md",
+      "signedAt": "2026-05-31T12:00:00.000Z"
+    }
+  ]
+}

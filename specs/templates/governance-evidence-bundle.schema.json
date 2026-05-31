@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://hr-erp.local/schemas/governance-evidence-bundle.schema.json",
+  "title": "GovernanceEvidenceBundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundleId",
+    "handoffPath",
+    "principal",
+    "generatedAt",
+    "attestationVersion"
+  ],
+  "properties": {
+    "bundleId": { "type": "string", "minLength": 1 },
+    "handoffPath": { "type": "string", "minLength": 1 },
+    "sessionLaneStateHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "auditLogTailHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "ciRunUrl": { "type": ["string", "null"] },
+    "principal": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "attestationVersion": { "type": "integer", "minimum": 1 },
+    "laneSignoffPath": { "type": ["string", "null"] },
+    "humanDecisionRecordHash": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of collaboration humanDecisionRecord JSON"
+    },
+    "outputReviewPassed": {
+      "type": ["boolean", "null"],
+      "description": "Collaboration plane phase 7 attestation"
+    },
+    "signature": {
+      "type": ["object", "null"],
+      "description": "Reserved for DSSE Ed25519 (Phase 1C)",
+      "properties": {
+        "algorithm": { "type": "string" },
+        "keyId": { "type": "string" },
+        "value": { "type": "string" }
+      }
+    }
+  }
+}

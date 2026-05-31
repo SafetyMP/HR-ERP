@@ -5,13 +5,26 @@ alwaysApply: true
 
 # HR ERP orchestrator
 
-**Process:** [hooks.json](../hooks.json) · **Invariants:** [repo-boundaries.mdc](repo-boundaries.mdc) · **Lanes:** `@hr-orchestration-lanes`
+**Team map:** [agent-team-map.md](../../docs/meta/agent-team-map.md) · **Process:** [hooks.json](../hooks.json) · **Invariants:** [repo-boundaries.mdc](repo-boundaries.mdc) · **Skills:** `@skill-router` · `~/.cursor/skills/README.md`
 
-1. `npm run governance:lint` → tier
-2. `npm run governance:plan` → DAG JSON
-3. `/multitask` · `/worktree` (DDL) · `/best-of-n` (T4 repair)
-4. `npm run governance:ci` before merge
+Global core: `~/.cursor/rules/core-orchestrator.mdc` + `core-dynamic-skills.mdc` (advisory when `hookEnforcement: true`).
 
-Manifest v4: [governance-manifest.yaml](../governance/governance-manifest.yaml) · ADR [0016](../../specs/alignment/decisions/0016-agent-harness-foundation.md)
+## Quick start
+
+0. Collaboration phases 1–3: `@hr-human-collaboration` + [collaboration-plan.md](../../specs/templates/collaboration-plan.md)
+1. Load [agent-team-map.md](../../docs/meta/agent-team-map.md) (team roster)
+2. `npm run governance:lint` → tier + required lanes
+3. `npm run governance:plan` → DAG JSON for handoff / hooks
+4. `/multitask` · `/worktree` (DDL) · `/best-of-n` (T4 repair) per `@hr-orchestration-lanes`
+5. T2+: `specs/**/orchestrator-handoff.json` with `delegatedTaskPlan` matching Required lanes
+6. `npm run governance:ci` before merge (PRs)
+
+**Hook rollout:** counsel-before-builder denies T3+ builder Tasks from `preToolUseDenyT3From` ([hook-mode.json](../governance/hook-mode.json)). Check: `npm run governance:hooks:status`.
+
+Manifest v4: [governance-manifest.yaml](../governance/governance-manifest.yaml) · ADRs [0016–0020](../../specs/alignment/decisions/0016-agent-harness-foundation.md)
+
+**Collaboration plane (ADR 0020):** seven-phase Harness HITL; specialized skills after `revalidationConfirmed`; timeout=deny.
+
+**Phase 2 (ADR 0019):** evidence bundles (`governance:evidence`), cloud session ledger, strict VDR for T1+ — see `@hr-foundation-governance`.
 
 Precedence: Human PO → PO checkpoint → counsel → Security merge bar.

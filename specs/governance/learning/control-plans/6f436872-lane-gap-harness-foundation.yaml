@@ -1,0 +1,34 @@
+signal_id: 6f436872-80bd-42b9-9d49-20da21203d33
+promotionTier: L2
+principal: Harness CI
+ctqId: composition_miss_rate
+
+metric:
+  name: harness_lane_gap_rate
+  signalKind: lane_gap
+  pathClass: harness_foundation
+  windowDays: 14
+  baseline: 6
+  target: 0
+  warnThreshold: 2
+  pageThreshold: 4
+
+monitoring:
+  reviewCadence: weekly
+  commands:
+    - npm run governance:reflect
+    - npm run governance:lint
+    - node scripts/governance-lint.mjs handoff --strict --discover
+
+reactionPlan:
+  ifWarn: "Re-read agent-team-map; verify handoff delegatedTaskPlan includes Required lanes"
+  ifPage: "Open DMAIC charter; block T3 harness PRs without handoff JSON"
+  ifImproved: "Close signal cluster after 2 consecutive green handoff --discover runs"
+
+ownership:
+  processOwner: Harness CI
+  backup: Human PO
+
+linkedArtifacts:
+  stub: specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L1.md
+  promoted: specs/governance/learning/promoted/6f436872-80bd-42b9-9d49-20da21203d33.json

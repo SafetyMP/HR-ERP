@@ -1,0 +1,314 @@
+{
+  "generatedAt": "2026-05-31T03:10:08.699Z",
+  "totalSignals": 29,
+  "openSignals": 29,
+  "clusters": [
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "lane_gap",
+      "count": 9,
+      "riskTiers": {
+        "T3": 9
+      },
+      "signalIds": [
+        "e7eb643c-112b-4e81-a296-d40678cf5166",
+        "e9c9242d-9d76-46e6-899a-9c68583edef6",
+        "c2fb49f1-06f1-40b7-bc45-9918c766c451",
+        "f7ebe3d9-89cd-48ba-b521-4e57ae8226c3",
+        "2fea5c6f-d273-4165-babd-b7541c6b81fb",
+        "be05a399-dde5-414e-b7ff-69ba454cbf42",
+        "5453a452-954c-492d-acf2-01ae139b9082",
+        "cacaaeab-6578-4537-b32c-ce12415052c2",
+        "2f5a6b07-4799-4d17-914c-a0c0f5f94797"
+      ],
+      "score": 27
+    },
+    {
+      "pathClass": "cloud_ci",
+      "kind": "ci_fail",
+      "count": 10,
+      "riskTiers": {
+        "T2": 10
+      },
+      "signalIds": [
+        "74582b6a-4380-4b29-b863-0934c391940e",
+        "31a68d13-6031-4cb0-a88e-d59bad7536e2",
+        "6c5284e4-94f4-41cd-ba6a-fd9546e6c619",
+        "866db8c7-4cd1-4f59-93c5-b370b95d5ff8",
+        "2d04c66c-4c99-443d-813f-0faa557d2655",
+        "d0024a65-90b4-496b-a0e1-c2f3ea3429f4",
+        "89dde7cd-aedd-4d14-9e58-33bea2007634",
+        "45a4fdff-ca69-4e57-a237-22b2cf647ec6",
+        "ff70c546-0254-426c-8f8e-6f820e1951ba",
+        "010d9ecb-2ff2-42d9-9949-cc14b01cffba"
+      ],
+      "score": 25
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "lane_gap",
+      "count": 6,
+      "riskTiers": {
+        "T3": 6
+      },
+      "signalIds": [
+        "6f436872-80bd-42b9-9d49-20da21203d33",
+        "b8eea7fe-73ef-4f97-a44b-347c995fb96e",
+        "c8114ab4-7218-4cd5-8606-e952ecb8fc2f",
+        "6f7b8f75-76b2-49f3-9be6-55c2cd4d3351",
+        "9455b762-d33d-4946-908c-185172da2015",
+        "1f4246c6-138b-422b-ac03-e91c88f2d99f"
+      ],
+      "score": 18
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "bdf3a384-4ebf-44c3-b722-477168ac05e6"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "27a9cfc5-2f18-4de3-812f-17265088b1b1"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "composition_miss",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "b7aaab51-5ad0-4c64-b0b0-15865d81bf30"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "composition_miss",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "b40fadac-a5c0-4b4a-8127-fe708902e25f"
+      ],
+      "score": 3
+    }
+  ],
+  "stubs": [
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/e7eb643c-112b-4e81-a296-d40678cf5166-L1.md",
+      "signal_id": "e7eb643c-112b-4e81-a296-d40678cf5166"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/e7eb643c-112b-4e81-a296-d40678cf5166-L2.yaml",
+      "signal_id": "e7eb643c-112b-4e81-a296-d40678cf5166"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/74582b6a-4380-4b29-b863-0934c391940e-L1.md",
+      "signal_id": "74582b6a-4380-4b29-b863-0934c391940e"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L1.md",
+      "signal_id": "6f436872-80bd-42b9-9d49-20da21203d33"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L2.yaml",
+      "signal_id": "6f436872-80bd-42b9-9d49-20da21203d33"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/bdf3a384-4ebf-44c3-b722-477168ac05e6-L1.md",
+      "signal_id": "bdf3a384-4ebf-44c3-b722-477168ac05e6"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/27a9cfc5-2f18-4de3-812f-17265088b1b1-L1.md",
+      "signal_id": "27a9cfc5-2f18-4de3-812f-17265088b1b1"
+    }
+  ],
+  "ctqSnapshot": {
+    "generatedAt": "2026-05-31T03:10:08.708Z",
+    "windowDays": 14,
+    "harness": [
+      {
+        "ctqId": "handoff_discover_pass_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 12,
+        "totalSignals": 29,
+        "rate": 0.414,
+        "target": ">= 0.95",
+        "status": null
+      },
+      {
+        "ctqId": "counsel_before_builder_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 17,
+        "totalSignals": 29,
+        "rate": 0.586,
+        "target": ">= 0.90",
+        "status": null
+      },
+      {
+        "ctqId": "tier_declared_accuracy",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 29,
+        "rate": 0,
+        "target": ">= 0.98",
+        "status": null
+      },
+      {
+        "ctqId": "composition_miss_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 2,
+        "totalSignals": 29,
+        "rate": 0.069,
+        "target": "<= 0.05",
+        "status": null
+      },
+      {
+        "ctqId": "po_friction_repeat_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 2,
+        "totalSignals": 29,
+        "rate": 0.069,
+        "target": "<= 0.10",
+        "status": null
+      },
+      {
+        "ctqId": "finops_cost_spike_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 29,
+        "rate": 0,
+        "target": "<= 0.15",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_gate_bypass_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 29,
+        "rate": 0,
+        "target": "<= 0.05",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_rubber_stamp_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 2,
+        "totalSignals": 29,
+        "rate": 0.069,
+        "target": "<= 0.10",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_output_divergence_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 29,
+        "rate": 0,
+        "target": "<= 0.05",
+        "status": null
+      }
+    ],
+    "product": [
+      {
+        "ctqId": "W1",
+        "claim": "One portal (pay, time, leave, profile, benefits, learning)",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/completion-audits/features-022.md",
+          "docs/product/feature-briefs/022-product-shell.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W2",
+        "claim": "Native payroll, not CSV circus",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/018-payroll-runs-ui.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W3",
+        "claim": "Ownable, replayable policy",
+        "status": "partial",
+        "evidencePaths": [
+          "packages/payroll-calc/",
+          "specs/alignment/decisions/0005-payroll-kernel-determinism.md"
+        ],
+        "target": "100%"
+      },
+      {
+        "ctqId": "W4",
+        "claim": "Enforceable tenancy",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/completion-audits/features-014-017.md"
+        ],
+        "target": "100%"
+      },
+      {
+        "ctqId": "W5",
+        "claim": "Hiring managers without separate ATS",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/020-talent-depth-wave.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W6",
+        "claim": "Integrations without Zapier for core paths",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/023-scim-hardening.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W7",
+        "claim": "Benefits operational, not PDF-only",
+        "status": "partial",
+        "evidencePaths": [
+          "docs/product/feature-briefs/019-benefits-life-events.md",
+          "docs/compliance/cobra-aca-counsel-gate.md"
+        ],
+        "target": ">= 0.8"
+      }
+    ]
+  }
+}

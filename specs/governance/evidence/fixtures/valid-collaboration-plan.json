@@ -1,0 +1,38 @@
+{
+  "phase": "human_input",
+  "oversightMode": "HITL",
+  "decisionOverview": "Add Collaboration plane to harness manifest and hooks.",
+  "options": [
+    {
+      "id": "A",
+      "summary": "Shadow-only inject",
+      "risk": "Low enforcement; gate bypass",
+      "reward": "Fast rollout",
+      "rollback": "Remove collaboration block from manifest",
+      "lanes": ["architect", "builder"],
+      "deferredSkills": ["hr-foundation-governance"]
+    },
+    {
+      "id": "B",
+      "summary": "Shadow inject + T3 strict handoff",
+      "risk": "Handoff overhead",
+      "reward": "Durable T3+ evidence",
+      "rollback": "Revert hook-mode dates",
+      "lanes": ["architect", "builder", "sentinel", "verifier"],
+      "deferredSkills": ["hr-foundation-governance", "hr-governance-learning"]
+    }
+  ],
+  "recommendedStrategyId": "B",
+  "humanDecisionRecord": {
+    "chosenStrategy": "B",
+    "principal": "Human Lead",
+    "recordedAt": "2026-05-31T12:00:00Z",
+    "decisions": [{ "id": "strategy-choice", "chosen": "B" }],
+    "rejectionHistory": []
+  },
+  "revalidationRequired": true,
+  "revalidationConfirmed": true,
+  "outputReviewRequired": true,
+  "outputReviewPassed": false,
+  "actionClassesTriggered": ["reversible_write"]
+}

@@ -2,8 +2,10 @@
 import { execSync } from "node:child_process";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { readHookInput, allow, logHook, HOOK_MODE, deny } from "./lib.mjs";
+import { readHookInput, allow, logHook, HOOK_MODE } from "./lib.mjs";
 import { loadLaneState, laneGaps, tierAtLeast } from "./lane-state.mjs";
+import { appendSignal } from "../../scripts/governance-learning.mjs";
+import { loadCollaborationConfig, canLoadSpecializedSkills } from "./collaboration.mjs";
 
 const input = readHookInput();
 const status = input.status ?? "completed";
@@ -13,6 +15,23 @@ const { missing } = laneGaps(state);
 const tier = state.riskTier ?? "T1";
 
 logHook("stop", { status, tier, lane_gaps: missing });
+
+if (missing.length) {
+  appendSignal(
+    {
+      kind: "lane_gap",
+      riskTier: tier,
+      pathClass: state.pathClass ?? "unknown",
+      plannedLanes: state.plannedLanes ?? [],
+      agentFunctions: (state.completed ?? []).map((c) => c.function),
+      source: { plane: "runtime", artifact: "lane-gap-report" },
+      hypothesis: `session ended with missing lanes: ${missing.join(", ")}`,
+      metrics: { executionGap: true },
+      detail: { missingLanes: missing, status },
+    },
+    { state, warnOnly: true },
+  );
+}
 
 if (tierAtLeast(tier, "T3") && HOOK_MODE === "enforce") {
   const criticalMissing = missing.filter((l) =>
@@ -51,6 +70,13 @@ const gapReport = {
   completed: (state.completed ?? []).map((c) => c.function),
   status,
   at: new Date().toISOString(),
+  collaboration: {
+    phase: state.collaborationPhase ?? "proposal",
+    revalidationConfirmed: state.revalidationConfirmed ?? false,
+    outputReviewPassed: state.outputReviewPassed ?? false,
+    humanDecisionRecordComplete: Boolean(state.humanDecisionRecord?.principal),
+    specializedUnlocked: canLoadSpecializedSkills(state),
+  },
 };
 writeFileSync(join(outDir, "lane-gap-report.json"), JSON.stringify(gapReport, null, 2));
 

@@ -6,7 +6,15 @@
   "v4Rollout": {
     "laneStateShadowUntil": "2026-06-06",
     "handoffDiscoverStrictFrom": "2026-06-13",
-    "preToolUseDenyT3From": "2026-06-20"
+    "preToolUseDenyT3From": "2026-06-20",
+    "learningLedgerEmitFrom": "2026-05-31",
+    "reflectWeeklyFrom": "2026-06-07",
+    "routerHintsShadowFrom": "2026-06-14",
+    "routerHintsEnforceFrom": "2026-06-28",
+    "collaborationGateEnforceFrom": "2026-06-15",
+    "collaborationHandoffStrictFrom": "T3"
   },
-  "notes": "v4 foundation: session lane state (shadow week 1), handoff discover strict week 2, preToolUse T3 deny week 3. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
+  "collaborationTimeoutPolicy": "deny",
+  "collaborationRevalidationTimeoutHours": 24,
+  "notes": "v4 foundation + RGF adaptation plane: ledger emit, reflect, router hints shadow/enforce. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
 }

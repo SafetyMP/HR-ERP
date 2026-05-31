@@ -36,9 +36,9 @@
 | Risk | Owner |
 | --- | --- |
 
-## Innovation / R&D parity (`hr-erp-innovation-rd`)
+## Innovation / R&D parity (`@hr-domain-boundaries`)
 
-**Orchestrator runs this step immediately after Architecture** (Cursor: `@hr-erp-innovation-rd` or [`.cursor/skills/hr-erp-innovation-rd/SKILL.md`](../../.cursor/skills/hr-erp-innovation-rd/SKILL.md)). Complete **before** Legal/Integration consume this spec unless explicitly **N/A** with one-line scope justification (pure typo/copy/CSS churn).
+**Orchestrator runs this step immediately after Architecture** when stack/modernization applies. Load **`@hr-domain-boundaries`** → [innovation-gate.md](../../.cursor/skills/hr-domain-boundaries/references/innovation-gate.md). Complete **before** Legal/Integration consume this spec unless explicitly **N/A** with one-line scope justification (pure typo/copy/CSS churn).
 
 | Item | Answer (bullets OK) |
 | --- | --- |
@@ -49,9 +49,9 @@
 
 If **N/A**, state: `Innovation parity: N/A — <reason>` and confirm no schema/API/infra/crypto/search modality change.
 
-## AI data governance parity (`hr-ai-data-governance`)
+## AI data governance parity (`@hr-regulated-domain`)
 
-**Orchestrator runs this step when conditional triggers apply** (see [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc) — **AI data governance** bullet). Cursor: `@hr-ai-data-governance` or [`.cursor/skills/hr-ai-data-governance/SKILL.md`](../../.cursor/skills/hr-ai-data-governance/SKILL.md). Complete **before** Implementation consumes this spec unless **N/A** with one-line PO scope.
+**Orchestrator runs this step when conditional triggers apply** (see [`.cursor/rules/orchestrator-hr-erp.mdc`](../../.cursor/rules/orchestrator-hr-erp.mdc)). Load **`@hr-regulated-domain`** → [ai-governance.md](../../.cursor/skills/hr-regulated-domain/references/ai-governance.md). Complete **before** Implementation consumes this spec unless **N/A** with one-line PO scope.
 
 | Item | Answer (bullets OK) |
 | --- | --- |

@@ -47,7 +47,7 @@ Wave **022** audit: [`completion-audits/features-022.md`](./completion-audits/fe
 
 ## 2a. Canonical “agent skills” for roadmap and gap analysis
 
-When mapping **“implemented vs still needed”** to Cursor agent guidance **for this repository**, use the **revamped project skills** in [`.cursor/skills/`](../../.cursor/skills/) (`hr-product-gate`, `hr-domain-boundaries`, `hr-data-custody`, `hr-regulated-domain`, `hr-product-mcp-governance`, `hr-quality-lab`, `hr-swarm-governance`, `hr-orchestration-lanes`). Legacy names live under `_archived/2026-05-28-revamp/`.
+When mapping **“implemented vs still needed”** to Cursor agent guidance **for this repository**, use the **project skills** in [`.cursor/skills/`](../../.cursor/skills/) — see [skills README](../../.cursor/skills/README.md) and [agent team map](../meta/agent-team-map.md).
 
 Those skills are **orchestration and quality gates**, not interchangeable with the long **global Cursor marketplace / plugin skill list** (e.g. Vercel, Azure, Neon): the latter supports tooling choices; it does **not** substitute for the repo skill set above when sequencing HR ERP work.
 
@@ -55,7 +55,7 @@ Those skills are **orchestration and quality gates**, not interchangeable with t
 
 ## 2b. Orchestration bundles (conditional skills)
 
-Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator.mdc`](../../.cursor/rules/orchestrator.mdc). For **payroll math, wage/hour matrices, Compliance packs, or `docs/compliance/`** — **`@hr-regulated-domain`** (+ **agent-legal-hr-compliance**). For **`packages/payroll-calc/`** — same skill (payroll L3). For **employee-facing churn/screening/scoring**, **`docs/ai-governance/`**, **`lib/governance/`** — **`@hr-regulated-domain`**. For **in-app copilot MCP** (`lib/copilot/`, catalog, transport) — **`@hr-product-mcp-governance`** + **`ai_governance_reviewer`** lane; for **inference routing/drift** without copilot — **`@hr-regulated-domain`** mlops L3 + **`mlops_reviewer`**.
+Delegates and PR authors should attach skills per [`.cursor/rules/orchestrator-hr-erp.mdc`](../../.cursor/rules/orchestrator-hr-erp.mdc). For **payroll math, wage/hour matrices, Compliance packs, or `docs/compliance/`** — **`@hr-regulated-domain`** (+ **agent-legal-hr-compliance**). For **`packages/payroll-calc/`** — same skill (payroll L3). For **employee-facing churn/screening/scoring**, **`docs/ai-governance/`**, **`lib/governance/`** — **`@hr-regulated-domain`**. For **in-app copilot MCP** (`lib/copilot/`, catalog, transport) — **`@hr-product-mcp-governance`** + **`ai_governance_reviewer`** lane; for **inference routing/drift** without copilot — **`@hr-regulated-domain`** mlops L3 + **`mlops_reviewer`**.
 
 ---
 

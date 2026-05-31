@@ -1,0 +1,81 @@
+# Harness CTQ drilldown — Adaptation plane (ADR 0018)
+# Big Y: outcomes stakeholders care about; Little y: measurable harness drivers
+
+version: 1
+updated: "2026-05-31"
+
+bigY:
+  id: merge_ready_regulated_delivery
+  description: T3+ PRs merge with complete evidence, no regulated defect escape
+  operationalDefinition: >
+    PR at T3+ with governance:ci green, handoff discover strict pass,
+    golden thread filled, required lanes in handoff and session state
+
+littleY:
+  - id: handoff_discover_pass_rate
+    ctq: Handoff discover strict pass on T2+ diffs
+    metric: pass_count / eligible_pr_count
+    target: ">= 0.95"
+    signalKinds: [ci_fail, composition_miss]
+    source: governance-lint handoff --discover --strict
+
+  - id: counsel_before_builder_rate
+    ctq: Counsel lane completed before builder on T3+ regulated paths
+    metric: sessions_without_counsel_gap / t3_sessions
+    target: ">= 0.90"
+    signalKinds: [hook_deny, lane_gap, composition_miss]
+    source: learning-ledger, pre-tool-use
+
+  - id: tier_declared_accuracy
+    ctq: PR declared riskTier >= lint suggested tier
+    metric: accurate_declarations / prs_with_tier
+    target: ">= 0.98"
+    signalKinds: [tier_mismatch]
+    source: governance-lint pr-body
+
+  - id: composition_miss_rate
+    ctq: Path trigger skills align with delegated plan
+    metric: composition_miss_signals / t2_plus_sessions
+    target: "<= 0.05"
+    signalKinds: [composition_miss]
+    source: learning-ledger
+
+  - id: po_friction_repeat_rate
+    ctq: PO checkpoint inject without filled brief/plan
+    metric: friction_signals / non_t0_sessions
+    target: "<= 0.10"
+    signalKinds: [friction]
+    source: before-submit-prompt
+
+  - id: finops_cost_spike_rate
+    ctq: T4 swarms within FinOps checkpoint budget
+    metric: cost_spike_signals / t4_swarm_sessions
+    target: "<= 0.15"
+    signalKinds: [cost_spike]
+    source: manual FinOps checkpoint
+
+  - id: collaboration_gate_bypass_rate
+    ctq: Specialized skills loaded only after revalidationConfirmed
+    metric: collaboration_gate_signals / t1_plus_sessions
+    target: "<= 0.05"
+    signalKinds: [collaboration_gate]
+    source: learning-ledger, pre-tool-use, before-submit-prompt
+
+  - id: collaboration_rubber_stamp_rate
+    ctq: Phase-3 confirm without plan edit under 60s
+    metric: rubber_stamp_signals / collaboration_sessions
+    target: "<= 0.10"
+    signalKinds: [friction, collaboration_gate]
+    source: learning-ledger
+
+  - id: collaboration_output_divergence_rate
+    ctq: Phase-7 output matches humanDecisionRecord.chosenStrategy
+    metric: collaboration_divergence_signals / t1_plus_merges
+    target: "<= 0.05"
+    signalKinds: [collaboration_divergence]
+    source: verifier lane, learning-ledger
+
+voc:
+  - source: "@hr-product-gate friction targets"
+  - source: PO orchestration checkpoint in PR template
+  - source: collaboration audit post-mortems

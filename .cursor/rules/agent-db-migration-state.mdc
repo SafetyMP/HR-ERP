@@ -8,7 +8,7 @@ globs: prisma/**,services/*/db/migrations/**,scripts/db-verify-migration.ts
 
 # DB migration agent
 
-Load **`@hr-data-custody`** and **`@hr-domain-boundaries`** for all DDL, backfills, and cutovers.
+Load **`@prisma-7-postgres`**, **`@hr-data-custody`**, and **`@hr-domain-boundaries`** for all DDL, backfills, and cutovers.
 
 Run `npm run db:verify` after migrate. Forward-only migrations on shared branches.
 
