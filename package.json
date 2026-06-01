@@ -89,7 +89,7 @@
     "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.4.0",
     "@neondatabase/auth": "^0.4.1-beta",
     "@opentelemetry/sdk-node": "^0.217.0",
     "@prisma/adapter-pg": "^7.8.0",
