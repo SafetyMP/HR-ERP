@@ -69,7 +69,7 @@ Canonical schedule: [`.cursor/governance/hook-mode.json`](../../.cursor/governan
 | `beforeShellExecution` | Destructive git/db guardrails in prose |
 | `beforeMCPExecution` | MCP allowlist from `.cursor/mcp.json` |
 | `subagentStart` / `subagentStop` | Lane state → `session-lane-state.json` |
-| `beforeSubmitPrompt` | PO + Collaboration phase inject (T1+) |
+| `beforeSubmitPrompt` | PO + Collaboration inject **on tier/path/gap change**; compact reminder every N messages; governance-lint cached until git fingerprint changes ([hook-dynamic.mjs](../../.cursor/hooks/hook-dynamic.mjs)) |
 | `preToolUse` (Task) | T3+ counsel gate; Collaboration specialized-skill gate |
 | `stop` | PR stub + `lane-gap-report.json` |
 

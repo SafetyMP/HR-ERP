@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { readHookInput, allow, logHook, HOOK_MODE, rolloutDateReached } from "./lib.mjs";
-import { loadLaneState, saveLaneState, syncPlanFromLint } from "./lane-state.mjs";
+import { loadLaneState, saveLaneState, refreshGovernanceCache } from "./lane-state.mjs";
 
 const input = readHookInput();
 const state = loadLaneState();
@@ -8,7 +8,7 @@ const state = loadLaneState();
 state.sessionId = input.session_id ?? input.conversation_id ?? Date.now().toString(36);
 state.started = [];
 state.completed = [];
-const plan = syncPlanFromLint(state);
+const { plan } = refreshGovernanceCache(state, { force: true });
 
 logHook("sessionStart", { sessionId: state.sessionId, tier: state.riskTier });
 saveLaneState(state);

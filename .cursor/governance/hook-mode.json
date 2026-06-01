@@ -16,5 +16,11 @@
   },
   "collaborationTimeoutPolicy": "deny",
   "collaborationRevalidationTimeoutHours": 24,
-  "notes": "v4 foundation + RGF adaptation plane: ledger emit, reflect, router hints shadow/enforce. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
+  "dynamicEnforcement": {
+    "enabled": true,
+    "refreshOnDiffChange": true,
+    "compactContextOnStable": true,
+    "poInjectEveryN": 5
+  },
+  "notes": "v4 foundation + RGF adaptation plane: ledger emit, reflect, router hints shadow/enforce. dynamicEnforcement caches governance-lint until git fingerprint changes; PO/collab context injects on tier/path/gap change + compact reminder. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
 }

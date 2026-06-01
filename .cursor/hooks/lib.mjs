@@ -120,3 +120,9 @@ const DESTRUCTIVE_PATTERNS = [
 export function isDestructiveShell(command) {
   return DESTRUCTIVE_PATTERNS.some((re) => re.test(command));
 }
+
+const TIER_ORDER = ["T0", "T1", "T2", "T3", "T4"];
+
+export function tierAtLeast(actual, required) {
+  return TIER_ORDER.indexOf(actual) >= TIER_ORDER.indexOf(required);
+}

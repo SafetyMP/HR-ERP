@@ -14,6 +14,19 @@ Check current mode: `npm run governance:hooks:status`
 | 2026-06-20 | `preToolUseDenyT3From` | T3+ builder Tasks **denied** until counsel lane started ([pre-tool-use.mjs](../../.cursor/hooks/pre-tool-use.mjs)) |
 | 2026-06-28 | `routerHintsEnforceFrom` | Adaptation router hints shadow → enforce |
 
+## Dynamic enforcement (runtime)
+
+Configured in `hook-mode.json` → `dynamicEnforcement` ([hook-dynamic.mjs](../../.cursor/hooks/hook-dynamic.mjs)):
+
+| Behavior | When |
+|----------|------|
+| **governance-lint plan + diff** | Working-tree fingerprint changes, session start (`force`), or `enabled: false` |
+| **Full PO / collaboration inject** | First prompt, tier/path/phase change, incomplete lanes |
+| **Compact reminder** | Stable tier/path every `poInjectEveryN` messages (default 5) |
+| **Skip context inject** | Stable chat between reminders — enforcement hooks (shell/MCP/Task) still apply |
+
+Audit: `.cursor/hooks-output/audit.log` includes `inject_profile` and `governance_cache` on `beforeSubmitPrompt`.
+
 ## Pre-rollout practice (now)
 
 1. Every harness/meta PR: handoff JSON with all **Required lanes** from `npm run governance:lint`

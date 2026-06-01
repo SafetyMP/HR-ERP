@@ -5,6 +5,13 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
+import {
+  getWorkingTreeFingerprint,
+  listWorkingTreeFiles,
+  loadDynamicEnforcementConfig,
+  shouldRefreshGovernance,
+} from "./hook-dynamic.mjs";
+import { tierAtLeast } from "./lib.mjs";
 
 const STATE_PATH = join(process.cwd(), ".cursor", "hooks-output", "session-lane-state.json");
 
@@ -28,6 +35,10 @@ export function loadLaneState() {
       revalidationConfirmed: false,
       specializedSkillsUnlocked: [],
       outputReviewPassed: false,
+      governanceCache: null,
+      lastInjectedTier: null,
+      lastInjectedPathClass: null,
+      lastInjectedCollabPhase: null,
     };
   }
   try {
@@ -40,6 +51,10 @@ export function loadLaneState() {
     state.revalidationConfirmed = state.revalidationConfirmed ?? false;
     state.specializedSkillsUnlocked = state.specializedSkillsUnlocked ?? [];
     state.outputReviewPassed = state.outputReviewPassed ?? false;
+    state.governanceCache = state.governanceCache ?? null;
+    state.lastInjectedTier = state.lastInjectedTier ?? null;
+    state.lastInjectedPathClass = state.lastInjectedPathClass ?? null;
+    state.lastInjectedCollabPhase = state.lastInjectedCollabPhase ?? null;
     return state;
   } catch {
     return {
@@ -64,14 +79,9 @@ export function saveLaneState(state) {
   writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
 }
 
-export function syncPlanFromLint(state) {
-  try {
-    const out = execSync("node scripts/governance-lint.mjs plan --json --quiet 2>/dev/null", {
-      encoding: "utf8",
-      cwd: process.cwd(),
-    });
-    const plan = JSON.parse(out.trim());
-    state.riskTier = plan.riskTier;
+function applyPlanToState(state, plan, tier) {
+  state.riskTier = tier;
+  if (plan) {
     state.plannedLanes = (plan.delegatedTaskPlan ?? []).map((p) => p.function).filter(Boolean);
     state.regulatedGraph = plan.regulatedGraph ?? false;
     if (plan.matchedTriggers?.length) {
@@ -80,11 +90,80 @@ export function syncPlanFromLint(state) {
     if (plan.suggestedSkills?.length) {
       state.suggestedSkills = plan.suggestedSkills;
     }
-    saveLaneState(state);
-    return plan;
-  } catch {
-    return null;
   }
+}
+
+/**
+ * Refresh tier/plan from governance-lint when working-tree fingerprint changes (or force).
+ * @returns {{ plan: object|null, tier: string, fromCache: boolean, diffFiles: string[] }}
+ */
+export function refreshGovernanceCache(state, { force = false } = {}) {
+  const dyn = loadDynamicEnforcementConfig();
+  const fp = getWorkingTreeFingerprint();
+  const cached = state.governanceCache;
+
+  if (
+    dyn.enabled &&
+    !force &&
+    !shouldRefreshGovernance(state, { force: false }) &&
+    cached?.plan &&
+    cached?.tier
+  ) {
+    const plan = JSON.parse(cached.plan);
+    applyPlanToState(state, plan, cached.tier);
+    saveLaneState(state);
+    return {
+      plan,
+      tier: cached.tier,
+      fromCache: true,
+      diffFiles: cached.diffFiles ?? [],
+    };
+  }
+
+  let plan = null;
+  let tier = state.riskTier ?? "T1";
+
+  try {
+    const out = execSync("node scripts/governance-lint.mjs plan --json --quiet 2>/dev/null", {
+      encoding: "utf8",
+      cwd: process.cwd(),
+    });
+    plan = JSON.parse(out.trim());
+    if (plan.riskTier) tier = plan.riskTier;
+  } catch {
+    /* keep prior tier */
+  }
+
+  try {
+    const diffOut = execSync("node scripts/governance-lint.mjs diff 2>/dev/null", {
+      encoding: "utf8",
+      cwd: process.cwd(),
+    });
+    const m = diffOut.match(/Suggested riskTier:\s*(T\d)/);
+    if (m) tier = m[1];
+  } catch {
+    /* keep plan tier */
+  }
+
+  const diffFiles = listWorkingTreeFiles();
+  state.governanceCache = {
+    diffFingerprint: fp,
+    plan: plan ? JSON.stringify(plan) : cached?.plan ?? null,
+    tier,
+    diffFiles,
+    refreshedAt: new Date().toISOString(),
+  };
+
+  applyPlanToState(state, plan, tier);
+  saveLaneState(state);
+
+  return { plan, tier, fromCache: false, diffFiles };
+}
+
+/** @deprecated Use refreshGovernanceCache — kept for session/subagent hooks */
+export function syncPlanFromLint(state, options = {}) {
+  const { plan } = refreshGovernanceCache(state, options);
+  return plan;
 }
 
 export function extractSkillIdsFromText(text) {
@@ -180,11 +259,6 @@ export function criticalLanesForTier(tier) {
   if (tierAtLeast(tier, "T3")) return ["counsel", "sentinel", "ai_governance_reviewer"];
   if (tierAtLeast(tier, "T2")) return ["sentinel"];
   return [];
-}
-
-function tierAtLeast(actual, required) {
-  const order = ["T0", "T1", "T2", "T3", "T4"];
-  return order.indexOf(actual) >= order.indexOf(required);
 }
 
 export { tierAtLeast };
