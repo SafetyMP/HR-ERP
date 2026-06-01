@@ -20,7 +20,8 @@
     "enabled": true,
     "refreshOnDiffChange": true,
     "compactContextOnStable": true,
-    "poInjectEveryN": 5
+    "poInjectEveryN": 10,
+    "fullInjectOnMaterialGapsOnly": true
   },
-  "notes": "v4 foundation + RGF adaptation plane: ledger emit, reflect, router hints shadow/enforce. dynamicEnforcement caches governance-lint until git fingerprint changes; PO/collab context injects on tier/path/gap change + compact reminder. Override with GOVERNANCE_HOOK_MODE=shadow|enforce."
+  "notes": "v4 foundation + RGF adaptation plane. dynamicEnforcement: full inject on required/T3-critical gaps only; poInjectEveryN=10. Counsel fallback on beforeSubmitPrompt (GOVERNANCE_COUNSEL_FALLBACK=shadow to disable deny). Override GOVERNANCE_HOOK_MODE=shadow|enforce."
 }

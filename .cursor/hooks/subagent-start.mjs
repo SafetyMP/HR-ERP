@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import { readHookInput, allow, logHook } from "./lib.mjs";
-import { loadLaneState, recordSubagentStart, refreshGovernanceCache } from "./lane-state.mjs";
+import {
+  loadLaneState,
+  recordSubagentStart,
+  refreshGovernanceCache,
+  parseFunctionFromTask,
+} from "./lane-state.mjs";
 
 const input = readHookInput();
 const subagentType = input.subagent_type ?? input.subagentType ?? "unknown";
@@ -13,10 +18,13 @@ if (!state.sessionId) {
 
 const { plan, fromCache } = refreshGovernanceCache(state);
 
+const functionId =
+  input.function ?? input.lane ?? parseFunctionFromTask(task) ?? undefined;
+
 recordSubagentStart(state, {
   subagentType,
   task,
-  functionId: input.function ?? input.lane,
+  functionId,
 });
 
 logHook("subagentStart", {

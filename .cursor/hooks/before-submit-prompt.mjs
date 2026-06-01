@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { readHookInput, allow, logHook } from "./lib.mjs";
+import { readHookInput, allow, deny, logHook, HOOK_MODE } from "./lib.mjs";
+import { evaluateCounselFallback } from "./counsel-fallback.mjs";
 import {
   loadLaneState,
   laneGaps,
@@ -30,8 +31,36 @@ const prompt = input.prompt ?? input.text ?? "";
 const state = loadLaneState();
 const { plan, tier, fromCache } = refreshGovernanceCache(state);
 const { missing } = laneGaps(state);
+const requiredLanes = plan?.requiredLanes ?? state.governanceCache?.planSummary?.requiredLanes ?? [];
 
-const profile = selectInjectProfile(state, { tier, missing });
+const counselResult = evaluateCounselFallback({
+  tier,
+  state,
+  prompt,
+  hookMode: HOOK_MODE,
+  preToolUseActive: false,
+});
+
+if (counselResult.action === "deny") {
+  logHook("counsel_fallback", { tier, blocked: true, action: "deny" });
+  appendSignal(
+    {
+      kind: "hook_deny",
+      riskTier: tier,
+      pathClass: state.pathClass ?? "unknown",
+      plannedLanes: state.plannedLanes ?? [],
+      source: { plane: "runtime", artifact: "counsel-fallback" },
+      hypothesis: "T3+ builder intent before counsel lane",
+      metrics: { compositionMiss: true, executionGap: true },
+    },
+    { state, warnOnly: false },
+  );
+  saveLaneState(state);
+  console.log(deny(counselResult.message, counselResult.message));
+  process.exit(2);
+}
+
+const profile = selectInjectProfile(state, { tier, missing, requiredLanes });
 
 logHook("beforeSubmitPrompt", {
   tier,
@@ -57,6 +86,8 @@ if (state.poInjectCount >= 3 && tier !== "T0" && profile === "full") {
   );
 }
 
+const counselNote = counselResult.action === "note" ? [counselResult.message] : [];
+
 const lines = buildContextLines({
   state,
   tier,
@@ -64,19 +95,21 @@ const lines = buildContextLines({
   missing,
   prompt,
   profile,
+  fromCache,
 });
 
 markInjectProfile(state, { tier, profile });
 saveLaneState(state);
 
-if (lines.length) {
-  console.log(allow({ additional_context: lines.join("\n") }));
+const context = [...counselNote, ...lines];
+if (context.length) {
+  console.log(allow({ additional_context: context.join("\n") }));
 } else {
   console.log(allow());
 }
 process.exit(0);
 
-function buildContextLines({ state, tier, plan, missing, prompt, profile }) {
+function buildContextLines({ state, tier, plan, missing, prompt, profile, fromCache }) {
   if (profile === "skip") return [];
 
   if (profile === "t0") {
@@ -89,31 +122,47 @@ function buildContextLines({ state, tier, plan, missing, prompt, profile }) {
     if (state.plannedLanes?.length) {
       parts.push(`lanes: ${state.plannedLanes.join(", ")}`);
     }
-    if (missing.length) {
-      parts.push(`advisory incomplete lanes: ${missing.join(", ")}`);
+    const req = plan?.requiredLanes ?? state.governanceCache?.planSummary?.requiredLanes ?? [];
+    if (req.length && missing.some((l) => req.includes(l))) {
+      parts.push(`required incomplete: ${missing.filter((l) => req.includes(l)).join(", ")}`);
     }
     return [parts.join(" | ")];
   }
 
+  const firstInject = state.lastInjectedTier == null;
+  const warmCache = fromCache && state.governanceCache?.planSummary;
+
   const lines = [];
   lines.push(`riskTier: ${tier}`);
-  lines.push(
-    "PO orchestration checkpoint: Feature brief or .cursor/plans/*.md | UAC count | gate Y/N | phase ADR: specs/alignment/decisions/0001-phase1-scope.md",
-  );
-  lines.push("Native runtime: /multitask parallel lanes; npm run governance:plan for DAG");
+  if (warmCache) {
+    lines.push(
+      "PO: brief|.cursor/plans|handoff | UAC | gate Y/N | ADR 0001 — /multitask · npm run governance:plan",
+    );
+  } else {
+    lines.push(
+      "PO orchestration checkpoint: Feature brief or .cursor/plans/*.md | UAC count | gate Y/N | phase ADR: specs/alignment/decisions/0001-phase1-scope.md",
+    );
+    lines.push("Native runtime: /multitask parallel lanes; npm run governance:plan for DAG");
+  }
   if (state.plannedLanes?.length) {
     lines.push(`Planned lanes: ${state.plannedLanes.join(", ")}`);
   }
-  if (missing.length) {
-    lines.push(`Advisory — incomplete lanes: ${missing.join(", ")}`);
+  const req = plan?.requiredLanes ?? [];
+  const reqMissing = missing.filter((l) => req.includes(l));
+  if (reqMissing.length) {
+    lines.push(`Required incomplete: ${reqMissing.join(", ")}`);
+  } else if (missing.length) {
+    lines.push(`Advisory incomplete: ${missing.slice(0, 5).join(", ")}${missing.length > 5 ? "…" : ""}`);
   }
-  if (state.suggestedSkills?.length) {
-    lines.push(`suggestedSkills (pathTriggers): ${state.suggestedSkills.join(", ")}`);
+  if (!warmCache && state.suggestedSkills?.length) {
+    lines.push(`suggestedSkills: ${state.suggestedSkills.join(", ")}`);
   }
 
   const collabConfig = loadCollaborationConfig();
-  if (collabConfig.enabled && tierNeedsCollaborationEnforcement(tier)) {
-    appendCollaborationLines(lines, { state, tier, prompt, collabConfig });
+  if (collabConfig.enabled && tierNeedsCollaborationEnforcement(tier) && firstInject) {
+    appendCollaborationLines(lines, { state, tier, prompt, collabConfig, compact: true });
+  } else if (collabConfig.enabled && tierNeedsCollaborationEnforcement(tier) && !state.revalidationConfirmed) {
+    lines.push("Collaboration: revalidation required before specialized @ skills");
   }
 
   recordSkillsLoaded(state, extractSkillIdsFromPrompt(prompt), { source: "before-submit-prompt" });
@@ -139,13 +188,19 @@ function buildContextLines({ state, tier, plan, missing, prompt, profile }) {
   return lines;
 }
 
-function appendCollaborationLines(lines, { state, tier, prompt, collabConfig }) {
+function appendCollaborationLines(lines, { state, tier, prompt, collabConfig, compact = false }) {
   const phase = state.collaborationPhase ?? "proposal";
-  lines.push(
-    `Collaboration plane (Harness HITL): phase=${phase} mode=${oversightModeForPhase(phase)} — template: specs/templates/collaboration-plan.md`,
-  );
-  if (!state.revalidationConfirmed) {
-    lines.push("Advisory: complete phases 1–5 (human decision + revalidation) before specialized @ skills");
+  if (compact) {
+    lines.push(
+      `Collaboration: phase=${phase} — specs/templates/collaboration-plan.md`,
+    );
+  } else {
+    lines.push(
+      `Collaboration plane (Harness HITL): phase=${phase} mode=${oversightModeForPhase(phase)} — template: specs/templates/collaboration-plan.md`,
+    );
+    if (!state.revalidationConfirmed) {
+      lines.push("Advisory: complete phases 1–5 (human decision + revalidation) before specialized @ skills");
+    }
   }
   const earlySkills = promptReferencesSpecializedSkill(prompt, collabConfig);
   if (earlySkills.length && !canLoadSpecializedSkills(state)) {

@@ -8,6 +8,13 @@
 - **delegatedTaskPlan:** <!-- output of npm run governance:plan or handoff JSON -->
 - **Suggested tier (CI):** <!-- npm run governance:lint -->
 - **Runtime:** cursor-3-native
+- **Runtime audit:** <!-- npm run governance:audit:write — grade + critical ids from specs/features/agent-governance-alarp/audit-latest.json -->
+
+### Collaboration (Harness HITL — T2+)
+
+- [ ] `collaborationPlan` or `.cursor/plans/*.md` linked
+- [ ] `revalidationConfirmed: true` before specialized @ skills (T3+)
+- [ ] `humanDecisionRecord` complete (principal + chosenStrategy) when T3+
 
 ### Harness delta (Adaptation plane)
 

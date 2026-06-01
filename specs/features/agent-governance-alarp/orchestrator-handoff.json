@@ -1,17 +1,20 @@
 {
   "ticketId": "governance-alarp-full-repo",
   "source": "ALARP risk reduction plan",
-  "summary": "Close governance/MCP/CI gaps, harden production demo-auth, add supply-chain scanning.",
+  "summary": "Close governance/MCP/CI gaps, runtime harness audit (governance:audit), harden production demo-auth, supply-chain scanning.",
   "humanReadableOriginal": "Implement agent harness foundation rearchitecture per ADR 0016.",
   "riskTier": "T3",
   "poCheckpoint": "Feature brief / spike ADR: docs/meta/cursor-3-native-runtime.md | UAC: governance CI gates | gate Y | phase ADR: 0001",
   "impact": "Reduces false assurance from shadow-only controls and production demo JWT exposure.",
   "reproduction": {
-    "steps": ["Run npm run governance:ci on branch with lib/copilot changes"]
+    "steps": [
+      "npm run governance:audit:write",
+      "npm run governance:ci on branch with lib/copilot changes"
+    ]
   },
   "expectedVsActual": {
-    "expected": "Strict diff and handoff validate T3 copilot lanes",
-    "actual": "diff --strict always exited 0"
+    "expected": "governance:audit reports healthy orchestration hooks; strict diff and handoff validate T3 copilot lanes",
+    "actual": "preToolUse never fired; lane state empty; governance:ci passed on fixture handoffs only"
   },
   "environment": {
     "os": "darwin",
@@ -20,10 +23,16 @@
   },
   "suspectedPaths": [
     "lib/copilot/**",
-    "scripts/governance-lint.mjs",
+    "scripts/governance-*.mjs",
+    "scripts/governance-handoff-match.mjs",
     ".cursor/hooks/**",
+    ".cursor/governance/**",
     "scripts/copilot-mcp-server.ts",
-    ".github/workflows/reusable-ci.yml"
+    ".github/workflows/reusable-ci.yml",
+    ".github/workflows/governance-drift-weekly.yml",
+    "specs/features/agent-governance-alarp/**",
+    "docs/meta/harness-operator-checklist.md",
+    "tests/unit/governance/**"
   ],
   "orchestratorHints": [
     "ai_governance_reviewer readonly on Cedar/policy",
@@ -71,7 +80,7 @@
     },
     {
       "function": "builder",
-      "intent": "Implement harness v4",
+      "intent": "Harness v4 plus governance-audit.mjs, audit-latest.json, runtime-audit-2026-06-01.md",
       "riskTier": "T3",
       "dependsOn": ["counsel", "ai_governance_reviewer"]
     },
@@ -85,7 +94,7 @@
     },
     {
       "function": "verifier",
-      "intent": "governance:ci evidence",
+      "intent": "governance:ci + governance:audit evidence",
       "riskTier": "T3",
       "dependsOn": ["builder"],
       "parallelGroup": "validate"

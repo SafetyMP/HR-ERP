@@ -38,14 +38,9 @@ if (tierAtLeast(tier, "T3") && HOOK_MODE === "enforce") {
     ["counsel", "sentinel", "ai_governance_reviewer"].includes(l),
   );
   if (criticalMissing.length) {
-    const msg = `Session ending with missing T3+ lanes: ${criticalMissing.join(", ")} — complete handoff before merge`;
+    const msg = `T3+ missing lanes: ${criticalMissing.join(", ")} — handoff + governance:audit before merge`;
     logHook("stop", { blocked: true, criticalMissing });
-    console.log(
-      allow({
-        agent_message: msg,
-        hook_note: msg,
-      }),
-    );
+    console.log(allow({ hook_note: msg }));
   }
 }
 

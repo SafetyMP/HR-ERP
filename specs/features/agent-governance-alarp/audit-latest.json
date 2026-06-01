@@ -1,0 +1,223 @@
+{
+  "schema": "governance-audit/v1",
+  "generatedAt": "2026-06-01T11:54:08.112Z",
+  "hookMode": "enforce",
+  "auditWindow": {
+    "lines": 500,
+    "tailRequested": 500
+  },
+  "auditLogPresent": true,
+  "eventCounts": {
+    "beforeMCPExecution": 36,
+    "stop": 52,
+    "beforeShellExecution": 156,
+    "beforeSubmitPrompt": 45,
+    "sessionStart": 9,
+    "afterFileEdit": 202
+  },
+  "session": {
+    "sessionId": "22f32c66-61af-42f4-b77f-6d614eafc629",
+    "riskTier": "T3",
+    "pathClass": "harness_foundation",
+    "plannedLanes": [
+      "scout",
+      "architect",
+      "counsel",
+      "ai_governance_reviewer",
+      "builder",
+      "sentinel",
+      "verifier"
+    ],
+    "started": 0,
+    "completed": [],
+    "collaborationPhase": "proposal",
+    "revalidationConfirmed": false,
+    "poInjectCount": 91
+  },
+  "gapReport": {
+    "tier": "T3",
+    "missingLanes": [
+      "scout",
+      "architect",
+      "counsel",
+      "ai_governance_reviewer",
+      "builder",
+      "sentinel",
+      "verifier"
+    ],
+    "plannedLanes": [
+      "scout",
+      "architect",
+      "counsel",
+      "ai_governance_reviewer",
+      "builder",
+      "sentinel",
+      "verifier"
+    ],
+    "completed": [],
+    "status": "completed",
+    "at": "2026-06-01T11:49:55.840Z",
+    "collaboration": {
+      "phase": "proposal",
+      "revalidationConfirmed": false,
+      "outputReviewPassed": false,
+      "humanDecisionRecordComplete": false,
+      "specializedUnlocked": false
+    }
+  },
+  "reflect": {
+    "generatedAt": "2026-06-01T11:54:01.368Z",
+    "totalSignals": 76,
+    "openSignals": 76,
+    "clusters": [
+      {
+        "pathClass": "devops_lifecycle",
+        "kind": "lane_gap",
+        "count": 27
+      },
+      {
+        "pathClass": "cloud_ci",
+        "kind": "ci_fail",
+        "count": 12
+      },
+      {
+        "pathClass": "harness_foundation",
+        "kind": "lane_gap",
+        "count": 9
+      }
+    ]
+  },
+  "rollout": {
+    "laneStateShadowUntil": {
+      "scheduled": "2026-06-06",
+      "active": false
+    },
+    "handoffDiscoverStrictFrom": {
+      "scheduled": "2026-06-13",
+      "active": false
+    },
+    "collaborationGateEnforceFrom": {
+      "scheduled": "2026-06-15",
+      "active": false
+    },
+    "preToolUseDenyT3From": {
+      "scheduled": "2026-06-20",
+      "active": false
+    },
+    "routerHintsEnforceFrom": {
+      "scheduled": "2026-06-28",
+      "active": false
+    }
+  },
+  "handoffDiscover": {
+    "ok": true
+  },
+  "findings": [
+    {
+      "id": "pretooluse_never_fired",
+      "severity": "critical",
+      "message": "preToolUse has 0 events in the audit window — counsel-before-builder Task gate is inert",
+      "detail": {
+        "stopCount": 52,
+        "subagentStart": 0,
+        "windowLines": 500
+      }
+    },
+    {
+      "id": "subagent_hooks_inert",
+      "severity": "critical",
+      "message": "subagentStart never fired despite active edit/stop traffic — lane state will stay empty",
+      "detail": {
+        "stopCount": 52,
+        "editCount": 202,
+        "shellCount": 156
+      }
+    },
+    {
+      "id": "t3_critical_lanes_incomplete",
+      "severity": "warn",
+      "message": "Session tier T3 missing critical lanes in lane state: counsel, sentinel, ai_governance_reviewer",
+      "detail": {
+        "missingCritical": [
+          "counsel",
+          "sentinel",
+          "ai_governance_reviewer"
+        ],
+        "completed": []
+      }
+    },
+    {
+      "id": "t3_gap_report_critical",
+      "severity": "warn",
+      "message": "Last stop gap report lists critical lanes missing: counsel, ai_governance_reviewer, sentinel",
+      "detail": {
+        "missingLanes": [
+          "scout",
+          "architect",
+          "counsel",
+          "ai_governance_reviewer",
+          "builder",
+          "sentinel",
+          "verifier"
+        ],
+        "at": "2026-06-01T11:49:55.840Z"
+      }
+    },
+    {
+      "id": "counsel_deny_scheduled",
+      "severity": "info",
+      "message": "preToolUseDenyT3From not active until 2026-06-20"
+    },
+    {
+      "id": "collaboration_revalidation_open",
+      "severity": "warn",
+      "message": "T3+ session without revalidationConfirmed — specialized delegation should be gated",
+      "detail": {
+        "phase": "proposal"
+      }
+    },
+    {
+      "id": "broad_lane_gaps",
+      "severity": "warn",
+      "message": "Planned lanes largely incomplete (7): scout, architect, counsel, ai_governance_reviewer, builder, sentinel, verifier"
+    },
+    {
+      "id": "adaptation_backlog_high",
+      "severity": "warn",
+      "message": "Learning ledger has 76 open signals — review reflect report",
+      "detail": {
+        "totalSignals": 76,
+        "topCluster": {
+          "pathClass": "devops_lifecycle",
+          "kind": "lane_gap",
+          "count": 27
+        }
+      }
+    },
+    {
+      "id": "po_inject_fatigue",
+      "severity": "warn",
+      "message": "poInjectCount=91 — consider filling brief/handoff; inject uses compact/skip between reminders",
+      "detail": {
+        "poInjectCount": 91
+      }
+    },
+    {
+      "id": "stop_advisory_only",
+      "severity": "info",
+      "message": "8 stop events logged blocked:true but sessions still completed (advisory stop hook)"
+    }
+  ],
+  "summary": {
+    "grade": "F",
+    "critical": 2,
+    "warn": 6,
+    "info": 2,
+    "ok": false
+  },
+  "references": {
+    "featureAudit": "specs/features/agent-governance-alarp/runtime-audit-2026-06-01.md",
+    "hookRollout": "docs/meta/hook-rollout-schedule.md",
+    "adr": "specs/alignment/decisions/0016-agent-harness-foundation.md"
+  }
+}

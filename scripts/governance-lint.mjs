@@ -27,6 +27,8 @@ import {
 } from "./governance-manifest.mjs";
 import { emitEvidenceSignal, matchRouterHints } from "./governance-learning.mjs";
 import { buildCollaborationPlanStub, handoffRequiresRevalidationStrict } from "../.cursor/hooks/collaboration.mjs";
+import { rolloutDateReached } from "../.cursor/hooks/lib.mjs";
+import { anyHandoffCoversDiff, handoffCoversDiff } from "./governance-handoff-match.mjs";
 
 function parseArgs(argv) {
   const args = {
@@ -240,7 +242,7 @@ function discoverHandoffFiles() {
   );
 }
 
-function handoffsSatisfyRequiredLanes(requiredLanes) {
+function handoffsSatisfyRequiredLanes(requiredLanes, diffFiles = []) {
   if (!requiredLanes.length) return true;
   const paths = discoverHandoffFiles();
   if (!paths.length) return false;
@@ -249,7 +251,9 @@ function handoffsSatisfyRequiredLanes(requiredLanes) {
       const data = JSON.parse(readFileSync(fp, "utf8"));
       const plan = data.delegatedTaskPlan ?? [];
       const functionsInPlan = new Set(plan.map((p) => p.function).filter(Boolean));
-      if (requiredLanes.every((lane) => functionsInPlan.has(lane))) return true;
+      if (!requiredLanes.every((lane) => functionsInPlan.has(lane))) continue;
+      if (diffFiles.length && !handoffCoversDiff(fp, diffFiles, data)) continue;
+      return true;
     } catch {
       /* skip invalid json */
     }
@@ -257,17 +261,38 @@ function handoffsSatisfyRequiredLanes(requiredLanes) {
   return false;
 }
 
-function validateDiffStrict(result) {
+function validateDiffScopedHandoff(diffFiles, suggestedTier) {
+  if (!diffFiles.length || !tierAtLeast(suggestedTier, "T2")) return [];
+  const paths = discoverHandoffFiles();
+  const { ok } = anyHandoffCoversDiff(paths, diffFiles, (fp) => {
+    try {
+      return JSON.parse(readFileSync(fp, "utf8"));
+    } catch {
+      return null;
+    }
+  });
+  if (ok) return [];
+  const msg = `T2+ diff has no specs/**/orchestrator-handoff.json covering changed files — add handoff under specs/features/<name>/`;
+  if (rolloutDateReached("handoffDiscoverStrictFrom")) {
+    return [msg];
+  }
+  console.warn(`WARN: ${msg}`);
+  return [];
+}
+
+function validateDiffStrict(result, diffFiles = []) {
   const issues = [];
   const triggerIds = new Set(result.matchedTriggers.map((t) => t.id));
 
   if (tierAtLeast(result.suggestedTier, "T2") && result.requiredLanes.length > 0) {
-    if (!handoffsSatisfyRequiredLanes(result.requiredLanes)) {
+    if (!handoffsSatisfyRequiredLanes(result.requiredLanes, diffFiles)) {
       issues.push(
-        `Diff suggests ${result.suggestedTier} with required lanes: ${result.requiredLanes.join(", ")} — add specs/**/orchestrator*.json handoff with delegatedTaskPlan`,
+        `Diff suggests ${result.suggestedTier} with required lanes: ${result.requiredLanes.join(", ")} — add specs/**/orchestrator*.json handoff with delegatedTaskPlan covering this diff`,
       );
     }
   }
+
+  issues.push(...validateDiffScopedHandoff(diffFiles, result.suggestedTier));
 
   if (triggerIds.has("product_runtime_mcp")) {
     if (!result.requiredLanes.includes("ai_governance_reviewer")) {
@@ -703,6 +728,21 @@ function generatePrBody(manifest, args) {
     ? `\n- **Harness signals (session):** ${sessionState.signalsEmitted.length} emitted`
     : "";
 
+  const auditPath = join(process.cwd(), "specs", "features", "agent-governance-alarp", "audit-latest.json");
+  let auditNote = "";
+  if (existsSync(auditPath)) {
+    try {
+      const audit = JSON.parse(readFileSync(auditPath, "utf8"));
+      const critical = (audit.findings ?? [])
+        .filter((f) => f.severity === "critical")
+        .map((f) => f.id)
+        .slice(0, 3);
+      auditNote = `\n- **Runtime audit:** grade ${audit.summary?.grade ?? "?"}${critical.length ? ` — critical: ${critical.join(", ")}` : ""} (\`npm run governance:audit:write\`)`;
+    } catch {
+      auditNote = "\n- **Runtime audit:** see specs/features/agent-governance-alarp/audit-latest.json";
+    }
+  }
+
   const body = `## Summary
 
 <!-- 2–4 sentences -->
@@ -715,7 +755,7 @@ function generatePrBody(manifest, args) {
 - **Suggested tier (CI):** ${result.suggestedTier}
 - **Runtime:** ${plan.runtimeProfile ?? "cursor-3-native"}
 - **Regulated graph:** ${plan.regulatedGraph ? "yes" : "no"}
-${planArtifact ? `- **Plan Mode artifact:** ${planArtifact}` : ""}${reflectNote}${gapNote}
+${planArtifact ? `- **Plan Mode artifact:** ${planArtifact}` : ""}${reflectNote}${gapNote}${auditNote}
 
 ### Harness delta (Adaptation plane)
 
@@ -850,7 +890,7 @@ async function main() {
         `Files (${files.length}): ${files.slice(0, 10).join(", ")}${files.length > 10 ? "…" : ""}`,
       );
       if (args.strict) {
-        return validateDiffStrict(result);
+        return validateDiffStrict(result, files);
       }
       return 0;
     }
@@ -939,6 +979,14 @@ async function main() {
         const data = JSON.parse(readFileSync(fp, "utf8"));
         const code = validateHandoff(data, manifest, args.strict);
         if (code !== 0) exit = code;
+      }
+
+      if (args.strict && args.discover) {
+        const diffFiles = getDiffFiles(args.base);
+        for (const msg of validateDiffScopedHandoff(diffFiles, classifyFiles(diffFiles, manifest).suggestedTier)) {
+          console.error(`ERROR: ${msg}`);
+          exit = 1;
+        }
       }
 
       if (args.strict && !args.discover && args.file === examplePath) {

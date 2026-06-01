@@ -79,6 +79,18 @@ export function saveLaneState(state) {
   writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
 }
 
+function planSummaryFromPlan(plan, tier) {
+  if (!plan) return null;
+  return {
+    tier: plan.riskTier ?? tier,
+    requiredLanes: plan.requiredLanes ?? [],
+    plannedLanes: (plan.delegatedTaskPlan ?? []).map((p) => p.function).filter(Boolean),
+    regulatedGraph: plan.regulatedGraph ?? false,
+    pathClass: plan.matchedTriggers?.[0]?.id ?? null,
+    suggestedSkills: plan.suggestedSkills ?? [],
+  };
+}
+
 function applyPlanToState(state, plan, tier) {
   state.riskTier = tier;
   if (plan) {
@@ -90,6 +102,8 @@ function applyPlanToState(state, plan, tier) {
     if (plan.suggestedSkills?.length) {
       state.suggestedSkills = plan.suggestedSkills;
     }
+    state.governanceCache = state.governanceCache ?? {};
+    state.governanceCache.planSummary = planSummaryFromPlan(plan, tier);
   }
 }
 
@@ -106,10 +120,29 @@ export function refreshGovernanceCache(state, { force = false } = {}) {
     dyn.enabled &&
     !force &&
     !shouldRefreshGovernance(state, { force: false }) &&
-    cached?.plan &&
-    cached?.tier
+    cached?.tier &&
+    (cached?.planSummary || cached?.plan)
   ) {
-    const plan = JSON.parse(cached.plan);
+    let plan = null;
+    if (cached.plan) {
+      try {
+        plan = JSON.parse(cached.plan);
+      } catch {
+        plan = null;
+      }
+    }
+    if (!plan && cached.planSummary) {
+      plan = {
+        riskTier: cached.tier,
+        requiredLanes: cached.planSummary.requiredLanes,
+        delegatedTaskPlan: (cached.planSummary.plannedLanes ?? []).map((fn) => ({ function: fn })),
+        regulatedGraph: cached.planSummary.regulatedGraph,
+        matchedTriggers: cached.planSummary.pathClass
+          ? [{ id: cached.planSummary.pathClass }]
+          : [],
+        suggestedSkills: cached.planSummary.suggestedSkills,
+      };
+    }
     applyPlanToState(state, plan, cached.tier);
     saveLaneState(state);
     return {
@@ -148,7 +181,7 @@ export function refreshGovernanceCache(state, { force = false } = {}) {
   const diffFiles = listWorkingTreeFiles();
   state.governanceCache = {
     diffFingerprint: fp,
-    plan: plan ? JSON.stringify(plan) : cached?.plan ?? null,
+    planSummary: planSummaryFromPlan(plan, tier),
     tier,
     diffFiles,
     refreshedAt: new Date().toISOString(),
@@ -222,7 +255,14 @@ export function recordSubagentStop(state, { subagentType, task, outputPreview })
   return fn;
 }
 
+export function parseFunctionFromTask(task) {
+  const m = (task ?? "").match(/\bfunction:\s*([a-z_]+)/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
 function inferFunctionFromTask(task, subagentType) {
+  const explicit = parseFunctionFromTask(task);
+  if (explicit) return explicit;
   const t = `${task ?? ""} ${subagentType ?? ""}`.toLowerCase();
   const lanes = [
     "ai_governance_reviewer",

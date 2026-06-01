@@ -24,3 +24,11 @@ jobs:
         run: npm run governance:reflect:dry-run
       - name: Evidence bundle fixtures
         run: node scripts/governance-evidence.mjs verify --discover
+      - name: Runtime harness audit snapshot
+        run: node scripts/governance-audit.mjs --write-report --emit-signals
+      - name: Upload audit-latest.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-audit-latest
+          path: specs/features/agent-governance-alarp/audit-latest.json
+          if-no-files-found: ignore

@@ -2,20 +2,22 @@
  * Dynamic governance enforcement for Cursor hooks.
  * Re-runs governance-lint when the working tree fingerprint changes; otherwise
  * reuses cached tier/plan. Injects full PO/collaboration context only on
- * tier/path/lane-gap changes or on a compact reminder interval.
+ * tier/path/material lane-gap changes or on a compact reminder interval.
  */
 import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
 import { loadHookModeConfig, tierAtLeast } from "./lib.mjs";
+import { criticalLanesForTier } from "./lane-state.mjs";
 
 export function loadDynamicEnforcementConfig() {
   const cfg = loadHookModeConfig();
   const dyn = cfg?.dynamicEnforcement ?? {};
   return {
     enabled: dyn.enabled !== false,
-    poInjectEveryN: Number.isFinite(dyn.poInjectEveryN) ? dyn.poInjectEveryN : 5,
+    poInjectEveryN: Number.isFinite(dyn.poInjectEveryN) ? dyn.poInjectEveryN : 10,
     compactContextOnStable: dyn.compactContextOnStable !== false,
     refreshOnDiffChange: dyn.refreshOnDiffChange !== false,
+    fullInjectOnMaterialGapsOnly: dyn.fullInjectOnMaterialGapsOnly !== false,
   };
 }
 
@@ -59,10 +61,30 @@ export function shouldRefreshGovernance(state, { force = false } = {}) {
 /** @typedef {"full" | "compact" | "skip" | "t0"} InjectProfile */
 
 /**
+ * Material gaps: required lanes or T3+ critical lanes missing (not all planned lanes).
+ * @param {{ tier: string, missing: string[], requiredLanes?: string[], plannedLanes?: string[] }}
+ */
+export function hasMaterialLaneGaps({ tier, missing, requiredLanes = [], plannedLanes = [] }) {
+  if (!missing?.length) return false;
+  const dyn = loadDynamicEnforcementConfig();
+  if (!dyn.fullInjectOnMaterialGapsOnly) return true;
+
+  const reqSet = new Set(requiredLanes);
+  if (missing.some((l) => reqSet.has(l))) return true;
+
+  if (tierAtLeast(tier, "T3")) {
+    const critical = new Set(criticalLanesForTier(tier));
+    if (missing.some((l) => critical.has(l))) return true;
+  }
+
+  return false;
+}
+
+/**
  * Choose how much hook context to inject on beforeSubmitPrompt.
  * @returns {InjectProfile}
  */
-export function selectInjectProfile(state, { tier, missing }) {
+export function selectInjectProfile(state, { tier, missing, requiredLanes = [] }) {
   const dyn = loadDynamicEnforcementConfig();
   if (!dyn.enabled) return "full";
   if (tier === "T0") return "t0";
@@ -73,10 +95,15 @@ export function selectInjectProfile(state, { tier, missing }) {
   const phaseChanged =
     state.lastInjectedCollabPhase != null &&
     state.lastInjectedCollabPhase !== (state.collaborationPhase ?? "proposal");
-  const hasGaps = (missing?.length ?? 0) > 0;
+  const materialGaps = hasMaterialLaneGaps({
+    tier,
+    missing,
+    requiredLanes,
+    plannedLanes: state.plannedLanes ?? [],
+  });
   const firstInject = state.lastInjectedTier == null;
 
-  if (firstInject || tierChanged || pathChanged || hasGaps || phaseChanged) {
+  if (firstInject || tierChanged || pathChanged || materialGaps || phaseChanged) {
     return "full";
   }
 

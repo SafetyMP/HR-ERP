@@ -112,7 +112,11 @@ npm run governance:plan
 npm run governance:ci              # diff --strict + handoff --discover + schema fixture
 npm run governance:sync-check      # global vs repo manifest (warn)
 npm run governance:hooks:status
+npm run governance:audit          # runtime hook health (audit.log / lane state)
+npm run governance:audit:write    # refresh specs/features/agent-governance-alarp/audit-latest.json
 ```
+
+Operator checklist: [harness-operator-checklist.md](harness-operator-checklist.md)
 
 Industry mapping: [cursor-industry-alignment.md](cursor-industry-alignment.md).
 

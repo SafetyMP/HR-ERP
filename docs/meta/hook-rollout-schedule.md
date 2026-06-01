@@ -2,7 +2,8 @@
 
 Canonical config: [`.cursor/governance/hook-mode.json`](../../.cursor/governance/hook-mode.json)
 
-Check current mode: `npm run governance:hooks:status`
+Check current mode: `npm run governance:hooks:status`  
+Runtime health (local IDE): `npm run governance:audit` · `npm run governance:audit:write` → [agent-governance-alarp/audit-latest.json](../../specs/features/agent-governance-alarp/audit-latest.json)
 
 ## Dates
 
@@ -35,7 +36,9 @@ Audit: `.cursor/hooks-output/audit.log` includes `inject_profile` and `governanc
 
 ## Counsel-before-builder
 
-Implemented in `pre-tool-use.mjs`:
+**Primary (fires today):** [counsel-fallback.mjs](../../.cursor/hooks/counsel-fallback.mjs) on `beforeSubmitPrompt` — denies T3+ builder intent until `counsel` lane in session state. Shadow: `GOVERNANCE_COUNSEL_FALLBACK=shadow`.
+
+**Secondary:** `pre-tool-use.mjs` (when Cursor invokes `preToolUse` for Task):
 
 - Before `preToolUseDenyT3From`: logs + ledger signal; allows builder with hook note
 - On/after date in enforce mode: denies Task until counsel appears in lane state
