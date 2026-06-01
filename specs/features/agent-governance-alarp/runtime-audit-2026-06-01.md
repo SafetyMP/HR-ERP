@@ -54,7 +54,7 @@ Reflect ([2026-06-01](../../../specs/governance/learning/reports/2026-06-01-refl
 | ALARP-03 | `builder` | Fallback counsel gate on `beforeSubmitPrompt` (`counsel-fallback.mjs`) | Done |
 | ALARP-06 | `verifier` | [harness-operator-checklist.md](../../../docs/meta/harness-operator-checklist.md) | Done |
 | ALARP-04 | `release_ops` | Confirm Cursor IDE fires `preToolUse` for `Task`; file upstream gap if not | 2026-06-10 |
-| ALARP-05 | `architect` | Optional `stop` hard-fail flag for T3+ critical gaps (config in `hook-mode.json`) | 2026-06-13 |
+| ALARP-05 | `architect` | Graduated `stop` hard-deny via `enforcementProfiles.strict` (default balanced) | Done |
 | ALARP-06 | `verifier` | Add `governance:audit --require-audit-log` to local pre-push doc / dev checklist | 2026-06-06 |
 | ALARP-07 | `counsel` | Review cloud agent playbook — no IDE hook parity | Ongoing |
 
@@ -79,9 +79,23 @@ GOVERNANCE_AUDIT_REQUIRE_LOG=1 npm run governance:audit
 | `afterFileEdit` | No per-file lint `agent_message`; `builderActivityAt` only |
 | Counsel deny | Single-line `beforeSubmitPrompt` deny |
 
+## Graduated enforcement (ALARP-05)
+
+| Profile | Stop on T3 critical gaps | Activation |
+|---------|--------------------------|------------|
+| `balanced` (default) | Advisory only | — |
+| `strict` | Hard deny (`process.exit(2)`) | `GOVERNANCE_ENFORCEMENT_PROFILE=strict`, hooks-output file, handoff field, or L2 stub promote |
+
+`npm run governance:audit:write` emits `behaviorScore` and `recommendedProfile` (never auto-promotes strict). Auto-demote strict → balanced on grade F, ≥2 critical findings, or score &lt; 50 for two consecutive ISO weeks.
+
+## ALARP-04 / preToolUse (rollout 2026-06-20)
+
+**Status:** `preToolUse` still **0 events** in historical `audit.log` — primary counsel gate remains **`beforeSubmitPrompt`** (`counsel-fallback.mjs`). When `preToolUseDenyT3From` is active **and** `preToolUse` fires, counsel-fallback **defers** to avoid double deny. Verify in Cursor: delegate a `Task` subagent and confirm `audit.log` contains `preToolUse` events.
+
 ## Acceptance (verifier)
 
-- [x] `counsel-fallback` unit tests + hook-dynamic / handoff-match tests
+- [x] `counsel-fallback` unit tests + hook-dynamic / handoff-match / enforcement-profile tests
+- [x] Graduated enforcement profiles (`enforcement-profile.mjs`, audit `behaviorScore`)
 - [ ] `npm run governance:audit` exits 0 when hooks are healthy **or** documents expected failures with `--json`
 - [ ] `audit-latest.json` regenerated after IDE sessions used for harness work
 - [ ] T3+ merge blocked by counsel fallback or human review when audit shows critical gaps

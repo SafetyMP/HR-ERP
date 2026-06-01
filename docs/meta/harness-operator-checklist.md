@@ -15,6 +15,24 @@ Local IDE workflow for [cursor-3-native-runtime.md](./cursor-3-native-runtime.md
 - T3+ implementation prompts without counsel recorded → **blocked** by counsel fallback (`beforeSubmitPrompt`).
 - Shadow counsel gate: `GOVERNANCE_COUNSEL_FALLBACK=shadow`.
 
+## Enforcement profiles (graduated strict)
+
+Default **`balanced`**: counsel deny on submit; **stop is advisory** (no retry loops).
+
+**`strict`** (high-stakes T3 only): stop **hard-denies** when critical lanes (`counsel`, `sentinel`, `ai_governance_reviewer`) are still missing. Expect extra stop-time retries and token cost.
+
+| Activate strict | Command / artifact |
+|-----------------|-------------------|
+| One session | `GOVERNANCE_ENFORCEMENT_PROFILE=strict` |
+| Team default (local IDE) | `.cursor/hooks-output/enforcement-profile.json` via L2 promote stub |
+| Feature intent | `enforcementProfile: "strict"` on `orchestrator-handoff.json` |
+
+```bash
+npm run governance:audit:write   # behaviorScore + recommendedProfile (never auto-promotes strict)
+```
+
+Audit may **auto-demote** strict → balanced after grade F, ≥2 critical findings, or low score two weeks running. Counsel fallback stays on for T3 builder intent in all profiles.
+
 ## Before push / PR
 
 ```bash

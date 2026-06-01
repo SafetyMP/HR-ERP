@@ -26,6 +26,19 @@ jobs:
         run: node scripts/governance-evidence.mjs verify --discover
       - name: Runtime harness audit snapshot
         run: node scripts/governance-audit.mjs --write-report --emit-signals
+      - name: Enforcement graduation summary
+        run: |
+          node -e "
+          const fs=require('fs');
+          const p='specs/features/agent-governance-alarp/audit-latest.json';
+          if(!fs.existsSync(p)){console.log('No audit-latest.json');process.exit(0);}
+          const j=JSON.parse(fs.readFileSync(p,'utf8'));
+          const e=j.enforcement||{};
+          console.log('## Harness enforcement');
+          console.log('- active:', e.activeProfile, '('+(e.activeSource||'?')+')');
+          console.log('- recommended:', e.recommendedProfile, 'score:', e.behaviorScore);
+          if(e.lastDemote?.demoted) console.log('- auto-demote:', e.lastDemote.reason);
+          " >> "$GITHUB_STEP_SUMMARY"
       - name: Upload audit-latest.json
         uses: actions/upload-artifact@v4
         with:

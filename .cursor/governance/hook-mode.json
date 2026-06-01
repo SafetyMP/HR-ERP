@@ -23,5 +23,17 @@
     "poInjectEveryN": 10,
     "fullInjectOnMaterialGapsOnly": true
   },
-  "notes": "v4 foundation + RGF adaptation plane. dynamicEnforcement: full inject on required/T3-critical gaps only; poInjectEveryN=10. Counsel fallback on beforeSubmitPrompt (GOVERNANCE_COUNSEL_FALLBACK=shadow to disable deny). Override GOVERNANCE_HOOK_MODE=shadow|enforce."
+  "enforcementProfiles": {
+    "default": "balanced",
+    "balanced": { "stopDenyCriticalLanes": false },
+    "strict": { "stopDenyCriticalLanes": true }
+  },
+  "enforcementGraduation": {
+    "promoteScoreMin": 80,
+    "demoteScoreMax": 50,
+    "demoteConsecutiveWeeks": 2,
+    "autoPromote": false,
+    "autoDemote": true
+  },
+  "notes": "v4 foundation + RGF adaptation plane. dynamicEnforcement: full inject on required/T3-critical gaps only; poInjectEveryN=10. Counsel fallback on beforeSubmitPrompt (GOVERNANCE_COUNSEL_FALLBACK=shadow to disable deny). Enforcement: GOVERNANCE_ENFORCEMENT_PROFILE=strict|balanced, or .cursor/hooks-output/enforcement-profile.json, or handoff enforcementProfile. Strict enables stop hard-deny on T3 critical lane gaps (ALARP-05). Override GOVERNANCE_HOOK_MODE=shadow|enforce."
 }

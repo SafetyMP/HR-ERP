@@ -1,0 +1,24 @@
+# L2 promote: enable strict enforcement profile in local IDE hooks-output.
+# PO gate complete: Y
+#
+#   npm run governance:learning -- promote --tier L2 \
+#     --stub specs/governance/learning/stubs/enforcement-profile-strict-L2.yaml \
+#     --principal "Your Name" \
+#     --control-plan specs/governance/learning/control-plans/enforcement-profile-strict-control.yaml
+
+enforcementProfile:
+  profile: strict
+  reason: "L2 promote — operator-approved strict stop deny on T3 critical lane gaps"
+
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: enforcement-profile-strict-operator
+      pathPattern: docs/meta/harness-operator-checklist.md
+      prefer:
+        - hr-foundation-governance
+      deprioritize: []
+      minTier: T2
+      sourceSignalIds:
+        - a8f3c2e1-4b5d-4e9a-9f12-3c7d8e9f0a1b
+      status: shadow

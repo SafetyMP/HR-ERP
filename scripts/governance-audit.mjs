@@ -6,6 +6,11 @@
  * adaptation reflect data. Fails when orchestration hooks are inert or T3+
  * sessions end with critical lane gaps.
  *
+ * CTQ mapping (behaviorScore / recommendedProfile):
+ * - counsel_before_builder_rate → pretooluse_never_fired, t3_critical_lanes_incomplete, counsel in session.completed
+ * - handoff_discover_pass_rate → handoff_discover_failed
+ * - composition_miss_rate → lane_authority_strict, subagent_hooks_inert
+ *
  * Usage:
  *   node governance-audit.mjs [--json] [--strict] [--write-report]
  *   node governance-audit.mjs --lines 800 --require-audit-log
@@ -16,6 +21,13 @@ import { join } from "node:path";
 import { resolveHookMode, rolloutDateReached, loadHookModeConfig } from "../.cursor/hooks/lib.mjs";
 import { loadLaneState, laneGaps, criticalLanesForTier, tierAtLeast } from "../.cursor/hooks/lane-state.mjs";
 import { appendSignal } from "./governance-learning.mjs";
+import {
+  computeBehaviorScore,
+  recommendProfile,
+  resolveActiveProfileForAudit,
+  maybeAutoDemote,
+  loadGraduationConfig,
+} from "./governance-enforcement-profile.mjs";
 
 const FEATURE_AUDIT_DIR = join("specs", "features", "agent-governance-alarp");
 const DEFAULT_REPORT_JSON = join(FEATURE_AUDIT_DIR, "audit-latest.json");
@@ -337,6 +349,15 @@ function printHuman(report) {
   console.log("Governance runtime audit");
   console.log(`  Hook mode: ${hookMode}`);
   console.log(`  Grade: ${summary.grade} (${summary.critical} critical, ${summary.warn} warn)`);
+  if (report.enforcement) {
+    const e = report.enforcement;
+    console.log(
+      `  Enforcement: active=${e.activeProfile} recommended=${e.recommendedProfile} score=${e.behaviorScore}`,
+    );
+    if (e.lastDemote?.demoted) {
+      console.log(`  Auto-demote: ${e.lastDemote.reason}`);
+    }
+  }
   if (report.auditWindow?.lines) {
     console.log(`  Audit window: last ${report.auditWindow.lines} lines`);
   }
@@ -412,6 +433,49 @@ function main() {
     ok: findings.every((f) => f.severity === "info"),
   };
 
+  const graduation = loadGraduationConfig();
+  const behaviorScore = computeBehaviorScore({
+    findings,
+    counts,
+    state,
+    handoffDiscoverOk: handoffDiscover.ok,
+  });
+  const recommendedProfile = recommendProfile({
+    behaviorScore,
+    findings,
+    state,
+    graduation,
+  });
+  const activeResolved = resolveActiveProfileForAudit();
+  const stopCount = counts.stop ?? 0;
+  const subagentStart = counts.subagentStart ?? 0;
+  const enforcement = {
+    behaviorScore,
+    recommendedProfile,
+    activeProfile: activeResolved.profile,
+    activeSource: activeResolved.source,
+    graduation,
+    ctqHints: {
+      preToolUseEvents: counts.preToolUse ?? 0,
+      subagentStartRate: stopCount > 0 ? Number((subagentStart / stopCount).toFixed(3)) : 0,
+      handoffDiscoverOk: handoffDiscover.ok,
+    },
+  };
+
+  let demoteResult = { demoted: false };
+  if (args.writeReport) {
+    demoteResult = maybeAutoDemote({
+      grade: summary.grade,
+      behaviorScore,
+      criticalCount: summary.critical,
+    });
+    if (demoteResult.demoted) {
+      enforcement.activeProfile = "balanced";
+      enforcement.activeSource = "auto-demote";
+      enforcement.lastDemote = demoteResult;
+    }
+  }
+
   const report = {
     schema: "governance-audit/v1",
     generatedAt: new Date().toISOString(),
@@ -438,6 +502,7 @@ function main() {
     handoffDiscover: { ok: handoffDiscover.ok },
     findings,
     summary,
+    enforcement,
     references: {
       featureAudit: "specs/features/agent-governance-alarp/runtime-audit-2026-06-01.md",
       hookRollout: "docs/meta/hook-rollout-schedule.md",
@@ -468,6 +533,20 @@ function main() {
         { warnOnly: true },
       );
     }
+  }
+
+  if (args.emitSignals && demoteResult.demoted) {
+    appendSignal(
+      {
+        kind: "enforcement_regression",
+        riskTier: state?.riskTier ?? "T1",
+        pathClass: "harness_enforcement",
+        source: { plane: "evidence", artifact: "governance-audit" },
+        hypothesis: `Auto-demoted enforcement profile to balanced: ${demoteResult.reason}`,
+        detail: { behaviorScore, grade: summary.grade, ...demoteResult },
+      },
+      { warnOnly: true },
+    );
   }
 
   if (args.json) {

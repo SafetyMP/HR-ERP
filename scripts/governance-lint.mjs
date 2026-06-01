@@ -29,6 +29,7 @@ import { emitEvidenceSignal, matchRouterHints } from "./governance-learning.mjs"
 import { buildCollaborationPlanStub, handoffRequiresRevalidationStrict } from "../.cursor/hooks/collaboration.mjs";
 import { rolloutDateReached } from "../.cursor/hooks/lib.mjs";
 import { anyHandoffCoversDiff, handoffCoversDiff } from "./governance-handoff-match.mjs";
+import { discoverHandoffFiles } from "./governance-handoff-lib.mjs";
 
 function parseArgs(argv) {
   const args = {
@@ -222,24 +223,6 @@ function validatePrBody(body, suggestedTier, strict, options = {}) {
   for (const msg of issues) console.error(`ERROR: ${msg}`);
 
   return strict && issues.length > 0 ? 1 : 0;
-}
-
-function walkJsonFiles(dir, out) {
-  if (!existsSync(dir)) return out;
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    const st = statSync(p);
-    if (st.isDirectory()) walkJsonFiles(p, out);
-    else if (name.endsWith(".json") && name.includes("orchestrator")) out.push(p);
-  }
-  return out;
-}
-
-function discoverHandoffFiles() {
-  const specsDir = join(process.cwd(), "specs");
-  return walkJsonFiles(specsDir, []).filter(
-    (p) => !p.includes(`${join("specs", "templates")}`) && !p.endsWith(".schema.json"),
-  );
 }
 
 function handoffsSatisfyRequiredLanes(requiredLanes, diffFiles = []) {
@@ -737,7 +720,11 @@ function generatePrBody(manifest, args) {
         .filter((f) => f.severity === "critical")
         .map((f) => f.id)
         .slice(0, 3);
-      auditNote = `\n- **Runtime audit:** grade ${audit.summary?.grade ?? "?"}${critical.length ? ` — critical: ${critical.join(", ")}` : ""} (\`npm run governance:audit:write\`)`;
+      const enf = audit.enforcement;
+      const enfBit = enf
+        ? ` — enforcement active=${enf.activeProfile} recommended=${enf.recommendedProfile} score=${enf.behaviorScore}`
+        : "";
+      auditNote = `\n- **Runtime audit:** grade ${audit.summary?.grade ?? "?"}${critical.length ? ` — critical: ${critical.join(", ")}` : ""}${enfBit} (\`npm run governance:audit:write\`)`;
     } catch {
       auditNote = "\n- **Runtime audit:** see specs/features/agent-governance-alarp/audit-latest.json";
     }

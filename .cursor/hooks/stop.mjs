@@ -2,8 +2,9 @@
 import { execSync } from "node:child_process";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { readHookInput, allow, logHook, HOOK_MODE } from "./lib.mjs";
+import { readHookInput, allow, deny, logHook, HOOK_MODE } from "./lib.mjs";
 import { loadLaneState, laneGaps, tierAtLeast } from "./lane-state.mjs";
+import { getProfileFlags } from "./enforcement-profile.mjs";
 import { appendSignal } from "../../scripts/governance-learning.mjs";
 import { loadCollaborationConfig, canLoadSpecializedSkills } from "./collaboration.mjs";
 
@@ -33,13 +34,25 @@ if (missing.length) {
   );
 }
 
+const { profile: enforcementProfile, stopDenyCriticalLanes } = getProfileFlags();
+
 if (tierAtLeast(tier, "T3") && HOOK_MODE === "enforce") {
   const criticalMissing = missing.filter((l) =>
     ["counsel", "sentinel", "ai_governance_reviewer"].includes(l),
   );
   if (criticalMissing.length) {
     const msg = `T3+ missing lanes: ${criticalMissing.join(", ")} — handoff + governance:audit before merge`;
-    logHook("stop", { blocked: true, criticalMissing });
+    logHook("stop", {
+      blocked: true,
+      criticalMissing,
+      enforcementProfile,
+      stopDenyApplied: stopDenyCriticalLanes,
+    });
+    if (stopDenyCriticalLanes) {
+      const userMsg = `Session stop blocked (${enforcementProfile}): missing ${criticalMissing.join(", ")}`;
+      console.log(deny(userMsg, msg));
+      process.exit(2);
+    }
     console.log(allow({ hook_note: msg }));
   }
 }

@@ -1,0 +1,33 @@
+signal_id: a8f3c2e1-4b5d-4e9a-9f12-3c7d8e9f0a1b
+promotionTier: L2
+principal: Harness operator
+ctqId: counsel_before_builder_rate
+
+metric:
+  name: enforcement_profile_strict_usage
+  signalKind: lane_gap
+  pathClass: harness_enforcement
+  windowDays: 14
+  baseline: 0
+  target: 0
+  warnThreshold: 3
+  pageThreshold: 8
+
+monitoring:
+  reviewCadence: weekly
+  commands:
+    - npm run governance:audit:write
+    - npm run governance:reflect
+
+reactionPlan:
+  ifWarn: "Review strict profile sessions for stop-deny retry cost; confirm counsel ran first"
+  ifPage: "Auto-demote or set balanced; open DMAIC if strict was ignored with critical gaps"
+  ifImproved: "Keep strict opt-in only; document in operator checklist"
+
+ownership:
+  processOwner: Harness operator
+  backup: Human PO
+
+linkedArtifacts:
+  stub: specs/governance/learning/stubs/enforcement-profile-strict-L2.yaml
+  promoted: ""

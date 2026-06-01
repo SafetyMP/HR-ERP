@@ -9,6 +9,7 @@
  *   node governance-learning.mjs improve define|measure|analyze|control [options]
  */
 import { randomUUID } from "node:crypto";
+import { writeEnforcementProfileFile } from "./governance-enforcement-profile.mjs";
 import { execSync } from "node:child_process";
 import {
   readFileSync,
@@ -903,6 +904,23 @@ function cmdPromote(args) {
     if (!controlCheck.ok) {
       console.error(`ERROR: ${controlCheck.message}`);
       return 1;
+    }
+
+    if (fragment.enforcementProfile?.profile) {
+      if (args.dryRun) {
+        console.log(
+          `[dry-run] would write enforcement-profile.json → ${fragment.enforcementProfile.profile}`,
+        );
+      } else {
+        writeEnforcementProfileFile(fragment.enforcementProfile.profile, {
+          source: "L2-promote",
+          reason: fragment.enforcementProfile.reason ?? "L2 stub",
+          principal: args.principal,
+        });
+        console.log(
+          `Wrote .cursor/hooks-output/enforcement-profile.json (${fragment.enforcementProfile.profile})`,
+        );
+      }
     }
 
     writePromotedRecord({

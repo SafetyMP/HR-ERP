@@ -16,6 +16,6 @@ npm run governance:audit:write
 npm run governance:ci
 ```
 
-Regenerate `audit-latest.json` after local IDE sessions that exercise hooks.
+Regenerate `audit-latest.json` after local IDE sessions that exercise hooks. Report includes `enforcement.behaviorScore` and `recommendedProfile` (strict is opt-in; see operator checklist).
 
 Operator checklist: [docs/meta/harness-operator-checklist.md](../../docs/meta/harness-operator-checklist.md)
