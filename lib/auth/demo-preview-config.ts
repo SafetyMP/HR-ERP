@@ -37,6 +37,17 @@ export function demoPreviewSignInUiEnabled(): boolean {
   return process.env.NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN === "true";
 }
 
+/**
+ * Client routing gate — when true, prefer `/` (persona picker) over `/api/auth/login`
+ * (OIDC/Neon Auth is often unset on Vercel Preview).
+ */
+export function demoPreviewLandingEnabled(): boolean {
+  if (process.env.NODE_ENV === "development") return true;
+  if (demoPreviewSignInUiEnabled()) return true;
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") return true;
+  return false;
+}
+
 export function demoPreviewBootstrapHref(
   persona: DemoPreviewPersona,
   returnTo?: string,

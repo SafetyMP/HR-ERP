@@ -11,6 +11,10 @@ import type { NextConfig } from "next";
 // Vercel's runtime env injection be the single source of truth.
 const nextConfig: NextConfig = {
   transpilePackages: ["@hr-erp/payroll-calc"],
+  // Expose deployment tier to client bundles (demo landing + switch-account).
+  env: {
+    NEXT_PUBLIC_VERCEL_ENV: process.env.VERCEL_ENV ?? "",
+  },
 };
 
 export default nextConfig;

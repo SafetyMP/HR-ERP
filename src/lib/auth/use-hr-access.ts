@@ -9,26 +9,14 @@ import {
 
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+export { switchAccountRedirectTarget } from "@/lib/auth/switch-account";
+
 export type HrAccessMode = "none" | "cookie" | "bearer";
 
 export type SignOutOptions = {
   /** When set, navigate after clearing session (full reload). */
   redirectTo?: string;
 };
-
-function devLocalSignInEnabled(): boolean {
-  return (
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN === "true"
-  );
-}
-
-export function switchAccountRedirectTarget(): string {
-  if (devLocalSignInEnabled()) {
-    return "/";
-  }
-  return `/api/auth/login?returnTo=${encodeURIComponent("/")}`;
-}
 
 export function useHrAccess(initialBearerToken?: string) {
   const [mode, setMode] = useState<HrAccessMode>("none");

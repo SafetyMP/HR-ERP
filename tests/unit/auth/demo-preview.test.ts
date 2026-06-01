@@ -2,9 +2,11 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   demoPreviewBootstrapHref,
+  demoPreviewLandingEnabled,
   demoPreviewSignInUiEnabled,
   parseDemoPreviewPersona,
 } from "@/lib/auth/demo-preview-config";
+import { switchAccountRedirectTarget } from "@/lib/auth/switch-account";
 import {
   demoPreviewSignInServerEnabled,
   demoPreviewTenantId,
@@ -63,6 +65,18 @@ describe("demo-preview", () => {
   it("enables UI gate from NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN", () => {
     vi.stubEnv("NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN", "true");
     expect(demoPreviewSignInUiEnabled()).toBe(true);
+  });
+
+  it("enables demo landing routing on Vercel Preview", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_VERCEL_ENV", "preview");
+    expect(demoPreviewLandingEnabled()).toBe(true);
+  });
+
+  it("sends switch-account to home on Preview instead of OAuth login", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_VERCEL_ENV", "preview");
+    expect(switchAccountRedirectTarget()).toBe("/");
   });
 
   it("resolves demo tenant id", () => {

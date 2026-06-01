@@ -36,8 +36,10 @@ export function HrSignInCard({
   onDevTokenPaste,
   hideDemoPreview = false,
 }: Props) {
+  const demoPreview = useDemoPreviewEnabled();
   const loginHref = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
-  const showDemoPreview = useDemoPreviewEnabled() && !hideDemoPreview;
+  const showDemoPreview = demoPreview && !hideDemoPreview;
+  const showOrgSignIn = !demoPreview;
   const showDevTokenPaste =
     process.env.NODE_ENV !== "production" &&
     (process.env.NODE_ENV === "development" ||
@@ -50,9 +52,11 @@ export function HrSignInCard({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button asChild className="w-full" size="lg">
-          <Link href={loginHref}>Sign in with your organization account</Link>
-        </Button>
+        {showOrgSignIn ? (
+          <Button asChild className="w-full" size="lg">
+            <Link href={loginHref}>Sign in with your organization account</Link>
+          </Button>
+        ) : null}
         {showDemoPreview ? (
           <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-sm">
             <p className="font-medium text-foreground">Preview signed-in demo</p>
