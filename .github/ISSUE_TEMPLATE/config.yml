@@ -3,6 +3,6 @@ contact_links:
   - name: Security vulnerability
     url: https://github.com/SafetyMP/HR-ERP/blob/main/SECURITY.md
     about: Use private advisory reporting flows—never post undisclosed vulnerabilities as public Issues.
-  - name: Discussions / Q&A
-    url: https://github.com/SafetyMP/HR-ERP/discussions
-    about: Prefer Discussions for open-ended questions unless you have a deterministic bug/feature/docs gap.
+  - name: Documentation / Q&A
+    url: https://github.com/SafetyMP/HR-ERP/issues/new?template=documentation.yml
+    about: Setup, architecture, or contributor questions — use the documentation template (not for undisclosed security issues).

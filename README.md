@@ -6,11 +6,17 @@
 
 **Employees** get a single portal for pay, time and leave, benefits, profile, and learning. **Managers** run hiring through offer, team approvals, and workforce tasks without a separate ATS. **HR and payroll** operate pay runs, period lock, benefits life events, compliance-oriented workflows, and operational dashboards from the same application. Payroll math is **native and deterministic** ([`packages/payroll-calc`](packages/payroll-calc)) with auditable inputs; it is **not** certified IRS/HMRC e-filing. **Tenancy and access** are designed for SaaS: JWT, policy checks, and Postgres row-level security per tenant.
 
+## Demo
+
+[![HR ERP employee portal - pay, time, PTO, and benefits in one place (illustrative mockup, synthetic data)](docs/assets/employee-portal-demo.svg)](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee)
+
+The **employee portal** after `npm run demo:bootstrap`: one home for pay, time, PTO, and benefits. Try the [live preview](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee) or run it locally in ~30 minutes ([Quick start](#quick-start)). The image above is an illustrative mockup with synthetic data; see [`docs/community/github-presentation.md`](docs/community/github-presentation.md) to refresh it with a live capture.
+
 ### Two evergreen layers in one repo
 
-| Layer | What you learn / reuse |
-| --- | --- |
-| **HR domain reference** | ESS, manager recruiting, payroll runs, benefits flows, SCIM/partner connectors — [stakeholder value plan](docs/product/stakeholder-value-plan.md) |
+| Layer                        | What you learn / reuse                                                                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **HR domain reference**      | ESS, manager recruiting, payroll runs, benefits flows, SCIM/partner connectors — [stakeholder value plan](docs/product/stakeholder-value-plan.md)                  |
 | **Agent governance harness** | Risk tiers (T0–T4), Cursor hooks, handoffs, evidence CI — [`AGENTS.md`](AGENTS.md), [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md) |
 
 Full positioning (scope, honest demo paths, pairing with external agent-security OSS): **[`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)**.
@@ -19,8 +25,11 @@ Full positioning (scope, honest demo paths, pairing with external agent-security
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/node.js-22+-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Quality gate](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml/badge.svg?branch=main)](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml)
+[![Deploy production](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml)
+[![Release](https://img.shields.io/github/v/release/SafetyMP/HR-ERP)](https://github.com/SafetyMP/HR-ERP/releases/latest)
 
-**Jump to:** [Open source positioning](#open-source-evergreen-project) · [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
+**Jump to:** [Demo](#demo) · [Open source positioning](#open-source-evergreen-project) · [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
 
 ---
 
@@ -43,15 +52,15 @@ Companion **agent execution governance** OSS (policy simulation, sandboxed comma
 
 ## Overview
 
-| Area | Location |
-| --- | --- |
-| **Web app** | [`src/`](src/README.md) — **employee home** ([`/employee`](src/app/employee/)) with Feature **022** shell; manager/HR routes; dashboards (`/analytics`); **Phase 3 capability hub** (`/demo/capabilities` when `ANALYTICS_DEMO_MODE=1`); L10n lab; governance APIs; versioned REST under `/api/v1`. |
-| **Server modules** | [`lib/`](lib/README.md) — domain logic, security, integrations ([`CODEBASE.md`](CODEBASE.md)) |
-| **Data plane** | [`prisma/`](prisma/) — app DB and RLS-oriented migrations; optional **bounded-context** Postgres via Docker ([`docker-compose.yml`](docker-compose.yml)). |
-| **Security** | [`middleware.ts`](middleware.ts) for `/api/v1/*`; tenant session GUCs via [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts). |
-| **Contracts** | OpenAPI in [`contracts/openapi/`](contracts/openapi/) and Protobuf in [`proto/`](proto/) (see `npm run contracts:*`). |
-| **Workers** | Outbox → Kafka ([`workers/outbox-publisher/`](workers/outbox-publisher/)); BullMQ jobs (`npm run worker:integrations`). |
-| **ML / analytics (optional)** | Python under [`services/`](services/) — training, ETL, FastAPI serving (see [Predictive HR](#predictive-hr-churn-skills-benchmarks)). |
+| Area                          | Location                                                                                                                                                                                                                                                                                            |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Web app**                   | [`src/`](src/README.md) — **employee home** ([`/employee`](src/app/employee/)) with Feature **022** shell; manager/HR routes; dashboards (`/analytics`); **Phase 3 capability hub** (`/demo/capabilities` when `ANALYTICS_DEMO_MODE=1`); L10n lab; governance APIs; versioned REST under `/api/v1`. |
+| **Server modules**            | [`lib/`](lib/README.md) — domain logic, security, integrations ([`CODEBASE.md`](CODEBASE.md))                                                                                                                                                                                                       |
+| **Data plane**                | [`prisma/`](prisma/) — app DB and RLS-oriented migrations; optional **bounded-context** Postgres via Docker ([`docker-compose.yml`](docker-compose.yml)).                                                                                                                                           |
+| **Security**                  | [`middleware.ts`](middleware.ts) for `/api/v1/*`; tenant session GUCs via [`lib/security/with-authorized-transaction.ts`](lib/security/with-authorized-transaction.ts).                                                                                                                             |
+| **Contracts**                 | OpenAPI in [`contracts/openapi/`](contracts/openapi/) and Protobuf in [`proto/`](proto/) (see `npm run contracts:*`).                                                                                                                                                                               |
+| **Workers**                   | Outbox → Kafka ([`workers/outbox-publisher/`](workers/outbox-publisher/)); BullMQ jobs (`npm run worker:integrations`).                                                                                                                                                                             |
+| **ML / analytics (optional)** | Python under [`services/`](services/) — training, ETL, FastAPI serving (see [Predictive HR](#predictive-hr-churn-skills-benchmarks)).                                                                                                                                                               |
 
 ---
 
@@ -97,43 +106,44 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 
 ### Getting started
 
-| Resource | Description |
-| --- | --- |
-| [`CODEBASE.md`](CODEBASE.md) | Where code lives: `lib/`, `src/`, `scripts/`, `tests/` |
-| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Local dev, auth, scripts, layout, troubleshooting |
-| [`docs/QA.md`](docs/QA.md) | Tests, fixtures, `FAILURE_SUMMARY` handoffs |
-| [`FRONTEND.md`](FRONTEND.md) | UI patterns, employee shell (022), a11y, API errors |
-| [`docker/README.md`](docker/README.md) | OCI image and Compose overlay |
+| Resource                                     | Description                                               |
+| -------------------------------------------- | --------------------------------------------------------- |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md)         | High-level architecture and map into `docs/architecture/` |
+| [`CODEBASE.md`](CODEBASE.md)                 | Where code lives: `lib/`, `src/`, `scripts/`, `tests/`    |
+| [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | Local dev, auth, scripts, layout, troubleshooting         |
+| [`docs/QA.md`](docs/QA.md)                   | Tests, fixtures, `FAILURE_SUMMARY` handoffs               |
+| [`FRONTEND.md`](FRONTEND.md)                 | UI patterns, employee shell (022), a11y, API errors       |
+| [`docker/README.md`](docker/README.md)       | OCI image and Compose overlay                             |
 
 ### Product and agents
 
-| Resource | Description |
-| --- | --- |
-| [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md) | **OSS scope** — reference app vs certified vendor; harness + optional agent-security pairing |
-| [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md) | Active forward plan (Track A/B/C, W1–W7) |
-| [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit |
-| [`AGENTS.md`](AGENTS.md) | Cursor orchestration, skills, Definition of Done |
-| [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md) | Operator loop (`governance:*`, `/multitask`) |
+| Resource                                                                                             | Description                                                                                  |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)   | **OSS scope** — reference app vs certified vendor; harness + optional agent-security pairing |
+| [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md)                   | Active forward plan (Track A/B/C, W1–W7)                                                     |
+| [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit                                                                      |
+| [`AGENTS.md`](AGENTS.md)                                                                             | Cursor orchestration, skills, Definition of Done                                             |
+| [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md)                       | Operator loop (`governance:*`, `/multitask`)                                                 |
 
 ### Engineering and community
 
-| Resource | Description |
-| --- | --- |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Branches, PR bar, migrations, synthetic data |
-| [`SECURITY.md`](SECURITY.md) | Vulnerability disclosure |
-| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community norms |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release history (semantic-release) |
+| Resource                                   | Description                                  |
+| ------------------------------------------ | -------------------------------------------- |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)       | Branches, PR bar, migrations, synthetic data |
+| [`SECURITY.md`](SECURITY.md)               | Vulnerability disclosure                     |
+| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community norms                              |
+| [`CHANGELOG.md`](CHANGELOG.md)             | Release history (semantic-release)           |
 
 ---
 
 ## Authentication & API access
 
-| Context | How |
-| --- | --- |
-| **Local API** | `npm run jwt:dev` (or `jwt:dev:demo-employee`, `jwt:dev:demo-manager`, `jwt:dev:demo-hr`) — signs with `JWT_SECRET` in `.env`; see [`.env.example`](.env.example). |
-| **Vercel production API** | `npm run jwt:dev:vercel` uses deployment secrets; production mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization). |
-| **Browser sign-in** | Neon Auth (Google) or OIDC when configured — [phase 1 production checklist](docs/operations/phase1-production-checklist.md). |
-| **Demo preview** | Automatic on Vercel Preview and local dev; Production requires explicit flags — see checklist and [`AGENTS.md`](AGENTS.md) safety notes. |
+| Context                   | How                                                                                                                                                                |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Local API**             | `npm run jwt:dev` (or `jwt:dev:demo-employee`, `jwt:dev:demo-manager`, `jwt:dev:demo-hr`) — signs with `JWT_SECRET` in `.env`; see [`.env.example`](.env.example). |
+| **Vercel production API** | `npm run jwt:dev:vercel` uses deployment secrets; production mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization).                                    |
+| **Browser sign-in**       | Neon Auth (Google) or OIDC when configured — [phase 1 production checklist](docs/operations/phase1-production-checklist.md).                                       |
+| **Demo preview**          | Automatic on Vercel Preview and local dev; Production requires explicit flags — see checklist and [`AGENTS.md`](AGENTS.md) safety notes.                           |
 
 `/api/v1/*` expects `Authorization: Bearer <JWT>` unless a route documents session/cookie auth.
 
@@ -154,33 +164,33 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 
 ### App and quality
 
-| Command | Use |
-| --- | --- |
-| `npm run dev` / `build` / `start` | Dev server, production build, serve |
-| `npm run lint` | ESLint |
-| `npm run test` / `test:e2e` | Vitest / Playwright |
-| `npm run security:scan` | Repository security scan |
-| `npm run contracts:openapi` / `contracts:buf` | Contract lint |
+| Command                                       | Use                                 |
+| --------------------------------------------- | ----------------------------------- |
+| `npm run dev` / `build` / `start`             | Dev server, production build, serve |
+| `npm run lint`                                | ESLint                              |
+| `npm run test` / `test:e2e`                   | Vitest / Playwright                 |
+| `npm run security:scan`                       | Repository security scan            |
+| `npm run contracts:openapi` / `contracts:buf` | Contract lint                       |
 
 ### Database and demo
 
-| Command | Use |
-| --- | --- |
-| `npm run db:up` / `db:up:arch` | Docker: default stack vs architecture profile |
-| `npm run db:migrate:deploy` / `db:migrate` | Deploy vs author migrations |
-| `npm run demo:bootstrap` | One-shot local demo data |
-| `npm run db:studio` | Prisma Studio |
+| Command                                    | Use                                           |
+| ------------------------------------------ | --------------------------------------------- |
+| `npm run db:up` / `db:up:arch`             | Docker: default stack vs architecture profile |
+| `npm run db:migrate:deploy` / `db:migrate` | Deploy vs author migrations                   |
+| `npm run demo:bootstrap`                   | One-shot local demo data                      |
+| `npm run db:studio`                        | Prisma Studio                                 |
 
 ### Auth, governance, and ops
 
-| Command | Use |
-| --- | --- |
-| `npm run jwt:dev` / `jwt:dev:demo-*` | Dev JWT — [Authentication](#authentication--api-access) |
-| `npm run governance:lint` / `governance:ci` | Agent harness tier + merge gates |
-| `npm run check:lib-boundaries` | Forbidden cross-import check |
-| `npm run verify:reference-exit` | Reference-customer exit artifact check |
-| `npm run ops:smoke` | Staging smoke — [phase 1 checklist](docs/operations/phase1-production-checklist.md) |
-| `npm run worker:integrations` / `worker:webhooks` | BullMQ workers |
+| Command                                           | Use                                                                                 |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `npm run jwt:dev` / `jwt:dev:demo-*`              | Dev JWT — [Authentication](#authentication--api-access)                             |
+| `npm run governance:lint` / `governance:ci`       | Agent harness tier + merge gates                                                    |
+| `npm run check:lib-boundaries`                    | Forbidden cross-import check                                                        |
+| `npm run verify:reference-exit`                   | Reference-customer exit artifact check                                              |
+| `npm run ops:smoke`                               | Staging smoke — [phase 1 checklist](docs/operations/phase1-production-checklist.md) |
+| `npm run worker:integrations` / `worker:webhooks` | BullMQ workers                                                                      |
 
 See [`package.json`](package.json) for the full list.
 
@@ -232,7 +242,7 @@ docker run --rm -p 3000:3000 \
 
 ## Contributing
 
-Issues and PRs are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), [`SECURITY.md`](SECURITY.md), and [`docs/community/README.md`](docs/community/README.md). Branch protection and CI expectations: [`docs/community/github-branch-protection.md`](docs/community/github-branch-protection.md).
+Issues and PRs are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), [`SECURITY.md`](SECURITY.md), and [`docs/community/README.md`](docs/community/README.md). Docs-only edits can use the [lightweight PR path](CONTRIBUTING.md#lightweight-prs-docs-only). Branch protection and CI expectations: [`docs/community/github-branch-protection.md`](docs/community/github-branch-protection.md); GitHub presentation upkeep: [`docs/community/github-presentation.md`](docs/community/github-presentation.md).
 
 By contributing, you agree your contributions are licensed under the **Apache License 2.0**, the same license as the project (see [`LICENSE`](LICENSE)), unless you state otherwise.
 

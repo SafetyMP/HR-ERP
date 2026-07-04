@@ -1,0 +1,50 @@
+# GitHub presentation playbook
+
+Audience: **maintainers**. This page captures the repository's GitHub "storefront" — the About panel, README trust signals, the demo image, and the community-health surface — plus how to keep them fresh. None of this changes the merge bar; it is presentation only.
+
+## Repository About panel (GitHub UI)
+
+Set in **Settings** or the gear icon next to About on the repo home. Keep it to a single sentence so it reads well in search results and the sidebar:
+
+> Evergreen OSS reference for multi-tenant HR SaaS + in-repo agent governance harness. Runnable Next.js + Postgres demo — not a certified payroll vendor.
+
+- **Website:** the live preview URL (currently the Vercel `main` deployment).
+- **Topics:** confirm the set stays aligned with the niche — `hr`, `payroll`, `multi-tenant`, `saas`, `reference-architecture`, `agent-governance`, `cursor`, `nextjs`, `prisma`, `open-source`.
+
+## README badges
+
+The badge row lives near the top of [`README.md`](../../README.md):
+
+- **License** and **Node.js** — static shields.io badges.
+- **Quality gate** — status of [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate.yml) (PR validation).
+- **Deploy production** — status of [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) (post-merge `main` CI gate).
+- **Release** — latest GitHub Release via shields.io.
+
+If a workflow file is renamed, update the matching badge URL and its link target. Badge image and link both encode the workflow filename.
+
+## Demo image
+
+The README hero references [`docs/assets/employee-portal-demo.svg`](../assets/employee-portal-demo.svg). It is an **illustrative mockup with synthetic data** that mirrors the real `/employee` home layout (four metric cards, "Today at a glance", and the "Status" panel). It contains no PII and no production URLs.
+
+### Replacing it with a live capture
+
+When you have Docker available and want a real screenshot:
+
+1. `npm ci && cp .env.example .env`, then set `JWT_SECRET` in `.env`.
+2. `npm run db:up && npm run demo:bootstrap && npm run dev`.
+3. Open `http://localhost:3000/employee` at a 1280x720 (or 1440x900) viewport and sign in with a demo token (`npm run jwt:dev:demo-employee`).
+4. Capture a PNG of the portal, crop to the app chrome, and confirm the seed is synthetic (no real names, SSNs, or tax IDs).
+5. Save it as `docs/assets/employee-portal-demo.png`, keep it under ~500 KB (compress if needed), and update the README hero to point at the PNG.
+
+Re-capture when the employee shell (Feature 022) changes materially so the storefront does not drift from the product.
+
+## Community profile
+
+GitHub reports a community-health percentage under **Insights -> Community Standards**. The repo already reports 100 percent: README, LICENSE, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, issue templates, and a PR template are all present. Issue templates are YAML forms under [`.github/ISSUE_TEMPLATE/`](../../.github/ISSUE_TEMPLATE/). GitHub Discussions is intentionally not enabled; open-ended questions route through the documentation issue template (see [`.github/ISSUE_TEMPLATE/config.yml`](../../.github/ISSUE_TEMPLATE/config.yml)).
+
+## Optional, later
+
+- **Social preview image** — Settings -> Social preview. This is the Open Graph card shown when the repo is shared; it is separate from the README hero and can reuse a rendered version of the demo image.
+- **OpenSSF Best Practices badge** — worth enrolling if the project pursues broader supply-chain assurance signals.
+
+Related: [github-branch-protection.md](github-branch-protection.md) for required checks and rulesets.

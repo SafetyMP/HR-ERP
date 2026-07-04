@@ -1,3 +1,5 @@
+> **Docs-only / typo PR?** See [Lightweight PRs (docs-only)](../CONTRIBUTING.md#lightweight-prs-docs-only) — fill **Summary**, set **riskTier: T0**, and mark the governance sections **N/A**.
+
 ## Summary
 
 <!-- 2–4 sentences -->
@@ -18,16 +20,16 @@
 
 ### Harness delta (Adaptation plane)
 
-- New friction / ledger signal? Y/N → signal_id: ___
+- New friction / ledger signal? Y/N → signal_id: \_\_\_
 
 ### PO orchestration checkpoint (required when riskTier ≥ T1; T0 use `step 1 chore N/A`)
 
 ```
-Feature brief / spike ADR: 
-UAC count: 
+Feature brief / spike ADR:
+UAC count:
 PO gate complete: Y/N
 Friction targets cited: Y/N/N/A
-Phase ADR: 
+Phase ADR:
 Payroll / Compliance / Math: N/A or brief path
 ```
 
@@ -37,8 +39,8 @@ Payroll / Compliance / Math: N/A or brief path
 <!-- T3 pay/time scopes: also complete golden-thread-regulated-payroll-drill.md -->
 
 | Risk or requirement | Control | Artifact path | Verifier | Legal (or N/A) | Compliance / kernel (or N/A) | QA / UAC # (or N/A) |
-| --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | |
+| ------------------- | ------- | ------------- | -------- | -------------- | ---------------------------- | ------------------- |
+|                     |         |               |          |                |                              |                     |
 
 ## Module documentation
 

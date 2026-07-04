@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Illustrative mockup of the HR ERP employee portal home: header with employee greeting, four metric cards (latest net pay, time today, PTO balance, benefit plans), a Today at a glance quick-actions panel, and a Status panel. Values shown are synthetic.">
+  <title>HR ERP employee portal - illustrative mockup</title>
+  <desc>Synthetic, PII-free layout preview of /employee. Replace with a real PNG capture per docs/community/github-presentation.md.</desc>
+
+  <style>
+    .bg { fill: #f8fafc; }
+    .panel { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1; }
+    .rail { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1; }
+    .accent { fill: #2563eb; }
+    .accent-soft { fill: #eff6ff; }
+    .ok { fill: #16a34a; }
+    .ok-soft { fill: #dcfce7; }
+    .warn-soft { fill: #fef3c7; }
+    .warn { fill: #b45309; }
+    .label { fill: #64748b; font: 500 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .metric { fill: #0f172a; font: 700 26px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .detail { fill: #94a3b8; font: 400 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .h1 { fill: #0f172a; font: 700 22px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .h2 { fill: #0f172a; font: 600 16px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .sub { fill: #64748b; font: 400 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .nav { fill: #334155; font: 500 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .navActive { fill: #2563eb; font: 600 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .pill { font: 600 11px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .btn { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; }
+    .btnText { fill: #334155; font: 500 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .cta { fill: #2563eb; }
+    .ctaText { fill: #ffffff; font: 600 13px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  </style>
+
+  <rect class="bg" width="1280" height="720" />
+
+  <!-- Left navigation rail -->
+  <rect class="rail" x="0" y="0" width="220" height="720" />
+  <circle class="accent" cx="34" cy="38" r="12" />
+  <text class="h2" x="56" y="43">HR ERP</text>
+  <text class="detail" x="24" y="72">Employee self-service</text>
+
+  <rect class="accent" x="0" y="106" width="3" height="20" />
+  <text class="navActive" x="24" y="120">Home</text>
+  <text class="nav" x="24" y="156">Pay and statements</text>
+  <text class="nav" x="24" y="192">Time and attendance</text>
+  <text class="nav" x="24" y="228">Time off (PTO)</text>
+  <text class="nav" x="24" y="264">Benefits</text>
+  <text class="nav" x="24" y="300">Profile</text>
+  <text class="nav" x="24" y="336">Learning</text>
+  <text class="nav" x="24" y="372">HR requests</text>
+
+  <rect class="accent-soft" x="16" y="640" width="188" height="56" rx="8" />
+  <text class="detail" x="28" y="664">Signed in as</text>
+  <text class="h2" x="28" y="684" font-size="14">Alex Morgan</text>
+
+  <!-- Top bar -->
+  <rect class="panel" x="220" y="0" width="1060" height="72" />
+  <text class="h1" x="252" y="44">Welcome back, Alex</text>
+  <rect class="btn" x="1020" y="22" width="112" height="30" rx="8" />
+  <text class="btnText" x="1036" y="42">Quick pay</text>
+  <circle class="accent-soft" cx="1180" cy="37" r="18" />
+  <text class="accent" x="1173" y="42" font="600 13px system-ui">AM</text>
+
+  <!-- Metric cards -->
+  <!-- Card 1: Latest net pay -->
+  <rect class="panel" x="252" y="104" width="236" height="128" rx="12" />
+  <rect class="accent-soft" x="272" y="124" width="30" height="30" rx="8" />
+  <circle class="accent" cx="287" cy="139" r="6" />
+  <text class="label" x="272" y="180">Latest net pay</text>
+  <text class="metric" x="272" y="206">$3,214.88</text>
+  <text class="detail" x="272" y="224">Pay period Jun 1 - Jun 15</text>
+
+  <!-- Card 2: Time today -->
+  <rect class="panel" x="504" y="104" width="236" height="128" rx="12" />
+  <rect class="ok-soft" x="524" y="124" width="30" height="30" rx="8" />
+  <circle class="ok" cx="539" cy="139" r="6" />
+  <text class="label" x="524" y="180">Time today</text>
+  <text class="metric" x="524" y="206">Clocked in</text>
+  <text class="detail" x="524" y="224">2 punches on Jul 4</text>
+
+  <!-- Card 3: PTO balance -->
+  <rect class="panel" x="756" y="104" width="236" height="128" rx="12" />
+  <rect class="accent-soft" x="776" y="124" width="30" height="30" rx="8" />
+  <circle class="accent" cx="791" cy="139" r="6" />
+  <text class="label" x="776" y="180">PTO balance</text>
+  <text class="metric" x="776" y="206">78.5 hrs</text>
+  <text class="detail" x="776" y="224">As of Jul 1</text>
+
+  <!-- Card 4: Benefit plans -->
+  <rect class="panel" x="1008" y="104" width="236" height="128" rx="12" />
+  <rect class="accent-soft" x="1028" y="124" width="30" height="30" rx="8" />
+  <circle class="accent" cx="1043" cy="139" r="6" />
+  <text class="label" x="1028" y="180">Benefit plans</text>
+  <text class="metric" x="1028" y="206">3</text>
+  <text class="detail" x="1028" y="224">Active enrollments on file</text>
+
+  <!-- Today at a glance -->
+  <rect class="panel" x="252" y="264" width="600" height="392" rx="12" />
+  <text class="h2" x="276" y="304">Today at a glance</text>
+  <text class="sub" x="276" y="326">Common employee tasks - each opens the full detail view.</text>
+
+  <rect class="btn" x="276" y="352" width="272" height="52" rx="8" />
+  <circle class="accent" cx="298" cy="378" r="6" />
+  <text class="btnText" x="316" y="383">Earnings statement</text>
+
+  <rect class="btn" x="564" y="352" width="272" height="52" rx="8" />
+  <circle class="accent" cx="586" cy="378" r="6" />
+  <text class="btnText" x="604" y="383">Clock in / out</text>
+
+  <rect class="btn" x="276" y="420" width="272" height="52" rx="8" />
+  <circle class="accent" cx="298" cy="446" r="6" />
+  <text class="btnText" x="316" y="451">PTO and requests</text>
+
+  <rect class="btn" x="564" y="420" width="272" height="52" rx="8" />
+  <circle class="accent" cx="586" cy="446" r="6" />
+  <text class="btnText" x="604" y="451">My profile</text>
+
+  <text class="detail" x="276" y="524" font-size="13">Recent activity</text>
+  <rect class="bg" x="276" y="540" width="560" height="1" />
+  <text class="sub" x="276" y="572">Earnings statement posted - Jun 15</text>
+  <text class="sub" x="276" y="600">PTO request approved - 8.0 hrs</text>
+  <text class="sub" x="276" y="628">Benefits open enrollment window closes soon</text>
+
+  <!-- Status panel -->
+  <rect class="panel" x="868" y="264" width="376" height="392" rx="12" />
+  <text class="h2" x="892" y="304">Status</text>
+
+  <text class="sub" x="892" y="352">Payroll</text>
+  <rect class="ok-soft" x="1080" y="336" width="140" height="24" rx="12" />
+  <text class="pill ok" x="1096" y="352">Statement available</text>
+
+  <text class="sub" x="892" y="404">Attendance</text>
+  <rect class="ok-soft" x="1096" y="388" width="124" height="24" rx="12" />
+  <text class="pill ok" x="1112" y="404">On the clock</text>
+
+  <text class="sub" x="892" y="456">Benefits</text>
+  <rect class="warn-soft" x="1128" y="440" width="92" height="24" rx="12" />
+  <text class="pill warn" x="1144" y="456">3 active</text>
+
+  <rect class="cta" x="892" y="596" width="328" height="40" rx="8" />
+  <text class="ctaText" x="1056" y="621" text-anchor="middle">Request benefit change</text>
+
+  <!-- Illustrative note -->
+  <text class="detail" x="252" y="694" font-size="12">Illustrative mockup - synthetic data. See docs/community/github-presentation.md to replace with a live capture.</text>
+</svg>
