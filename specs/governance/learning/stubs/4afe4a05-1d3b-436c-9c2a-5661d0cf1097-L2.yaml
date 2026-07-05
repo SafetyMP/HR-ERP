@@ -1,0 +1,17 @@
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: nextjs_app_router-composition-4afe4a05
+      pathPattern: "**/*"
+      prefer:
+        - hr-orchestration-lanes
+        - hr-quality-lab
+      deprioritize: []
+      minTier: T3
+      sourceSignalIds:
+        - 4afe4a05-1d3b-436c-9c2a-5661d0cf1097
+        - dda3800b-c867-4098-9d48-f556d0c79271
+        - 5243b602-2baf-4b25-a074-dcefc40fbefd
+        - 2fc61426-a699-475e-afdf-a27ac88bdc4c
+        - 9ec27b2f-968d-4769-adc1-88cf45c0dbc8
+      status: shadow

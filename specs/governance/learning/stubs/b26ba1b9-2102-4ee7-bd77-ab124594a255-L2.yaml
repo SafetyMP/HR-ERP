@@ -1,0 +1,17 @@
+adaptation:
+  enabled: true
+  skillRouterHints:
+    - id: security_plane-composition-b26ba1b9
+      pathPattern: "**/*"
+      prefer:
+        - hr-orchestration-lanes
+        - hr-quality-lab
+      deprioritize: []
+      minTier: T3
+      sourceSignalIds:
+        - b26ba1b9-2102-4ee7-bd77-ab124594a255
+        - 06619afd-dbe8-429d-a5c2-e2a1e51a10f9
+        - 6422710f-e395-419e-8c81-899e5536536a
+        - eaec5663-6fab-425c-94a3-e2cde42e56f0
+        - 86667d95-e3c3-447f-9f46-40b6ee769cde
+      status: shadow

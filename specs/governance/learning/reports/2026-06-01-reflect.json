@@ -1,0 +1,485 @@
+{
+  "generatedAt": "2026-06-01T12:04:16.353Z",
+  "totalSignals": 79,
+  "openSignals": 79,
+  "clusters": [
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "lane_gap",
+      "count": 28,
+      "riskTiers": {
+        "T3": 17,
+        "T2": 11
+      },
+      "signalIds": [
+        "e7eb643c-112b-4e81-a296-d40678cf5166",
+        "e9c9242d-9d76-46e6-899a-9c68583edef6",
+        "c2fb49f1-06f1-40b7-bc45-9918c766c451",
+        "f7ebe3d9-89cd-48ba-b521-4e57ae8226c3",
+        "2fea5c6f-d273-4165-babd-b7541c6b81fb",
+        "be05a399-dde5-414e-b7ff-69ba454cbf42",
+        "5453a452-954c-492d-acf2-01ae139b9082",
+        "cacaaeab-6578-4537-b32c-ce12415052c2",
+        "2f5a6b07-4799-4d17-914c-a0c0f5f94797",
+        "7090dd86-1aaa-4f46-87be-6f994e6632c4",
+        "903e70eb-c39d-438e-ac40-5b7786266a03",
+        "15cef3e7-0199-473d-87cb-505e5514152c",
+        "48cc966c-4f86-4eb4-9704-89a97d67f30a",
+        "6480473a-219c-41d1-a3a1-829f7b8e9551",
+        "a70b60a1-01fd-45d4-8400-cab195c3469e",
+        "f1965837-1a34-40e9-97df-9e9e117ba601",
+        "405146c1-20a3-4636-9859-bdd14e73d543",
+        "eb7180ae-0a0f-4bbe-8f6a-457416c23c55",
+        "3f213e3c-fae3-4d28-bddb-4255fbc633b2",
+        "962b7f30-cbba-46cd-9e86-28efcfc817d8",
+        "7fa3f2e2-b9bb-4b17-8896-8175d538e405",
+        "84045c46-199a-4511-a789-4c09261efba5",
+        "84ab2b54-927f-423f-840b-d164662f9a6b",
+        "44cf323d-ec86-468c-b11c-c96e830ca99a",
+        "56209749-65de-4a98-a04a-21a611ee7417",
+        "fd747303-dc10-4eb0-857a-1699698421da",
+        "9a7f02ed-4eae-4736-be7d-ad897381a8bb",
+        "7915fe6b-d415-4bdf-a050-3b5557867ef8"
+      ],
+      "score": 78.5
+    },
+    {
+      "pathClass": "cloud_ci",
+      "kind": "ci_fail",
+      "count": 13,
+      "riskTiers": {
+        "T2": 13
+      },
+      "signalIds": [
+        "74582b6a-4380-4b29-b863-0934c391940e",
+        "31a68d13-6031-4cb0-a88e-d59bad7536e2",
+        "6c5284e4-94f4-41cd-ba6a-fd9546e6c619",
+        "866db8c7-4cd1-4f59-93c5-b370b95d5ff8",
+        "2d04c66c-4c99-443d-813f-0faa557d2655",
+        "d0024a65-90b4-496b-a0e1-c2f3ea3429f4",
+        "89dde7cd-aedd-4d14-9e58-33bea2007634",
+        "45a4fdff-ca69-4e57-a237-22b2cf647ec6",
+        "ff70c546-0254-426c-8f8e-6f820e1951ba",
+        "010d9ecb-2ff2-42d9-9949-cc14b01cffba",
+        "1fb4cefc-d203-432e-a5a8-7f448de0fdd5",
+        "6228b593-d641-4f80-9cb1-80d66c794665",
+        "1f11c66c-7fd5-4204-9a96-2952bed6a551"
+      ],
+      "score": 32.5
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "lane_gap",
+      "count": 10,
+      "riskTiers": {
+        "T3": 10
+      },
+      "signalIds": [
+        "6f436872-80bd-42b9-9d49-20da21203d33",
+        "b8eea7fe-73ef-4f97-a44b-347c995fb96e",
+        "c8114ab4-7218-4cd5-8606-e952ecb8fc2f",
+        "6f7b8f75-76b2-49f3-9be6-55c2cd4d3351",
+        "9455b762-d33d-4946-908c-185172da2015",
+        "1f4246c6-138b-422b-ac03-e91c88f2d99f",
+        "774106f6-aa5d-4a2f-8540-391fbe14b967",
+        "3871e5bd-a71f-4151-8ed0-df96d8de87a6",
+        "37bf5b98-fbc7-4328-9463-7a17d1b4f038",
+        "f821368b-0ce2-4e12-ad5d-07c995e991d1"
+      ],
+      "score": 30
+    },
+    {
+      "pathClass": "security_plane",
+      "kind": "lane_gap",
+      "count": 8,
+      "riskTiers": {
+        "T2": 8
+      },
+      "signalIds": [
+        "b26ba1b9-2102-4ee7-bd77-ab124594a255",
+        "06619afd-dbe8-429d-a5c2-e2a1e51a10f9",
+        "6422710f-e395-419e-8c81-899e5536536a",
+        "eaec5663-6fab-425c-94a3-e2cde42e56f0",
+        "86667d95-e3c3-447f-9f46-40b6ee769cde",
+        "fbb9aa5f-cf86-4052-a7bb-999382ba7697",
+        "0c3d533b-7d2e-4907-967c-b4a32d782640",
+        "40c080b3-e874-42a0-b2ee-08082cd3cdcb"
+      ],
+      "score": 20
+    },
+    {
+      "pathClass": "nextjs_app_router",
+      "kind": "lane_gap",
+      "count": 5,
+      "riskTiers": {
+        "T1": 5
+      },
+      "signalIds": [
+        "4afe4a05-1d3b-436c-9c2a-5661d0cf1097",
+        "dda3800b-c867-4098-9d48-f556d0c79271",
+        "5243b602-2baf-4b25-a074-dcefc40fbefd",
+        "2fc61426-a699-475e-afdf-a27ac88bdc4c",
+        "9ec27b2f-968d-4769-adc1-88cf45c0dbc8"
+      ],
+      "score": 10
+    },
+    {
+      "pathClass": "test_stack",
+      "kind": "lane_gap",
+      "count": 4,
+      "riskTiers": {
+        "T1": 4
+      },
+      "signalIds": [
+        "83410570-86ea-4506-9530-6c4647b7e465",
+        "c2cce602-f7f7-49f8-83db-52da663f3292",
+        "cfb9ffd6-5304-4b6d-9596-e9cd40828cbe",
+        "80d0657a-0239-45d3-86f4-ddb912e573ba"
+      ],
+      "score": 8
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "bdf3a384-4ebf-44c3-b722-477168ac05e6"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "27a9cfc5-2f18-4de3-812f-17265088b1b1"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "devops_lifecycle",
+      "kind": "composition_miss",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "b7aaab51-5ad0-4c64-b0b0-15865d81bf30"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "harness_foundation",
+      "kind": "composition_miss",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "b40fadac-a5c0-4b4a-8127-fe708902e25f"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "compliance_pay_time",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "d704c2a9-a41d-48d2-a251-b64e46c77412"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "compliance_pay_time",
+      "kind": "lane_gap",
+      "count": 1,
+      "riskTiers": {
+        "T3": 1
+      },
+      "signalIds": [
+        "dc05ac08-a66b-4c9c-b98b-1181d0a39dac"
+      ],
+      "score": 3
+    },
+    {
+      "pathClass": "security_plane",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T2": 1
+      },
+      "signalIds": [
+        "5649f61e-dbab-4f5d-bca4-ee0d157163c6"
+      ],
+      "score": 2.5
+    },
+    {
+      "pathClass": "ddl_migrations",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T2": 1
+      },
+      "signalIds": [
+        "bf6671f4-bcd5-4db6-a331-0d3b7a9df862"
+      ],
+      "score": 2.5
+    },
+    {
+      "pathClass": "ddl_migrations",
+      "kind": "lane_gap",
+      "count": 1,
+      "riskTiers": {
+        "T2": 1
+      },
+      "signalIds": [
+        "02b686f0-c3a4-49d2-bd84-136812648205"
+      ],
+      "score": 2.5
+    },
+    {
+      "pathClass": "nextjs_app_router",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T1": 1
+      },
+      "signalIds": [
+        "c88f5f4c-2947-4dc2-8800-d2f66445037f"
+      ],
+      "score": 2
+    },
+    {
+      "pathClass": "test_stack",
+      "kind": "friction",
+      "count": 1,
+      "riskTiers": {
+        "T1": 1
+      },
+      "signalIds": [
+        "2e723ddf-142b-4b26-8d17-a52486c00619"
+      ],
+      "score": 2
+    }
+  ],
+  "stubs": [
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/e7eb643c-112b-4e81-a296-d40678cf5166-L1.md",
+      "signal_id": "e7eb643c-112b-4e81-a296-d40678cf5166"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/e7eb643c-112b-4e81-a296-d40678cf5166-L2.yaml",
+      "signal_id": "e7eb643c-112b-4e81-a296-d40678cf5166"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/74582b6a-4380-4b29-b863-0934c391940e-L1.md",
+      "signal_id": "74582b6a-4380-4b29-b863-0934c391940e"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L1.md",
+      "signal_id": "6f436872-80bd-42b9-9d49-20da21203d33"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/6f436872-80bd-42b9-9d49-20da21203d33-L2.yaml",
+      "signal_id": "6f436872-80bd-42b9-9d49-20da21203d33"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/b26ba1b9-2102-4ee7-bd77-ab124594a255-L1.md",
+      "signal_id": "b26ba1b9-2102-4ee7-bd77-ab124594a255"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/b26ba1b9-2102-4ee7-bd77-ab124594a255-L2.yaml",
+      "signal_id": "b26ba1b9-2102-4ee7-bd77-ab124594a255"
+    },
+    {
+      "tier": "L1",
+      "path": "specs/governance/learning/stubs/4afe4a05-1d3b-436c-9c2a-5661d0cf1097-L1.md",
+      "signal_id": "4afe4a05-1d3b-436c-9c2a-5661d0cf1097"
+    },
+    {
+      "tier": "L2",
+      "path": "specs/governance/learning/stubs/4afe4a05-1d3b-436c-9c2a-5661d0cf1097-L2.yaml",
+      "signal_id": "4afe4a05-1d3b-436c-9c2a-5661d0cf1097"
+    }
+  ],
+  "ctqSnapshot": {
+    "generatedAt": "2026-06-01T12:04:16.363Z",
+    "windowDays": 14,
+    "harness": [
+      {
+        "ctqId": "handoff_discover_pass_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 15,
+        "totalSignals": 79,
+        "rate": 0.19,
+        "target": ">= 0.95",
+        "status": null
+      },
+      {
+        "ctqId": "counsel_before_builder_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 59,
+        "totalSignals": 79,
+        "rate": 0.747,
+        "target": ">= 0.90",
+        "status": null
+      },
+      {
+        "ctqId": "tier_declared_accuracy",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 79,
+        "rate": 0,
+        "target": ">= 0.98",
+        "status": null
+      },
+      {
+        "ctqId": "composition_miss_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 2,
+        "totalSignals": 79,
+        "rate": 0.025,
+        "target": "<= 0.05",
+        "status": null
+      },
+      {
+        "ctqId": "po_friction_repeat_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 7,
+        "totalSignals": 79,
+        "rate": 0.089,
+        "target": "<= 0.10",
+        "status": null
+      },
+      {
+        "ctqId": "finops_cost_spike_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 79,
+        "rate": 0,
+        "target": "<= 0.15",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_gate_bypass_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 79,
+        "rate": 0,
+        "target": "<= 0.05",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_rubber_stamp_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 7,
+        "totalSignals": 79,
+        "rate": 0.089,
+        "target": "<= 0.10",
+        "status": null
+      },
+      {
+        "ctqId": "collaboration_output_divergence_rate",
+        "tree": "harness",
+        "windowDays": 14,
+        "signalCount": 0,
+        "totalSignals": 79,
+        "rate": 0,
+        "target": "<= 0.05",
+        "status": null
+      }
+    ],
+    "product": [
+      {
+        "ctqId": "W1",
+        "claim": "One portal (pay, time, leave, profile, benefits, learning)",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/completion-audits/features-022.md",
+          "docs/product/feature-briefs/022-product-shell.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W2",
+        "claim": "Native payroll, not CSV circus",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/018-payroll-runs-ui.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W3",
+        "claim": "Ownable, replayable policy",
+        "status": "partial",
+        "evidencePaths": [
+          "packages/payroll-calc/",
+          "specs/alignment/decisions/0005-payroll-kernel-determinism.md"
+        ],
+        "target": "100%"
+      },
+      {
+        "ctqId": "W4",
+        "claim": "Enforceable tenancy",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/completion-audits/features-014-017.md"
+        ],
+        "target": "100%"
+      },
+      {
+        "ctqId": "W5",
+        "claim": "Hiring managers without separate ATS",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/020-talent-depth-wave.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W6",
+        "claim": "Integrations without Zapier for core paths",
+        "status": "met",
+        "evidencePaths": [
+          "docs/product/feature-briefs/023-scim-hardening.md"
+        ],
+        "target": ">= 1.0"
+      },
+      {
+        "ctqId": "W7",
+        "claim": "Benefits operational, not PDF-only",
+        "status": "partial",
+        "evidencePaths": [
+          "docs/product/feature-briefs/019-benefits-life-events.md",
+          "docs/compliance/cobra-aca-counsel-gate.md"
+        ],
+        "target": ">= 0.8"
+      }
+    ]
+  }
+}
