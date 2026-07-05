@@ -86,7 +86,8 @@
     "holiday:sync": "tsx scripts/sync-holidays.ts",
     "test:e2e": "playwright test",
     "qa:fixtures": "tsx scripts/qa-generate-fixture-batch.ts",
-    "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh"
+    "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh",
+    "publish:check": "bash scripts/publish-check.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

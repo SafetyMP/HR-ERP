@@ -52,6 +52,9 @@ services/ml-serving/artifacts/*.json
 .protect-mcp/
 # Cursor hook audit output (shadow mode)
 .cursor/hooks-output/
+# Local Cursor agent wiring — ship rules/skills/hooks/mcp team allowlist only
+.cursor/agents/
+.cursor/mcp.local.json
 
 # vercel
 .vercel

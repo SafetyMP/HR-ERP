@@ -15,6 +15,8 @@ jobs:
         working-directory: .
     steps:
       - uses: actions/checkout@v6
+      - name: OSS publish metadata (HR ERP harness policy)
+        run: chmod +x scripts/publish-check.sh && bash -n scripts/publish-check.sh && ./scripts/publish-check.sh
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
