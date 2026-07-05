@@ -1,25 +1,40 @@
 {
   "version": 1,
-  "description": "HR ERP governance hooks — GOVERNANCE_HOOK_MODE=shadow|enforce; manifest v4 lane state",
   "hooks": {
-    "sessionStart": [{ "command": "node .cursor/hooks/session-start.mjs", "timeout": 10 }],
     "beforeShellExecution": [
-      { "command": "node .cursor/hooks/before-shell.mjs", "timeout": 10, "failClosed": true }
-    ],
-    "beforeMCPExecution": [
-      { "command": "node .cursor/hooks/before-mcp.mjs", "timeout": 10, "failClosed": true }
-    ],
-    "preToolUse": [
       {
-        "command": "node .cursor/hooks/pre-tool-use.mjs",
-        "timeout": 10,
-        "matcher": "Task"
+        "command": "python3 .cursor/hooks/guard-shell.py",
+        "failClosed": false
+      },
+      {
+        "command": "python3 .cursor/hooks/guard-network.py",
+        "matcher": "curl|wget|scp|nc ",
+        "failClosed": false
       }
     ],
-    "subagentStart": [{ "command": "node .cursor/hooks/subagent-start.mjs", "timeout": 30 }],
-    "subagentStop": [{ "command": "node .cursor/hooks/subagent-stop.mjs", "timeout": 15 }],
-    "afterFileEdit": [{ "command": "node .cursor/hooks/after-file-edit.mjs", "timeout": 5 }],
-    "beforeSubmitPrompt": [{ "command": "node .cursor/hooks/before-submit-prompt.mjs", "timeout": 15 }],
-    "stop": [{ "command": "node .cursor/hooks/stop.mjs", "timeout": 30 }]
+    "beforeMCPExecution": [
+      {
+        "command": "python3 .cursor/hooks/guard-mcp.py",
+        "failClosed": false
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "python3 .cursor/hooks/protect-secrets.py",
+        "failClosed": true
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 .cursor/hooks/scan-prompt.py",
+        "failClosed": true
+      }
+    ],
+    "stop": [
+      {
+        "command": "python3 .cursor/hooks/verify-on-stop.py",
+        "loop_limit": 3
+      }
+    ]
   }
 }
