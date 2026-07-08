@@ -36,6 +36,7 @@ Full positioning (scope, honest demo paths, pairing with external agent-security
 [![Quality gate](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml/badge.svg?branch=main)](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml)
 [![Deploy production](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml)
 [![Release](https://img.shields.io/github/v/release/SafetyMP/HR-ERP)](https://github.com/SafetyMP/HR-ERP/releases/latest)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SafetyMP/HR-ERP/badge)](https://scorecard.dev/viewer/?uri=github.com/SafetyMP/HR-ERP)
 
 **Jump to:** [Demo](#demo) · [Open source positioning](#open-source-evergreen-project) · [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
 

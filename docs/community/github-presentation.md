@@ -19,6 +19,7 @@ The badge row lives near the top of [`README.md`](../../README.md):
 - **Quality gate** — status of [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate.yml) (PR validation).
 - **Deploy production** — status of [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) (post-merge `main` CI gate).
 - **Release** — latest GitHub Release via shields.io.
+- **OpenSSF Scorecard** — supply-chain posture from [`.github/workflows/scorecard.yml`](../../.github/workflows/scorecard.yml); badge populates after the first published run on `main`.
 
 If a workflow file is renamed, update the matching badge URL and its link target. Badge image and link both encode the workflow filename.
 
@@ -45,6 +46,6 @@ GitHub reports a community-health percentage under **Insights -> Community Stand
 ## Optional, later
 
 - **Social preview image** — Settings -> Social preview. This is the Open Graph card shown when the repo is shared; it is separate from the README hero and can reuse a rendered version of the demo image.
-- **OpenSSF Best Practices badge** — worth enrolling if the project pursues broader supply-chain assurance signals.
+- **OpenSSF Best Practices badge** — worth enrolling if the project pursues broader supply-chain assurance signals (complements the Scorecard workflow above).
 
 Related: [github-branch-protection.md](github-branch-protection.md) for required checks and rulesets.
