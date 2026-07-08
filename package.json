@@ -85,6 +85,7 @@
     "format": "prettier --write .",
     "holiday:sync": "tsx scripts/sync-holidays.ts",
     "test:e2e": "playwright test",
+    "screenshots": "node scripts/capture-screenshots.mjs",
     "qa:fixtures": "tsx scripts/qa-generate-fixture-batch.ts",
     "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh",
     "publish:check": "bash scripts/publish-check.sh"
@@ -147,7 +148,9 @@
     "effect": "^3.17.13",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.6",
+    "gifenc": "^1.0.3",
     "happy-dom": "^17.6.3",
+    "pngjs": "^7.0.0",
     "prettier": "^3.5.3",
     "prisma": "^7.8.0",
     "semantic-release": "^25.0.3",

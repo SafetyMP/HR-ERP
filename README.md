@@ -8,9 +8,11 @@
 
 ## Demo
 
-[![HR ERP employee portal - pay, time, PTO, and benefits in one place (illustrative mockup, synthetic data)](docs/assets/employee-portal-demo.svg)](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee)
+<p align="center">
+  <img src="docs/assets/demo.gif" alt="HR ERP employee portal — home, paystub, time and attendance, and benefits (synthetic demo data)" width="900" />
+</p>
 
-The **employee portal** after `npm run demo:bootstrap`: one home for pay, time, PTO, and benefits. Try the [live preview](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee) or run it locally in ~30 minutes ([Quick start](#quick-start)). The image above is an illustrative mockup with synthetic data; see [`docs/community/github-presentation.md`](docs/community/github-presentation.md) to refresh it with a live capture.
+The **employee portal** after `npm run demo:bootstrap`: one home for pay, time, PTO, and benefits. Try the [live preview](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee) or run it locally in ~30 minutes ([Quick start](#quick-start)). Regenerate the hero GIF with `npm run screenshots` (requires a running dev server); see [`docs/community/github-presentation.md`](docs/community/github-presentation.md).
 
 ### Two evergreen layers in one repo
 
@@ -174,12 +176,13 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 
 ### Database and demo
 
-| Command                                    | Use                                           |
-| ------------------------------------------ | --------------------------------------------- |
-| `npm run db:up` / `db:up:arch`             | Docker: default stack vs architecture profile |
-| `npm run db:migrate:deploy` / `db:migrate` | Deploy vs author migrations                   |
-| `npm run demo:bootstrap`                   | One-shot local demo data                      |
-| `npm run db:studio`                        | Prisma Studio                                 |
+| Command                                    | Use                                                        |
+| ------------------------------------------ | ---------------------------------------------------------- |
+| `npm run db:up` / `db:up:arch`             | Docker: default stack vs architecture profile              |
+| `npm run db:migrate:deploy` / `db:migrate` | Deploy vs author migrations                                |
+| `npm run demo:bootstrap`                   | One-shot local demo data                                   |
+| `npm run screenshots`                      | README demo GIF + PNGs (2s per frame; dev server required) |
+| `npm run db:studio`                        | Prisma Studio                                              |
 
 ### Auth, governance, and ops
 

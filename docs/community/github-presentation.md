@@ -24,17 +24,17 @@ If a workflow file is renamed, update the matching badge URL and its link target
 
 ## Demo image
 
-The README hero references [`docs/assets/employee-portal-demo.svg`](../assets/employee-portal-demo.svg). It is an **illustrative mockup with synthetic data** that mirrors the real `/employee` home layout (four metric cards, "Today at a glance", and the "Status" panel). It contains no PII and no production URLs.
+The README hero references [`docs/assets/demo.gif`](../assets/demo.gif) — a **2-second-per-frame** GIF cycling employee home, paystub, time & attendance, and benefits. All frames use synthetic demo seed data (no PII, no production URLs).
 
-### Replacing it with a live capture
+### Regenerating the demo GIF
 
-When you have Docker available and want a real screenshot:
+When you have Docker available:
 
 1. `npm ci && cp .env.example .env`, then set `JWT_SECRET` in `.env`.
 2. `npm run db:up && npm run demo:bootstrap && npm run dev`.
-3. Open `http://localhost:3000/employee` at a 1280x720 (or 1440x900) viewport and sign in with a demo token (`npm run jwt:dev:demo-employee`).
-4. Capture a PNG of the portal, crop to the app chrome, and confirm the seed is synthetic (no real names, SSNs, or tax IDs).
-5. Save it as `docs/assets/employee-portal-demo.png`, keep it under ~500 KB (compress if needed), and update the README hero to point at the PNG.
+3. In another terminal: `npm run screenshots` (writes PNGs + `docs/assets/demo.gif`).
+
+Optional: `SCREENSHOT_BASE_URL=https://your-preview.example npm run screenshots` for a hosted preview.
 
 Re-capture when the employee shell (Feature 022) changes materially so the storefront does not drift from the product.
 
