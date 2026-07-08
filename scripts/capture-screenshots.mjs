@@ -40,8 +40,8 @@ const pages = [
   },
 ];
 
-/** Frame duration in centiseconds (200 = 2 seconds per screen). */
-const GIF_FRAME_DELAY_CS = 200;
+/** Frame duration in milliseconds (gifenc stores delay/10 as GIF centiseconds). */
+const GIF_FRAME_DELAY_MS = 2_000;
 
 function launchOptions() {
   if (process.env.CI) {
@@ -82,7 +82,7 @@ async function writeDemoGif(frames) {
     const index = applyPalette(data, palette);
     encoder.writeFrame(index, width, height, {
       palette,
-      delay: GIF_FRAME_DELAY_CS,
+      delay: GIF_FRAME_DELAY_MS,
     });
     console.log(`GIF frame: ${name}`);
   }

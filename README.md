@@ -12,6 +12,12 @@
   <img src="docs/assets/demo.gif" alt="HR ERP employee portal — home, paystub, time and attendance, and benefits (synthetic demo data)" width="900" />
 </p>
 
+### Screenshots
+
+| Employee home                                   | Paystub                                      | Time & attendance                                   | Benefits                                       |
+| ----------------------------------------------- | -------------------------------------------- | --------------------------------------------------- | ---------------------------------------------- |
+| ![Employee home](docs/assets/employee-home.png) | ![Paystub](docs/assets/employee-paystub.png) | ![Time & attendance](docs/assets/employee-time.png) | ![Benefits](docs/assets/employee-benefits.png) |
+
 The **employee portal** after `npm run demo:bootstrap`: one home for pay, time, PTO, and benefits. Try the [live preview](https://hr-erp-git-main-harts-9319s-projects.vercel.app/employee) or run it locally in ~30 minutes ([Quick start](#quick-start)). Regenerate the hero GIF with `npm run screenshots` (requires a running dev server); see [`docs/community/github-presentation.md`](docs/community/github-presentation.md).
 
 ### Two evergreen layers in one repo

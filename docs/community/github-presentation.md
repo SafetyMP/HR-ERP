@@ -24,7 +24,7 @@ If a workflow file is renamed, update the matching badge URL and its link target
 
 ## Demo image
 
-The README hero references [`docs/assets/demo.gif`](../assets/demo.gif) — a **2-second-per-frame** GIF cycling employee home, paystub, time & attendance, and benefits. All frames use synthetic demo seed data (no PII, no production URLs).
+The README hero references [`docs/assets/demo.gif`](../assets/demo.gif) — a cycling GIF (2s per frame, matching PSA `GIF_FRAME_DELAY_MS`) across employee home, paystub, time & attendance, and benefits. All frames use synthetic demo seed data (no PII, no production URLs).
 
 ### Regenerating the demo GIF
 
