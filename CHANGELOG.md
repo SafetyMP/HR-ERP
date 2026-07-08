@@ -1,3 +1,9 @@
+## [2.13.3](https://github.com/SafetyMP/HR-ERP/compare/v2.13.2...v2.13.3) (2026-07-06)
+
+### Bug Fixes
+
+* **harness:** sync C17 workspace_root attribution in hook logs ([2e494ec](https://github.com/SafetyMP/HR-ERP/commit/2e494ec7b4d5eb6ee550583475f8de7f7e330d98))
+
 ## [2.13.2](https://github.com/SafetyMP/HR-ERP/compare/v2.13.1...v2.13.2) (2026-05-29)
 
 ### Bug Fixes
