@@ -6,9 +6,7 @@
  */
 import "dotenv/config";
 import type { IntegrationJobPayload } from "@/lib/integrations/workers/integration-job-processor";
-import {
-  INTEGRATION_QUEUE_NAME,
-} from "@/lib/integrations/constants";
+import { INTEGRATION_QUEUE_NAME } from "@/lib/integrations/constants";
 import { bullConnectionOptionsFromEnv } from "@/lib/integrations/queue/redis-connection";
 import {
   IntegrationJobError,
@@ -41,7 +39,9 @@ const worker = new Worker<IntegrationJobPayload, void, "run">(
     } catch (err) {
       if (isNonRetryable(err)) {
         const msg =
-          err instanceof Error ? err.message : "non-retryable integration failure";
+          err instanceof Error
+            ? err.message
+            : "non-retryable integration failure";
         throw new UnrecoverableError(msg);
       }
       throw err;
@@ -72,6 +72,15 @@ worker.on("failed", async (job, err) => {
     correlationId: job.data.correlationId,
     attempts: job.attemptsMade,
   });
+
+  try {
+    await job.remove();
+  } catch (removeErr) {
+    console.error(
+      "[integrations] failed to purge terminal job from Redis",
+      removeErr,
+    );
+  }
 });
 
 setInterval(() => {
@@ -80,11 +89,14 @@ setInterval(() => {
   });
 }, 2000);
 
-setInterval(() => {
-  processPendingWebhookDeliveries().catch((e) => {
-    console.error("[webhooks]", e);
-  });
-}, Number(process.env.WEBHOOK_DELIVERY_POLL_MS ?? "2000"));
+setInterval(
+  () => {
+    processPendingWebhookDeliveries().catch((e) => {
+      console.error("[webhooks]", e);
+    });
+  },
+  Number(process.env.WEBHOOK_DELIVERY_POLL_MS ?? "2000"),
+);
 
 setInterval(() => {
   refreshExpiringDemoTokens().catch((e) => {

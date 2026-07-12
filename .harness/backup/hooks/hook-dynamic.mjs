@@ -14,9 +14,7 @@ export function loadDynamicEnforcementConfig() {
   const dyn = cfg?.dynamicEnforcement ?? {};
   return {
     enabled: dyn.enabled !== false,
-    poInjectEveryN: Number.isFinite(dyn.poInjectEveryN)
-      ? dyn.poInjectEveryN
-      : 10,
+    poInjectEveryN: Number.isFinite(dyn.poInjectEveryN) ? dyn.poInjectEveryN : 10,
     compactContextOnStable: dyn.compactContextOnStable !== false,
     refreshOnDiffChange: dyn.refreshOnDiffChange !== false,
     fullInjectOnMaterialGapsOnly: dyn.fullInjectOnMaterialGapsOnly !== false,
@@ -66,12 +64,7 @@ export function shouldRefreshGovernance(state, { force = false } = {}) {
  * Material gaps: required lanes or T3+ critical lanes missing (not all planned lanes).
  * @param {{ tier: string, missing: string[], requiredLanes?: string[], plannedLanes?: string[] }}
  */
-export function hasMaterialLaneGaps({
-  tier,
-  missing,
-  requiredLanes = [],
-  plannedLanes = [],
-}) {
+export function hasMaterialLaneGaps({ tier, missing, requiredLanes = [], plannedLanes = [] }) {
   if (!missing?.length) return false;
   const dyn = loadDynamicEnforcementConfig();
   if (!dyn.fullInjectOnMaterialGapsOnly) return true;
@@ -89,23 +82,16 @@ export function hasMaterialLaneGaps({
 
 /**
  * Choose how much hook context to inject on beforeSubmitPrompt.
- * @param {Record<string, unknown>} state
- * @param {{ tier: string, missing: string[], requiredLanes?: string[] }} options
  * @returns {InjectProfile}
  */
-export function selectInjectProfile(
-  state,
-  { tier, missing, requiredLanes = [] },
-) {
+export function selectInjectProfile(state, { tier, missing, requiredLanes = [] }) {
   const dyn = loadDynamicEnforcementConfig();
   if (!dyn.enabled) return "full";
   if (tier === "T0") return "t0";
 
-  const tierChanged =
-    state.lastInjectedTier != null && state.lastInjectedTier !== tier;
+  const tierChanged = state.lastInjectedTier != null && state.lastInjectedTier !== tier;
   const pathChanged =
-    state.lastInjectedPathClass != null &&
-    state.lastInjectedPathClass !== (state.pathClass ?? null);
+    state.lastInjectedPathClass != null && state.lastInjectedPathClass !== (state.pathClass ?? null);
   const phaseChanged =
     state.lastInjectedCollabPhase != null &&
     state.lastInjectedCollabPhase !== (state.collaborationPhase ?? "proposal");
@@ -117,13 +103,7 @@ export function selectInjectProfile(
   });
   const firstInject = state.lastInjectedTier == null;
 
-  if (
-    firstInject ||
-    tierChanged ||
-    pathChanged ||
-    materialGaps ||
-    phaseChanged
-  ) {
+  if (firstInject || tierChanged || pathChanged || materialGaps || phaseChanged) {
     return "full";
   }
 

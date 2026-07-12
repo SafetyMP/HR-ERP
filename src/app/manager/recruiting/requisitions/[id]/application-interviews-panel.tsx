@@ -59,7 +59,26 @@ export function ApplicationInterviewsPanel({
   };
 
   useEffect(() => {
-    if (open) void load();
+    if (!open) return;
+    let cancelled = false;
+    void (async () => {
+      const res = await hrApiFetch(
+        `/api/v1/recruiting/applications/${applicationId}/interviews`,
+        { bearerToken, headers: { Accept: "application/json" } },
+      );
+      if (cancelled) return;
+      if (!res.ok) {
+        setInterviews([]);
+        return;
+      }
+      const body = (await res.json()) as {
+        data?: { interviews?: Interview[] };
+      };
+      setInterviews(body.data?.interviews ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [open, applicationId, bearerToken]);
 
   const schedule = async () => {
@@ -131,11 +150,16 @@ export function ApplicationInterviewsPanel({
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Interviews — {candidateName}</SheetTitle>
-          <SheetDescription>Schedule sessions and record scorecards.</SheetDescription>
+          <SheetDescription>
+            Schedule sessions and record scorecards.
+          </SheetDescription>
         </SheetHeader>
         <div className="mt-6 space-y-4">
           {interviews.map((iv) => (
-            <div key={iv.id} className="rounded-md border border-border p-3 text-sm">
+            <div
+              key={iv.id}
+              className="rounded-md border border-border p-3 text-sm"
+            >
               <p className="font-medium">
                 {iv.interviewType} · {new Date(iv.scheduledAt).toLocaleString()}
               </p>
@@ -206,7 +230,11 @@ export function ApplicationInterviewsPanel({
               value={interviewType}
               onChange={(e) => setInterviewType(e.target.value)}
             />
-            <Button type="button" disabled={busy} onClick={() => void schedule()}>
+            <Button
+              type="button"
+              disabled={busy}
+              onClick={() => void schedule()}
+            >
               Schedule interview
             </Button>
           </div>

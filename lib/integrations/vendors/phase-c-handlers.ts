@@ -14,6 +14,16 @@ type PartnerConfig = {
   targetUrl?: string;
 };
 
+function assertTenantMatch(
+  expectedTenantId: string,
+  actualTenantId: string,
+  code: string,
+): void {
+  if (actualTenantId !== expectedTenantId) {
+    throw new IntegrationJobError(code, "fatal");
+  }
+}
+
 export async function processPayrollPartnerExport(data: {
   exportRowId: string;
   payrollPeriodId: string;
@@ -26,9 +36,21 @@ export async function processPayrollPartnerExport(data: {
   });
   if (!row) return;
 
+  assertTenantMatch(data.tenantId, row.tenantId, "cross_tenant_export_row");
+  if (row.payrollPeriodId !== data.payrollPeriodId) {
+    throw new IntegrationJobError("export_period_mismatch", "fatal");
+  }
+
   const integration = await prisma.integrationInstance.findUnique({
     where: { id: row.integrationId },
   });
+  if (integration) {
+    assertTenantMatch(
+      data.tenantId,
+      integration.tenantId,
+      "cross_tenant_integration",
+    );
+  }
   if (!integration?.encryptedTokenBundle) {
     await markExportFailed(row.id, "missing_partner_credentials");
     throw new IntegrationJobError("missing_partner_credentials", "fatal");
@@ -43,6 +65,13 @@ export async function processPayrollPartnerExport(data: {
   const artifact = await prisma.payrollFilingArtifact.findUnique({
     where: { id: data.filingArtifactId },
   });
+  if (artifact) {
+    assertTenantMatch(
+      data.tenantId,
+      artifact.tenantId,
+      "cross_tenant_filing_artifact",
+    );
+  }
   if (!artifact) {
     await markExportFailed(row.id, "filing_artifact_not_found");
     throw new IntegrationJobError("filing_artifact_not_found", "fatal");
@@ -88,14 +117,20 @@ export async function processPayrollPartnerExport(data: {
     return;
   }
 
-  await markExportFailed(row.id, result.errorMessage ?? "partner_export_failed");
+  await markExportFailed(
+    row.id,
+    result.errorMessage ?? "partner_export_failed",
+  );
   throw new IntegrationJobError(
     result.errorMessage ?? "partner_export_failed",
     "retryable",
   );
 }
 
-async function markExportFailed(exportRowId: string, message: string): Promise<void> {
+async function markExportFailed(
+  exportRowId: string,
+  message: string,
+): Promise<void> {
   await prisma.payrollPartnerExport.update({
     where: { id: exportRowId },
     data: { status: "FAILED", lastError: message.slice(0, 500) },
@@ -197,7 +232,10 @@ export async function processBenefitsCarrierNotify(data: {
     data: {
       carrierDeliveryStatus: "FAILED",
       carrierDeliveryAt: new Date(),
-      carrierDeliveryError: (result.errorMessage ?? "delivery_failed").slice(0, 500),
+      carrierDeliveryError: (result.errorMessage ?? "delivery_failed").slice(
+        0,
+        500,
+      ),
     },
   });
 

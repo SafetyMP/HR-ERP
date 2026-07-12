@@ -23,7 +23,8 @@ function walkJsonFiles(dir, out) {
     const p = join(dir, name);
     const st = statSync(p);
     if (st.isDirectory()) walkJsonFiles(p, out);
-    else if (name.endsWith(".json") && name.includes("orchestrator")) out.push(p);
+    else if (name.endsWith(".json") && name.includes("orchestrator"))
+      out.push(p);
   }
   return out;
 }
@@ -31,14 +32,15 @@ function walkJsonFiles(dir, out) {
 export function discoverHandoffFiles(root = repoRoot()) {
   const specsDir = join(root, "specs");
   return walkJsonFiles(specsDir, []).filter(
-    (p) => !p.includes(join("specs", "templates")) && !p.endsWith(".schema.json"),
+    (p) =>
+      !p.includes(join("specs", "templates")) && !p.endsWith(".schema.json"),
   );
 }
 
 /**
  * Nearest orchestrator-handoff.json for cwd (feature folder, walk-up, or longest prefix match).
  * @param {string} [cwd]
- * @returns {{ path: string, data: object } | null}
+ * @returns {{ path: string, data: Record<string, unknown> } | null}
  */
 export function findHandoffForCwd(cwd = process.cwd(), root = repoRoot()) {
   const absCwd = resolve(cwd);
@@ -46,7 +48,13 @@ export function findHandoffForCwd(cwd = process.cwd(), root = repoRoot()) {
 
   const featureMatch = rel.match(/^specs\/features\/([^/]+)/);
   if (featureMatch) {
-    const candidate = join(root, "specs", "features", featureMatch[1], "orchestrator-handoff.json");
+    const candidate = join(
+      root,
+      "specs",
+      "features",
+      featureMatch[1],
+      "orchestrator-handoff.json",
+    );
     const data = readJson(candidate);
     if (data) return { path: candidate, data };
   }
