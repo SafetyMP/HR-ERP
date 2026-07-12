@@ -20,7 +20,8 @@ describe("enforcement-profile resolver", () => {
   const envBackup = process.env.GOVERNANCE_ENFORCEMENT_PROFILE;
 
   afterEach(() => {
-    if (envBackup === undefined) delete process.env.GOVERNANCE_ENFORCEMENT_PROFILE;
+    if (envBackup === undefined)
+      delete process.env.GOVERNANCE_ENFORCEMENT_PROFILE;
     else process.env.GOVERNANCE_ENFORCEMENT_PROFILE = envBackup;
     if (existsSync(profilePath)) rmSync(profilePath);
   });
@@ -75,7 +76,9 @@ describe("findHandoffForCwd", () => {
       root,
     );
     expect(handoff?.path).toContain("agent-governance-alarp");
-    expect(handoff?.data?.riskTier).toBeDefined();
+    expect(
+      (handoff?.data as { riskTier?: string } | undefined)?.riskTier,
+    ).toBeDefined();
   });
 });
 
