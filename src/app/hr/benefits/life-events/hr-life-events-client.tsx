@@ -51,7 +51,23 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    void (async () => {
+      const res = await hrApiFetch("/api/v1/hr/benefits/life-events", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (cancelled) return;
+      if (!res.ok) {
+        setEvents([]);
+        return;
+      }
+      const body = (await res.json()) as { data?: { events?: EventRow[] } };
+      setEvents(body.data?.events ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   const decide = async (id: string, decision: "APPLIED" | "DENIED") => {
@@ -83,7 +99,9 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
           data?: { carrierDeliveryStatus?: string | null };
         };
         const status = body.data?.carrierDeliveryStatus ?? "PENDING";
-        toast.success(`Life event approved — carrier delivery ${status.toLowerCase()}.`);
+        toast.success(
+          `Life event approved — carrier delivery ${status.toLowerCase()}.`,
+        );
       } else {
         toast.success("Life event denied.");
       }
@@ -93,7 +111,8 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
     }
   };
 
-  if (!ready) return <p className="text-sm text-muted-foreground">Checking session…</p>;
+  if (!ready)
+    return <p className="text-sm text-muted-foreground">Checking session…</p>;
   if (!isAuthenticated) {
     return (
       <HrSignInCard
@@ -134,8 +153,12 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
                 <tbody>
                   {events.map((e) => (
                     <tr key={e.id} className="border-b border-border align-top">
-                      <td className="px-3 py-3 font-medium">{e.employeeName}</td>
-                      <td className="px-3 py-3">{benefitLifeEventTypeLabel(e.eventType)}</td>
+                      <td className="px-3 py-3 font-medium">
+                        {e.employeeName}
+                      </td>
+                      <td className="px-3 py-3">
+                        {benefitLifeEventTypeLabel(e.eventType)}
+                      </td>
                       <td className="px-3 py-3 tabular-nums">{e.eventDate}</td>
                       <td className="px-3 py-3">
                         <Badge variant="warning">
@@ -144,7 +167,9 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
                       </td>
                       <td className="px-3 py-3">
                         {e.description ? (
-                          <p className="mb-2 text-xs text-muted-foreground">{e.description}</p>
+                          <p className="mb-2 text-xs text-muted-foreground">
+                            {e.description}
+                          </p>
                         ) : null}
                         <textarea
                           placeholder="HR note (optional)"
@@ -152,7 +177,10 @@ export function HrLifeEventsClient({ initialBearerToken }: Props) {
                           rows={2}
                           value={hrNotes[e.id] ?? ""}
                           onChange={(ev) =>
-                            setHrNotes((prev) => ({ ...prev, [e.id]: ev.target.value }))
+                            setHrNotes((prev) => ({
+                              ...prev,
+                              [e.id]: ev.target.value,
+                            }))
                           }
                         />
                         <div className="flex gap-2">

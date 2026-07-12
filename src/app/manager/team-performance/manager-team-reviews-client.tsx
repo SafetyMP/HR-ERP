@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
@@ -65,25 +71,59 @@ export function ManagerTeamReviewsClient() {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    startTransition(() => setLoadFailed(false));
+    void (async () => {
+      const res = await hrApiFetch("/api/v1/manager/performance/reviews", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (cancelled) return;
+      if (!res.ok) {
+        setCycle(null);
+        setReviews([]);
+        setLoadFailed(true);
+        return;
+      }
+      const body = (await res.json()) as {
+        data?: { cycle?: Cycle | null; reviews?: Review[] };
+      };
+      setCycle(body.data?.cycle ?? null);
+      const list = body.data?.reviews ?? [];
+      setReviews(list);
+      const nextRatings: Record<string, number> = {};
+      const nextNotes: Record<string, string> = {};
+      for (const r of list) {
+        nextRatings[r.id] = r.managerRating ?? 3;
+        nextNotes[r.id] = r.managerNote ?? "";
+      }
+      setRatings(nextRatings);
+      setNotes(nextNotes);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   const submit = async (id: string) => {
     const managerRating = ratings[id] ?? 3;
     setBusyId(id);
     try {
-      const res = await hrApiFetch(`/api/v1/manager/performance/reviews/${id}`, {
-        bearerToken,
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+      const res = await hrApiFetch(
+        `/api/v1/manager/performance/reviews/${id}`,
+        {
+          bearerToken,
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            managerRating,
+            managerNote: notes[id]?.trim() || undefined,
+          }),
         },
-        body: JSON.stringify({
-          managerRating,
-          managerNote: notes[id]?.trim() || undefined,
-        }),
-      });
+      );
       if (!res.ok) {
         toast.error(
           await readApiErrorMessage(
@@ -103,14 +143,21 @@ export function ManagerTeamReviewsClient() {
   if (!ready || !isAuthenticated) return null;
 
   if (cycle === undefined) {
-    return <p className="text-sm text-muted-foreground">Loading team reviews…</p>;
+    return (
+      <p className="text-sm text-muted-foreground">Loading team reviews…</p>
+    );
   }
 
   if (loadFailed) {
     return (
       <p className="text-sm text-muted-foreground">
         Could not load team reviews.{" "}
-        <Button type="button" variant="link" className="h-auto p-0" onClick={() => void load()}>
+        <Button
+          type="button"
+          variant="link"
+          className="h-auto p-0"
+          onClick={() => void load()}
+        >
           Retry
         </Button>
       </p>
@@ -127,7 +174,9 @@ export function ManagerTeamReviewsClient() {
 
   if (reviews.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No direct reports with reviews in this cycle.</p>
+      <p className="text-sm text-muted-foreground">
+        No direct reports with reviews in this cycle.
+      </p>
     );
   }
 
@@ -150,7 +199,9 @@ export function ManagerTeamReviewsClient() {
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="font-medium text-foreground">{r.employeeName}</p>
-                <Badge variant="secondary">{r.status.replaceAll("_", " ")}</Badge>
+                <Badge variant="secondary">
+                  {r.status.replaceAll("_", " ")}
+                </Badge>
               </div>
               {r.selfRating != null ? (
                 <p className="mt-2 text-muted-foreground">
@@ -158,7 +209,9 @@ export function ManagerTeamReviewsClient() {
                   {r.selfNote ? ` — ${r.selfNote}` : ""}
                 </p>
               ) : (
-                <p className="mt-2 text-muted-foreground">Self review not submitted yet.</p>
+                <p className="mt-2 text-muted-foreground">
+                  Self review not submitted yet.
+                </p>
               )}
               <div className="mt-3 flex flex-col gap-2">
                 <label className="text-xs font-medium">
@@ -201,7 +254,9 @@ export function ManagerTeamReviewsClient() {
                     Submit manager review
                   </Button>
                 ) : r.status === "MANAGER_SUBMITTED" ? (
-                  <p className="text-xs text-muted-foreground">Manager review submitted.</p>
+                  <p className="text-xs text-muted-foreground">
+                    Manager review submitted.
+                  </p>
                 ) : null}
               </div>
             </div>

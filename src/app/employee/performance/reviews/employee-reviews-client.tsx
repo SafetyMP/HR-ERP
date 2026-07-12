@@ -6,7 +6,13 @@ import { useEffect, useState } from "react";
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 
@@ -52,7 +58,26 @@ export function EmployeeReviewsClient({ initialBearerToken }: Props) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    void (async () => {
+      const res = await hrApiFetch("/api/v1/me/performance/reviews", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (cancelled || !res.ok) return;
+      const body = (await res.json()) as {
+        data?: { cycle?: Cycle | null; reviews?: Review[] };
+      };
+      const c = body.data?.cycle ?? null;
+      setCycle(c);
+      const r = body.data?.reviews?.[0] ?? null;
+      setReview(r);
+      if (r?.selfRating != null) setRating(r.selfRating);
+      if (r?.selfNote) setNote(r.selfNote);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   const canSubmit = review?.status === "DRAFT";
@@ -71,7 +96,8 @@ export function EmployeeReviewsClient({ initialBearerToken }: Props) {
     await load();
   };
 
-  if (!ready) return <p className="text-sm text-muted-foreground">Checking session…</p>;
+  if (!ready)
+    return <p className="text-sm text-muted-foreground">Checking session…</p>;
   if (!isAuthenticated) {
     return (
       <HrSignInCard
@@ -87,7 +113,10 @@ export function EmployeeReviewsClient({ initialBearerToken }: Props) {
     return (
       <p className="text-sm text-muted-foreground">
         No open performance cycle.{" "}
-        <Link href="/employee/performance/goals" className="text-primary underline">
+        <Link
+          href="/employee/performance/goals"
+          className="text-primary underline"
+        >
           View goals
         </Link>
       </p>
@@ -105,7 +134,9 @@ export function EmployeeReviewsClient({ initialBearerToken }: Props) {
       <CardContent className="flex flex-col gap-3">
         {review ? (
           <>
-            <Badge variant="secondary">{review.status.replaceAll("_", " ")}</Badge>
+            <Badge variant="secondary">
+              {review.status.replaceAll("_", " ")}
+            </Badge>
             <label className="text-sm">
               Self rating (1–5)
               <input

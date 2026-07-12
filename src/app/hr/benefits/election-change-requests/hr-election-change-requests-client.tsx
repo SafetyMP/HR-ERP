@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Badge } from "@/components/ui/badge";
@@ -27,10 +27,13 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
   const [requests, setRequests] = useState<RequestRow[] | null>(null);
 
   const load = async () => {
-    const res = await hrApiFetch("/api/v1/hr/benefits/election-change-requests", {
-      bearerToken,
-      headers: { Accept: "application/json" },
-    });
+    const res = await hrApiFetch(
+      "/api/v1/hr/benefits/election-change-requests",
+      {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      },
+    );
     if (!res.ok) {
       setRequests([]);
       return;
@@ -41,7 +44,27 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    startTransition(() => setRequests(null));
+    void (async () => {
+      const res = await hrApiFetch(
+        "/api/v1/hr/benefits/election-change-requests",
+        {
+          bearerToken,
+          headers: { Accept: "application/json" },
+        },
+      );
+      if (cancelled) return;
+      if (!res.ok) {
+        setRequests([]);
+        return;
+      }
+      const body = (await res.json()) as { data?: { requests?: RequestRow[] } };
+      setRequests(body.data?.requests ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   if (!ready) {
@@ -62,7 +85,9 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
   if (requests === null) {
     return (
       <div className="flex flex-col gap-6">
-        <p className="text-sm text-muted-foreground">Loading election change requests…</p>
+        <p className="text-sm text-muted-foreground">
+          Loading election change requests…
+        </p>
       </div>
     );
   }
@@ -71,10 +96,12 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Election change requests</h1>
+          <h1 className="text-2xl font-semibold text-foreground">
+            Election change requests
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Employee-submitted intents awaiting Benefits review. Fulfillment stays outside carrier feeds until
-            processed.
+            Employee-submitted intents awaiting Benefits review. Fulfillment
+            stays outside carrier feeds until processed.
           </p>
         </div>
         {requests.length === 0 ? (
@@ -83,7 +110,8 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
               <CardTitle>No pending requests</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground">
-              When employees submit election change intents from self-service, they appear here.
+              When employees submit election change intents from self-service,
+              they appear here.
             </CardContent>
           </Card>
         ) : (
@@ -91,15 +119,20 @@ export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
             <Card key={row.id}>
               <CardHeader className="flex flex-row items-start justify-between gap-4">
                 <div>
-                  <CardTitle className="text-base">{row.employeeName}</CardTitle>
-                  <p className="mt-1 text-sm text-muted-foreground">{row.categoryLabel}</p>
+                  <CardTitle className="text-base">
+                    {row.employeeName}
+                  </CardTitle>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {row.categoryLabel}
+                  </p>
                 </div>
                 <Badge variant="secondary">{row.status}</Badge>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <p>{row.summary}</p>
                 <p className="text-muted-foreground">
-                  Request {row.id.slice(0, 8)}… · {new Date(row.createdAt).toLocaleString()}
+                  Request {row.id.slice(0, 8)}… ·{" "}
+                  {new Date(row.createdAt).toLocaleString()}
                 </p>
               </CardContent>
             </Card>

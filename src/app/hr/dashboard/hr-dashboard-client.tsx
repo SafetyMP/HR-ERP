@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { Briefcase, DollarSign, Heart, Users } from "lucide-react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
@@ -63,7 +63,8 @@ function HiringCard({ summary }: { summary: Summary }) {
   );
 }
 function PayrollCard({ summary }: { summary: Summary }) {
-  const hasIssues = summary.openPayrollExceptions > 0 || summary.periodsAwaitingLock > 0;
+  const hasIssues =
+    summary.openPayrollExceptions > 0 || summary.periodsAwaitingLock > 0;
   return (
     <MetricCard
       label="Payroll close"
@@ -111,7 +112,24 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    startTransition(() => setSummary(undefined));
+    void (async () => {
+      const res = await hrApiFetch("/api/v1/hr/analytics/ops-summary", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (cancelled) return;
+      if (!res.ok) {
+        setSummary(null);
+        return;
+      }
+      const body = (await res.json()) as { data?: Summary };
+      setSummary(body.data ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   if (!ready) {
@@ -137,7 +155,12 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
       <div className="flex flex-col gap-6">
         <p className="text-sm text-muted-foreground">
           Could not load dashboard.{" "}
-          <Button type="button" variant="link" className="h-auto p-0" onClick={() => void load()}>
+          <Button
+            type="button"
+            variant="link"
+            className="h-auto p-0"
+            onClick={() => void load()}
+          >
             Retry
           </Button>
         </p>
@@ -162,7 +185,10 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
             <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
               {summary.openPayrollExceptions > 0 ? (
                 <li>
-                  <Link href="/hr/payroll-runs" className="font-medium underline">
+                  <Link
+                    href="/hr/payroll-runs"
+                    className="font-medium underline"
+                  >
                     {summary.openPayrollExceptions} open payroll exception
                     {summary.openPayrollExceptions === 1 ? "" : "s"}
                   </Link>
@@ -170,7 +196,10 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
               ) : null}
               {summary.periodsAwaitingLock > 0 ? (
                 <li>
-                  <Link href="/hr/payroll-runs" className="font-medium underline">
+                  <Link
+                    href="/hr/payroll-runs"
+                    className="font-medium underline"
+                  >
                     {summary.periodsAwaitingLock} period
                     {summary.periodsAwaitingLock === 1 ? "" : "s"} awaiting lock
                   </Link>
@@ -178,7 +207,10 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
               ) : null}
               {summary.openLifeEvents > 0 ? (
                 <li>
-                  <Link href="/hr/benefits/life-events" className="font-medium underline">
+                  <Link
+                    href="/hr/benefits/life-events"
+                    className="font-medium underline"
+                  >
                     {summary.openLifeEvents} pending life event
                     {summary.openLifeEvents === 1 ? "" : "s"}
                   </Link>
@@ -186,7 +218,10 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
               ) : null}
               {summary.pendingElectionIntents > 0 ? (
                 <li>
-                  <Link href="/hr/benefits/election-change-requests" className="font-medium underline">
+                  <Link
+                    href="/hr/benefits/election-change-requests"
+                    className="font-medium underline"
+                  >
                     {summary.pendingElectionIntents} election change intent
                     {summary.pendingElectionIntents === 1 ? "" : "s"}
                   </Link>
@@ -219,7 +254,9 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
         <Card>
           <CardHeader>
             <CardTitle>Headcount by department</CardTitle>
-            <CardDescription>Active employees grouped by department.</CardDescription>
+            <CardDescription>
+              Active employees grouped by department.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <table className="w-full text-sm">
@@ -231,9 +268,14 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
               </thead>
               <tbody>
                 {summary.headcountByDepartment.map((row) => (
-                  <tr key={row.departmentId ?? "none"} className="border-t border-border">
+                  <tr
+                    key={row.departmentId ?? "none"}
+                    className="border-t border-border"
+                  >
                     <td className="py-2">{row.departmentId ?? "Unassigned"}</td>
-                    <td className="py-2 text-right tabular-nums font-medium">{row.count}</td>
+                    <td className="py-2 text-right tabular-nums font-medium">
+                      {row.count}
+                    </td>
                   </tr>
                 ))}
               </tbody>

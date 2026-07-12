@@ -17,7 +17,7 @@ export interface HrJwtClaims extends JWTPayload {
 
 // Minimum acceptable length matches `npm run security:scan` and the
 // `/docs/operations/vercel-managed-phase1-environment.md` guidance.
-const MIN_JWT_SECRET_LENGTH = 16;
+const MIN_JWT_SECRET_LENGTH = 32;
 
 const ASYMMETRIC_ALGOS = [
   "RS256",
@@ -187,9 +187,7 @@ export function claimsToAuthContext(
     tenantId,
     roles,
     orgUnitId:
-      typeof payload.org_unit_id === "string"
-        ? payload.org_unit_id
-        : undefined,
+      typeof payload.org_unit_id === "string" ? payload.org_unit_id : undefined,
     subjectEmployeeId:
       typeof payload.subject_employee_id === "string"
         ? payload.subject_employee_id
