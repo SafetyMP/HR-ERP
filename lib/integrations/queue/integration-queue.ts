@@ -5,7 +5,11 @@ import type { IntegrationJobPayload } from "@/lib/integrations/workers/integrati
 
 let queue: Queue<IntegrationJobPayload, void, "run"> | undefined;
 
-export function getIntegrationQueue(): Queue<IntegrationJobPayload, void, "run"> {
+export function getIntegrationQueue(): Queue<
+  IntegrationJobPayload,
+  void,
+  "run"
+> {
   if (queue) return queue;
   queue = new Queue<IntegrationJobPayload, void, "run">(
     INTEGRATION_QUEUE_NAME,
@@ -18,7 +22,8 @@ export function getIntegrationQueue(): Queue<IntegrationJobPayload, void, "run">
           delay: 2000,
         },
         removeOnComplete: { count: 1000 },
-        removeOnFail: false,
+        // Drop failed jobs after DLQ persistence — payloads may reference PII-bearing artifacts.
+        removeOnFail: { count: 200 },
       },
     },
   );

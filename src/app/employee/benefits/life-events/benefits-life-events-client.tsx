@@ -60,7 +60,19 @@ export function BenefitsLifeEventsClient({ initialBearerToken }: Props) {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    void load();
+    let cancelled = false;
+    void (async () => {
+      const res = await hrApiFetch("/api/v1/me/benefits/life-events", {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      });
+      if (cancelled || !res.ok) return;
+      const body = (await res.json()) as { data?: { events?: LifeEvent[] } };
+      setEvents(body.data?.events ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [isAuthenticated, bearerToken]);
 
   const submit = async () => {
@@ -113,8 +125,8 @@ export function BenefitsLifeEventsClient({ initialBearerToken }: Props) {
         <CardHeader>
           <CardTitle>Report a life event</CardTitle>
           <CardDescription>
-            Marriage, birth, divorce, or loss of coverage — HR will review before changes
-            apply to your elections.
+            Marriage, birth, divorce, or loss of coverage — HR will review
+            before changes apply to your elections.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -126,9 +138,13 @@ export function BenefitsLifeEventsClient({ initialBearerToken }: Props) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="MARRIAGE">Marriage</SelectItem>
-                <SelectItem value="BIRTH_ADOPTION">Birth or adoption</SelectItem>
+                <SelectItem value="BIRTH_ADOPTION">
+                  Birth or adoption
+                </SelectItem>
                 <SelectItem value="DIVORCE">Divorce</SelectItem>
-                <SelectItem value="LOSS_OF_COVERAGE">Loss of coverage</SelectItem>
+                <SelectItem value="LOSS_OF_COVERAGE">
+                  Loss of coverage
+                </SelectItem>
                 <SelectItem value="OTHER">Other</SelectItem>
               </SelectContent>
             </Select>
@@ -162,7 +178,10 @@ export function BenefitsLifeEventsClient({ initialBearerToken }: Props) {
               {msg}
             </p>
           ) : null}
-          <Link href="/employee/benefits" className="text-sm text-primary underline">
+          <Link
+            href="/employee/benefits"
+            className="text-sm text-primary underline"
+          >
             Back to benefits summary
           </Link>
         </CardContent>
@@ -174,14 +193,23 @@ export function BenefitsLifeEventsClient({ initialBearerToken }: Props) {
         </CardHeader>
         <CardContent>
           {events.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No life events on file.</p>
+            <p className="text-sm text-muted-foreground">
+              No life events on file.
+            </p>
           ) : (
             <ul className="divide-y divide-border" role="list">
               {events.map((e) => (
-                <li key={e.id} className="list-none flex flex-wrap items-center gap-2 py-3 text-sm">
-                  <span className="font-medium">{benefitLifeEventTypeLabel(e.eventType)}</span>
+                <li
+                  key={e.id}
+                  className="list-none flex flex-wrap items-center gap-2 py-3 text-sm"
+                >
+                  <span className="font-medium">
+                    {benefitLifeEventTypeLabel(e.eventType)}
+                  </span>
                   <span className="text-muted-foreground">{e.eventDate}</span>
-                  <Badge variant="secondary">{benefitLifeEventStatusLabel(e.status)}</Badge>
+                  <Badge variant="secondary">
+                    {benefitLifeEventStatusLabel(e.status)}
+                  </Badge>
                 </li>
               ))}
             </ul>
