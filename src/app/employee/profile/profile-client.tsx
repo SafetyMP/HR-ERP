@@ -1,7 +1,13 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { Button } from "@/components/ui/button";
@@ -176,12 +182,16 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
   const profile = envelope?.profile;
   const [draft, setDraft] = useState<EditableDraft>(emptyDraft());
   const [saveError, setSaveError] = useState<"recoverable" | null>(null);
-  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
+    null,
+  );
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
-    setDraft(draftFromProfile(profile));
+    startTransition(() => {
+      setDraft(draftFromProfile(profile));
+    });
   }, [profile]);
 
   const onSave = useCallback(async () => {
@@ -202,7 +212,9 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     if (result.profile) {
       await queryClient.invalidateQueries({ queryKey: meQueryKeys.profile });
     }
-    setConfirmationMessage(result.confirmationMessage ?? "Your profile updates were saved.");
+    setConfirmationMessage(
+      result.confirmationMessage ?? "Your profile updates were saved.",
+    );
   }, [isAuthenticated, bearerToken, profile, draft, queryClient, signOut]);
 
   const emergencyUnset = useMemo(() => {
@@ -243,12 +255,19 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       return (
         <div className="mx-auto w-full max-w-lg space-y-4">
           <div role="alert">
-            <h2 className="text-lg font-semibold text-foreground">We couldn&apos;t load your profile</h2>
+            <h2 className="text-lg font-semibold text-foreground">
+              We couldn&apos;t load your profile
+            </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Please try again in a moment. If this keeps happening, contact HR Operations.
+              Please try again in a moment. If this keeps happening, contact HR
+              Operations.
             </p>
           </div>
-          <Button type="button" onClick={() => void refetch()} disabled={isFetching}>
+          <Button
+            type="button"
+            onClick={() => void refetch()}
+            disabled={isFetching}
+          >
             Retry
           </Button>
         </div>
@@ -257,9 +276,12 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-4">
         <div role="alert">
-          <h2 className="text-lg font-semibold text-foreground">Session issue</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            Session issue
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Your session could not be verified. Sign in again and return to your profile.
+            Your session could not be verified. Sign in again and return to your
+            profile.
           </p>
         </div>
         <Button type="button" variant="outline" onClick={() => signOut()}>
@@ -293,15 +315,23 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       ) : null}
 
       {saveError === "recoverable" ? (
-        <div role="alert" className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100">
-          We couldn&apos;t save your updates. Please try again. If it continues, contact HR Operations.
+        <div
+          role="alert"
+          className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100"
+        >
+          We couldn&apos;t save your updates. Please try again. If it continues,
+          contact HR Operations.
         </div>
       ) : null}
 
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle id="identity-heading">Identity &amp; reachability</CardTitle>
-          <CardDescription>What HR uses for payroll, benefits, and workplace systems.</CardDescription>
+          <CardTitle id="identity-heading">
+            Identity &amp; reachability
+          </CardTitle>
+          <CardDescription>
+            What HR uses for payroll, benefits, and workplace systems.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -347,7 +377,14 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
           <div>
             <Label htmlFor="work-email">Work email</Label>
             <HrNote />
-            <Input id="work-email" className="mt-2" readOnly disabled value={profile.workEmail} aria-readonly="true" />
+            <Input
+              id="work-email"
+              className="mt-2"
+              readOnly
+              disabled
+              value={profile.workEmail}
+              aria-readonly="true"
+            />
           </div>
           <div>
             <Label htmlFor="personal-email">Personal email</Label>
@@ -383,7 +420,9 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       <Card className="shadow-sm">
         <CardHeader>
           <CardTitle id="mailing-heading">Mailing address</CardTitle>
-          <CardDescription>For mailed correspondence and tax documents when applicable.</CardDescription>
+          <CardDescription>
+            For mailed correspondence and tax documents when applicable.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
@@ -393,7 +432,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
               className="mt-2"
               value={draft.mailingAddressLine1}
               onChange={(e) => {
-                setDraft((d) => ({ ...d, mailingAddressLine1: e.target.value }));
+                setDraft((d) => ({
+                  ...d,
+                  mailingAddressLine1: e.target.value,
+                }));
                 setConfirmationMessage(null);
               }}
               autoComplete="address-line1"
@@ -406,7 +448,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
               className="mt-2"
               value={draft.mailingAddressLine2}
               onChange={(e) => {
-                setDraft((d) => ({ ...d, mailingAddressLine2: e.target.value }));
+                setDraft((d) => ({
+                  ...d,
+                  mailingAddressLine2: e.target.value,
+                }));
                 setConfirmationMessage(null);
               }}
               autoComplete="address-line2"
@@ -448,7 +493,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
                 className="mt-2"
                 value={draft.mailingPostalCode}
                 onChange={(e) => {
-                  setDraft((d) => ({ ...d, mailingPostalCode: e.target.value }));
+                  setDraft((d) => ({
+                    ...d,
+                    mailingPostalCode: e.target.value,
+                  }));
                   setConfirmationMessage(null);
                 }}
                 autoComplete="postal-code"
@@ -474,13 +522,16 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
       <Card className="shadow-sm">
         <CardHeader>
           <CardTitle id="emergency-heading">Emergency contact</CardTitle>
-          <CardDescription>Someone we can reach if you need urgent help at work.</CardDescription>
+          <CardDescription>
+            Someone we can reach if you need urgent help at work.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {emergencyUnset ? (
             <p className="rounded-md border border-dashed border-border bg-muted px-3 py-2 text-sm text-foreground">
-              You haven&apos;t added an emergency contact yet. Adding one helps your team respond quickly if you ever
-              need assistance during work hours.
+              You haven&apos;t added an emergency contact yet. Adding one helps
+              your team respond quickly if you ever need assistance during work
+              hours.
             </p>
           ) : null}
           <div>
@@ -490,7 +541,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
               className="mt-2"
               value={draft.emergencyContactName}
               onChange={(e) => {
-                setDraft((d) => ({ ...d, emergencyContactName: e.target.value }));
+                setDraft((d) => ({
+                  ...d,
+                  emergencyContactName: e.target.value,
+                }));
                 setConfirmationMessage(null);
               }}
             />
@@ -503,7 +557,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
               className="mt-2"
               value={draft.emergencyContactPhone}
               onChange={(e) => {
-                setDraft((d) => ({ ...d, emergencyContactPhone: e.target.value }));
+                setDraft((d) => ({
+                  ...d,
+                  emergencyContactPhone: e.target.value,
+                }));
                 setConfirmationMessage(null);
               }}
             />
@@ -515,7 +572,10 @@ export function EmployeeProfileClient({ initialBearerToken }: Props) {
               className="mt-2"
               value={draft.emergencyContactRelationship}
               onChange={(e) => {
-                setDraft((d) => ({ ...d, emergencyContactRelationship: e.target.value }));
+                setDraft((d) => ({
+                  ...d,
+                  emergencyContactRelationship: e.target.value,
+                }));
                 setConfirmationMessage(null);
               }}
             />
