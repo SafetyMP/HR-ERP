@@ -8,10 +8,8 @@ export async function register(): Promise<void> {
   }
 
   // Skip during `next build` so OTLP exporters never run while prerendering.
-  if (
-    process.env.NEXT_PHASE === "phase-production-build" ||
-    nextCliIsBuildArgv()
-  ) {
+  // Use NEXT_PHASE only — avoid process.argv here (Next flags it for Edge analysis).
+  if (process.env.NEXT_PHASE === "phase-production-build") {
     return;
   }
 
@@ -24,17 +22,4 @@ export async function register(): Promise<void> {
 
   const { startNodeOtel } = await import("./lib/observability/node-sdk");
   startNodeOtel();
-}
-
-/** Heuristic when `NEXT_PHASE` is not set (fallback for `npx next build`). */
-function nextCliIsBuildArgv(): boolean {
-  const i = process.argv.findIndex(
-    (a) =>
-      a === "next" ||
-      a.endsWith("/next") ||
-      a.endsWith("\\next") ||
-      a.endsWith("/next.js") ||
-      a.endsWith("\\next.js"),
-  );
-  return i >= 0 && process.argv[i + 1] === "build";
 }

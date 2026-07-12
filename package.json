@@ -41,6 +41,7 @@
     "governance:audit:strict": "node scripts/governance-audit.mjs --strict",
     "governance:audit:write": "node scripts/governance-audit.mjs --write-report",
     "governance:protect-mcp": "node scripts/protect-mcp-shadow-check.mjs",
+    "governance:production-safety": "node scripts/production-safety-check.mjs",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "node scripts/db-push-guard.mjs",
