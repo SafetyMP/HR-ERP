@@ -19,7 +19,9 @@ test.describe("Feature 022 product shell", () => {
     ).toBeVisible();
     await expect(page.getByRole("link", { name: "Benefits" })).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: /Earnings statement/i }),
+      page
+        .locator("#main-content")
+        .getByRole("heading", { name: /Earnings statement/i }),
     ).toBeVisible();
   });
 
@@ -118,7 +120,9 @@ test.describe("Feature 022 product shell", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "Paystub" }).click();
     await expect(
-      page.getByRole("heading", { name: /Earnings statement/i }),
+      page
+        .locator("#main-content")
+        .getByRole("heading", { name: /Earnings statement/i }),
     ).toBeVisible();
   });
 });
