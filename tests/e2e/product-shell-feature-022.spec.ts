@@ -21,7 +21,7 @@ test.describe("Feature 022 product shell", () => {
     await expect(
       page
         .locator("#main-content")
-        .getByRole("heading", { name: /Earnings statement/i }),
+        .getByRole("heading", { name: "Earnings statement", exact: true }),
     ).toBeVisible();
   });
 
@@ -122,7 +122,7 @@ test.describe("Feature 022 product shell", () => {
     await expect(
       page
         .locator("#main-content")
-        .getByRole("heading", { name: /Earnings statement/i }),
+        .getByRole("heading", { name: "Earnings statement", exact: true }),
     ).toBeVisible();
   });
 });
