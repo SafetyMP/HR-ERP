@@ -25,11 +25,13 @@ jobs:
         run: node scripts/governance-generate-pr-body.mjs > /tmp/governance-pr-body.md
       - name: Strict PR body lint (T2+)
         if: github.event.pull_request.base.ref == 'main'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           node scripts/governance-lint.mjs diff --strict > /tmp/tier.txt 2>&1 || true
           TIER=$(grep -o 'T[0-4]' /tmp/tier.txt | head -1 || echo T0)
           if [ "$TIER" = "T2" ] || [ "$TIER" = "T3" ] || [ "$TIER" = "T4" ]; then
-            node scripts/governance-lint.mjs pr-body --strict --fail-on-under-tier --body "${{ github.event.pull_request.body }}"
+            node scripts/governance-lint.mjs pr-body --strict --fail-on-under-tier --body "$PR_BODY"
           fi
       - name: Append governance stub when missing
         uses: actions/github-script@v7
