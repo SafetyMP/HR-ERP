@@ -3,6 +3,11 @@
   "version": "2.13.7",
   "private": true,
   "license": "Apache-2.0",
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10.9.2 <11"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/SafetyMP/HR-ERP.git"
@@ -21,7 +26,7 @@
     "governance:lint:strict": "node scripts/governance-lint.mjs diff --strict",
     "governance:plan": "node scripts/governance-lint.mjs plan --json",
     "governance:pr-body": "node scripts/governance-generate-pr-body.mjs",
-    "governance:ci": "node scripts/governance-learning.mjs validate && node scripts/governance-learning.mjs reflect --dry-run && node scripts/governance-evidence.mjs verify --discover && node scripts/governance-cloud-session.mjs emit --hypothesis 'CI governance run' && node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --discover && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json && node scripts/governance-lint.mjs team-map --strict && node scripts/governance-sync-agent-rules.mjs --check && node scripts/governance-audit.mjs --quiet || true",
+    "governance:ci": "node scripts/governance-learning.mjs validate && node scripts/governance-learning.mjs reflect --dry-run && node scripts/governance-evidence.mjs verify --discover && node scripts/governance-cloud-session.mjs emit --hypothesis 'CI governance run' && node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --discover && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json && node scripts/governance-lint.mjs team-map --strict && node scripts/governance-sync-agent-rules.mjs --check && (node scripts/governance-audit.mjs --quiet || true)",
     "governance:learning:validate": "node scripts/governance-learning.mjs validate",
     "governance:reflect": "node scripts/governance-learning.mjs reflect",
     "governance:reflect:dry-run": "node scripts/governance-learning.mjs reflect --dry-run",
@@ -89,7 +94,8 @@
     "screenshots": "node scripts/capture-screenshots.mjs",
     "qa:fixtures": "tsx scripts/qa-generate-fixture-batch.ts",
     "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh",
-    "publish:check": "bash scripts/publish-check.sh"
+    "publish:check": "bash scripts/publish-check.sh",
+    "verify": "bash scripts/verify.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

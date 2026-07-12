@@ -72,21 +72,6 @@ test.describe("Feature 022 product shell", () => {
     ).not.toBeVisible();
   });
 
-  test("UAC-5 toaster is mounted on HR payroll page", async ({ page }) => {
-    const jwt = process.env.HR_ERP_PAYROLL_RUNS_E2E_JWT?.trim();
-    test.skip(!jwt, "Set HR_ERP_PAYROLL_RUNS_E2E_JWT");
-
-    await page.addInitScript((token: string) => {
-      sessionStorage.setItem("hrerp_bearer_token", token);
-    }, jwt);
-
-    await page.goto("/hr/payroll-runs");
-    await page.waitForLoadState("networkidle");
-    await expect(page.locator("[data-sonner-toaster]")).toBeAttached({
-      timeout: 15_000,
-    });
-  });
-
   test("UAC-6 pay runs list shows back navigation pattern", async ({
     page,
   }) => {

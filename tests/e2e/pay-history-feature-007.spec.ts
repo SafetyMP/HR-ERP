@@ -27,7 +27,8 @@ test.describe("Feature 007 pay history summaries", () => {
     await expect(
       page
         .getByRole("heading", { name: /^No historical pay periods yet$/ })
-        .or(page.getByText(/^Gross$/)),
+        .or(page.getByText(/^Gross$/))
+        .first(),
     ).toBeVisible({ timeout: 30_000 });
     expect(Date.now() - start).toBeLessThan(60_000);
   });

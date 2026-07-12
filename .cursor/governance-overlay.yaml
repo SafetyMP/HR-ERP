@@ -91,7 +91,7 @@ adaptation:
         - hr-domain-boundaries
       deprioritize: []
       minTier: T1
-      status: shadow
+      status: active
     - id: framework-prisma-stack
       pathPattern: prisma/**
       prefer:
@@ -99,4 +99,4 @@ adaptation:
         - hr-data-custody
       deprioritize: []
       minTier: T2
-      status: shadow
+      status: active

@@ -1,14 +1,11 @@
 name: Quality gate
 
-# Runs lint/build/unit + layered QA on PRs and feature-branch pushes only.
+# Runs lint/build/unit + layered QA on PRs only.
 # Merges to main/master run CI+QA exclusively via `deploy.yml` to avoid triple billing.
+# Feature-branch pushes without a PR do not trigger this workflow (use workflow_dispatch).
 
 on:
   pull_request:
-  push:
-    branches-ignore:
-      - main
-      - master
   workflow_dispatch:
 
 concurrency:

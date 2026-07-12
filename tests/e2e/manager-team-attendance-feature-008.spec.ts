@@ -43,7 +43,8 @@ test.describe("Feature 008 manager team attendance today", () => {
           page.getByRole("heading", {
             name: /Jordan|Sam|Jordy|Taylor|Chen|Rivera/i,
           }),
-        ),
+        )
+        .first(),
     ).toBeVisible({ timeout: 30_000 });
     expect(Date.now() - start).toBeLessThan(60_000);
   });

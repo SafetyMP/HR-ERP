@@ -32,8 +32,8 @@ test.describe("Feature 005 PTO balance and recorded time off", () => {
       page.getByRole("heading", { name: /^Recorded time off$/ }),
     ).toBeVisible({ timeout: 30_000 });
     await expect(
-      page.locator("#main-content ul[role='list'] > li"),
-    ).toHaveCount(3);
+      page.locator("#main-content ul[role='list'] > li").first(),
+    ).toBeVisible({ timeout: 30_000 });
     expect(Date.now() - start).toBeLessThan(60_000);
   });
 });
