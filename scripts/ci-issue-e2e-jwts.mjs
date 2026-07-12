@@ -8,11 +8,15 @@
 import dotenv from "dotenv";
 import { SignJWT } from "jose";
 
-dotenv.config();
+// dotenv v17 logs to stdout by default; that breaks `>> $GITHUB_ENV` in CI.
+dotenv.config({ quiet: true });
 
 const secret = (process.env.JWT_SECRET ?? "").trim();
-if (!secret || secret.length < 16) {
-  console.error("JWT_SECRET must be set (min 16 chars) for ci-issue-e2e-jwts");
+const MIN_JWT_SECRET_LENGTH = 32;
+if (!secret || secret.length < MIN_JWT_SECRET_LENGTH) {
+  console.error(
+    `JWT_SECRET must be set (min ${MIN_JWT_SECRET_LENGTH} chars) for ci-issue-e2e-jwts`,
+  );
   process.exit(1);
 }
 
