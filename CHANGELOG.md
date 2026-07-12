@@ -1,3 +1,21 @@
+## [2.13.5](https://github.com/SafetyMP/HR-ERP/compare/v2.13.4...v2.13.5) (2026-07-12)
+
+### Bug Fixes
+
+* **ci:** silence dotenv stdout when minting e2e JWTs for GITHUB_ENV ([e0edc5d](https://github.com/SafetyMP/HR-ERP/commit/e0edc5d12026ae443d45b862342aa74c168b76b9))
+* **ci:** silence dotenv stdout when minting e2e JWTs for GITHUB_ENV ([fa8db6e](https://github.com/SafetyMP/HR-ERP/commit/fa8db6ee9746f93ae8edf29b2af61bd6e4e5e51e))
+* **ci:** silence dotenv stdout when minting e2e JWTs for GITHUB_ENV ([100d5f2](https://github.com/SafetyMP/HR-ERP/commit/100d5f2caaaf344716869f447745fb58aa70602d))
+* **security:** apply dependency audit remediations ([a509aaa](https://github.com/SafetyMP/HR-ERP/commit/a509aaac145a0833aedf0e2703b9bcaf02d1509a))
+* **security:** close review findings and unblock CI quality gate ([b4fa24d](https://github.com/SafetyMP/HR-ERP/commit/b4fa24d5bfd75e59e85ae9712e8798b8b34795cc))
+* **security:** close review findings and unblock CI quality gate ([1fbc0c0](https://github.com/SafetyMP/HR-ERP/commit/1fbc0c09f5b9a039eed562fc36308a100671623e))
+* **security:** close review findings and unblock CI quality gate ([70272ad](https://github.com/SafetyMP/HR-ERP/commit/70272ad4cbba1e4087eb19bf5a9a2f137a6fedf6))
+* **security:** prevent GHA script injection in governance-pr-autofill ([78e8092](https://github.com/SafetyMP/HR-ERP/commit/78e80922ffe32fb9ce9a06a1140371dd0132a876))
+* **security:** prevent GHA script injection in governance-pr-autofill ([bcf52d4](https://github.com/SafetyMP/HR-ERP/commit/bcf52d46d1dfd3e9969493699853d387b4050c12))
+* **security:** prevent GHA script injection in governance-pr-autofill ([4f98a59](https://github.com/SafetyMP/HR-ERP/commit/4f98a5979bc338742f97726f1e4ef11b661f7638))
+* **test:** restore governance hook unit test typecheck compatibility ([e9bc38f](https://github.com/SafetyMP/HR-ERP/commit/e9bc38fcca50d2e1660a91127e2bd0958c8af250))
+* **test:** restore governance hook unit test typecheck compatibility ([2ded429](https://github.com/SafetyMP/HR-ERP/commit/2ded429ceecfddb4eee7e014a6e5ea4cceadd79d))
+* **test:** restore governance hook unit test typecheck compatibility ([8c73422](https://github.com/SafetyMP/HR-ERP/commit/8c73422b2b2f5e3bbfa2dcefab8c3d36261e102d))
+
 ## [2.13.4](https://github.com/SafetyMP/HR-ERP/compare/v2.13.3...v2.13.4) (2026-07-12)
 
 ### Bug Fixes
