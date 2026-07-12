@@ -1,3 +1,9 @@
+## [2.13.7](https://github.com/SafetyMP/HR-ERP/compare/v2.13.6...v2.13.7) (2026-07-12)
+
+### Bug Fixes
+
+* **security:** add CodeQL workflow ([fb3ee17](https://github.com/SafetyMP/HR-ERP/commit/fb3ee17189e9950bc7db928be8f8546c7a1b663e))
+
 ## [2.13.6](https://github.com/SafetyMP/HR-ERP/compare/v2.13.5...v2.13.6) (2026-07-12)
 
 ### Bug Fixes
