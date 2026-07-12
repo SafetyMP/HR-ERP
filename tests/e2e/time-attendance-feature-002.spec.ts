@@ -6,7 +6,9 @@ import { expect, test } from "@playwright/test";
  * HR_ERP_TIME_E2E_JWT — same pattern as paystub (employee + subject_employee_id + tenant).
  */
 test.describe("Feature 002 time and attendance", () => {
-  test("home → Time summary loads within 60s with session token", async ({ page }) => {
+  test("home → Time summary loads within 60s with session token", async ({
+    page,
+  }) => {
     const jwt = process.env.HR_ERP_TIME_E2E_JWT?.trim();
     test.skip(!jwt, "Set HR_ERP_TIME_E2E_JWT to run timed attendance UAC");
 
@@ -17,11 +19,17 @@ test.describe("Feature 002 time and attendance", () => {
     const start = Date.now();
     await page.goto("/");
     await page.getByRole("link", { name: /^Time$/ }).click();
-    await expect(page.getByRole("heading", { name: /^Time$/ }).first()).toBeVisible({
+    await expect(
+      page.getByRole("heading", { name: /^Time$/ }).first(),
+    ).toBeVisible({
       timeout: 30_000,
     });
     await expect(
-      page.getByText(/You’re clocked in|You’re not clocked in|No punches yet today/),
+      page
+        .getByText(
+          /You’re clocked in|You’re not clocked in|No punches yet today/,
+        )
+        .first(),
     ).toBeVisible({ timeout: 30_000 });
     expect(Date.now() - start).toBeLessThan(60_000);
   });

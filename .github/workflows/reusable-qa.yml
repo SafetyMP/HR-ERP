@@ -4,7 +4,6 @@ name: reusable-qa
 on:
   workflow_call:
 
-
 permissions:
   contents: read
 
@@ -69,8 +68,24 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: hr_erp
+          POSTGRES_PASSWORD: hr_erp_ci
+          POSTGRES_DB: hr_erp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U hr_erp -d hr_erp"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
     env:
+      DATABASE_URL: postgresql://hr_erp:hr_erp_ci@127.0.0.1:5432/hr_erp
       JWT_SECRET: ci-local-jwt-secret-change-me-32chars-minimum-xx
+      DEMO_TENANT_ID: default-tenant
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
@@ -79,6 +94,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - name: Seed demo data for Playwright UAC specs
+        run: npm run demo:bootstrap -- --skip-holiday
       - run: npx playwright install chromium --with-deps
       - name: Mint e2e JWTs for feature UAC specs
         run: node scripts/ci-issue-e2e-jwts.mjs --github-env >> $GITHUB_ENV

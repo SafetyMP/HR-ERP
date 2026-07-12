@@ -642,6 +642,141 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+  /payroll/runs/{periodId}/exceptions:
+    get:
+      operationId: listPayrollRunExceptions
+      summary: List payroll run exceptions for a period.
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /payroll/runs/{periodId}/filing-artifact:
+    get:
+      operationId: getPayrollRunFilingArtifact
+      summary: Fetch payroll filing artifact metadata for a period.
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      operationId: createPayrollRunFilingArtifact
+      summary: Generate payroll filing artifact for a period.
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /payroll/runs/{periodId}/lock:
+    post:
+      operationId: lockPayrollRun
+      summary: Lock a payroll period after review.
+      parameters:
+        - name: periodId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /payroll/runs/exceptions/{id}:
+    patch:
+      operationId: resolvePayrollRunException
+      summary: Resolve or update a payroll run exception.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /me/tax-documents/summary:
     get:
       operationId: getTaxDocumentsSummary
@@ -672,6 +807,30 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /me/benefits/life-events:
+    post:
+      operationId: submitMyBenefitLifeEvent
+      summary: Employee self-service benefit qualifying life event.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "201":
+          description: Created
           content:
             application/json:
               schema:
@@ -801,6 +960,72 @@ paths:
                 $ref: "#/components/schemas/GenericEnvelope"
         "401":
           $ref: "#/components/responses/Unauthorized"
+  /hr/analytics/ops-summary:
+    get:
+      operationId: getHrAnalyticsOpsSummary
+      summary: HR operations analytics summary.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /hr/benefits/life-events:
+    get:
+      operationId: listHrBenefitLifeEvents
+      summary: HR queue of employee benefit qualifying life events.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /hr/benefits/life-events/{id}:
+    patch:
+      operationId: reviewHrBenefitLifeEvent
+      summary: HR review of a benefit life event.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
   /hr/attendance/correction-requests/pending:
     get:
       operationId: listHrPendingAttendanceCorrectionRequests
@@ -1074,7 +1299,8 @@ paths:
                 jobRoleId: { type: string, format: uuid, nullable: true }
                 hiringManagerId: { type: string, format: uuid, nullable: true }
                 openings: { type: integer, minimum: 1, maximum: 1000 }
-                locationCountry: { type: string, pattern: "^[A-Z]{2}$", nullable: true }
+                locationCountry:
+                  { type: string, pattern: "^[A-Z]{2}$", nullable: true }
                 employmentType:
                   type: string
                   enum: [FULL_TIME, PART_TIME, CONTRACT, INTERN, TEMP]
@@ -1309,7 +1535,8 @@ paths:
               properties:
                 toStage:
                   type: string
-                  enum: [SCREENING, INTERVIEW, OFFER, HIRED, REJECTED, WITHDRAWN]
+                  enum:
+                    [SCREENING, INTERVIEW, OFFER, HIRED, REJECTED, WITHDRAWN]
                 proposalId:
                   type: string
                   format: uuid
@@ -1337,6 +1564,95 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /recruiting/applications/{id}/interviews:
+    get:
+      operationId: listRecruitingApplicationInterviews
+      summary: List interviews scheduled for an application.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      operationId: scheduleRecruitingApplicationInterview
+      summary: Schedule an interview for an application.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /recruiting/interviews/{id}:
+    patch:
+      operationId: updateRecruitingInterview
+      summary: Update interview status or notes.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /recruiting/offers:
     post:
       operationId: draftRecruitingOffer
@@ -1568,6 +1884,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /me/performance/reviews/{id}:
+    patch:
+      operationId: submitMyPerformanceReview
+      summary: Employee self-assessment for a performance review.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /manager/performance/goals:
     get:
       operationId: listTeamPerformanceGoals
@@ -1623,6 +1971,56 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+  /manager/performance/reviews:
+    get:
+      operationId: listTeamPerformanceReviews
+      summary: List performance reviews for direct reports.
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /manager/performance/reviews/{id}:
+    patch:
+      operationId: submitManagerPerformanceReview
+      summary: Manager assessment for a direct report performance review.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEnvelope"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /compensation/cycles:
     get:
       operationId: listCompensationCycles
@@ -1853,8 +2251,10 @@ paths:
                   type: string
                   maxLength: 40
                   nullable: true
-                externalProvider: { type: string, maxLength: 120, nullable: true }
-                externalContentRef: { type: string, maxLength: 500, nullable: true }
+                externalProvider:
+                  { type: string, maxLength: 120, nullable: true }
+                externalContentRef:
+                  { type: string, maxLength: 500, nullable: true }
       responses:
         "201":
           description: Created
@@ -2368,8 +2768,7 @@ components:
           properties:
             punch:
               type: object
-              required:
-                [id, employeeId, kind, occurredAt, idempotentReplay]
+              required: [id, employeeId, kind, occurredAt, idempotentReplay]
               properties:
                 id:
                   type: string
@@ -2398,8 +2797,7 @@ components:
           properties:
             punch:
               type: object
-              required:
-                [id, employeeId, kind, occurredAt, idempotentReplay]
+              required: [id, employeeId, kind, occurredAt, idempotentReplay]
               properties:
                 id:
                   type: string
@@ -2664,7 +3062,14 @@ components:
     PaystubHistorySummary:
       type: object
       required:
-        [paymentInstructionId, payPeriodStart, payPeriodEnd, currencyCode, grossPayMinor, netPayMinor]
+        [
+          paymentInstructionId,
+          payPeriodStart,
+          payPeriodEnd,
+          currencyCode,
+          grossPayMinor,
+          netPayMinor,
+        ]
       properties:
         paymentInstructionId:
           type: string
@@ -2698,7 +3103,8 @@ components:
                 $ref: "#/components/schemas/PaystubHistorySummary"
     ManagerTeamMemberAttendance:
       type: object
-      required: [employeeId, displayName, calendarDate, timeZone, clockedIn, punches]
+      required:
+        [employeeId, displayName, calendarDate, timeZone, clockedIn, punches]
       properties:
         employeeId:
           type: string
@@ -3178,7 +3584,8 @@ components:
               type: array
               items:
                 type: object
-                required: [paymentInstructionId, employeeId, employeeName, lines]
+                required:
+                  [paymentInstructionId, employeeId, employeeName, lines]
                 properties:
                   paymentInstructionId:
                     type: string

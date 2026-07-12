@@ -50,3 +50,17 @@ Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-h
 **Collaboration plane (Harness HITL):** [ADR 0020](specs/alignment/decisions/0020-collaboration-plane-harness-hitl.md) · `@hr-human-collaboration` · [collaboration-plan.md](specs/templates/collaboration-plan.md) — distinct from Product HITL in [docs/ai-governance/HITL_POLICY.md](docs/ai-governance/HITL_POLICY.md).
 
 **AI / MLOps pointers:** [SLM-first ADR](docs/architecture/adrs/0001-slm-first-inference-routing.md) · [Prediction logging](docs/ml/prediction-logging-and-drift.md) · [Agent MCP threat model](docs/security/agent-mcp-threat-model.md)
+
+## Definition of Done
+
+Before pushing a feature branch or opening a PR:
+
+```bash
+./scripts/verify.sh
+```
+
+This mirrors the `ci / web` job (lint, governance, build, unit tests). CI uses **Node 22 + npm 10** — `package.json` pins `packageManager: npm@10.9.2`; do not regenerate `package-lock.json` with npm 11.
+
+Full QA parity (integration + e2e) requires Postgres and demo seed — see [docs/QA.md](docs/QA.md#ci-e2e-prerequisites).
+
+**Agent learnings (portfolio):** [Github Manager docs/ci-hardening-learnings.md](https://github.com/SafetyMP/Github-Manager/blob/main/docs/ci-hardening-learnings.md)

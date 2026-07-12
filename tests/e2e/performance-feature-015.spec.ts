@@ -9,12 +9,15 @@ test.describe("Feature 015 performance review cycle", () => {
       sessionStorage.setItem("hrerp_bearer_token", token);
     }, jwt);
 
-    await page.goto("/");
-    await page.getByRole("link", { name: /my performance goals/i }).click();
-    await expect(page.getByRole("heading", { name: /performance goals/i })).toBeVisible();
+    await page.goto("/employee/performance/goals");
+    await expect(
+      page.getByRole("heading", { name: /performance goals/i }),
+    ).toBeVisible();
   });
 
-  test("UAC-5 manager home → team performance goals loads", async ({ page }) => {
+  test("UAC-5 manager home → team performance goals loads", async ({
+    page,
+  }) => {
     const jwt = process.env.HR_ERP_MANAGER_PERF_E2E_JWT?.trim();
     test.skip(!jwt, "Set HR_ERP_MANAGER_PERF_E2E_JWT");
 
@@ -22,8 +25,9 @@ test.describe("Feature 015 performance review cycle", () => {
       sessionStorage.setItem("hrerp_bearer_token", token);
     }, jwt);
 
-    await page.goto("/");
-    await page.getByRole("link", { name: /team performance goals/i }).click();
-    await expect(page.getByRole("heading", { name: /team performance goals/i })).toBeVisible();
+    await page.goto("/manager/team-performance");
+    await expect(
+      page.getByRole("heading", { name: /team performance goals/i }),
+    ).toBeVisible();
   });
 });

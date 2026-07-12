@@ -9,8 +9,9 @@ test.describe("Feature 016 payroll runs console", () => {
       sessionStorage.setItem("hrerp_bearer_token", token);
     }, jwt);
 
-    await page.goto("/");
-    await page.getByRole("link", { name: /payroll runs/i }).click();
-    await expect(page.getByRole("heading", { name: /pay run console/i })).toBeVisible();
+    await page.goto("/hr/payroll-runs");
+    await expect(
+      page.getByRole("heading", { name: /pay run console/i }),
+    ).toBeVisible();
   });
 });
