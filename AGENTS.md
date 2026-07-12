@@ -6,7 +6,7 @@
 
 This repository uses **Cursor 3 native runtime** + tier-gated skills. Start with [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md); hooks in [`.cursor/hooks.json`](.cursor/hooks.json).
 
-**Project skills (12):** [.cursor/skills/README.md](.cursor/skills/README.md) — canonical inventory; do not duplicate here.
+**Project skills (13):** [.cursor/skills/README.md](.cursor/skills/README.md) — canonical inventory; do not duplicate here.
 
 **Global skills (lazy):** `~/.cursor/skills/README.md` · invoke `@skill-router` at T1+ per `~/.cursor/rules/core-dynamic-skills.mdc`.
 
@@ -50,3 +50,11 @@ Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-h
 **Collaboration plane (Harness HITL):** [ADR 0020](specs/alignment/decisions/0020-collaboration-plane-harness-hitl.md) · `@hr-human-collaboration` · [collaboration-plan.md](specs/templates/collaboration-plan.md) — distinct from Product HITL in [docs/ai-governance/HITL_POLICY.md](docs/ai-governance/HITL_POLICY.md).
 
 **AI / MLOps pointers:** [SLM-first ADR](docs/architecture/adrs/0001-slm-first-inference-routing.md) · [Prediction logging](docs/ml/prediction-logging-and-drift.md) · [Agent MCP threat model](docs/security/agent-mcp-threat-model.md)
+
+## Definition of Done
+
+```bash
+./scripts/verify.sh
+```
+
+Substantive PRs must also pass the CI merge bar in [`.github/workflows/reusable-ci.yml`](.github/workflows/reusable-ci.yml) (`lint`, `typecheck`, `governance:ci`, `build`, `test`, `test:ui`, `test:payroll`).
