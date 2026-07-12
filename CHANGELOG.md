@@ -1,3 +1,9 @@
+## [2.13.6](https://github.com/SafetyMP/HR-ERP/compare/v2.13.5...v2.13.6) (2026-07-12)
+
+### Bug Fixes
+
+* **ci:** repair Scorecard workflow permissions block ([0a22937](https://github.com/SafetyMP/HR-ERP/commit/0a22937de64c2e77e61d3e7f693e8ec004048dec))
+
 ## [2.13.5](https://github.com/SafetyMP/HR-ERP/compare/v2.13.4...v2.13.5) (2026-07-12)
 
 ### Bug Fixes
