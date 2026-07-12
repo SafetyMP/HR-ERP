@@ -131,7 +131,7 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 | [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)   | **OSS scope** — reference app vs certified vendor; harness + optional agent-security pairing |
 | [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md)                   | Active forward plan (Track A/B/C, W1–W7)                                                     |
 | [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit                                                                      |
-| [`AGENTS.md`](AGENTS.md)                                                                             | Cursor orchestration, skills, Definition of Done                                             |
+| [`AGENTS.md`](AGENTS.md)                                                                             | Cursor orchestration, skills, verify contract (`./scripts/verify.sh`)                        |
 | [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md)                       | Operator loop (`governance:*`, `/multitask`)                                                 |
 
 ### Engineering and community

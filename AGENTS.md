@@ -6,7 +6,7 @@
 
 This repository uses **Cursor 3 native runtime** + tier-gated skills. Start with [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md); hooks in [`.cursor/hooks.json`](.cursor/hooks.json).
 
-**Project skills (12):** [.cursor/skills/README.md](.cursor/skills/README.md) — canonical inventory; do not duplicate here.
+**Project skills (13):** [.cursor/skills/README.md](.cursor/skills/README.md) — canonical inventory; do not duplicate here.
 
 **Global skills (lazy):** `~/.cursor/skills/README.md` · invoke `@skill-router` at T1+ per `~/.cursor/rules/core-dynamic-skills.mdc`.
 
