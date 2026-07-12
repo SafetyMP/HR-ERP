@@ -1,3 +1,9 @@
+## [2.13.4](https://github.com/SafetyMP/HR-ERP/compare/v2.13.3...v2.13.4) (2026-07-12)
+
+### Bug Fixes
+
+* **security:** prevent GHA script injection in governance-pr-autofill ([#63](https://github.com/SafetyMP/HR-ERP/issues/63)) ([eef0571](https://github.com/SafetyMP/HR-ERP/commit/eef05713c16f3c015279cc91653c2c2a9ba680a2))
+
 ## [2.13.3](https://github.com/SafetyMP/HR-ERP/compare/v2.13.2...v2.13.3) (2026-07-06)
 
 ### Bug Fixes
