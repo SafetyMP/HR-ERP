@@ -109,7 +109,7 @@ jobs:
             curl -fsS http://localhost:3000 >/dev/null 2>&1 && break
             sleep 2
           done
-          ./scripts/adversarial.sh
+          bash ./scripts/adversarial.sh
       - name: ESS friction scorecard (Track B)
         run: npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts tests/e2e/benefits-election-change-friction.spec.ts
       - name: FAILURE_SUMMARY reminder
