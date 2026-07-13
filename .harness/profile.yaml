@@ -52,6 +52,8 @@ harness_disclosure:
     bundles_applied: []
     verify:
       cmd: ./scripts/verify.sh
+      integration_cmd: ./scripts/integration-e2e.sh
+      hermetic_stop_only: true
       stop_verify: project-verify-on-stop
       cloud_verify: null
     agents_md_lines: null
