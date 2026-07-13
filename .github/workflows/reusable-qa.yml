@@ -102,6 +102,14 @@ jobs:
         run: node scripts/ci-issue-e2e-jwts.mjs --github-env >> $GITHUB_ENV
       - run: npm run check:ess-design-tokens
       - run: npm run test:e2e
+      - name: Adversarial tier
+        run: |
+          npm run start &
+          for _ in $(seq 1 60); do
+            curl -fsS http://localhost:3000 >/dev/null 2>&1 && break
+            sleep 2
+          done
+          ./scripts/adversarial.sh
       - name: ESS friction scorecard (Track B)
         run: npm run test:e2e -- tests/e2e/ess-friction-budgets.spec.ts tests/e2e/benefits-election-change-friction.spec.ts
       - name: FAILURE_SUMMARY reminder

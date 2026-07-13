@@ -1,0 +1,22 @@
+schema: threat-model/v1
+product: HR ERP
+updated: "2026-07-13"
+
+cells:
+  - id: compensation_cycles_list
+    method: GET
+    path: /api/v1/compensation/cycles
+    principals: [authenticated_user]
+    auth_mechanism: session_jwt
+    trust_boundary: authenticated_session
+    establishment_failure: "401 Unauthorized"
+
+deny_cases:
+  - id: anonymous_compensation_cycles
+    cell: compensation_cycles_list
+    principal: anonymous
+    fixture:
+      path: /api/v1/compensation/cycles
+    expect:
+      status: 401
+      reason_substring: Unauthorized

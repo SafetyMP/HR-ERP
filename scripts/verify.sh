@@ -44,3 +44,8 @@ npm run test:ui
 npm run test:payroll
 
 echo "verify: ok (ci/web parity; add DATABASE_URL + test:e2e for full QA)"
+
+if [[ -f ./scripts/check-threat-model.sh ]]; then
+  echo "==> threat model gate"
+  bash ./scripts/check-threat-model.sh
+fi
