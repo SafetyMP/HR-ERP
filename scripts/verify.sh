@@ -8,6 +8,10 @@ cd "$ROOT"
 
 export JWT_SECRET="${JWT_SECRET:-ci-local-jwt-secret-change-me-32chars-minimum-xx}"
 
+if [[ -x ./scripts/check-stub-canary.sh ]]; then
+  ./scripts/check-stub-canary.sh
+fi
+
 if command -v corepack >/dev/null 2>&1; then
   corepack enable >/dev/null 2>&1 || true
   corepack prepare npm@10.9.2 --activate >/dev/null 2>&1 || true
