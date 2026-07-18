@@ -98,7 +98,7 @@ for (const file of walk(LIB)) {
     for (const forbidden of rules) {
       if (
         text.includes(forbidden) ||
-        text.includes(`@/${forbidden.replace("lib/", "lib/")}`)
+        text.includes(`@/${forbidden}`)
       ) {
         console.error(
           `BOUNDARY ${relative(ROOT, file)} imports forbidden path ${forbidden}`,
