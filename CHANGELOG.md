@@ -1,3 +1,14 @@
+## [2.14.0](https://github.com/SafetyMP/HR-ERP/compare/v2.13.9...v2.14.0) (2026-07-18)
+
+### Features
+
+* **harness:** two-tier verify contract and stub canary ([#73](https://github.com/SafetyMP/HR-ERP/issues/73)) ([3f20aa2](https://github.com/SafetyMP/HR-ERP/commit/3f20aa2ce759d9746e14b55e33092ec80679168a))
+
+### Bug Fixes
+
+* **ci:** unblock semantic-release on protected main ([#100](https://github.com/SafetyMP/HR-ERP/issues/100)) ([cfa630c](https://github.com/SafetyMP/HR-ERP/commit/cfa630c2ef73ba976be014f641812c80ebef8fa1))
+* **security:** close audit P0/P1 gaps and harden site gates ([#99](https://github.com/SafetyMP/HR-ERP/issues/99)) ([1d1aefa](https://github.com/SafetyMP/HR-ERP/commit/1d1aefa5a92c218fed70bd514eed24a3e47e1650))
+
 ## [2.13.9](https://github.com/SafetyMP/HR-ERP/compare/v2.13.8...v2.13.9) (2026-07-12)
 
 ### Bug Fixes
