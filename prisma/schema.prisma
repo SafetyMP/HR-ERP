@@ -88,7 +88,6 @@ model Employee {
   holidayRegions                 EmployeeHolidayRegion[]
   meetingProposalsOrg            MeetingProposal[]              @relation("MeetingOrganizer")
   meetingParticipations          MeetingProposalParticipant[]
-  paymentInstructions            PaymentInstruction[]
   capacityAdjustments            CapacityAdjustment[]
   sprintCapacityRows             SprintCapacitySummary[]
   attendancePunches              AttendancePunch[]
@@ -111,7 +110,6 @@ model Employee {
   attendanceCorrectionsSubmitted AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionSubmittedBy")
   attendanceCorrectionsDecided   AttendanceCorrectionRequest[]  @relation("AttendanceCorrectionDecidedBy")
   employeeSeparationTasks        EmployeeSeparationTask[]
-  payrollRunExceptions           PayrollRunException[]
   benefitLifeEvents              BenefitLifeEvent[]
 
   @@unique([tenantId, email])
@@ -641,6 +639,7 @@ model PayrollRunException {
   id              String                    @id @default(uuid())
   tenantId        String                    @map("tenant_id")
   payrollPeriodId String                    @map("payroll_period_id")
+  /// Stable Core HR employee business id — no cross-context FK (ADR 0012).
   employeeId      String                    @map("employee_id")
   code            PayrollRunExceptionCode
   status          PayrollRunExceptionStatus @default(OPEN)
@@ -649,7 +648,6 @@ model PayrollRunException {
   updatedAt       DateTime                  @updatedAt @map("updated_at")
 
   payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
-  employee      Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   @@unique([tenantId, payrollPeriodId, employeeId, code])
   @@index([tenantId, payrollPeriodId, status])
@@ -701,6 +699,7 @@ model PayrollPartnerExport {
 model PaymentInstruction {
   id                    String   @id @default(uuid())
   tenantId              String   @map("tenant_id")
+  /// Stable Core HR employee business id — no cross-context FK (ADR 0012).
   employeeId            String   @map("employee_id")
   payrollPeriodId       String?  @map("payroll_period_id")
   reportingFxSnapshotId String?  @map("reporting_fx_snapshot_id")
@@ -709,7 +708,6 @@ model PaymentInstruction {
   updatedAt             DateTime @updatedAt @map("updated_at")
 
   organization        Organization   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  employee            Employee       @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   payrollPeriod       PayrollPeriod? @relation(fields: [payrollPeriodId], references: [id], onDelete: SetNull)
   reportingFxSnapshot FxSnapshot?    @relation(fields: [reportingFxSnapshotId], references: [id], onDelete: SetNull)
   lines               PayoutLine[]
@@ -737,8 +735,10 @@ model PayoutLine {
   @@map("payout_lines")
 }
 
+/// Payroll-owned FX quote. `tenantId` scopes tenant-specific rates; null = shared catalog.
 model FxSnapshot {
   id           String   @id @default(uuid())
+  tenantId     String?  @map("tenant_id")
   fromCurrency String   @map("from_currency")
   toCurrency   String   @map("to_currency")
   rate         Decimal  @db.Decimal(20, 10)
@@ -747,8 +747,25 @@ model FxSnapshot {
 
   paymentInstructions PaymentInstruction[]
 
+  @@index([tenantId])
   @@index([fromCurrency, toCurrency, quotedAt])
   @@map("fx_snapshots")
+}
+
+/// Phase-2 Kafka outbox (also created for Phase-1 so workers can start). Domain events
+/// route here when USE_DOMAIN_OUTBOX=1 or KAFKA_BROKERS is set.
+model DomainOutbox {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id")
+  topic        String
+  partitionKey String    @map("partition_key")
+  payload      Json
+  headers      Json      @default("{}")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  claimedAt    DateTime? @map("claimed_at")
+  publishedAt  DateTime? @map("published_at")
+
+  @@map("domain_outbox")
 }
 
 // --- Holidays & capacity ---

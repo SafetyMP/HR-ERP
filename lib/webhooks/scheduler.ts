@@ -1,4 +1,5 @@
 import { ApiError } from "@/lib/api/v1/errors";
+import { assertSafeDeliveryUrl } from "@/lib/integrations/http/assert-safe-delivery-url";
 import { prisma } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -45,10 +46,13 @@ export async function createSubscription(
     });
   }
   for (const t of input.eventTypes) assertEventTypeAllowed(t);
-  if (!/^https:\/\//.test(input.targetUrl)) {
+  try {
+    assertSafeDeliveryUrl(input.targetUrl);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "invalid_delivery_url";
     throw new ApiError(400, {
       code: "validation_error",
-      message: "targetUrl must use HTTPS",
+      message: `targetUrl rejected: ${message}`,
     });
   }
   if (input.secret.length < 32) {

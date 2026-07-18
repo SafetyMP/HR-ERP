@@ -7,9 +7,15 @@ import { oidcConfigured } from "@/lib/auth/oidc-session";
 /**
  * Single sign-in entry: enterprise OIDC when configured, otherwise Neon Auth (Google).
  */
+function safeReturnTo(raw: string | null): string {
+  const value = raw?.trim() || "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("returnTo")?.trim() || "/";
+  const returnTo = safeReturnTo(url.searchParams.get("returnTo"));
   const q = `returnTo=${encodeURIComponent(returnTo)}`;
 
   if (oidcConfigured()) {

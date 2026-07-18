@@ -1,3 +1,4 @@
+import { assertSafeDeliveryUrl } from "@/lib/integrations/http/assert-safe-delivery-url";
 import { canonicalJson, signWebhookPayload } from "@/lib/webhooks/signing";
 
 export interface WebhookHttpDeliveryRequest {
@@ -38,6 +39,7 @@ export async function deliverWebhookHttp(
   const timer = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
   try {
+    assertSafeDeliveryUrl(req.targetUrl);
     const res = await fetchImpl(req.targetUrl, {
       method: "POST",
       headers: {
@@ -48,6 +50,7 @@ export async function deliverWebhookHttp(
       },
       body: bodyText,
       signal: controller.signal,
+      redirect: "error",
     });
 
     if (res.ok) {

@@ -35,6 +35,8 @@ import {
   applyUkStatutoryDeductions,
   grossPeriodMinorFromComputation,
 } from "@/lib/payroll/uk-statutory-deductions";
+import { createMonolithPayrollPorts } from "@/lib/payroll/ports/monolith-prisma";
+import type { CoreHrEmployeeRead } from "@/lib/payroll/ports";
 import { prismaBatch } from "@/lib/prisma";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
@@ -45,6 +47,8 @@ export interface RunPayrollInput {
   employeeIds?: readonly string[];
   /** Replace prior PaymentInstruction rows for this period if true; default false (skip already-computed employees). */
   reissue?: boolean;
+  /** Override Core HR read port (tests / future Payroll DB cutover). */
+  coreHrRead?: CoreHrEmployeeRead;
 }
 
 export interface RunPayrollEmployeeResult {
@@ -144,27 +148,12 @@ export async function runPayroll(
       const periodEndExclusive = new Date(period.endDate);
       periodEndExclusive.setUTCDate(periodEndExclusive.getUTCDate() + 1);
 
-      const employeeWhere: Prisma.EmployeeWhereInput = {
+      const coreHrRead =
+        input.coreHrRead ?? createMonolithPayrollPorts().coreHrRead;
+      const employees = await coreHrRead.listEmployeesForPayRun(tx, {
         tenantId: auth.tenantId,
-        ...(input.employeeIds?.length
-          ? { id: { in: [...input.employeeIds] } }
-          : {}),
-      };
-      const employees = await tx.employee.findMany({
-        where: employeeWhere,
-        include: {
-          organization: {
-            select: {
-              jurisdictionCountry: true,
-              jurisdictionSubdivision: true,
-            },
-          },
-          compensationRecords: {
-            where: { effectiveFrom: { lte: period.endDate } },
-            orderBy: { effectiveFrom: "desc" },
-            take: 1,
-          },
-        },
+        employeeIds: input.employeeIds,
+        compensationEffectiveOnOrBefore: period.endDate,
       });
 
       const reissue = input.reissue === true;
@@ -174,11 +163,11 @@ export async function runPayroll(
       let withoutCompensation = 0;
 
       for (const employee of employees) {
-        const latest = employee.compensationRecords[0];
+        const latest = employee.compensation;
         if (!latest) {
           withoutCompensation += 1;
           results.push({
-            employeeId: employee.id,
+            employeeId: employee.employeeId,
             paymentInstructionId: "",
             inputsFingerprintSha256: "",
             netPayMinor: 0,
@@ -194,7 +183,7 @@ export async function runPayroll(
         const existing = await tx.paymentInstruction.findFirst({
           where: {
             tenantId: auth.tenantId,
-            employeeId: employee.id,
+            employeeId: employee.employeeId,
             payrollPeriodId: period.id,
           },
           select: { id: true },
@@ -203,7 +192,7 @@ export async function runPayroll(
         if (existing && !reissue) {
           skipped += 1;
           results.push({
-            employeeId: employee.id,
+            employeeId: employee.employeeId,
             paymentInstructionId: existing.id,
             inputsFingerprintSha256: "",
             netPayMinor: 0,
@@ -221,13 +210,13 @@ export async function runPayroll(
           const punches = await loadPunchesForPayPeriod(
             tx,
             auth.tenantId,
-            employee.id,
+            employee.employeeId,
             period.startDate,
             periodEndExclusive,
           );
           const geoId = resolvePremiumGeoId(
-            employee.organization.jurisdictionCountry,
-            employee.organization.jurisdictionSubdivision,
+            employee.jurisdictionCountry,
+            employee.jurisdictionSubdivision,
           );
           const premium = computePremiumAllocationForPunches({
             geoId,
@@ -255,19 +244,19 @@ export async function runPayroll(
             correlationId: auth.correlationId,
             payload: {
               payrollPeriodId: period.id,
-              employeeId: employee.id,
+              employeeId: employee.employeeId,
               ...premiumMemo,
             },
           });
         }
 
         const jurisdiction = resolvePayrollJurisdiction(
-          employee.organization.jurisdictionCountry,
+          employee.jurisdictionCountry,
         );
         const jurisdictionDefaults = pipelineDefaultsForJurisdiction(jurisdiction);
 
         const pipelineInput = buildPipelineInputForEmployee({
-          employeeId: employee.id,
+          employeeId: employee.employeeId,
           payRunId: period.id,
           periodStart: period.startDate,
           periodEndExclusive,
@@ -312,7 +301,7 @@ export async function runPayroll(
           : await tx.paymentInstruction.create({
               data: {
                 tenantId: auth.tenantId,
-                employeeId: employee.id,
+                employeeId: employee.employeeId,
                 payrollPeriodId: period.id,
                 memo,
               },
@@ -334,7 +323,7 @@ export async function runPayroll(
           : Number(computation.netPay.minor);
 
         results.push({
-          employeeId: employee.id,
+          employeeId: employee.employeeId,
           paymentInstructionId: paymentInstruction.id,
           inputsFingerprintSha256: computation.inputsFingerprintSha256,
           netPayMinor,

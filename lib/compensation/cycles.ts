@@ -75,7 +75,7 @@ export async function createCompensationCycle(
 
       await enqueueEvent(tx, {
         tenantId: auth.tenantId,
-        category: "domain.core_hr",
+        category: "domain.compensation",
         eventType: "compensation.cycle.created",
         correlationId: auth.correlationId,
         payload: { cycleId: cycle.id, cycleType: cycle.cycleType },
@@ -123,7 +123,7 @@ export async function transitionCompensationCycle(
 
       await enqueueEvent(tx, {
         tenantId: auth.tenantId,
-        category: "domain.core_hr",
+        category: "domain.compensation",
         eventType: "compensation.cycle.status_changed",
         correlationId: auth.correlationId,
         payload: { cycleId: cycle.id, fromStatus: cycle.status, toStatus },

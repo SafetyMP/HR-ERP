@@ -36,7 +36,7 @@ function loadEntries(): ScimTokenEntry[] {
     const tokens: string[] = [];
     for (const candidate of [value?.token, value?.previousToken]) {
       const t = candidate?.trim();
-      if (t && t.length >= 24 && !tokens.includes(t)) tokens.push(t);
+      if (t && t.length >= 32 && !tokens.includes(t)) tokens.push(t);
     }
     if (tenantId && tokens.length > 0) {
       entries.push({ tenantId, tokens });

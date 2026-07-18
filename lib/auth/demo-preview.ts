@@ -1,4 +1,3 @@
-import type { Role } from "@/lib/security/permissions";
 import { signHrAccessToken } from "@/lib/security/jwt";
 
 import {
@@ -25,22 +24,33 @@ export function demoPreviewTenantId(): string {
 /**
  * Server gate: one-click demo sessions.
  *
- * Enabled automatically on Vercel Preview and local dev. Production requires
- * ALLOW_DEMO_PREVIEW_SIGNIN=1 and ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1.
- * Set DISABLE_DEMO_PREVIEW_SIGNIN=1 to opt out on Preview.
+ * Local/dev: enabled unless DISABLE_DEMO_PREVIEW_SIGNIN=1.
+ * Vercel Preview: opt-in via ALLOW_DEMO_PREVIEW_SIGNIN=1 (Deployment Protection recommended).
+ * Production-like hosts (VERCEL_ENV=production OR NODE_ENV=production without Preview):
+ * requires ALLOW_DEMO_PREVIEW_SIGNIN=1 and ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1.
  */
 export function demoPreviewSignInServerEnabled(): boolean {
   if (process.env.DISABLE_DEMO_PREVIEW_SIGNIN === "1") return false;
 
-  if (process.env.VERCEL_ENV === "preview") return true;
-  if (process.env.NODE_ENV !== "production") return true;
+  const vercelEnv = process.env.VERCEL_ENV?.trim();
+  const isPreview = vercelEnv === "preview";
+  const isVercelProduction = vercelEnv === "production";
+  const isNodeProduction = process.env.NODE_ENV === "production";
+  // Self-host / Docker: NODE_ENV=production with no VERCEL_ENV must not skip the second gate.
+  const isProductionLike =
+    isVercelProduction || (isNodeProduction && !isPreview);
+
+  if (!isProductionLike && !isPreview) {
+    return true;
+  }
 
   if (process.env.ALLOW_DEMO_PREVIEW_SIGNIN !== "1") return false;
 
-  if (process.env.VERCEL_ENV === "production") {
+  if (isProductionLike) {
     return process.env.ALLOW_DEMO_PREVIEW_ON_PRODUCTION === "1";
   }
 
+  // Vercel Preview: single opt-in flag.
   return true;
 }
 

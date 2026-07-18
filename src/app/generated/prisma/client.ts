@@ -218,9 +218,15 @@ export type PaymentInstruction = Prisma.PaymentInstructionModel
 export type PayoutLine = Prisma.PayoutLineModel
 /**
  * Model FxSnapshot
- * 
+ * Payroll-owned FX quote. `tenantId` scopes tenant-specific rates; null = shared catalog.
  */
 export type FxSnapshot = Prisma.FxSnapshotModel
+/**
+ * Model DomainOutbox
+ * Phase-2 Kafka outbox (also created for Phase-1 so workers can start). Domain events
+ * route here when USE_DOMAIN_OUTBOX=1 or KAFKA_BROKERS is set.
+ */
+export type DomainOutbox = Prisma.DomainOutboxModel
 /**
  * Model HolidayCalendar
  * 

@@ -1,0 +1,146 @@
+{
+  "ticketId": "audit-remediation-2026-07-18",
+  "source": "cursor-plan:hr-erp-full-audit",
+  "summary": "Comprehensive HR ERP + GitHub flow audit with P0/P1 remediations: HS256 Docker break-glass, SSRF webhook gates, demo-preview self-host gate, outbox reclaim, CI python filter, governance hook library restore after site harness archive.",
+  "humanReadableOriginal": "Conduct full comprehensive audit of HR ERP and its supporting flow in Github; include remediation.",
+  "riskTier": "T3",
+  "poCheckpoint": "Feature brief / governing ADR: site contract AGENTS.md + bounded-contexts | UAC: verify.sh + adversarial.sh | gate Y | phase ADR: 0001",
+  "impact": "Closes production JWT break-glass baked into Docker, webhook SSRF, self-host demo session minting, and GitHub CI/docs drift that hid pipeline smoke failures.",
+  "reproduction": {
+    "steps": [
+      "Inspect Dockerfile for ALLOW_HS256_IN_PRODUCTION=1",
+      "Create webhook subscription to https://10.0.0.1/ and observe delivery path",
+      "Run ./scripts/verify.sh and ./scripts/adversarial.sh"
+    ]
+  },
+  "expectedVsActual": {
+    "expected": "Production Docker requires JWKS/OIDC; webhook delivery asserts safe URLs; verify green after remediations",
+    "actual": "Image baked HS256 break-glass; tenant webhooks skipped SSRF assert; python-pipelines skipped on all PRs; governance hooks deleted without library restore"
+  },
+  "environment": {
+    "os": "darwin",
+    "nodeVersion": "22.x",
+    "branch": "fix/audit-remediation-2026-07-17",
+    "commitSha": "181e8d768b0b145e5d4cc99d16c308dff04b168a"
+  },
+  "suspectedPaths": [
+    "Dockerfile",
+    "scripts/production-safety-check.mjs",
+    "scripts/verify.sh",
+    "scripts/adversarial.sh",
+    "scripts/check-lib-module-boundaries.mjs",
+    "lib/auth/**",
+    "lib/security/**",
+    "lib/core-hr/**",
+    "lib/profile/**",
+    "lib/scim/**",
+    "lib/integrations/**",
+    "lib/webhooks/**",
+    "lib/outbox/**",
+    "workers/outbox-publisher/**",
+    ".github/workflows/**",
+    "docs/community/github-branch-protection.md",
+    ".cursor/hooks/**",
+    ".cursor/governance/**",
+    ".cursor/governance-overlay.yaml",
+    ".corp-harness/**",
+    "_archives/harness-v4/**",
+    "tests/unit/**",
+    "specs/features/audit-remediation-2026-07-18/**",
+    "prisma/**",
+    "contracts/openapi/**",
+    ".env.example"
+  ],
+  "orchestratorHints": [
+    "sentinel on JWT/SSRF/demo-preview",
+    "release_ops on reusable-ci python path filter and deploy docs",
+    "custodian on outbox/RLS worker role docs"
+  ],
+  "conditionalSkills": [
+    "cc-skill-security-review",
+    "hr-domain-boundaries",
+    "hr-foundation-governance"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "scout",
+      "intent": "Readonly audit of architecture, security, integrations, GitHub flow",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "architect",
+      "intent": "Falsify bounded-context and single-writer invariants",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "intent": "Site harness vs archived Cursor harness governance surface",
+      "riskTier": "T3",
+      "parallelGroup": "discover",
+      "readonly": true
+    },
+    {
+      "function": "release_ops",
+      "intent": "CI reusable-ci python filter and branch-protection docs",
+      "riskTier": "T3",
+      "dependsOn": ["architect"]
+    },
+    {
+      "function": "custodian",
+      "intent": "Outbox claim reclaim and OUTBOX_DATABASE_URL RLS role contract",
+      "riskTier": "T3",
+      "dependsOn": ["architect"]
+    },
+    {
+      "function": "builder",
+      "intent": "Implement P0/P1 remediations with unit tests",
+      "riskTier": "T3",
+      "dependsOn": ["architect", "ai_governance_reviewer"]
+    },
+    {
+      "function": "sentinel",
+      "intent": "Security review of JWT, SSRF, demo-preview, SCIM rate limit",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate",
+      "readonly": true
+    },
+    {
+      "function": "verifier",
+      "intent": "verify.sh + adversarial.sh + targeted unit evidence",
+      "riskTier": "T3",
+      "dependsOn": ["builder"],
+      "parallelGroup": "validate"
+    }
+  ],
+  "requiresPoCheckpoint": true,
+  "reproStatus": "reproduced",
+  "compliancePosture": "NIST AI RMF",
+  "delegationDepth": 1,
+  "toolClasses": ["read_internal"],
+  "principal": "Human PO",
+  "revalidationConfirmed": true,
+  "outputReviewPassed": true,
+  "collaborationPlan": {
+    "phase": "complete",
+    "oversightMode": "HOTL",
+    "decisionOverview": "Standalone site audit + P0/P1 remediation; no corporate handoff bound",
+    "recommendedStrategyId": "A",
+    "revalidationRequired": true,
+    "revalidationConfirmed": true,
+    "outputReviewRequired": true,
+    "outputReviewPassed": true
+  },
+  "humanDecisionRecord": {
+    "chosenStrategy": "A",
+    "principal": "Human PO",
+    "recordedAt": "2026-07-18T17:40:00.000Z",
+    "rejectionHistory": []
+  },
+  "evidenceBundlePath": "specs/governance/evidence/bundles/audit-remediation-2026-07-18.json",
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/audit-remediation-2026-07-18.json"
+}

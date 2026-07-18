@@ -7,6 +7,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 export JWT_SECRET="${JWT_SECRET:-ci-local-jwt-secret-change-me-32chars-minimum-xx}"
+# Match CI `web` job (no Postgres): empty DATABASE_URL so dotenv cannot enable
+# integration suites that would ECONNREFUSED against a local .env DSN.
+export DATABASE_URL=""
 
 if [[ -x ./scripts/check-stub-canary.sh ]]; then
   ./scripts/check-stub-canary.sh
@@ -43,4 +46,4 @@ npm run test
 npm run test:ui
 npm run test:payroll
 
-echo "verify: ok (ci/web parity; add DATABASE_URL + test:e2e for full QA)"
+echo "verify: ok (ci/web parity; intentional omissions vs Actions: gitleaks, protect-mcp, publish-check, python-pipelines, integration/e2e — see docs/QA.md)"

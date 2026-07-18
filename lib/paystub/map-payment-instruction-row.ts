@@ -45,9 +45,8 @@ export type PaymentInstructionRowShape = {
   id: string;
   payrollPeriod: PeriodRow | null;
   lines: LineRow[];
-  employee: {
-    organization: { reportingCurrency: string | null };
-  };
+  /** Tenant org — PaymentInstruction no longer FK-joins Employee (ADR 0012). */
+  organization: { reportingCurrency: string | null };
 };
 
 export function mapPaymentInstructionToCurrentPaystub(
@@ -115,7 +114,7 @@ export function mapPaymentInstructionToSummary(
 
   const currencyCode =
     row.lines.find((l) => l.currencyCode)?.currencyCode ??
-    row.employee.organization.reportingCurrency ??
+    row.organization.reportingCurrency ??
     "USD";
 
   return {

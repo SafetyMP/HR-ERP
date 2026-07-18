@@ -5,14 +5,14 @@ import {
   fanOutWebhookDeliveries,
   isWebhookFanOutOnEnqueueEnabled,
 } from "@/lib/webhooks/fan-out";
+import { publishInprocBus } from "@/lib/outbox/inproc-bus";
 
 /**
- * Unified outbox API. Phase 1 (single Postgres) writes to `IntegrationOutbox`;
- * Phase 2 (per-context Postgres + Kafka) will route domain events to the
- * relevant `domain_outbox` table without changing this signature.
+ * Unified outbox API. Phase 1 writes to `IntegrationOutbox` by default.
+ * When `USE_DOMAIN_OUTBOX=1`, domain.* events also land in `domain_outbox`
+ * for the Kafka publisher worker. `KAFKA_BROKERS` alone does not enable dual-write.
  *
- * See `specs/alignment/decisions/0004-modular-monolith-phase1.md` for the
- * phasing decision.
+ * See `specs/alignment/decisions/0004-modular-monolith-phase1.md`.
  */
 export type DomainEventCategory =
   | "domain.core_hr"
@@ -21,6 +21,7 @@ export type DomainEventCategory =
   | "domain.recruiting"
   | "domain.learning"
   | "domain.governance"
+  | "domain.compensation"
   | "integration.vendor"
   | "integration.webhook";
 
@@ -45,13 +46,20 @@ export interface EnqueuedEvent {
 
 const DEFAULT_DEDUPE_WINDOW_MS = 60_000;
 
+function domainOutboxEnabled(category: DomainEventCategory): boolean {
+  if (!category.startsWith("domain.")) return false;
+  return process.env.USE_DOMAIN_OUTBOX === "1";
+}
+
+function topicFor(category: DomainEventCategory, eventType: string): string {
+  // hr.<context>.<aggregate>.v1 — derive context from category suffix.
+  const context = category.replace(/^domain\./, "").replace(/_/g, "-");
+  const aggregate = eventType.split(".")[0] || "event";
+  return `hr.${context}.${aggregate}.v1`;
+}
+
 /**
- * Persist a domain or integration event in the active transaction. Returns the
- * generated outbox row id and a finalized correlation id.
- *
- * Callers MUST invoke this within an `withAuthorizedTransaction` (or compatible
- * `prisma.$transaction`) so the row is committed atomically with the
- * domain mutation.
+ * Persist a domain or integration event in the active transaction.
  */
 export async function enqueueEvent(
   tx: Prisma.TransactionClient,
@@ -97,6 +105,22 @@ export async function enqueueEvent(
     select: { id: true },
   });
 
+  if (domainOutboxEnabled(input.category) && input.tenantId) {
+    await tx.domainOutbox.create({
+      data: {
+        tenantId: input.tenantId,
+        topic: topicFor(input.category, input.eventType),
+        partitionKey: input.tenantId,
+        payload: payloadValue,
+        headers: {
+          correlationId,
+          eventType: input.eventType,
+          category: input.category,
+        },
+      },
+    });
+  }
+
   if (
     input.tenantId &&
     isWebhookFanOutOnEnqueueEnabled() &&
@@ -108,6 +132,16 @@ export async function enqueueEvent(
       payload: input.payload,
     });
   }
+
+  // In-process bus after row insert (same TX — handlers must not commit separately).
+  await publishInprocBus({
+    tenantId: input.tenantId,
+    category: input.category,
+    eventType: input.eventType,
+    payload: input.payload,
+    correlationId,
+    outboxId: row.id,
+  });
 
   return {
     outboxId: row.id,

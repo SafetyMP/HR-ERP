@@ -19,6 +19,45 @@ const FORBIDDEN_CROSS_IMPORTS = {
   attendance: ["lib/payroll/"],
 };
 
+/**
+ * Domains that must not mutate Core HR Employee/Organization directly.
+ * Prefer lib/core-hr/writes. SCIM is an intentional second writer (IdP path).
+ */
+const FORBIDDEN_WRITER_MARKERS = {
+  integrations: [
+    "prisma.employee.upsert",
+    "prisma.employee.create",
+    "prisma.employee.update",
+    "prisma.employee.delete",
+    "tx.employee.upsert",
+    "tx.employee.create",
+    "tx.employee.update",
+    "tx.employee.delete",
+    "prisma.organization.upsert",
+    "tx.organization.upsert",
+  ],
+  profile: [
+    "prisma.employee.upsert",
+    "prisma.employee.create",
+    "prisma.employee.update",
+    "prisma.employee.delete",
+    "tx.employee.upsert",
+    "tx.employee.create",
+    "tx.employee.update",
+    "tx.employee.delete",
+  ],
+  payroll: [
+    "prisma.employee.upsert",
+    "prisma.employee.create",
+    "prisma.employee.update",
+    "prisma.employee.delete",
+    "tx.employee.upsert",
+    "tx.employee.create",
+    "tx.employee.update",
+    "tx.employee.delete",
+  ],
+};
+
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
     const full = join(dir, name);
@@ -43,19 +82,47 @@ let violations = 0;
 for (const file of walk(LIB)) {
   const domain = domainOf(file);
   const rules = FORBIDDEN_CROSS_IMPORTS[domain];
-  if (!rules) continue;
+  const writers = FORBIDDEN_WRITER_MARKERS[domain];
+  if (!rules && !writers) continue;
+
+  // Tenant ensure shim is a thin re-export of core-hr.
+  if (
+    domain === "integrations" &&
+    relative(LIB, file).replace(/\\/g, "/") === "integrations/tenant/ensure-org.ts"
+  ) {
+    continue;
+  }
 
   const text = readFileSync(file, "utf8");
-  for (const forbidden of rules) {
-    if (text.includes(forbidden) || text.includes(`@/${forbidden.replace("lib/", "lib/")}`)) {
-      console.error(`BOUNDARY ${relative(ROOT, file)} imports forbidden path ${forbidden}`);
-      violations += 1;
+  if (rules) {
+    for (const forbidden of rules) {
+      if (
+        text.includes(forbidden) ||
+        text.includes(`@/${forbidden}`)
+      ) {
+        console.error(
+          `BOUNDARY ${relative(ROOT, file)} imports forbidden path ${forbidden}`,
+        );
+        violations += 1;
+      }
+    }
+  }
+  if (writers) {
+    for (const marker of writers) {
+      if (text.includes(marker)) {
+        console.error(
+          `BOUNDARY ${relative(ROOT, file)} contains forbidden writer ${marker} — use lib/core-hr/writes`,
+        );
+        violations += 1;
+      }
     }
   }
 }
 
 if (violations > 0) {
-  console.error(`\n${violations} lib boundary violation(s). See docs/architecture/lib-module-boundaries.md`);
+  console.error(
+    `\n${violations} lib boundary violation(s). See docs/architecture/lib-module-boundaries.md`,
+  );
   process.exit(1);
 }
 

@@ -420,6 +420,7 @@ export const ModelName = {
   PaymentInstruction: 'PaymentInstruction',
   PayoutLine: 'PayoutLine',
   FxSnapshot: 'FxSnapshot',
+  DomainOutbox: 'DomainOutbox',
   HolidayCalendar: 'HolidayCalendar',
   HolidayObservation: 'HolidayObservation',
   HolidayObservationDate: 'HolidayObservationDate',
@@ -482,7 +483,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "employee" | "ptoRequest" | "timeOffRequest" | "hrCaseRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "payrollRunException" | "payrollFilingArtifact" | "payrollPartnerExport" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "employeeSeparationTask" | "attendancePunch" | "benefitEnrollment" | "onboardingTemplate" | "onboardingTemplateItem" | "taxYearDocument" | "benefitElectionChangeRequest" | "benefitLifeEvent" | "attendanceCorrectionRequest" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction" | "jobRequisition" | "candidate" | "jobApplication" | "jobInterview" | "performanceCycle" | "performanceGoal" | "performanceReviewV2" | "compensationCycle" | "compensationRecommendation" | "jobOffer" | "position" | "engagementSurvey" | "engagementResponse" | "webhookSubscription" | "webhookDelivery" | "learningCourse" | "learningEnrollment" | "workflowDefinition" | "workflowInstance" | "workflowStepInstance" | "cobraEvent"
+    modelProps: "organization" | "employee" | "ptoRequest" | "timeOffRequest" | "hrCaseRequest" | "department" | "jobRole" | "compensationRecord" | "ptoBalance" | "performanceReview" | "employmentEvent" | "skill" | "employeeSkill" | "roleSkillTarget" | "userAccount" | "userRoleAssignment" | "auditLog" | "analyticsFeatureSnapshot" | "churnScore" | "modelRegistry" | "marketBenchmark" | "benchmarkAlert" | "jobTitleMap" | "employeeWorkContext" | "workInterval" | "schedulingPreference" | "meetingProposal" | "meetingProposalSlot" | "meetingProposalParticipant" | "payrollPeriod" | "payrollRunException" | "payrollFilingArtifact" | "payrollPartnerExport" | "paymentInstruction" | "payoutLine" | "fxSnapshot" | "domainOutbox" | "holidayCalendar" | "holidayObservation" | "holidayObservationDate" | "employeeHolidayRegion" | "sprint" | "capacityAdjustment" | "sprintCapacitySummary" | "onboardingTask" | "employeeSeparationTask" | "attendancePunch" | "benefitEnrollment" | "onboardingTemplate" | "onboardingTemplateItem" | "taxYearDocument" | "benefitElectionChangeRequest" | "benefitLifeEvent" | "attendanceCorrectionRequest" | "integrationInstance" | "integrationOutbox" | "integrationDeadLetter" | "webhookEventDedupe" | "employeeVendorLink" | "aiExplanationSnapshot" | "aiDecisionProposal" | "governanceAuditEvent" | "highStakesEmploymentAction" | "jobRequisition" | "candidate" | "jobApplication" | "jobInterview" | "performanceCycle" | "performanceGoal" | "performanceReviewV2" | "compensationCycle" | "compensationRecommendation" | "jobOffer" | "position" | "engagementSurvey" | "engagementResponse" | "webhookSubscription" | "webhookDelivery" | "learningCourse" | "learningEnrollment" | "workflowDefinition" | "workflowInstance" | "workflowStepInstance" | "cobraEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3147,6 +3148,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FxSnapshotCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FxSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
+    DomainOutbox: {
+      payload: Prisma.$DomainOutboxPayload<ExtArgs>
+      fields: Prisma.DomainOutboxFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DomainOutboxFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DomainOutboxFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        findFirst: {
+          args: Prisma.DomainOutboxFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DomainOutboxFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        findMany: {
+          args: Prisma.DomainOutboxFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>[]
+        }
+        create: {
+          args: Prisma.DomainOutboxCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        createMany: {
+          args: Prisma.DomainOutboxCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DomainOutboxCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>[]
+        }
+        delete: {
+          args: Prisma.DomainOutboxDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        update: {
+          args: Prisma.DomainOutboxUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        deleteMany: {
+          args: Prisma.DomainOutboxDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DomainOutboxUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DomainOutboxUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>[]
+        }
+        upsert: {
+          args: Prisma.DomainOutboxUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DomainOutboxPayload>
+        }
+        aggregate: {
+          args: Prisma.DomainOutboxAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDomainOutbox>
+        }
+        groupBy: {
+          args: Prisma.DomainOutboxGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DomainOutboxGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DomainOutboxCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DomainOutboxCountAggregateOutputType> | number
         }
       }
     }
@@ -7157,6 +7232,7 @@ export type PayoutLineScalarFieldEnum = (typeof PayoutLineScalarFieldEnum)[keyof
 
 export const FxSnapshotScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   fromCurrency: 'fromCurrency',
   toCurrency: 'toCurrency',
   rate: 'rate',
@@ -7165,6 +7241,21 @@ export const FxSnapshotScalarFieldEnum = {
 } as const
 
 export type FxSnapshotScalarFieldEnum = (typeof FxSnapshotScalarFieldEnum)[keyof typeof FxSnapshotScalarFieldEnum]
+
+
+export const DomainOutboxScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  topic: 'topic',
+  partitionKey: 'partitionKey',
+  payload: 'payload',
+  headers: 'headers',
+  createdAt: 'createdAt',
+  claimedAt: 'claimedAt',
+  publishedAt: 'publishedAt'
+} as const
+
+export type DomainOutboxScalarFieldEnum = (typeof DomainOutboxScalarFieldEnum)[keyof typeof DomainOutboxScalarFieldEnum]
 
 
 export const HolidayCalendarScalarFieldEnum = {
@@ -8968,6 +9059,7 @@ export type GlobalOmitConfig = {
   paymentInstruction?: Prisma.PaymentInstructionOmit
   payoutLine?: Prisma.PayoutLineOmit
   fxSnapshot?: Prisma.FxSnapshotOmit
+  domainOutbox?: Prisma.DomainOutboxOmit
   holidayCalendar?: Prisma.HolidayCalendarOmit
   holidayObservation?: Prisma.HolidayObservationOmit
   holidayObservationDate?: Prisma.HolidayObservationDateOmit

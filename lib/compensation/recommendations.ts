@@ -96,7 +96,7 @@ export async function createRecommendation(
 
       await enqueueEvent(tx, {
         tenantId: auth.tenantId,
-        category: "domain.core_hr",
+        category: "domain.compensation",
         eventType: "compensation.recommendation.drafted",
         correlationId: auth.correlationId,
         payload: {
@@ -183,7 +183,7 @@ export async function applyRecommendation(
 
       await enqueueEvent(tx, {
         tenantId: auth.tenantId,
-        category: "domain.core_hr",
+        category: "domain.compensation",
         eventType: "compensation.recommendation.applied",
         correlationId: auth.correlationId,
         payload: {

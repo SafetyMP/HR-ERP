@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model FxSnapshot
- * 
+ * Payroll-owned FX quote. `tenantId` scopes tenant-specific rates; null = shared catalog.
  */
 export type FxSnapshotModel = runtime.Types.Result.DefaultSelection<Prisma.$FxSnapshotPayload>
 
@@ -36,6 +36,7 @@ export type FxSnapshotSumAggregateOutputType = {
 
 export type FxSnapshotMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   fromCurrency: string | null
   toCurrency: string | null
   rate: runtime.Decimal | null
@@ -45,6 +46,7 @@ export type FxSnapshotMinAggregateOutputType = {
 
 export type FxSnapshotMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   fromCurrency: string | null
   toCurrency: string | null
   rate: runtime.Decimal | null
@@ -54,6 +56,7 @@ export type FxSnapshotMaxAggregateOutputType = {
 
 export type FxSnapshotCountAggregateOutputType = {
   id: number
+  tenantId: number
   fromCurrency: number
   toCurrency: number
   rate: number
@@ -73,6 +76,7 @@ export type FxSnapshotSumAggregateInputType = {
 
 export type FxSnapshotMinAggregateInputType = {
   id?: true
+  tenantId?: true
   fromCurrency?: true
   toCurrency?: true
   rate?: true
@@ -82,6 +86,7 @@ export type FxSnapshotMinAggregateInputType = {
 
 export type FxSnapshotMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   fromCurrency?: true
   toCurrency?: true
   rate?: true
@@ -91,6 +96,7 @@ export type FxSnapshotMaxAggregateInputType = {
 
 export type FxSnapshotCountAggregateInputType = {
   id?: true
+  tenantId?: true
   fromCurrency?: true
   toCurrency?: true
   rate?: true
@@ -187,6 +193,7 @@ export type FxSnapshotGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type FxSnapshotGroupByOutputType = {
   id: string
+  tenantId: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal
@@ -219,6 +226,7 @@ export type FxSnapshotWhereInput = {
   OR?: Prisma.FxSnapshotWhereInput[]
   NOT?: Prisma.FxSnapshotWhereInput | Prisma.FxSnapshotWhereInput[]
   id?: Prisma.StringFilter<"FxSnapshot"> | string
+  tenantId?: Prisma.StringNullableFilter<"FxSnapshot"> | string | null
   fromCurrency?: Prisma.StringFilter<"FxSnapshot"> | string
   toCurrency?: Prisma.StringFilter<"FxSnapshot"> | string
   rate?: Prisma.DecimalFilter<"FxSnapshot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -229,6 +237,7 @@ export type FxSnapshotWhereInput = {
 
 export type FxSnapshotOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
   fromCurrency?: Prisma.SortOrder
   toCurrency?: Prisma.SortOrder
   rate?: Prisma.SortOrder
@@ -242,6 +251,7 @@ export type FxSnapshotWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.FxSnapshotWhereInput | Prisma.FxSnapshotWhereInput[]
   OR?: Prisma.FxSnapshotWhereInput[]
   NOT?: Prisma.FxSnapshotWhereInput | Prisma.FxSnapshotWhereInput[]
+  tenantId?: Prisma.StringNullableFilter<"FxSnapshot"> | string | null
   fromCurrency?: Prisma.StringFilter<"FxSnapshot"> | string
   toCurrency?: Prisma.StringFilter<"FxSnapshot"> | string
   rate?: Prisma.DecimalFilter<"FxSnapshot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -252,6 +262,7 @@ export type FxSnapshotWhereUniqueInput = Prisma.AtLeast<{
 
 export type FxSnapshotOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
   fromCurrency?: Prisma.SortOrder
   toCurrency?: Prisma.SortOrder
   rate?: Prisma.SortOrder
@@ -269,6 +280,7 @@ export type FxSnapshotScalarWhereWithAggregatesInput = {
   OR?: Prisma.FxSnapshotScalarWhereWithAggregatesInput[]
   NOT?: Prisma.FxSnapshotScalarWhereWithAggregatesInput | Prisma.FxSnapshotScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"FxSnapshot"> | string
+  tenantId?: Prisma.StringNullableWithAggregatesFilter<"FxSnapshot"> | string | null
   fromCurrency?: Prisma.StringWithAggregatesFilter<"FxSnapshot"> | string
   toCurrency?: Prisma.StringWithAggregatesFilter<"FxSnapshot"> | string
   rate?: Prisma.DecimalWithAggregatesFilter<"FxSnapshot"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -278,6 +290,7 @@ export type FxSnapshotScalarWhereWithAggregatesInput = {
 
 export type FxSnapshotCreateInput = {
   id?: string
+  tenantId?: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -288,6 +301,7 @@ export type FxSnapshotCreateInput = {
 
 export type FxSnapshotUncheckedCreateInput = {
   id?: string
+  tenantId?: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -298,6 +312,7 @@ export type FxSnapshotUncheckedCreateInput = {
 
 export type FxSnapshotUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -308,6 +323,7 @@ export type FxSnapshotUpdateInput = {
 
 export type FxSnapshotUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -318,6 +334,7 @@ export type FxSnapshotUncheckedUpdateInput = {
 
 export type FxSnapshotCreateManyInput = {
   id?: string
+  tenantId?: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -327,6 +344,7 @@ export type FxSnapshotCreateManyInput = {
 
 export type FxSnapshotUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -336,6 +354,7 @@ export type FxSnapshotUpdateManyMutationInput = {
 
 export type FxSnapshotUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -350,6 +369,7 @@ export type FxSnapshotNullableScalarRelationFilter = {
 
 export type FxSnapshotCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   fromCurrency?: Prisma.SortOrder
   toCurrency?: Prisma.SortOrder
   rate?: Prisma.SortOrder
@@ -363,6 +383,7 @@ export type FxSnapshotAvgOrderByAggregateInput = {
 
 export type FxSnapshotMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   fromCurrency?: Prisma.SortOrder
   toCurrency?: Prisma.SortOrder
   rate?: Prisma.SortOrder
@@ -372,6 +393,7 @@ export type FxSnapshotMaxOrderByAggregateInput = {
 
 export type FxSnapshotMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   fromCurrency?: Prisma.SortOrder
   toCurrency?: Prisma.SortOrder
   rate?: Prisma.SortOrder
@@ -401,6 +423,7 @@ export type FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput = {
 
 export type FxSnapshotCreateWithoutPaymentInstructionsInput = {
   id?: string
+  tenantId?: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -410,6 +433,7 @@ export type FxSnapshotCreateWithoutPaymentInstructionsInput = {
 
 export type FxSnapshotUncheckedCreateWithoutPaymentInstructionsInput = {
   id?: string
+  tenantId?: string | null
   fromCurrency: string
   toCurrency: string
   rate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -435,6 +459,7 @@ export type FxSnapshotUpdateToOneWithWhereWithoutPaymentInstructionsInput = {
 
 export type FxSnapshotUpdateWithoutPaymentInstructionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -444,6 +469,7 @@ export type FxSnapshotUpdateWithoutPaymentInstructionsInput = {
 
 export type FxSnapshotUncheckedUpdateWithoutPaymentInstructionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fromCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   toCurrency?: Prisma.StringFieldUpdateOperationsInput | string
   rate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -484,6 +510,7 @@ export type FxSnapshotCountOutputTypeCountPaymentInstructionsArgs<ExtArgs extend
 
 export type FxSnapshotSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   fromCurrency?: boolean
   toCurrency?: boolean
   rate?: boolean
@@ -495,6 +522,7 @@ export type FxSnapshotSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type FxSnapshotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   fromCurrency?: boolean
   toCurrency?: boolean
   rate?: boolean
@@ -504,6 +532,7 @@ export type FxSnapshotSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type FxSnapshotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   fromCurrency?: boolean
   toCurrency?: boolean
   rate?: boolean
@@ -513,6 +542,7 @@ export type FxSnapshotSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type FxSnapshotSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   fromCurrency?: boolean
   toCurrency?: boolean
   rate?: boolean
@@ -520,7 +550,7 @@ export type FxSnapshotSelectScalar = {
   source?: boolean
 }
 
-export type FxSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fromCurrency" | "toCurrency" | "rate" | "quotedAt" | "source", ExtArgs["result"]["fxSnapshot"]>
+export type FxSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "fromCurrency" | "toCurrency" | "rate" | "quotedAt" | "source", ExtArgs["result"]["fxSnapshot"]>
 export type FxSnapshotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paymentInstructions?: boolean | Prisma.FxSnapshot$paymentInstructionsArgs<ExtArgs>
   _count?: boolean | Prisma.FxSnapshotCountOutputTypeDefaultArgs<ExtArgs>
@@ -535,6 +565,7 @@ export type $FxSnapshotPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string | null
     fromCurrency: string
     toCurrency: string
     rate: runtime.Decimal
@@ -965,6 +996,7 @@ export interface Prisma__FxSnapshotClient<T, Null = never, ExtArgs extends runti
  */
 export interface FxSnapshotFieldRefs {
   readonly id: Prisma.FieldRef<"FxSnapshot", 'String'>
+  readonly tenantId: Prisma.FieldRef<"FxSnapshot", 'String'>
   readonly fromCurrency: Prisma.FieldRef<"FxSnapshot", 'String'>
   readonly toCurrency: Prisma.FieldRef<"FxSnapshot", 'String'>
   readonly rate: Prisma.FieldRef<"FxSnapshot", 'Decimal'>

@@ -55,11 +55,7 @@ export async function getCurrentPaystub(
         include: {
           payrollPeriod: true,
           lines: { orderBy: [{ sortOrder: "asc" }, { id: "asc" }] },
-          employee: {
-            select: {
-              organization: { select: { reportingCurrency: true } },
-            },
-          },
+          organization: { select: { reportingCurrency: true } },
         },
       });
 

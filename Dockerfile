@@ -16,6 +16,7 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 \
+    DOCKER_BUILD=1 \
     DATABASE_URL="postgresql://ci:ci@localhost:5432/ci" \
     JWT_SECRET="ci-docker-build-placeholder-32-chars-minimum-xx"
 RUN npx prisma generate
@@ -24,6 +25,8 @@ RUN npm run build
 # Distroless: no shell or package manager; nonroot UID/GID 65532
 FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
 WORKDIR /app
+# Do not bake ALLOW_HS256_IN_PRODUCTION here — production must use JWT_ISSUER_MODE=jwks|oidc
+# unless an orchestrator explicitly injects break-glass at deploy time.
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
@@ -36,5 +39,6 @@ COPY --from=builder --chown=65532:65532 /app/node_modules/.prisma ./node_modules
 COPY --from=builder --chown=65532:65532 /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 3000
-
+# Distroless has no shell; orchestrators should HTTP-probe /api/health.
 CMD ["server.js"]
+

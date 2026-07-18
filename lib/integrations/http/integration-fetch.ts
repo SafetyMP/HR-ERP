@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { assertSafeDeliveryUrl } from "@/lib/integrations/http/assert-safe-delivery-url";
 import { integrationMetricInc } from "@/lib/integrations/metrics";
 import {
   IntegrationHttpError,
@@ -36,10 +37,12 @@ export async function integrationFetch(
 
   const started = Date.now();
   try {
+    assertSafeDeliveryUrl(typeof url === "string" ? url : url.toString());
     const res = await fetch(url, {
       ...rest,
       headers,
       signal: ctrl.signal,
+      redirect: "error",
     });
     integrationMetricInc("integration_http_requests");
     integrationMetricInc(`integration_http_${res.status}`);

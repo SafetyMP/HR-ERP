@@ -13,6 +13,11 @@ export async function register(): Promise<void> {
     return;
   }
 
+  const { assertProductionJwtIssuerMode } = await import(
+    "./lib/security/assert-production-jwt-mode"
+  );
+  assertProductionJwtIssuerMode();
+
   const endpoint =
     process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ??
     process.env.OTEL_EXPORTER_OTLP_ENDPOINT;

@@ -1,3 +1,10 @@
+/**
+ * Kafka publisher for domain_outbox.
+ *
+ * OUTBOX_DATABASE_URL must use a dedicated role that can see all tenants
+ * (BYPASSRLS or equivalent). The app DSN (NOBYPASSRLS) cannot drain this table
+ * under FORCE ROW LEVEL SECURITY without per-tenant GUCs.
+ */
 import pg from "pg";
 import { Kafka, Partitioners, logLevel } from "kafkajs";
 
@@ -8,6 +15,8 @@ const KAFKA_BROKERS = (process.env.KAFKA_BROKERS ?? "localhost:9092")
   .filter(Boolean);
 const POLL_MS = Number(process.env.OUTBOX_POLL_MS ?? "1000");
 const BATCH_SIZE = Number(process.env.OUTBOX_BATCH_SIZE ?? "50");
+/** Stale claims older than this are reclaimed (crash after claim, before finalize). */
+const CLAIM_STALE_MS = Number(process.env.OUTBOX_CLAIM_STALE_MS ?? String(5 * 60_000));
 
 if (!OUTBOX_DATABASE_URL) {
   console.error("OUTBOX_DATABASE_URL is required");
@@ -36,7 +45,21 @@ type OutboxRow = {
   headers: Record<string, unknown> | null;
 };
 
+async function reclaimStaleClaims(client: pg.PoolClient): Promise<void> {
+  await client.query(
+    `
+    UPDATE domain_outbox
+    SET claimed_at = NULL
+    WHERE published_at IS NULL
+      AND claimed_at IS NOT NULL
+      AND claimed_at < now() - ($1::double precision * interval '1 millisecond')
+    `,
+    [CLAIM_STALE_MS],
+  );
+}
+
 async function claimBatch(client: pg.PoolClient): Promise<OutboxRow[]> {
+  await reclaimStaleClaims(client);
   const { rows } = await client.query<OutboxRow>(
     `
     WITH picked AS (
@@ -104,6 +127,7 @@ function kafkaHeaders(
 
 async function loop() {
   await producer.connect();
+  let failureBackoffMs = POLL_MS;
 
   for (;;) {
     const client = await pool.connect();
@@ -112,9 +136,13 @@ async function loop() {
       await client.query("BEGIN");
       rows = await claimBatch(client);
       await client.query("COMMIT");
+      failureBackoffMs = POLL_MS;
     } catch (err) {
       await client.query("ROLLBACK").catch(() => {});
       console.error("[outbox] claim failed", err);
+      failureBackoffMs = Math.min(failureBackoffMs * 2, 60_000);
+      await new Promise((r) => setTimeout(r, failureBackoffMs));
+      continue;
     } finally {
       client.release();
     }
@@ -150,6 +178,7 @@ async function loop() {
       } finally {
         done.release();
       }
+      failureBackoffMs = POLL_MS;
     } catch (err) {
       console.error("[outbox] publish failed", err);
       const revert = await pool.connect();
@@ -158,7 +187,8 @@ async function loop() {
       } finally {
         revert.release();
       }
-      await new Promise((r) => setTimeout(r, POLL_MS));
+      failureBackoffMs = Math.min(failureBackoffMs * 2, 60_000);
+      await new Promise((r) => setTimeout(r, failureBackoffMs));
     }
   }
 }
