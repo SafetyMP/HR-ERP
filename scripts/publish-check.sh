@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # OSS publish metadata + agent-harness audit for HR ERP.
 #
-# HR ERP intentionally ships an in-repo agent harness (.cursor/hooks.json, mcp.json,
-# skills/, governance/) — see docs/meta/evergreen-open-source-positioning.md.
+# HR ERP ships curated .cursor/ assets (mcp.json, skills/, governance/). Full
+# Cursor hooks.json may live at repo root (legacy harness) or under
+# `_archives/harness-v4/` when `.corp-harness/site.json` is present (site contract).
 # Generic `harness publish-doctor` warns on hooks/mcp; this script applies the
 # repo-specific policy and is the CI gate.
 set -euo pipefail
@@ -89,18 +90,30 @@ else
   ok "agent-harness-opencode" "No .opencode/ — agent harness not in tree (OK for public app repos)"
 fi
 
-# .cursor/ — HR ERP ships in-repo harness intentionally
+# .cursor/ — curated rules/skills/mcp; hooks.json optional under site contract
 cursor="$ROOT/.cursor"
 if [[ ! -d "$cursor" ]]; then
   bad "agent-harness-cursor" "Missing .cursor/ — HR ERP is a harness reference app; ship curated .cursor/"
 else
   harness_issues=()
+  site_contract=0
+  [[ -f "$ROOT/.corp-harness/site.json" ]] && site_contract=1
 
   [[ -d "$cursor/rules" ]] || harness_issues+=("missing .cursor/rules/")
-  [[ -f "$cursor/hooks.json" ]] || harness_issues+=("missing .cursor/hooks.json (governance hooks)")
   [[ -f "$cursor/mcp.json" ]] || harness_issues+=("missing .cursor/mcp.json (team MCP allowlist)")
   [[ -d "$cursor/skills" ]] || harness_issues+=("missing .cursor/skills/")
   [[ -f "$cursor/governance/governance-manifest.yaml" ]] || harness_issues+=("missing governance-manifest.yaml")
+
+  if [[ "$site_contract" -eq 1 ]]; then
+    # Site program: live Cursor hook entrypoint archived; keep shared libs for governance:ci.
+    [[ -f "$cursor/hooks/lib.mjs" ]] || harness_issues+=("missing .cursor/hooks/lib.mjs (governance scripts)")
+    archived_hooks="$(find "$ROOT/_archives" -path '*/.cursor/hooks.json' 2>/dev/null | head -n 1 || true)"
+    if [[ -z "$archived_hooks" && ! -f "$cursor/hooks.json" ]]; then
+      harness_issues+=("site contract requires archived or live .cursor/hooks.json")
+    fi
+  else
+    [[ -f "$cursor/hooks.json" ]] || harness_issues+=("missing .cursor/hooks.json (governance hooks)")
+  fi
 
   if git ls-files --error-unmatch .cursor/agents >/dev/null 2>&1 || [[ -d "$cursor/agents" && -n "$(git ls-files .cursor/agents/ 2>/dev/null)" ]]; then
     harness_issues+=("tracked .cursor/agents/ — keep custom agents local")
@@ -120,6 +133,8 @@ else
 
   if ((${#harness_issues[@]})); then
     bad "agent-harness-cursor" "${harness_issues[*]}"
+  elif [[ "$site_contract" -eq 1 ]]; then
+    ok "agent-harness-cursor" "site contract audited (rules/, mcp.json, skills/, governance/, hooks/lib.mjs; hooks.json archived)"
   else
     ok "agent-harness-cursor" "in-repo harness audited (rules/, hooks.json, mcp.json, skills/, governance/)"
   fi
