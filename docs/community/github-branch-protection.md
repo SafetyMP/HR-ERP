@@ -62,13 +62,14 @@ GH006: Protected branch update failed for refs/heads/main.
 Changes must be made through a pull request.
 ```
 
-Do **not** turn off PR requirements for all humans. Instead:
+Do **not** turn off PR requirements for all humans. Classic branch protection’s “Require a pull request” flag has **no bypass list** — even a PAT owned by an admin is rejected when **`enforce_admins`** is on. Use a **repository ruleset** instead:
 
-1. Create a **fine-grained PAT** (or GitHub App installation token) with **Contents: Read and write** on this repository. Store it as the repo Actions secret **`SEMANTIC_RELEASE_TOKEN`**.
-2. Add that token’s actor (the user who owns the PAT, or the GitHub App) to a **bypass** for the “require pull request” rule on `main` (Rulesets → Bypass list, or classic protection allow-list / ruleset bypass). `enforce_admins` means even org owners cannot push without this bypass.
-3. Re-run **Semantic release** via **Actions → Semantic release → Run workflow** (`workflow_dispatch`), or push any non-`[skip ci]` commit to `main`.
+1. **Ruleset on `main`:** rule type **Pull request** (approving review count may stay `0` if you only need the PR gate). Add a **Bypass** actor for the release identity — typically **GitHub Actions** (integration) so the workflow’s token can push `chore(release)` commits, and/or the user/App that owns `SEMANTIC_RELEASE_TOKEN`.
+2. **Remove** the classic protection toggle **Require a pull request before merging** once the ruleset is active (otherwise classic still blocks every direct push, including bypassed ruleset actors).
+3. Optional but recommended: create a **fine-grained PAT** (or GitHub App token) with **Contents: Read and write**, store as repo secret **`SEMANTIC_RELEASE_TOKEN`**, and include that actor on the ruleset bypass list. The workflow prefers this secret over `GITHUB_TOKEN` for checkout and for `GITHUB_TOKEN` / `GH_TOKEN` passed to `npx semantic-release`.
+4. Re-run **Semantic release** via **Actions → Semantic release → Run workflow** (`workflow_dispatch`), or push any non-`[skip ci]` commit to `main`.
 
-The workflow uses `secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN` for checkout and for `GITHUB_TOKEN` / `GH_TOKEN` passed to `npx semantic-release`. Without the secret **and** bypass, the job will keep failing at the git push step even though commit analysis succeeds.
+Without a ruleset bypass (and with classic require-PR removed or replaced), the job keeps failing at the git push step even though commit analysis succeeds.
 
 ### From **`OpenSSF Scorecard`**
 
