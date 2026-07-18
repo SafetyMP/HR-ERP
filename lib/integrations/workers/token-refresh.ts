@@ -1,25 +1,26 @@
-import { prisma } from "@/lib/prisma";
 import { VENDOR_KEYS } from "@/lib/integrations/constants";
 import {
   decryptTokenBundle,
   encryptTokenBundle,
   getIntegrationSecret,
 } from "@/lib/integrations/crypto/tokens";
+import { getDrainPrisma } from "@/lib/security/drain-db";
 
 const LOCK_MS = 45_000;
 
 /**
  * Proactively extends demo M2M tokens before expiry (simulated refresh).
- * Uses `refresh_lock_until` to reduce duplicate refresh under concurrency.
+ * Uses drain role for cross-tenant candidate scan + lock updates.
  */
 export async function refreshExpiringDemoTokens(
   lookaheadMs = 15 * 60 * 1000,
 ): Promise<number> {
+  const drain = getDrainPrisma();
   const horizon = new Date(Date.now() + lookaheadMs);
   const now = new Date();
   const lockUntil = new Date(Date.now() + LOCK_MS);
 
-  const candidates = await prisma.integrationInstance.findMany({
+  const candidates = await drain.integrationInstance.findMany({
     where: {
       vendorKey: VENDOR_KEYS.DEMO,
       health: "ACTIVE",
@@ -32,7 +33,7 @@ export async function refreshExpiringDemoTokens(
 
   let n = 0;
   for (const row of candidates) {
-    const updated = await prisma.integrationInstance.updateMany({
+    const updated = await drain.integrationInstance.updateMany({
       where: {
         id: row.id,
         OR: [{ refreshLockUntil: null }, { refreshLockUntil: { lte: now } }],
@@ -55,7 +56,7 @@ export async function refreshExpiringDemoTokens(
         expiresAtIso: newExpires.toISOString(),
       });
 
-      await prisma.integrationInstance.update({
+      await drain.integrationInstance.update({
         where: { id: row.id },
         data: {
           encryptedTokenBundle: next,
@@ -66,7 +67,7 @@ export async function refreshExpiringDemoTokens(
       });
       n += 1;
     } catch {
-      await prisma.integrationInstance.update({
+      await drain.integrationInstance.update({
         where: { id: row.id },
         data: {
           refreshLockUntil: null,

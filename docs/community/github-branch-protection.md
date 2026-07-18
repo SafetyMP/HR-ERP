@@ -90,6 +90,50 @@ As of 2026-07-18 on `SafetyMP/HR-ERP`:
 
 Until [`SafetyMP` teams](../../.github/CODEOWNERS) exist, CODEOWNERS may **skip unknown owners silently**. Provision teams or temporarily replace `@SafetyMP/<team>` with concrete `@login` handles via hotfix PR.
 
+## Executable checklist (Track A1)
+
+Apply in **Settings → Rules → Rulesets** (preferred) or classic branch protection on `main`. After one green PR, pick exact check labels from the UI.
+
+### Ruleset target
+
+- Branches: `main` (and `master` if used)
+- Enforcement: **Active**
+- Bypass: release actor only (`SEMANTIC_RELEASE_TOKEN` owner and/or OrganizationAdmin) — **not** all humans
+
+### Required status checks (exact Quality gate leaves)
+
+From [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate.yml) → reusables:
+
+| Check label (typical) | Source |
+| --- | --- |
+| `ci / web` | [`reusable-ci.yml`](../../.github/workflows/reusable-ci.yml) |
+| `ci / python-pipelines` | same |
+| `qa / vitest-shard (1)` | [`reusable-qa.yml`](../../.github/workflows/reusable-qa.yml) |
+| `qa / vitest-shard (2)` | same |
+| `qa / integration` | same |
+| `qa / e2e` | same |
+
+If the UI exposes parents `ci` / `qa` instead of leaves, require those parents **or** every leaf above.
+
+### Reviews
+
+- [ ] `required_approving_review_count` **≥ 1**
+- [ ] **Require review from CODEOWNERS** = on (only after teams in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) exist — otherwise GitHub skips unknown owners)
+- [ ] Do **not** re-enable classic “Require a pull request” without a ruleset bypass for semantic-release (see GH006 section)
+
+### Audit script (read-only)
+
+```bash
+chmod +x scripts/github-protection-audit.sh
+./scripts/github-protection-audit.sh
+```
+
+Expect exit `0` when rulesets/reviews/checks match this checklist. Paste stdout into the evidence bundle when closing Track A. **Not** wired into PR Quality gate (org state is not a code property).
+
+### CODEOWNERS preflight
+
+If `@SafetyMP/hr-erp-*` teams are missing, either provision them under the org or temporarily map paths to concrete `@login` handles in a follow-up PR **before** enabling require-CODEOWNERS.
+
 ## Dependabot
 
 Require the same **`Quality gate`** green on Dependabot branches. Maintain **no blanket auto-merge** without label opt-in documented in **[`CONTRIBUTING.md`](../../CONTRIBUTING.md)** (`deps:automerge` pattern).

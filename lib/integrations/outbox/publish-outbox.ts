@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/prisma";
 import { getIntegrationQueue } from "@/lib/integrations/queue/integration-queue";
 import type { IntegrationJobPayload } from "@/lib/integrations/workers/integration-job-processor";
 import type { JobType } from "@/lib/integrations/constants";
 import type { IntegrationOutbox } from "@/app/generated/prisma/client";
+import { getDrainPrisma } from "@/lib/security/drain-db";
 import { z } from "zod";
 
 const payloadSchema = z.object({
@@ -26,9 +26,10 @@ function outboxRowToJobPayload(row: IntegrationOutbox): IntegrationJobPayload {
   };
 }
 
-/** Poll unpublished outbox rows and push to BullMQ (at-least-once). */
+/** Poll unpublished outbox rows and push to BullMQ (at-least-once). Drain role. */
 export async function publishPendingOutboxBatch(limit = 50): Promise<number> {
-  const rows = await prisma.integrationOutbox.findMany({
+  const drain = getDrainPrisma();
+  const rows = await drain.integrationOutbox.findMany({
     where: { publishedAt: null },
     orderBy: { createdAt: "asc" },
     take: limit,
@@ -50,7 +51,7 @@ export async function publishPendingOutboxBatch(limit = 50): Promise<number> {
       if (!msg.includes("JobId")) throw e;
     }
 
-    await prisma.integrationOutbox.update({
+    await drain.integrationOutbox.update({
       where: { id: row.id },
       data: { publishedAt: new Date() },
     });

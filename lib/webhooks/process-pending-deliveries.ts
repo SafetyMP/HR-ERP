@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { deliverWebhookHttp } from "@/lib/webhooks/deliver-http";
 import { decryptWebhookSecret } from "@/lib/webhooks/secret-crypto";
+import { getDrainPrisma } from "@/lib/security/drain-db";
 
 const MAX_ATTEMPTS = 5;
 const BATCH_LIMIT = 25;
@@ -22,8 +22,9 @@ export interface ProcessPendingDeliveriesResult {
 export async function processPendingWebhookDeliveries(
   fetchImpl?: typeof fetch,
 ): Promise<ProcessPendingDeliveriesResult> {
+  const drain = getDrainPrisma();
   const now = new Date();
-  const rows = await prisma.webhookDelivery.findMany({
+  const rows = await drain.webhookDelivery.findMany({
     where: {
       status: { in: ["PENDING", "RETRY"] },
       scheduledAt: { lte: now },
@@ -43,7 +44,7 @@ export async function processPendingWebhookDeliveries(
 
   for (const row of rows) {
     if (!row.subscription.isActive) {
-      await prisma.webhookDelivery.update({
+      await drain.webhookDelivery.update({
         where: { id: row.id },
         data: {
           status: "FAILED",
@@ -69,7 +70,7 @@ export async function processPendingWebhookDeliveries(
     const attempt = row.attempt + 1;
 
     if (result.ok) {
-      await prisma.webhookDelivery.update({
+      await drain.webhookDelivery.update({
         where: { id: row.id },
         data: {
           status: "SUCCESS",
@@ -84,7 +85,7 @@ export async function processPendingWebhookDeliveries(
     }
 
     if (attempt >= MAX_ATTEMPTS) {
-      await prisma.webhookDelivery.update({
+      await drain.webhookDelivery.update({
         where: { id: row.id },
         data: {
           status: "FAILED",
@@ -95,7 +96,7 @@ export async function processPendingWebhookDeliveries(
       });
       failed += 1;
     } else {
-      await prisma.webhookDelivery.update({
+      await drain.webhookDelivery.update({
         where: { id: row.id },
         data: {
           status: "RETRY",

@@ -7,4 +7,8 @@ if [[ -f scripts/verify.sh ]] && grep -q 'TODO: add real test' scripts/verify.sh
   echo "STUB_CANARY: placeholder verify.sh" >&2
   exit 1
 fi
+if [[ -f scripts/adversarial.sh ]] && grep -q 'no program-bound probes yet' scripts/adversarial.sh; then
+  echo "STUB_CANARY: placeholder adversarial.sh" >&2
+  exit 1
+fi
 echo "check-stub-canary: ok"
