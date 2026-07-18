@@ -40,7 +40,7 @@ jobs:
           if(e.lastDemote?.demoted) console.log('- auto-demote:', e.lastDemote.reason);
           " >> "$GITHUB_STEP_SUMMARY"
       - name: Upload audit-latest.json
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: governance-audit-latest
           path: specs/features/agent-governance-alarp/audit-latest.json
