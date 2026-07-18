@@ -1,0 +1,32 @@
+{
+  "bundleId": "deferred-audit-remediations-2026-07-18",
+  "handoffPath": "specs/features/audit-remediation-2026-07-18/orchestrator-handoff.json",
+  "sessionLaneStateHash": null,
+  "auditLogTailHash": null,
+  "ciRunUrl": null,
+  "principal": "Deferred audit remediations",
+  "generatedAt": "2026-07-18T18:45:00.000Z",
+  "attestationVersion": 1,
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/audit-remediation-2026-07-18.json",
+  "signature": null,
+  "notes": {
+    "tracks": {
+      "A1": "scripts/github-protection-audit.sh + docs checklist — org Settings still red (human applies rulesets/reviews/CODEOWNERS)",
+      "A2": "scripts/vercel-ignored-build.mjs + ops docs — Ignored Build Step + GITHUB_TOKEN must be set in Vercel dashboard",
+      "B1": "scripts/adversarial-probes.ts wired via adversarial.sh (hermetic HS256/SSRF/demo-preview)",
+      "B2": "lib/security/drain-db.ts + drain-role pollers / DLQ / retention dual-role"
+    },
+    "verifySha256": "910dea0d91e6f8f81987b47f1f5edfb51ba57642611eb88fecce0b419f12ce47",
+    "verifyExit": 0,
+    "verifyLog": "/tmp/hr-erp-verify-deferred2.log",
+    "adversarialSha256": "1ccbfa1141304f491426f546fd7b57934de19f3034832f1fbf26d19512211e7d",
+    "adversarialExit": 0,
+    "adversarialLog": "/tmp/hr-erp-adversarial-deferred.log",
+    "githubProtectionAuditSha256": "d10cbbb111d36ddd7beeb4c747c7024965009b4e935e8eb1215006ff0c92cb8e",
+    "githubProtectionAuditExit": 1,
+    "githubProtectionAuditLog": "/tmp/hr-erp-protection-audit.txt",
+    "githubProtectionAuditNote": "Expected fail until maintainer applies ruleset + reviews per docs/community/github-branch-protection.md — paste green audit stdout here when Settings are live",
+    "vercelIgnoredBuildNote": "Dashboard: Ignored Build Step = node scripts/vercel-ignored-build.mjs; Production GITHUB_TOKEN with checks:read — not self-approved",
+    "priorBundle": "specs/governance/evidence/bundles/audit-remediation-2026-07-18.json"
+  }
+}

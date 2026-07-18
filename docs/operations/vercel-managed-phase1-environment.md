@@ -63,6 +63,30 @@ If workers or BullMQ are enabled in an environment, set a managed Redis URL (e.g
 
 [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) runs the same reusable `ci` and `qa` workflows on every push to `main` / `master`. It does **not** deploy. Production deployment is performed by Vercel's git integration on the same push.
 
+### Ignored Build Step (wait for Quality gate)
+
+Vercel’s git integration starts **before** GitHub Actions finishes. Mitigate the Production race with an **Ignored Build Step** that skips the build until required checks succeed:
+
+1. Vercel → Project → **Settings → Git → Ignored Build Step**
+2. Command: `node scripts/vercel-ignored-build.mjs`
+3. Environment variables (Production at minimum):
+
+| Variable | Purpose |
+|----------|---------|
+| `GITHUB_TOKEN` or `GH_TOKEN` | Fine-grained PAT or GitHub App token with **checks:read** (and metadata read) on this repo |
+| `GITHUB_REPOSITORY` | `SafetyMP/HR-ERP` (or rely on Vercel git identity if you extend the script) |
+| `VERCEL_GIT_COMMIT_SHA` | Injected by Vercel |
+| `VERCEL_ENV` | Injected (`production` / `preview`) |
+| `VERCEL_REQUIRED_CHECKS` | Optional comma-separated name substrings (defaults to Quality gate leaves) |
+
+Behavior ([`scripts/vercel-ignored-build.mjs`](../../scripts/vercel-ignored-build.mjs)):
+
+- Exit **0** → Vercel **skips** the build (checks not green yet, or Production token missing — fail closed).
+- Exit **1** → Vercel **builds**.
+- Preview without a token proceeds (dev velocity). Production without a token skips.
+
+Smoke: open a PR (Preview may build immediately); push to `main` and confirm Production stays skipped until `ci / web`, `python-pipelines`, vitest shards, `integration`, and `e2e` are green.
+
 If a future change reintroduces a GitHub-built deploy artifact, do **not** combine `vercel pull --environment=production` with `vercel deploy --prebuilt` — that combination is what created the May 2026 `invalid_token` outage (see RCA above). Acceptable alternatives:
 
 - Trigger Vercel's own build via `vercel deploy --prod` (no `--prebuilt`) so Vercel's runtime env wins.

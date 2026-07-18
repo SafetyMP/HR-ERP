@@ -19,7 +19,19 @@ const BATCH_SIZE = Number(process.env.OUTBOX_BATCH_SIZE ?? "50");
 const CLAIM_STALE_MS = Number(process.env.OUTBOX_CLAIM_STALE_MS ?? String(5 * 60_000));
 
 if (!OUTBOX_DATABASE_URL) {
-  console.error("OUTBOX_DATABASE_URL is required");
+  console.error("OUTBOX_DATABASE_URL is required (BYPASSRLS drain role for domain_outbox)");
+  process.exit(1);
+}
+
+if (
+  process.env.NODE_ENV === "production" &&
+  process.env.ALLOW_DRAIN_SAME_AS_APP !== "1" &&
+  process.env.DATABASE_URL?.trim() &&
+  OUTBOX_DATABASE_URL.trim() === process.env.DATABASE_URL.trim()
+) {
+  console.error(
+    "OUTBOX_DATABASE_URL must differ from DATABASE_URL in production (set ALLOW_DRAIN_SAME_AS_APP=1 only for local superuser)",
+  );
   process.exit(1);
 }
 

@@ -7,6 +7,8 @@ import "dotenv/config";
 import { prisma } from "@/lib/prisma";
 import { enqueueIntegrationJob } from "@/lib/integrations/queue/integration-queue";
 import type { IntegrationJobPayload } from "@/lib/integrations/workers/integration-job-processor";
+import { getDrainPrisma } from "@/lib/security/drain-db";
+import { withTenantTransaction } from "@/lib/security/with-tenant-transaction";
 
 async function main() {
   const id = process.argv[2];
@@ -15,7 +17,8 @@ async function main() {
     process.exit(1);
   }
 
-  const row = await prisma.integrationDeadLetter.findUnique({ where: { id } });
+  const drain = getDrainPrisma();
+  const row = await drain.integrationDeadLetter.findUnique({ where: { id } });
   if (!row) {
     console.error("Dead letter not found");
     process.exit(1);
@@ -25,10 +28,20 @@ async function main() {
   const replayJobId = `dlq-replay-${row.id}-${Date.now()}`;
   await enqueueIntegrationJob(payload, replayJobId);
 
-  await prisma.integrationDeadLetter.update({
-    where: { id: row.id },
-    data: { replayedAt: new Date() },
-  });
+  const tenantId = row.tenantId?.trim();
+  if (tenantId) {
+    await withTenantTransaction(prisma, tenantId, async (tx) => {
+      await tx.integrationDeadLetter.update({
+        where: { id: row.id },
+        data: { replayedAt: new Date() },
+      });
+    });
+  } else {
+    await drain.integrationDeadLetter.update({
+      where: { id: row.id },
+      data: { replayedAt: new Date() },
+    });
+  }
 
   console.log(`Replayed DLQ ${row.id} as job ${replayJobId}`);
 }

@@ -14,8 +14,9 @@
     "verifyPostSha256": "59ba6deb956136f38b0f76521ee267973eb9e27f705f2508b9466c0b27cc4ec5",
     "verifyPostExit": 0,
     "verifyPostLog": "/tmp/hr-erp-audit-evidence/verify-post.log",
-    "adversarial": "stub — no program-bound probes yet",
+    "adversarial": "superseded by hermetic probes — see deferred-audit-remediations-2026-07-18.json",
     "adversarialExit": 0,
+    "deferredBundle": "specs/governance/evidence/bundles/deferred-audit-remediations-2026-07-18.json",
     "gitHeadAtStart": "181e8d768b0b145e5d4cc99d16c308dff04b168a",
     "canvas": "hr-erp-full-audit-2026-07-18.canvas.tsx"
   }

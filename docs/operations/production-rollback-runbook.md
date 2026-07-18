@@ -16,6 +16,8 @@ Goal: Route users away from broken **application code** immediately.
 
 ### A1. Instant rollback on Vercel
 
+Primary prevention: configure the **Ignored Build Step** (`node scripts/vercel-ignored-build.mjs`) so Production does not build until GitHub Quality gate checks succeed — see [`vercel-managed-phase1-environment.md`](./vercel-managed-phase1-environment.md). Instant Rollback remains the secondary abort when a bad SHA still reaches Production.
+
 1. Open Vercel → Project → Deployments → select the prior **Production** deployment.
 2. Choose **Instant Rollback** (or equivalent “Promote to Production” the previous deployment).
 3. Optionally use CLI after `VERCEL_TOKEN` / org / project are configured locally:
