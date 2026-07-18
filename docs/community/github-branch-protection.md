@@ -53,6 +53,24 @@ Triggered only on **`push`** to `main/master` per [.github/workflows/deploy.yml]
 
 Optional — do **not** block `main` on GHCR publish or semantic-release unless infra teams demand it. Releases are driven by [`.github/workflows/semantic-release.yml`](../../.github/workflows/semantic-release.yml) → GitHub Release → [`.github/workflows/publish-ghcr.yml`](../../.github/workflows/publish-ghcr.yml).
 
+#### Semantic release + “Require a pull request” (GH006)
+
+`@semantic-release/git` pushes a `chore(release): … [skip ci]` commit (and tags) directly to `main`. With classic branch protection that **requires a pull request** (and especially with **`enforce_admins`**), the default Actions `GITHUB_TOKEN` is rejected:
+
+```text
+GH006: Protected branch update failed for refs/heads/main.
+Changes must be made through a pull request.
+```
+
+Do **not** turn off PR requirements for all humans. Classic branch protection’s “Require a pull request” flag has **no bypass list** — even a PAT owned by an admin is rejected when **`enforce_admins`** is on. Use a **repository ruleset** instead:
+
+1. **Ruleset on `main`:** rule type **Pull request** (approving review count may stay `0` if you only need the PR gate). Add a **Bypass** actor for the release identity — typically **GitHub Actions** (integration) so the workflow’s token can push `chore(release)` commits, and/or the user/App that owns `SEMANTIC_RELEASE_TOKEN`.
+2. **Remove** the classic protection toggle **Require a pull request before merging** once the ruleset is active (otherwise classic still blocks every direct push, including bypassed ruleset actors).
+3. Optional but recommended: create a **fine-grained PAT** (or GitHub App token) with **Contents: Read and write**, store as repo secret **`SEMANTIC_RELEASE_TOKEN`**, and include that actor on the ruleset bypass list. The workflow prefers this secret over `GITHUB_TOKEN` for checkout and for `GITHUB_TOKEN` / `GH_TOKEN` passed to `npx semantic-release`.
+4. Re-run **Semantic release** via **Actions → Semantic release → Run workflow** (`workflow_dispatch`), or push any non-`[skip ci]` commit to `main`.
+
+Without a ruleset bypass (and with classic require-PR removed or replaced), the job keeps failing at the git push step even though commit analysis succeeds.
+
 ### From **`OpenSSF Scorecard`**
 
 After the first successful run on `main`, [`.github/workflows/scorecard.yml`](../../.github/workflows/scorecard.yml) exposes **`Scorecard analysis`** as an optional required check and populates the README badge at [scorecard.dev](https://scorecard.dev).
