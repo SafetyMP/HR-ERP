@@ -1,6 +1,7 @@
 import type { Prisma } from "@/app/generated/prisma/client";
 
 import { ApiError } from "@/lib/api/v1/errors";
+import { updateEmployeeInTx } from "@/lib/core-hr/writes";
 import {
   buildMyProfileEnvelope,
   mapEmployeeRowToSelfProfile,
@@ -96,10 +97,7 @@ export async function patchMyProfile(
         });
       }
 
-      const updated = await tx.employee.update({
-        where: { id: employeeId },
-        data,
-      });
+      const updated = await updateEmployeeInTx(tx, employeeId, data);
 
       const profile = mapEmployeeRowToSelfProfile(updated);
       return buildMyProfileEnvelope(profile);

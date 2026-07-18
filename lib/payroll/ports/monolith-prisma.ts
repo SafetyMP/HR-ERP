@@ -1,6 +1,11 @@
+import type { Prisma } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
-import type { CoreHrEmployeeRead, EmployeeFact, PayrollDb } from "@/lib/payroll/ports";
+import type {
+  CoreHrEmployeeRead,
+  EmployeePayRunFact,
+  PayrollDb,
+} from "@/lib/payroll/ports";
 
 export const monolithCoreHrEmployeeRead: CoreHrEmployeeRead = {
   async getEmployeeFact(tenantId, employeeId) {
@@ -15,6 +20,50 @@ export const monolithCoreHrEmployeeRead: CoreHrEmployeeRead = {
       email: row.email,
       status: row.status,
     };
+  },
+
+  async listEmployeesForPayRun(tx, args) {
+    const employeeWhere: Prisma.EmployeeWhereInput = {
+      tenantId: args.tenantId,
+      ...(args.employeeIds?.length
+        ? { id: { in: [...args.employeeIds] } }
+        : {}),
+    };
+    const employees = await tx.employee.findMany({
+      where: employeeWhere,
+      include: {
+        organization: {
+          select: {
+            jurisdictionCountry: true,
+            jurisdictionSubdivision: true,
+          },
+        },
+        compensationRecords: {
+          where: { effectiveFrom: { lte: args.compensationEffectiveOnOrBefore } },
+          orderBy: { effectiveFrom: "desc" },
+          take: 1,
+        },
+      },
+    });
+
+    return employees.map((employee): EmployeePayRunFact => {
+      const latest = employee.compensationRecords[0];
+      return {
+        employeeId: employee.id,
+        tenantId: employee.tenantId,
+        email: employee.email,
+        status: employee.status,
+        jurisdictionCountry: employee.organization.jurisdictionCountry,
+        jurisdictionSubdivision: employee.organization.jurisdictionSubdivision,
+        compensation: latest
+          ? {
+              baseAmount: latest.baseAmount,
+              currency: latest.currency,
+              effectiveFrom: latest.effectiveFrom,
+            }
+          : null,
+      };
+    });
   },
 };
 

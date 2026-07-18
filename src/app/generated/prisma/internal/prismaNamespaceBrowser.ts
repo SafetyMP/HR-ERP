@@ -87,6 +87,7 @@ export const ModelName = {
   PaymentInstruction: 'PaymentInstruction',
   PayoutLine: 'PayoutLine',
   FxSnapshot: 'FxSnapshot',
+  DomainOutbox: 'DomainOutbox',
   HolidayCalendar: 'HolidayCalendar',
   HolidayObservation: 'HolidayObservation',
   HolidayObservationDate: 'HolidayObservationDate',
@@ -642,6 +643,7 @@ export type PayoutLineScalarFieldEnum = (typeof PayoutLineScalarFieldEnum)[keyof
 
 export const FxSnapshotScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   fromCurrency: 'fromCurrency',
   toCurrency: 'toCurrency',
   rate: 'rate',
@@ -650,6 +652,21 @@ export const FxSnapshotScalarFieldEnum = {
 } as const
 
 export type FxSnapshotScalarFieldEnum = (typeof FxSnapshotScalarFieldEnum)[keyof typeof FxSnapshotScalarFieldEnum]
+
+
+export const DomainOutboxScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  topic: 'topic',
+  partitionKey: 'partitionKey',
+  payload: 'payload',
+  headers: 'headers',
+  createdAt: 'createdAt',
+  claimedAt: 'claimedAt',
+  publishedAt: 'publishedAt'
+} as const
+
+export type DomainOutboxScalarFieldEnum = (typeof DomainOutboxScalarFieldEnum)[keyof typeof DomainOutboxScalarFieldEnum]
 
 
 export const HolidayCalendarScalarFieldEnum = {

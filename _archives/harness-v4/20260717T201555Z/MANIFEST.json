@@ -1,0 +1,24 @@
+{
+  "schema": "harness-v4-archive/v1",
+  "site_id": "hr-erp",
+  "local_path": "/Users/sagehart/Downloads/HR ERP",
+  "utc": "20260717T201555Z",
+  "archived": [
+    {
+      "path": ".harness",
+      "sha256": "111c6c017b6c5de10dd1e39c843f96996f63044e547cf79b7bd4ed759f5424db"
+    },
+    {
+      "path": ".cursor/hooks.json",
+      "sha256": "422b14c73cfc16070d411d5a41c55df66a9753530aa172bac19f1eb30b602f0b"
+    },
+    {
+      "path": ".cursor/hooks",
+      "sha256": "7e23c84ac4a6ab0adceacf22a1e0bdb591e57b66425f99320a490c3966b8c632"
+    },
+    {
+      "path": "AGENTS.md.pre-corp-site",
+      "sha256": "ba829ce4bc3fd883d129ac20a09dc84a90c7d6e895b665567bae68ffbc6a09f1"
+    }
+  ]
+}

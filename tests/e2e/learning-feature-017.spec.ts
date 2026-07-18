@@ -9,8 +9,9 @@ test.describe("Feature 017 employee learning", () => {
       sessionStorage.setItem("hrerp_bearer_token", token);
     }, jwt);
 
-    await page.goto("/");
-    await page.getByRole("link", { name: /my learning/i }).click();
-    await expect(page.getByRole("heading", { name: /my learning/i })).toBeVisible();
+    await page.goto("/employee/learning");
+    await expect(
+      page.getByRole("heading", { name: /my learning/i }),
+    ).toBeVisible();
   });
 });

@@ -1,3 +1,15 @@
+## [2.13.9](https://github.com/SafetyMP/HR-ERP/compare/v2.13.8...v2.13.9) (2026-07-12)
+
+### Bug Fixes
+
+* **security:** dependency audit round 2 ([#71](https://github.com/SafetyMP/HR-ERP/issues/71)) ([2926ef2](https://github.com/SafetyMP/HR-ERP/commit/2926ef2a9049626053e9d42b39c4220c107015d8))
+
+## [2.13.8](https://github.com/SafetyMP/HR-ERP/compare/v2.13.7...v2.13.8) (2026-07-12)
+
+### Bug Fixes
+
+* **ci:** restore production-safety script and fix instrumentation edge errors ([eb0f99b](https://github.com/SafetyMP/HR-ERP/commit/eb0f99b613cb7b80abde038748365f88808c121d))
+
 ## [2.13.7](https://github.com/SafetyMP/HR-ERP/compare/v2.13.6...v2.13.7) (2026-07-12)
 
 ### Bug Fixes

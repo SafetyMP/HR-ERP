@@ -2,23 +2,11 @@
 /**
  * CI: fail when production-unsafe public env patterns are committed.
  */
-import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join, extname } from "node:path";
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 
 const root = process.cwd();
 const issues = [];
-
-function walk(dir, files = []) {
-  if (!existsSync(dir)) return files;
-  for (const name of readdirSync(dir)) {
-    if (name === "node_modules" || name === ".git" || name === ".next") continue;
-    const p = join(dir, name);
-    const st = statSync(p);
-    if (st.isDirectory()) walk(p, files);
-    else files.push(p);
-  }
-  return files;
-}
 
 const envFiles = [
   ".env.example",
@@ -60,6 +48,47 @@ if (process.env.CI === "true" && process.env.NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN =
 
 if (process.env.CI === "true" && process.env.NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN === "true") {
   issues.push("CI build has NEXT_PUBLIC_DEMO_PREVIEW_SIGNIN=true");
+}
+
+// Credential leakage patterns in tracked docs / examples (not .env — gitignored).
+const credentialPatterns = [
+  {
+    re: /postgresql:\/\/[^:]+:[^@]+@[^.]+\.neon\.tech/i,
+    msg: "Neon DSN with embedded password",
+  },
+  {
+    re: /JWT_SECRET\s*=\s*["']?[a-f0-9]{48,}/i,
+    msg: "Likely real JWT_SECRET hex material",
+  },
+];
+
+for (const rel of [".env.example", "README.md", "docs/operations/vercel-managed-phase1-environment.md"]) {
+  const p = join(root, rel);
+  if (!existsSync(p)) continue;
+  const text = readFileSync(p, "utf8");
+  for (const { re, msg } of credentialPatterns) {
+    if (re.test(text)) {
+      issues.push(`${rel}: ${msg}`);
+    }
+  }
+}
+
+// Docker / committed break-glass must not be on by default in the image.
+const dockerfile = join(root, "Dockerfile");
+if (existsSync(dockerfile)) {
+  const text = readFileSync(dockerfile, "utf8");
+  const active = text
+    .split("\n")
+    .filter((line) => {
+      const t = line.trim();
+      return t && !t.startsWith("#");
+    })
+    .join("\n");
+  if (/ALLOW_HS256_IN_PRODUCTION\s*=\s*1/.test(active)) {
+    issues.push(
+      "Dockerfile sets ALLOW_HS256_IN_PRODUCTION=1 — must not be baked into the image; inject break-glass only at deploy time",
+    );
+  }
 }
 
 for (const msg of issues) console.error(`ERROR: ${msg}`);

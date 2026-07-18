@@ -1,0 +1,22 @@
+{
+  "bundleId": "audit-remediation-2026-07-18",
+  "handoffPath": "specs/features/audit-remediation-2026-07-18/orchestrator-handoff.json",
+  "sessionLaneStateHash": null,
+  "auditLogTailHash": null,
+  "ciRunUrl": null,
+  "principal": "Audit engagement",
+  "generatedAt": "2026-07-18T17:40:00.000Z",
+  "attestationVersion": 1,
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/audit-remediation-2026-07-18.json",
+  "signature": null,
+  "notes": {
+    "verifyBaselineSha256": "3134e4380772b017ceb394ba7ad0e17f1e799a3b7d64b7b77d5242b66b0ecb4d",
+    "verifyPostSha256": "59ba6deb956136f38b0f76521ee267973eb9e27f705f2508b9466c0b27cc4ec5",
+    "verifyPostExit": 0,
+    "verifyPostLog": "/tmp/hr-erp-audit-evidence/verify-post.log",
+    "adversarial": "stub — no program-bound probes yet",
+    "adversarialExit": 0,
+    "gitHeadAtStart": "181e8d768b0b145e5d4cc99d16c308dff04b168a",
+    "canvas": "hr-erp-full-audit-2026-07-18.canvas.tsx"
+  }
+}

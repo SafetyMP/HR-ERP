@@ -5,10 +5,16 @@ import { expect, test } from "@playwright/test";
  * Requires HR_ERP_E2E_JWT or role-specific JWTs from ci-issue-e2e-jwts.mjs.
  */
 test.describe("Competitive Tier 1 route smoke", () => {
-  test("home exposes sign-in and role previews", async ({ page }) => {
+  test("home exposes demo personas and developer preview links", async ({
+    page,
+  }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /HR ERP/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Sign in with your organization account/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Preview hub/i }).first()).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /Start as employee/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /Capability hub/i }),
+    ).toBeVisible();
   });
 });

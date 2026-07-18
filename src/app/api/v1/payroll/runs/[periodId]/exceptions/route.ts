@@ -38,12 +38,34 @@ export async function GET(
         });
         if (!period) return null;
 
-        return tx.payrollRunException.findMany({
+        const exceptions = await tx.payrollRunException.findMany({
           where: { payrollPeriodId: periodId, tenantId: auth.tenantId },
-          include: {
-            employee: { select: { id: true, firstName: true, lastName: true } },
-          },
           orderBy: [{ status: "asc" }, { createdAt: "desc" }],
+        });
+
+        const employeeIds = [...new Set(exceptions.map((e) => e.employeeId))];
+        const employees = employeeIds.length
+          ? await tx.employee.findMany({
+              where: { tenantId: auth.tenantId, id: { in: employeeIds } },
+              select: { id: true, firstName: true, lastName: true },
+            })
+          : [];
+        const byId = new Map(employees.map((e) => [e.id, e]));
+
+        return exceptions.map((r) => {
+          const employee = byId.get(r.employeeId);
+          return {
+            id: r.id,
+            payrollPeriodId: r.payrollPeriodId,
+            employeeId: r.employeeId,
+            employeeName:
+              [employee?.firstName, employee?.lastName].filter(Boolean).join(" ") ||
+              r.employeeId,
+            code: r.code,
+            status: r.status,
+            resolutionNote: r.resolutionNote,
+            createdAt: r.createdAt.toISOString(),
+          };
         });
       },
     );
@@ -55,19 +77,6 @@ export async function GET(
       });
     }
 
-    const data = rows.map((r) => ({
-      id: r.id,
-      payrollPeriodId: r.payrollPeriodId,
-      employeeId: r.employeeId,
-      employeeName:
-        [r.employee.firstName, r.employee.lastName].filter(Boolean).join(" ") ||
-        r.employeeId,
-      code: r.code,
-      status: r.status,
-      resolutionNote: r.resolutionNote,
-      createdAt: r.createdAt.toISOString(),
-    }));
-
-    return jsonV1({ exceptions: data }, auth.correlationId);
+    return jsonV1({ exceptions: rows }, auth.correlationId);
   });
 }

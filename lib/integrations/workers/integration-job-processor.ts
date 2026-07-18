@@ -12,9 +12,14 @@ import {
 } from "@/lib/integrations/crypto/tokens";
 import { ensureTenantOrganization } from "@/lib/integrations/tenant/ensure-org";
 import {
+  upsertEmployeeByEmail,
+  upsertEmployeeVendorLink,
+} from "@/lib/core-hr/writes";
+import {
   processBenefitsCarrierNotify,
   processPayrollPartnerExport,
 } from "@/lib/integrations/vendors/phase-c-handlers";
+import { withTenantTransaction } from "@/lib/security/with-tenant-transaction";
 
 export class IntegrationJobError extends Error {
   constructor(
@@ -35,26 +40,35 @@ export type IntegrationJobPayload = {
   data: Record<string, unknown>;
 };
 
-async function ensureDemoTokenValid(integrationId: string): Promise<void> {
-  const row = await prisma.integrationInstance.findUnique({
-    where: { id: integrationId },
-  });
-  if (!row?.encryptedTokenBundle || !row.tokenExpiresAt) return;
+async function ensureDemoTokenValid(
+  tenantId: string,
+  integrationId: string,
+): Promise<void> {
+  await withTenantTransaction(prisma, tenantId, async (tx) => {
+    const row = await tx.integrationInstance.findUnique({
+      where: { id: integrationId },
+    });
+    if (!row?.encryptedTokenBundle || !row.tokenExpiresAt) return;
 
-  if (row.tokenExpiresAt <= new Date()) {
-    throw new IntegrationJobError(
-      "Demo integration token expired — refresh worker or re-bootstrap",
-      "fatal",
+    if (row.tenantId !== tenantId) {
+      throw new IntegrationJobError("cross_tenant_integration", "fatal");
+    }
+
+    if (row.tokenExpiresAt <= new Date()) {
+      throw new IntegrationJobError(
+        "Demo integration token expired — refresh worker or re-bootstrap",
+        "fatal",
+      );
+    }
+
+    const bundle = decryptTokenBundle(
+      getIntegrationSecret(),
+      row.encryptedTokenBundle,
     );
-  }
-
-  const bundle = decryptTokenBundle(
-    getIntegrationSecret(),
-    row.encryptedTokenBundle,
-  );
-  if (!bundle.accessToken) {
-    throw new IntegrationJobError("Missing access token bundle", "fatal");
-  }
+    if (!bundle.accessToken) {
+      throw new IntegrationJobError("Missing access token bundle", "fatal");
+    }
+  });
 }
 
 async function upsertEmployeeFromDemoPayload(
@@ -65,36 +79,18 @@ async function upsertEmployeeFromDemoPayload(
 
   const mapped = demoConnector.mapExternalPersonToEmployee(payload);
 
-  const employee = await prisma.employee.upsert({
-    where: {
-      tenantId_email: { tenantId, email: mapped.email },
-    },
-    create: {
-      tenantId,
-      email: mapped.email,
-      firstName: mapped.firstName ?? null,
-      lastName: mapped.lastName ?? null,
-    },
-    update: {
-      firstName: mapped.firstName ?? null,
-      lastName: mapped.lastName ?? null,
-    },
+  const employee = await upsertEmployeeByEmail({
+    tenantId,
+    email: mapped.email,
+    firstName: mapped.firstName ?? null,
+    lastName: mapped.lastName ?? null,
   });
 
-  await prisma.employeeVendorLink.upsert({
-    where: {
-      employeeId_vendorKey: {
-        employeeId: employee.id,
-        vendorKey: DEMO_VENDOR_KEY,
-      },
-    },
-    create: {
-      tenantId,
-      employeeId: employee.id,
-      vendorKey: DEMO_VENDOR_KEY,
-      externalId: mapped.externalId,
-    },
-    update: { externalId: mapped.externalId },
+  await upsertEmployeeVendorLink({
+    tenantId,
+    employeeId: employee.id,
+    vendorKey: DEMO_VENDOR_KEY,
+    externalId: mapped.externalId,
   });
 
   integrationMetricInc("integration_domain_upserts");
@@ -130,7 +126,7 @@ export async function processIntegrationJob(
         throw new IntegrationJobError("missing integrationId", "fatal");
       }
 
-      await ensureDemoTokenValid(integrationId);
+      await ensureDemoTokenValid(tenantId, integrationId);
       const remote = await demoFetchPersonRemote(remoteId, correlationId);
       await upsertEmployeeFromDemoPayload(
         tenantId,

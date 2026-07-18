@@ -215,7 +215,6 @@ export type PayrollRunExceptionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
   payrollPeriod?: Prisma.XOR<Prisma.PayrollPeriodScalarRelationFilter, Prisma.PayrollPeriodWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
 }
 
 export type PayrollRunExceptionOrderByWithRelationInput = {
@@ -229,7 +228,6 @@ export type PayrollRunExceptionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   payrollPeriod?: Prisma.PayrollPeriodOrderByWithRelationInput
-  employee?: Prisma.EmployeeOrderByWithRelationInput
 }
 
 export type PayrollRunExceptionWhereUniqueInput = Prisma.AtLeast<{
@@ -247,7 +245,6 @@ export type PayrollRunExceptionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
   payrollPeriod?: Prisma.XOR<Prisma.PayrollPeriodScalarRelationFilter, Prisma.PayrollPeriodWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
 }, "id" | "tenantId_payrollPeriodId_employeeId_code">
 
 export type PayrollRunExceptionOrderByWithAggregationInput = {
@@ -283,13 +280,13 @@ export type PayrollRunExceptionScalarWhereWithAggregatesInput = {
 export type PayrollRunExceptionCreateInput = {
   id?: string
   tenantId: string
+  employeeId: string
   code: $Enums.PayrollRunExceptionCode
   status?: $Enums.PayrollRunExceptionStatus
   resolutionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payrollPeriod: Prisma.PayrollPeriodCreateNestedOneWithoutRunExceptionsInput
-  employee: Prisma.EmployeeCreateNestedOneWithoutPayrollRunExceptionsInput
 }
 
 export type PayrollRunExceptionUncheckedCreateInput = {
@@ -307,13 +304,13 @@ export type PayrollRunExceptionUncheckedCreateInput = {
 export type PayrollRunExceptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
   status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payrollPeriod?: Prisma.PayrollPeriodUpdateOneRequiredWithoutRunExceptionsNestedInput
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPayrollRunExceptionsNestedInput
 }
 
 export type PayrollRunExceptionUncheckedUpdateInput = {
@@ -343,6 +340,7 @@ export type PayrollRunExceptionCreateManyInput = {
 export type PayrollRunExceptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
   status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -415,48 +413,6 @@ export type PayrollRunExceptionMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type PayrollRunExceptionCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput> | Prisma.PayrollRunExceptionCreateWithoutEmployeeInput[] | Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput | Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.PayrollRunExceptionCreateManyEmployeeInputEnvelope
-  connect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-}
-
-export type PayrollRunExceptionUncheckedCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput> | Prisma.PayrollRunExceptionCreateWithoutEmployeeInput[] | Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput | Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.PayrollRunExceptionCreateManyEmployeeInputEnvelope
-  connect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-}
-
-export type PayrollRunExceptionUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput> | Prisma.PayrollRunExceptionCreateWithoutEmployeeInput[] | Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput | Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.PayrollRunExceptionUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.PayrollRunExceptionUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.PayrollRunExceptionCreateManyEmployeeInputEnvelope
-  set?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  disconnect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  delete?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  connect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  update?: Prisma.PayrollRunExceptionUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.PayrollRunExceptionUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.PayrollRunExceptionUpdateManyWithWhereWithoutEmployeeInput | Prisma.PayrollRunExceptionUpdateManyWithWhereWithoutEmployeeInput[]
-  deleteMany?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
-}
-
-export type PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput> | Prisma.PayrollRunExceptionCreateWithoutEmployeeInput[] | Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput | Prisma.PayrollRunExceptionCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.PayrollRunExceptionUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.PayrollRunExceptionUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.PayrollRunExceptionCreateManyEmployeeInputEnvelope
-  set?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  disconnect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  delete?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  connect?: Prisma.PayrollRunExceptionWhereUniqueInput | Prisma.PayrollRunExceptionWhereUniqueInput[]
-  update?: Prisma.PayrollRunExceptionUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.PayrollRunExceptionUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.PayrollRunExceptionUpdateManyWithWhereWithoutEmployeeInput | Prisma.PayrollRunExceptionUpdateManyWithWhereWithoutEmployeeInput[]
-  deleteMany?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
-}
-
 export type PayrollRunExceptionCreateNestedManyWithoutPayrollPeriodInput = {
   create?: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutPayrollPeriodInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutPayrollPeriodInput> | Prisma.PayrollRunExceptionCreateWithoutPayrollPeriodInput[] | Prisma.PayrollRunExceptionUncheckedCreateWithoutPayrollPeriodInput[]
   connectOrCreate?: Prisma.PayrollRunExceptionCreateOrConnectWithoutPayrollPeriodInput | Prisma.PayrollRunExceptionCreateOrConnectWithoutPayrollPeriodInput[]
@@ -507,78 +463,15 @@ export type EnumPayrollRunExceptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.PayrollRunExceptionStatus
 }
 
-export type PayrollRunExceptionCreateWithoutEmployeeInput = {
-  id?: string
-  tenantId: string
-  code: $Enums.PayrollRunExceptionCode
-  status?: $Enums.PayrollRunExceptionStatus
-  resolutionNote?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  payrollPeriod: Prisma.PayrollPeriodCreateNestedOneWithoutRunExceptionsInput
-}
-
-export type PayrollRunExceptionUncheckedCreateWithoutEmployeeInput = {
-  id?: string
-  tenantId: string
-  payrollPeriodId: string
-  code: $Enums.PayrollRunExceptionCode
-  status?: $Enums.PayrollRunExceptionStatus
-  resolutionNote?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PayrollRunExceptionCreateOrConnectWithoutEmployeeInput = {
-  where: Prisma.PayrollRunExceptionWhereUniqueInput
-  create: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput>
-}
-
-export type PayrollRunExceptionCreateManyEmployeeInputEnvelope = {
-  data: Prisma.PayrollRunExceptionCreateManyEmployeeInput | Prisma.PayrollRunExceptionCreateManyEmployeeInput[]
-  skipDuplicates?: boolean
-}
-
-export type PayrollRunExceptionUpsertWithWhereUniqueWithoutEmployeeInput = {
-  where: Prisma.PayrollRunExceptionWhereUniqueInput
-  update: Prisma.XOR<Prisma.PayrollRunExceptionUpdateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedUpdateWithoutEmployeeInput>
-  create: Prisma.XOR<Prisma.PayrollRunExceptionCreateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedCreateWithoutEmployeeInput>
-}
-
-export type PayrollRunExceptionUpdateWithWhereUniqueWithoutEmployeeInput = {
-  where: Prisma.PayrollRunExceptionWhereUniqueInput
-  data: Prisma.XOR<Prisma.PayrollRunExceptionUpdateWithoutEmployeeInput, Prisma.PayrollRunExceptionUncheckedUpdateWithoutEmployeeInput>
-}
-
-export type PayrollRunExceptionUpdateManyWithWhereWithoutEmployeeInput = {
-  where: Prisma.PayrollRunExceptionScalarWhereInput
-  data: Prisma.XOR<Prisma.PayrollRunExceptionUpdateManyMutationInput, Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeInput>
-}
-
-export type PayrollRunExceptionScalarWhereInput = {
-  AND?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
-  OR?: Prisma.PayrollRunExceptionScalarWhereInput[]
-  NOT?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
-  id?: Prisma.StringFilter<"PayrollRunException"> | string
-  tenantId?: Prisma.StringFilter<"PayrollRunException"> | string
-  payrollPeriodId?: Prisma.StringFilter<"PayrollRunException"> | string
-  employeeId?: Prisma.StringFilter<"PayrollRunException"> | string
-  code?: Prisma.EnumPayrollRunExceptionCodeFilter<"PayrollRunException"> | $Enums.PayrollRunExceptionCode
-  status?: Prisma.EnumPayrollRunExceptionStatusFilter<"PayrollRunException"> | $Enums.PayrollRunExceptionStatus
-  resolutionNote?: Prisma.StringNullableFilter<"PayrollRunException"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
-}
-
 export type PayrollRunExceptionCreateWithoutPayrollPeriodInput = {
   id?: string
   tenantId: string
+  employeeId: string
   code: $Enums.PayrollRunExceptionCode
   status?: $Enums.PayrollRunExceptionStatus
   resolutionNote?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employee: Prisma.EmployeeCreateNestedOneWithoutPayrollRunExceptionsInput
 }
 
 export type PayrollRunExceptionUncheckedCreateWithoutPayrollPeriodInput = {
@@ -618,48 +511,19 @@ export type PayrollRunExceptionUpdateManyWithWhereWithoutPayrollPeriodInput = {
   data: Prisma.XOR<Prisma.PayrollRunExceptionUpdateManyMutationInput, Prisma.PayrollRunExceptionUncheckedUpdateManyWithoutPayrollPeriodInput>
 }
 
-export type PayrollRunExceptionCreateManyEmployeeInput = {
-  id?: string
-  tenantId: string
-  payrollPeriodId: string
-  code: $Enums.PayrollRunExceptionCode
-  status?: $Enums.PayrollRunExceptionStatus
-  resolutionNote?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PayrollRunExceptionUpdateWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
-  status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
-  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  payrollPeriod?: Prisma.PayrollPeriodUpdateOneRequiredWithoutRunExceptionsNestedInput
-}
-
-export type PayrollRunExceptionUncheckedUpdateWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
-  status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
-  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PayrollRunExceptionUncheckedUpdateManyWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
-  status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
-  resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type PayrollRunExceptionScalarWhereInput = {
+  AND?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
+  OR?: Prisma.PayrollRunExceptionScalarWhereInput[]
+  NOT?: Prisma.PayrollRunExceptionScalarWhereInput | Prisma.PayrollRunExceptionScalarWhereInput[]
+  id?: Prisma.StringFilter<"PayrollRunException"> | string
+  tenantId?: Prisma.StringFilter<"PayrollRunException"> | string
+  payrollPeriodId?: Prisma.StringFilter<"PayrollRunException"> | string
+  employeeId?: Prisma.StringFilter<"PayrollRunException"> | string
+  code?: Prisma.EnumPayrollRunExceptionCodeFilter<"PayrollRunException"> | $Enums.PayrollRunExceptionCode
+  status?: Prisma.EnumPayrollRunExceptionStatusFilter<"PayrollRunException"> | $Enums.PayrollRunExceptionStatus
+  resolutionNote?: Prisma.StringNullableFilter<"PayrollRunException"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PayrollRunException"> | Date | string
 }
 
 export type PayrollRunExceptionCreateManyPayrollPeriodInput = {
@@ -676,12 +540,12 @@ export type PayrollRunExceptionCreateManyPayrollPeriodInput = {
 export type PayrollRunExceptionUpdateWithoutPayrollPeriodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.EnumPayrollRunExceptionCodeFieldUpdateOperationsInput | $Enums.PayrollRunExceptionCode
   status?: Prisma.EnumPayrollRunExceptionStatusFieldUpdateOperationsInput | $Enums.PayrollRunExceptionStatus
   resolutionNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPayrollRunExceptionsNestedInput
 }
 
 export type PayrollRunExceptionUncheckedUpdateWithoutPayrollPeriodInput = {
@@ -719,7 +583,6 @@ export type PayrollRunExceptionSelect<ExtArgs extends runtime.Types.Extensions.I
   createdAt?: boolean
   updatedAt?: boolean
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollRunException"]>
 
 export type PayrollRunExceptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -733,7 +596,6 @@ export type PayrollRunExceptionSelectCreateManyAndReturn<ExtArgs extends runtime
   createdAt?: boolean
   updatedAt?: boolean
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollRunException"]>
 
 export type PayrollRunExceptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -747,7 +609,6 @@ export type PayrollRunExceptionSelectUpdateManyAndReturn<ExtArgs extends runtime
   createdAt?: boolean
   updatedAt?: boolean
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollRunException"]>
 
 export type PayrollRunExceptionSelectScalar = {
@@ -765,27 +626,26 @@ export type PayrollRunExceptionSelectScalar = {
 export type PayrollRunExceptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "payrollPeriodId" | "employeeId" | "code" | "status" | "resolutionNote" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollRunException"]>
 export type PayrollRunExceptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
 export type PayrollRunExceptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
 export type PayrollRunExceptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payrollPeriod?: boolean | Prisma.PayrollPeriodDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
 
 export type $PayrollRunExceptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PayrollRunException"
   objects: {
     payrollPeriod: Prisma.$PayrollPeriodPayload<ExtArgs>
-    employee: Prisma.$EmployeePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     payrollPeriodId: string
+    /**
+     * Stable Core HR employee business id — no cross-context FK (ADR 0012).
+     */
     employeeId: string
     code: $Enums.PayrollRunExceptionCode
     status: $Enums.PayrollRunExceptionStatus
@@ -1187,7 +1047,6 @@ readonly fields: PayrollRunExceptionFieldRefs;
 export interface Prisma__PayrollRunExceptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   payrollPeriod<T extends Prisma.PayrollPeriodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollPeriodDefaultArgs<ExtArgs>>): Prisma.Prisma__PayrollPeriodClient<runtime.Types.Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

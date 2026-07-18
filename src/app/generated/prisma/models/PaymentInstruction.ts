@@ -207,7 +207,6 @@ export type PaymentInstructionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PaymentInstruction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstruction"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
   payrollPeriod?: Prisma.XOR<Prisma.PayrollPeriodNullableScalarRelationFilter, Prisma.PayrollPeriodWhereInput> | null
   reportingFxSnapshot?: Prisma.XOR<Prisma.FxSnapshotNullableScalarRelationFilter, Prisma.FxSnapshotWhereInput> | null
   lines?: Prisma.PayoutLineListRelationFilter
@@ -223,7 +222,6 @@ export type PaymentInstructionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
-  employee?: Prisma.EmployeeOrderByWithRelationInput
   payrollPeriod?: Prisma.PayrollPeriodOrderByWithRelationInput
   reportingFxSnapshot?: Prisma.FxSnapshotOrderByWithRelationInput
   lines?: Prisma.PayoutLineOrderByRelationAggregateInput
@@ -242,7 +240,6 @@ export type PaymentInstructionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"PaymentInstruction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstruction"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
   payrollPeriod?: Prisma.XOR<Prisma.PayrollPeriodNullableScalarRelationFilter, Prisma.PayrollPeriodWhereInput> | null
   reportingFxSnapshot?: Prisma.XOR<Prisma.FxSnapshotNullableScalarRelationFilter, Prisma.FxSnapshotWhereInput> | null
   lines?: Prisma.PayoutLineListRelationFilter
@@ -278,11 +275,11 @@ export type PaymentInstructionScalarWhereWithAggregatesInput = {
 
 export type PaymentInstructionCreateInput = {
   id?: string
+  employeeId: string
   memo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentInstructionsInput
-  employee: Prisma.EmployeeCreateNestedOneWithoutPaymentInstructionsInput
   payrollPeriod?: Prisma.PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput
   reportingFxSnapshot?: Prisma.FxSnapshotCreateNestedOneWithoutPaymentInstructionsInput
   lines?: Prisma.PayoutLineCreateNestedManyWithoutPaymentInstructionInput
@@ -302,11 +299,11 @@ export type PaymentInstructionUncheckedCreateInput = {
 
 export type PaymentInstructionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentInstructionsNestedInput
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPaymentInstructionsNestedInput
   payrollPeriod?: Prisma.PayrollPeriodUpdateOneWithoutPaymentInstructionsNestedInput
   reportingFxSnapshot?: Prisma.FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput
   lines?: Prisma.PayoutLineUpdateManyWithoutPaymentInstructionNestedInput
@@ -337,6 +334,7 @@ export type PaymentInstructionCreateManyInput = {
 
 export type PaymentInstructionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -443,48 +441,6 @@ export type PaymentInstructionUncheckedUpdateManyWithoutOrganizationNestedInput 
   deleteMany?: Prisma.PaymentInstructionScalarWhereInput | Prisma.PaymentInstructionScalarWhereInput[]
 }
 
-export type PaymentInstructionCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput> | Prisma.PaymentInstructionCreateWithoutEmployeeInput[] | Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput | Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.PaymentInstructionCreateManyEmployeeInputEnvelope
-  connect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-}
-
-export type PaymentInstructionUncheckedCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput> | Prisma.PaymentInstructionCreateWithoutEmployeeInput[] | Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput | Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.PaymentInstructionCreateManyEmployeeInputEnvelope
-  connect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-}
-
-export type PaymentInstructionUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput> | Prisma.PaymentInstructionCreateWithoutEmployeeInput[] | Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput | Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.PaymentInstructionUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.PaymentInstructionUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.PaymentInstructionCreateManyEmployeeInputEnvelope
-  set?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  disconnect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  delete?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  connect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  update?: Prisma.PaymentInstructionUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.PaymentInstructionUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.PaymentInstructionUpdateManyWithWhereWithoutEmployeeInput | Prisma.PaymentInstructionUpdateManyWithWhereWithoutEmployeeInput[]
-  deleteMany?: Prisma.PaymentInstructionScalarWhereInput | Prisma.PaymentInstructionScalarWhereInput[]
-}
-
-export type PaymentInstructionUncheckedUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput> | Prisma.PaymentInstructionCreateWithoutEmployeeInput[] | Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput | Prisma.PaymentInstructionCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.PaymentInstructionUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.PaymentInstructionUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.PaymentInstructionCreateManyEmployeeInputEnvelope
-  set?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  disconnect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  delete?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  connect?: Prisma.PaymentInstructionWhereUniqueInput | Prisma.PaymentInstructionWhereUniqueInput[]
-  update?: Prisma.PaymentInstructionUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.PaymentInstructionUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.PaymentInstructionUpdateManyWithWhereWithoutEmployeeInput | Prisma.PaymentInstructionUpdateManyWithWhereWithoutEmployeeInput[]
-  deleteMany?: Prisma.PaymentInstructionScalarWhereInput | Prisma.PaymentInstructionScalarWhereInput[]
-}
-
 export type PaymentInstructionCreateNestedManyWithoutPayrollPeriodInput = {
   create?: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutPayrollPeriodInput, Prisma.PaymentInstructionUncheckedCreateWithoutPayrollPeriodInput> | Prisma.PaymentInstructionCreateWithoutPayrollPeriodInput[] | Prisma.PaymentInstructionUncheckedCreateWithoutPayrollPeriodInput[]
   connectOrCreate?: Prisma.PaymentInstructionCreateOrConnectWithoutPayrollPeriodInput | Prisma.PaymentInstructionCreateOrConnectWithoutPayrollPeriodInput[]
@@ -585,10 +541,10 @@ export type PaymentInstructionUncheckedUpdateManyWithoutReportingFxSnapshotNeste
 
 export type PaymentInstructionCreateWithoutOrganizationInput = {
   id?: string
+  employeeId: string
   memo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employee: Prisma.EmployeeCreateNestedOneWithoutPaymentInstructionsInput
   payrollPeriod?: Prisma.PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput
   reportingFxSnapshot?: Prisma.FxSnapshotCreateNestedOneWithoutPaymentInstructionsInput
   lines?: Prisma.PayoutLineCreateNestedManyWithoutPaymentInstructionInput
@@ -645,61 +601,13 @@ export type PaymentInstructionScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstruction"> | Date | string
 }
 
-export type PaymentInstructionCreateWithoutEmployeeInput = {
-  id?: string
-  memo?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  organization: Prisma.OrganizationCreateNestedOneWithoutPaymentInstructionsInput
-  payrollPeriod?: Prisma.PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput
-  reportingFxSnapshot?: Prisma.FxSnapshotCreateNestedOneWithoutPaymentInstructionsInput
-  lines?: Prisma.PayoutLineCreateNestedManyWithoutPaymentInstructionInput
-}
-
-export type PaymentInstructionUncheckedCreateWithoutEmployeeInput = {
-  id?: string
-  tenantId: string
-  payrollPeriodId?: string | null
-  reportingFxSnapshotId?: string | null
-  memo?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  lines?: Prisma.PayoutLineUncheckedCreateNestedManyWithoutPaymentInstructionInput
-}
-
-export type PaymentInstructionCreateOrConnectWithoutEmployeeInput = {
-  where: Prisma.PaymentInstructionWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput>
-}
-
-export type PaymentInstructionCreateManyEmployeeInputEnvelope = {
-  data: Prisma.PaymentInstructionCreateManyEmployeeInput | Prisma.PaymentInstructionCreateManyEmployeeInput[]
-  skipDuplicates?: boolean
-}
-
-export type PaymentInstructionUpsertWithWhereUniqueWithoutEmployeeInput = {
-  where: Prisma.PaymentInstructionWhereUniqueInput
-  update: Prisma.XOR<Prisma.PaymentInstructionUpdateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedUpdateWithoutEmployeeInput>
-  create: Prisma.XOR<Prisma.PaymentInstructionCreateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedCreateWithoutEmployeeInput>
-}
-
-export type PaymentInstructionUpdateWithWhereUniqueWithoutEmployeeInput = {
-  where: Prisma.PaymentInstructionWhereUniqueInput
-  data: Prisma.XOR<Prisma.PaymentInstructionUpdateWithoutEmployeeInput, Prisma.PaymentInstructionUncheckedUpdateWithoutEmployeeInput>
-}
-
-export type PaymentInstructionUpdateManyWithWhereWithoutEmployeeInput = {
-  where: Prisma.PaymentInstructionScalarWhereInput
-  data: Prisma.XOR<Prisma.PaymentInstructionUpdateManyMutationInput, Prisma.PaymentInstructionUncheckedUpdateManyWithoutEmployeeInput>
-}
-
 export type PaymentInstructionCreateWithoutPayrollPeriodInput = {
   id?: string
+  employeeId: string
   memo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentInstructionsInput
-  employee: Prisma.EmployeeCreateNestedOneWithoutPaymentInstructionsInput
   reportingFxSnapshot?: Prisma.FxSnapshotCreateNestedOneWithoutPaymentInstructionsInput
   lines?: Prisma.PayoutLineCreateNestedManyWithoutPaymentInstructionInput
 }
@@ -743,11 +651,11 @@ export type PaymentInstructionUpdateManyWithWhereWithoutPayrollPeriodInput = {
 
 export type PaymentInstructionCreateWithoutLinesInput = {
   id?: string
+  employeeId: string
   memo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentInstructionsInput
-  employee: Prisma.EmployeeCreateNestedOneWithoutPaymentInstructionsInput
   payrollPeriod?: Prisma.PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput
   reportingFxSnapshot?: Prisma.FxSnapshotCreateNestedOneWithoutPaymentInstructionsInput
 }
@@ -781,11 +689,11 @@ export type PaymentInstructionUpdateToOneWithWhereWithoutLinesInput = {
 
 export type PaymentInstructionUpdateWithoutLinesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentInstructionsNestedInput
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPaymentInstructionsNestedInput
   payrollPeriod?: Prisma.PayrollPeriodUpdateOneWithoutPaymentInstructionsNestedInput
   reportingFxSnapshot?: Prisma.FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput
 }
@@ -803,11 +711,11 @@ export type PaymentInstructionUncheckedUpdateWithoutLinesInput = {
 
 export type PaymentInstructionCreateWithoutReportingFxSnapshotInput = {
   id?: string
+  employeeId: string
   memo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutPaymentInstructionsInput
-  employee: Prisma.EmployeeCreateNestedOneWithoutPaymentInstructionsInput
   payrollPeriod?: Prisma.PayrollPeriodCreateNestedOneWithoutPaymentInstructionsInput
   lines?: Prisma.PayoutLineCreateNestedManyWithoutPaymentInstructionInput
 }
@@ -861,10 +769,10 @@ export type PaymentInstructionCreateManyOrganizationInput = {
 
 export type PaymentInstructionUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPaymentInstructionsNestedInput
   payrollPeriod?: Prisma.PayrollPeriodUpdateOneWithoutPaymentInstructionsNestedInput
   reportingFxSnapshot?: Prisma.FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput
   lines?: Prisma.PayoutLineUpdateManyWithoutPaymentInstructionNestedInput
@@ -891,48 +799,6 @@ export type PaymentInstructionUncheckedUpdateManyWithoutOrganizationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PaymentInstructionCreateManyEmployeeInput = {
-  id?: string
-  tenantId: string
-  payrollPeriodId?: string | null
-  reportingFxSnapshotId?: string | null
-  memo?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PaymentInstructionUpdateWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentInstructionsNestedInput
-  payrollPeriod?: Prisma.PayrollPeriodUpdateOneWithoutPaymentInstructionsNestedInput
-  reportingFxSnapshot?: Prisma.FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput
-  lines?: Prisma.PayoutLineUpdateManyWithoutPaymentInstructionNestedInput
-}
-
-export type PaymentInstructionUncheckedUpdateWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollPeriodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  reportingFxSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lines?: Prisma.PayoutLineUncheckedUpdateManyWithoutPaymentInstructionNestedInput
-}
-
-export type PaymentInstructionUncheckedUpdateManyWithoutEmployeeInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollPeriodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  reportingFxSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 export type PaymentInstructionCreateManyPayrollPeriodInput = {
   id?: string
   tenantId: string
@@ -945,11 +811,11 @@ export type PaymentInstructionCreateManyPayrollPeriodInput = {
 
 export type PaymentInstructionUpdateWithoutPayrollPeriodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentInstructionsNestedInput
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPaymentInstructionsNestedInput
   reportingFxSnapshot?: Prisma.FxSnapshotUpdateOneWithoutPaymentInstructionsNestedInput
   lines?: Prisma.PayoutLineUpdateManyWithoutPaymentInstructionNestedInput
 }
@@ -987,11 +853,11 @@ export type PaymentInstructionCreateManyReportingFxSnapshotInput = {
 
 export type PaymentInstructionUpdateWithoutReportingFxSnapshotInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
   memo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutPaymentInstructionsNestedInput
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutPaymentInstructionsNestedInput
   payrollPeriod?: Prisma.PayrollPeriodUpdateOneWithoutPaymentInstructionsNestedInput
   lines?: Prisma.PayoutLineUpdateManyWithoutPaymentInstructionNestedInput
 }
@@ -1058,7 +924,6 @@ export type PaymentInstructionSelect<ExtArgs extends runtime.Types.Extensions.In
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
   lines?: boolean | Prisma.PaymentInstruction$linesArgs<ExtArgs>
@@ -1075,7 +940,6 @@ export type PaymentInstructionSelectCreateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
 }, ExtArgs["result"]["paymentInstruction"]>
@@ -1090,7 +954,6 @@ export type PaymentInstructionSelectUpdateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
 }, ExtArgs["result"]["paymentInstruction"]>
@@ -1109,7 +972,6 @@ export type PaymentInstructionSelectScalar = {
 export type PaymentInstructionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "employeeId" | "payrollPeriodId" | "reportingFxSnapshotId" | "memo" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentInstruction"]>
 export type PaymentInstructionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
   lines?: boolean | Prisma.PaymentInstruction$linesArgs<ExtArgs>
@@ -1117,13 +979,11 @@ export type PaymentInstructionInclude<ExtArgs extends runtime.Types.Extensions.I
 }
 export type PaymentInstructionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
 }
 export type PaymentInstructionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
   payrollPeriod?: boolean | Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>
   reportingFxSnapshot?: boolean | Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>
 }
@@ -1132,7 +992,6 @@ export type $PaymentInstructionPayload<ExtArgs extends runtime.Types.Extensions.
   name: "PaymentInstruction"
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
-    employee: Prisma.$EmployeePayload<ExtArgs>
     payrollPeriod: Prisma.$PayrollPeriodPayload<ExtArgs> | null
     reportingFxSnapshot: Prisma.$FxSnapshotPayload<ExtArgs> | null
     lines: Prisma.$PayoutLinePayload<ExtArgs>[]
@@ -1140,6 +999,9 @@ export type $PaymentInstructionPayload<ExtArgs extends runtime.Types.Extensions.
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
+    /**
+     * Stable Core HR employee business id — no cross-context FK (ADR 0012).
+     */
     employeeId: string
     payrollPeriodId: string | null
     reportingFxSnapshotId: string | null
@@ -1541,7 +1403,6 @@ readonly fields: PaymentInstructionFieldRefs;
 export interface Prisma__PaymentInstructionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   payrollPeriod<T extends Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentInstruction$payrollPeriodArgs<ExtArgs>>): Prisma.Prisma__PayrollPeriodClient<runtime.Types.Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reportingFxSnapshot<T extends Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentInstruction$reportingFxSnapshotArgs<ExtArgs>>): Prisma.Prisma__FxSnapshotClient<runtime.Types.Result.GetResult<Prisma.$FxSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   lines<T extends Prisma.PaymentInstruction$linesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentInstruction$linesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>

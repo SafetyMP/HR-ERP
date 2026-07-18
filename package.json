@@ -1,8 +1,13 @@
 {
   "name": "hr-erp-scaffold",
-  "version": "2.13.7",
+  "version": "2.13.9",
   "private": true,
   "license": "Apache-2.0",
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10.9.2 <11"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/SafetyMP/HR-ERP.git"
@@ -21,7 +26,7 @@
     "governance:lint:strict": "node scripts/governance-lint.mjs diff --strict",
     "governance:plan": "node scripts/governance-lint.mjs plan --json",
     "governance:pr-body": "node scripts/governance-generate-pr-body.mjs",
-    "governance:ci": "node scripts/governance-learning.mjs validate && node scripts/governance-learning.mjs reflect --dry-run && node scripts/governance-evidence.mjs verify --discover && node scripts/governance-cloud-session.mjs emit --hypothesis 'CI governance run' && node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --discover && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json && node scripts/governance-lint.mjs team-map --strict && node scripts/governance-sync-agent-rules.mjs --check && node scripts/governance-audit.mjs --quiet || true",
+    "governance:ci": "node scripts/governance-learning.mjs validate && node scripts/governance-learning.mjs reflect --dry-run && node scripts/governance-evidence.mjs verify --discover && node scripts/governance-cloud-session.mjs emit --hypothesis 'CI governance run' && node scripts/governance-lint.mjs diff --strict && node scripts/governance-lint.mjs handoff --strict --discover && node scripts/governance-lint.mjs handoff --strict --file specs/templates/orchestrator-human-issue-handoff.example.json && node scripts/governance-lint.mjs team-map --strict && node scripts/governance-sync-agent-rules.mjs --check && (node scripts/governance-audit.mjs --quiet || true)",
     "governance:learning:validate": "node scripts/governance-learning.mjs validate",
     "governance:reflect": "node scripts/governance-learning.mjs reflect",
     "governance:reflect:dry-run": "node scripts/governance-learning.mjs reflect --dry-run",
@@ -70,6 +75,8 @@
     "test:watch": "vitest",
     "worker:integrations": "tsx scripts/integration-workers.ts",
     "worker:webhooks": "tsx scripts/webhook-delivery-worker.ts",
+    "worker:retention-purge": "tsx scripts/retention-purge.ts",
+    "check:migration-timestamps": "node scripts/check-migration-timestamps.mjs",
     "ops:smoke": "node scripts/ops-staging-smoke.mjs",
     "ops:verify": "npm run ops:smoke && npm run db:verify",
     "verify:reference-exit": "node scripts/reference-customer-exit-verify.mjs",
@@ -81,7 +88,7 @@
     "contracts:openapi": "npx --yes @stoplight/spectral-cli@6.14.2 lint -r contracts/.spectral.yaml contracts/openapi/",
     "contracts:drift": "node scripts/check-openapi-drift.mjs",
     "check:route-policies": "node scripts/check-route-policy-parity.mjs",
-    "check:lib-boundaries": "node scripts/check-lib-module-boundaries.mjs",
+    "check:lib-boundaries": "node scripts/check-lib-module-boundaries.mjs && node scripts/check-migration-timestamps.mjs",
     "check:ess-design-tokens": "node scripts/check-ess-design-tokens.mjs",
     "format": "prettier --write .",
     "holiday:sync": "tsx scripts/sync-holidays.ts",
@@ -89,12 +96,13 @@
     "screenshots": "node scripts/capture-screenshots.mjs",
     "qa:fixtures": "tsx scripts/qa-generate-fixture-batch.ts",
     "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh",
-    "publish:check": "bash scripts/publish-check.sh"
+    "publish:check": "bash scripts/publish-check.sh",
+    "verify": "bash scripts/verify.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@neondatabase/auth": "^0.4.1-beta",
-    "@opentelemetry/sdk-node": "^0.217.0",
+    "@opentelemetry/sdk-node": "^0.220.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@radix-ui/react-dialog": "^1.1.6",
@@ -117,7 +125,7 @@
     "ioredis": "^5.4.2",
     "jose": "^6.2.3",
     "kafkajs": "^2.2.4",
-    "lucide-react": "^1.14.0",
+    "lucide-react": "^1.25.0",
     "next": "16.2.6",
     "next-themes": "^0.4.6",
     "pg": "^8.13.1",
@@ -146,11 +154,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "conventional-changelog-conventionalcommits": "^9.3.1",
-    "effect": "^3.17.13",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.6",
     "gifenc": "^1.0.3",
-    "happy-dom": "^17.6.3",
+    "happy-dom": "^20.10.6",
     "pngjs": "^7.0.0",
     "prettier": "^3.5.3",
     "prisma": "^7.8.0",
@@ -158,7 +165,12 @@
     "tailwindcss": "^4",
     "tsx": "^4.19.2",
     "typescript": "^6",
-    "vitest": "^4.1.5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.10",
     "yaml": "^2.9.0"
+  },
+  "overrides": {
+    "better-auth": "^1.6.23",
+    "protobufjs": "^7.6.5"
   }
 }

@@ -30,9 +30,11 @@ describe("demo-preview", () => {
     );
   });
 
-  it("enables server gate automatically on Vercel Preview", () => {
+  it("requires opt-in on Vercel Preview", () => {
     vi.stubEnv("VERCEL_ENV", "preview");
     vi.stubEnv("NODE_ENV", "production");
+    expect(demoPreviewSignInServerEnabled()).toBe(false);
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
     expect(demoPreviewSignInServerEnabled()).toBe(true);
   });
 
@@ -44,6 +46,7 @@ describe("demo-preview", () => {
   it("can disable server gate on preview with DISABLE_DEMO_PREVIEW_SIGNIN", () => {
     vi.stubEnv("VERCEL_ENV", "preview");
     vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
     vi.stubEnv("DISABLE_DEMO_PREVIEW_SIGNIN", "1");
     expect(demoPreviewSignInServerEnabled()).toBe(false);
   });
@@ -59,6 +62,15 @@ describe("demo-preview", () => {
     vi.stubEnv("ALLOW_DEMO_PREVIEW_ON_PRODUCTION", "1");
     vi.stubEnv("VERCEL_ENV", "production");
     vi.stubEnv("NODE_ENV", "production");
+    expect(demoPreviewSignInServerEnabled()).toBe(true);
+  });
+
+  it("requires dual break-glass on Docker/self-host production (no VERCEL_ENV)", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("VERCEL_ENV", "");
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_SIGNIN", "1");
+    expect(demoPreviewSignInServerEnabled()).toBe(false);
+    vi.stubEnv("ALLOW_DEMO_PREVIEW_ON_PRODUCTION", "1");
     expect(demoPreviewSignInServerEnabled()).toBe(true);
   });
 

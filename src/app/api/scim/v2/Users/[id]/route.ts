@@ -27,7 +27,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const { id } = await context.params;
     const employee = await getScimUserById(prisma, binding, id);
     if (!employee) {
@@ -50,7 +50,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const { id } = await context.params;
     const body = await request.json().catch(() => null);
     const parsed = parseScimUser(body);
@@ -88,7 +88,7 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const { id } = await context.params;
     const body = (await request.json().catch(() => null)) as ScimPatchBody | null;
 
@@ -137,7 +137,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const { id } = await context.params;
 
     const terminated = await terminateScimUser(prisma, binding, id);

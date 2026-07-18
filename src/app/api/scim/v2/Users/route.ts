@@ -30,7 +30,7 @@ function parseFilterUserNameEq(filter: string | null): string | null {
 
 export async function GET(request: Request) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const url = new URL(request.url);
     const startIndex = Math.max(1, Number(url.searchParams.get("startIndex") ?? "1") || 1);
     const count = Math.min(200, Math.max(0, Number(url.searchParams.get("count") ?? "100") || 100));
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { binding, rateLimitHeaders } = guardScimRequest(request);
+    const { binding, rateLimitHeaders } = await guardScimRequest(request);
     const json = await request.json().catch(() => null);
     const parsed = parseScimUser(json);
 

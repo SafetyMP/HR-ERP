@@ -38,7 +38,6 @@ export async function GET(
             paymentInstructions: {
               include: {
                 lines: { orderBy: [{ sortOrder: "asc" }, { id: "asc" }] },
-                employee: { select: { id: true, firstName: true, lastName: true } },
               },
               orderBy: { createdAt: "asc" },
             },
@@ -54,6 +53,17 @@ export async function GET(
           },
         });
 
+        const employeeIds = [
+          ...new Set(period.paymentInstructions.map((pi) => pi.employeeId)),
+        ];
+        const employees = employeeIds.length
+          ? await tx.employee.findMany({
+              where: { tenantId: auth.tenantId, id: { in: employeeIds } },
+              select: { id: true, firstName: true, lastName: true },
+            })
+          : [];
+        const byId = new Map(employees.map((e) => [e.id, e]));
+
         return {
           payrollPeriodId: period.id,
           startDate: period.startDate.toISOString().slice(0, 10),
@@ -62,20 +72,24 @@ export async function GET(
           status: period.status,
           lockedAt: period.lockedAt?.toISOString() ?? null,
           openExceptionCount: openExceptions,
-          paymentInstructions: period.paymentInstructions.map((pi) => ({
-            paymentInstructionId: pi.id,
-            employeeId: pi.employeeId,
-            employeeName: [pi.employee.firstName, pi.employee.lastName]
-              .filter(Boolean)
-              .join(" ") || pi.employeeId,
-            memo: pi.memo,
-            lines: pi.lines.map((l) => ({
-              lineType: l.lineType,
-              sortOrder: l.sortOrder,
-              amountMinor: l.amountMinor,
-              currencyCode: l.currencyCode,
-            })),
-          })),
+          paymentInstructions: period.paymentInstructions.map((pi) => {
+            const employee = byId.get(pi.employeeId);
+            return {
+              paymentInstructionId: pi.id,
+              employeeId: pi.employeeId,
+              employeeName:
+                [employee?.firstName, employee?.lastName]
+                  .filter(Boolean)
+                  .join(" ") || pi.employeeId,
+              memo: pi.memo,
+              lines: pi.lines.map((l) => ({
+                lineType: l.lineType,
+                sortOrder: l.sortOrder,
+                amountMinor: l.amountMinor,
+                currencyCode: l.currencyCode,
+              })),
+            };
+          }),
         };
       },
     );

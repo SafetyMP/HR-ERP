@@ -1,0 +1,56 @@
+{
+  "handoffId": "audit-remediation-2026-07-18",
+  "ticketId": "audit-remediation-2026-07-18",
+  "principal": "Audit engagement",
+  "generatedAt": "2026-07-18T17:40:00.000Z",
+  "lanes": [
+    {
+      "function": "scout",
+      "verifier": "Orchestrator",
+      "artifactPath": "docs/architecture/bounded-contexts.md",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "architect",
+      "verifier": "Orchestrator",
+      "artifactPath": "lib/core-hr/writes.ts",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "ai_governance_reviewer",
+      "verifier": "Orchestrator",
+      "artifactPath": ".cursor/governance-overlay.yaml",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "release_ops",
+      "verifier": "Orchestrator",
+      "artifactPath": ".github/workflows/reusable-ci.yml",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "custodian",
+      "verifier": "Orchestrator",
+      "artifactPath": "workers/outbox-publisher/index.ts",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "builder",
+      "verifier": "Orchestrator",
+      "artifactPath": "lib/integrations/http/assert-safe-delivery-url.ts",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "sentinel",
+      "verifier": "Orchestrator",
+      "artifactPath": "lib/security/assert-production-jwt-mode.ts",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    },
+    {
+      "function": "verifier",
+      "verifier": "Orchestrator",
+      "artifactPath": "scripts/verify.sh",
+      "signedAt": "2026-07-18T17:40:00.000Z"
+    }
+  ]
+}

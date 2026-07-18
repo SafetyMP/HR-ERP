@@ -4,14 +4,14 @@ Operational guide for **synthetic fixtures**, **layered tests**, **temporal haza
 
 ## Layout
 
-| Path | Purpose |
-| --- | --- |
-| [`tests/fixtures/employees/`](../tests/fixtures/employees/) | `EmployeeScenario` factories, tag overlays, curated JSON |
-| [`tests/generated/`](../tests/generated/) | Mega-batches from [`scripts/qa-generate-fixture-batch.ts`](../scripts/qa-generate-fixture-batch.ts) (**gitignored**) |
-| [`tests/unit/domain/`](../tests/unit/domain/) | Pure rules + fixture determinism |
-| [`tests/integration/workflows/`](../tests/integration/workflows/) | Postgres + Prisma + concurrency |
-| [`tests/e2e/`](../tests/e2e/) | Playwright — `/qa-lab` correlation surface |
-| [`lib/qa/`](../lib/qa/) | `Clock`, `parallelDuplicateBarrier`, calendar helpers |
+| Path                                                              | Purpose                                                                                                              |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [`tests/fixtures/employees/`](../tests/fixtures/employees/)       | `EmployeeScenario` factories, tag overlays, curated JSON                                                             |
+| [`tests/generated/`](../tests/generated/)                         | Mega-batches from [`scripts/qa-generate-fixture-batch.ts`](../scripts/qa-generate-fixture-batch.ts) (**gitignored**) |
+| [`tests/unit/domain/`](../tests/unit/domain/)                     | Pure rules + fixture determinism                                                                                     |
+| [`tests/integration/workflows/`](../tests/integration/workflows/) | Postgres + Prisma + concurrency                                                                                      |
+| [`tests/e2e/`](../tests/e2e/)                                     | Playwright — `/qa-lab` correlation surface                                                                           |
+| [`lib/qa/`](../lib/qa/)                                           | `Clock`, `parallelDuplicateBarrier`, calendar helpers                                                                |
 
 ## Commands
 
@@ -25,6 +25,11 @@ DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" np
 
 # E2E — Playwright starts `npm run dev` unless CI reuse rules apply
 npm run test:e2e
+
+# CI e2e prerequisites (reusable-qa `e2e` job): Postgres service, DATABASE_URL,
+# `npx prisma migrate deploy`, `npm run demo:bootstrap -- --skip-holiday`, then
+# `node scripts/ci-issue-e2e-jwts.mjs --github-env`. Locally: run demo:bootstrap
+# before test:e2e when specs need seeded Jordan/manager demo rows.
 
 # CI mints feature UAC JWTs (reusable-qa e2e job)
 node scripts/ci-issue-e2e-jwts.mjs
@@ -40,6 +45,17 @@ npm run db:load:fixtures -- --file=tests/generated/employees_seed_12345_n_5000.j
 ```
 
 Custody / migration playbook: [`architecture/database-migrations-and-state.md`](architecture/database-migrations-and-state.md).
+
+### CI e2e prerequisites
+
+The `e2e` job in [`.github/workflows/reusable-qa.yml`](../.github/workflows/reusable-qa.yml) provisions:
+
+1. `pgvector/pgvector:pg16` service + `DATABASE_URL`
+2. `npx prisma migrate deploy`
+3. `npm run demo:bootstrap -- --skip-holiday`
+4. Minted JWTs via `scripts/ci-issue-e2e-jwts.mjs`
+
+Playwright specs that navigate from `/` only work for links on the current home layout (Paystub, Time, PTO, Benefits, Profile). Prefer `page.goto("/employee/...")` for feature routes. Avoid exact `listitem` counts — scope to `#main-content` or assert on visible copy.
 
 ### CI sharding (Vitest)
 

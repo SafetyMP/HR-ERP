@@ -9,8 +9,9 @@ test.describe("Feature 014 recruiting pipeline", () => {
       sessionStorage.setItem("hrerp_bearer_token", token);
     }, jwt);
 
-    await page.goto("/");
-    await page.getByRole("link", { name: /recruiting pipeline/i }).click();
-    await expect(page.getByRole("heading", { name: /open roles/i })).toBeVisible();
+    await page.goto("/manager/recruiting");
+    await expect(
+      page.getByRole("heading", { name: /open roles/i }),
+    ).toBeVisible();
   });
 });

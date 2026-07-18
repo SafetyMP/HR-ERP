@@ -48,7 +48,9 @@ export async function GET(request: Request) {
     if (!raw) {
       return NextResponse.json({ error: "oidc_no_usable_token" }, { status: 502 });
     }
-    const sessionToken = await accessTokenForOidcLogin(raw);
+    const sessionToken = await accessTokenForOidcLogin(raw, {
+      accessToken: tokens.access_token,
+    });
     const returnTo = readReturnTo(cookieHeader);
     const headers = new Headers();
     headers.append("Set-Cookie", buildSessionSetCookieHeader(sessionToken));
