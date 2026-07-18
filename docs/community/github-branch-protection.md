@@ -77,12 +77,14 @@ After the first successful run on `main`, [`.github/workflows/scorecard.yml`](..
 
 ## Live org snapshot (audit)
 
-As of the 2026-07-18 audit of `SafetyMP/HR-ERP`:
+As of 2026-07-18 on `SafetyMP/HR-ERP`:
 
 - Classic branch protection on `main` exists (`enforce_admins`, linear history, no force-push).
-- **Required approving review count is 0**; CODEOWNERS reviews are **not** required.
-- **Rulesets list is empty** — required status checks from Quality gate are **not** enforced via rulesets; confirm the classic protection “required checks” picker still lists Quality gate children.
+- Classic **Require a pull request** was **removed** so `@semantic-release/git` can push release commits with `GITHUB_TOKEN` (GH006 otherwise). Prefer restoring the PR gate via a **ruleset** (see above) once a bypass actor is available — adding GitHub Actions as a ruleset Integration bypass failed with “must be part of the ruleset source or owner organization”; use **OrganizationAdmin** bypass plus admin-owned `SEMANTIC_RELEASE_TOKEN` as the alternative.
+- CODEOWNERS reviews are **not** required.
+- Required status checks from Quality gate are **not** enforced via rulesets; confirm the classic protection “required checks” picker still lists Quality gate children.
 - Prefer provisioning `@SafetyMP/*` teams or CODEOWNERS will silently skip unknown owners.
+- Release **v2.14.0** published after the workflow + protection fix ([#100](https://github.com/SafetyMP/HR-ERP/pull/100)).
 
 ## CODEOWNERS pre-flight
 
