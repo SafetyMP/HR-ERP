@@ -1,5 +1,10 @@
 # Analyzes Conventional Commits on main/master, bumps root package.json + CHANGELOG,
 # commits with [skip ci], creates a Git Tag and GitHub Release — triggering publish-ghcr.yml.
+#
+# When main requires PRs (classic protection / rulesets), default GITHUB_TOKEN cannot push
+# the @semantic-release/git release commit. Set repo secret SEMANTIC_RELEASE_TOKEN to a
+# fine-grained PAT or GitHub App token whose actor is on the branch-protection bypass list.
+# See docs/community/github-branch-protection.md.
 name: Semantic release
 
 on:
@@ -27,6 +32,8 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
+          # Prefer SEMANTIC_RELEASE_TOKEN so @semantic-release/git can push to protected main.
+          token: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
@@ -39,5 +46,6 @@ jobs:
 
       - name: Semantic release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
         run: npx semantic-release

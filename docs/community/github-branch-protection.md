@@ -53,6 +53,23 @@ Triggered only on **`push`** to `main/master` per [.github/workflows/deploy.yml]
 
 Optional — do **not** block `main` on GHCR publish or semantic-release unless infra teams demand it. Releases are driven by [`.github/workflows/semantic-release.yml`](../../.github/workflows/semantic-release.yml) → GitHub Release → [`.github/workflows/publish-ghcr.yml`](../../.github/workflows/publish-ghcr.yml).
 
+#### Semantic release + “Require a pull request” (GH006)
+
+`@semantic-release/git` pushes a `chore(release): … [skip ci]` commit (and tags) directly to `main`. With classic branch protection that **requires a pull request** (and especially with **`enforce_admins`**), the default Actions `GITHUB_TOKEN` is rejected:
+
+```text
+GH006: Protected branch update failed for refs/heads/main.
+Changes must be made through a pull request.
+```
+
+Do **not** turn off PR requirements for all humans. Instead:
+
+1. Create a **fine-grained PAT** (or GitHub App installation token) with **Contents: Read and write** on this repository. Store it as the repo Actions secret **`SEMANTIC_RELEASE_TOKEN`**.
+2. Add that token’s actor (the user who owns the PAT, or the GitHub App) to a **bypass** for the “require pull request” rule on `main` (Rulesets → Bypass list, or classic protection allow-list / ruleset bypass). `enforce_admins` means even org owners cannot push without this bypass.
+3. Re-run **Semantic release** via **Actions → Semantic release → Run workflow** (`workflow_dispatch`), or push any non-`[skip ci]` commit to `main`.
+
+The workflow uses `secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN` for checkout and for `GITHUB_TOKEN` / `GH_TOKEN` passed to `npx semantic-release`. Without the secret **and** bypass, the job will keep failing at the git push step even though commit analysis succeeds.
+
 ### From **`OpenSSF Scorecard`**
 
 After the first successful run on `main`, [`.github/workflows/scorecard.yml`](../../.github/workflows/scorecard.yml) exposes **`Scorecard analysis`** as an optional required check and populates the README badge at [scorecard.dev](https://scorecard.dev).
