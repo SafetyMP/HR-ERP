@@ -1,0 +1,32 @@
+{
+  "bundleId": "github-protection-applied-2026-07-18",
+  "principal": "Maintainer apply — ruleset + CODEOWNERS",
+  "generatedAt": "2026-07-18T19:05:00.000Z",
+  "attestationVersion": 1,
+  "signature": null,
+  "notes": {
+    "rulesetId": 19149676,
+    "rulesetName": "main-quality-gate",
+    "rulesetUrl": "https://github.com/SafetyMP/HR-ERP/rules/19149676",
+    "codeowners": "@SafetyMP (personal account; no org teams)",
+    "githubProtectionAuditExit": 0,
+    "githubProtectionAuditSha256": "1f96d4e23f5ff953b0c7b087c725037610d2ac46e7ada908044ec4bd5553d02d",
+    "githubProtectionAuditLog": "/tmp/hr-erp-protection-audit-green.txt",
+    "githubProtectionAuditStdout": [
+      "PASS rulesets non-empty (count=1)",
+      "PASS ruleset pull_request required_approving_review_count=1",
+      "PASS ruleset require_code_owner_review=true",
+      "PASS required check mentions ci / web",
+      "PASS required check mentions python-pipelines",
+      "PASS required check mentions vitest-shard",
+      "PASS required check mentions integration",
+      "PASS required check mentions e2e"
+    ],
+    "remainingHuman": [
+      "Create SEMANTIC_RELEASE_TOKEN (PAT as @SafetyMP, Contents write) and add as repo Actions secret",
+      "Vercel Production: set GITHUB_TOKEN/GH_TOKEN with checks:read (ignoreCommand already in vercel.json)",
+      "Confirm Vercel dashboard Ignored Build Step matches node scripts/vercel-ignored-build.mjs if ignoreCommand is not picked up"
+    ],
+    "relatedBundle": "specs/governance/evidence/bundles/deferred-audit-remediations-2026-07-18.json"
+  }
+}
