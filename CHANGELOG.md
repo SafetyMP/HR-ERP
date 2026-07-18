@@ -1,3 +1,9 @@
+## [2.14.1](https://github.com/SafetyMP/HR-ERP/compare/v2.14.0...v2.14.1) (2026-07-18)
+
+### Bug Fixes
+
+* **security:** deferred audit remediations (A/B tracks) ([#102](https://github.com/SafetyMP/HR-ERP/issues/102)) ([03f2760](https://github.com/SafetyMP/HR-ERP/commit/03f2760d1a2398fba5a9fdb529765de20789919a))
+
 ## [2.14.0](https://github.com/SafetyMP/HR-ERP/compare/v2.13.9...v2.14.0) (2026-07-18)
 
 ### Features
