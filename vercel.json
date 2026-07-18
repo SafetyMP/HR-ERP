@@ -2,6 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "ignoreCommand": "node scripts/vercel-ignored-build.mjs",
   "headers": [
     {
       "source": "/(.*)",

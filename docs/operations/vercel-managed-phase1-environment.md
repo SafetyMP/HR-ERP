@@ -68,7 +68,7 @@ If workers or BullMQ are enabled in an environment, set a managed Redis URL (e.g
 Vercel’s git integration starts **before** GitHub Actions finishes. Mitigate the Production race with an **Ignored Build Step** that skips the build until required checks succeed:
 
 1. Vercel → Project → **Settings → Git → Ignored Build Step**
-2. Command: `node scripts/vercel-ignored-build.mjs`
+2. Command: `node scripts/vercel-ignored-build.mjs` (also set as [`ignoreCommand`](../../vercel.json) in-repo for project sync)
 3. Environment variables (Production at minimum):
 
 | Variable | Purpose |

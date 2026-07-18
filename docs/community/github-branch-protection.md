@@ -77,18 +77,22 @@ After the first successful run on `main`, [`.github/workflows/scorecard.yml`](..
 
 ## Live org snapshot (audit)
 
-As of 2026-07-18 on `SafetyMP/HR-ERP`:
+As of 2026-07-18 on `SafetyMP/HR-ERP` (owner is a **user** account, not an org):
 
-- Classic branch protection on `main` exists (`enforce_admins`, linear history, no force-push).
-- Classic **Require a pull request** was **removed** so `@semantic-release/git` can push release commits with `GITHUB_TOKEN` (GH006 otherwise). Prefer restoring the PR gate via a **ruleset** (see above) once a bypass actor is available — adding GitHub Actions as a ruleset Integration bypass failed with “must be part of the ruleset source or owner organization”; use **OrganizationAdmin** bypass plus admin-owned `SEMANTIC_RELEASE_TOKEN` as the alternative.
-- CODEOWNERS reviews are **not** required.
-- Required status checks from Quality gate are **not** enforced via rulesets; confirm the classic protection “required checks” picker still lists Quality gate children.
-- Prefer provisioning `@SafetyMP/*` teams or CODEOWNERS will silently skip unknown owners.
-- Release **v2.14.0** published after the workflow + protection fix ([#100](https://github.com/SafetyMP/HR-ERP/pull/100)).
+- **Ruleset [`main-quality-gate`](https://github.com/SafetyMP/HR-ERP/rules/19149676)** — active on `main`/`master`:
+  - Pull request: **1** approving review + **require CODEOWNERS**
+  - Required checks: `ci / web`, `ci / python-pipelines`, `qa / vitest-shard (1)`, `qa / vitest-shard (2)`, `qa / integration`, `qa / e2e`
+  - Bypass: user `@SafetyMP` only. GitHub Actions Integration bypass is **not** available on personal repos.
+- Classic branch protection still has `enforce_admins` + linear history; classic require-PR stays off (ruleset owns the PR gate).
+- [`.github/CODEOWNERS`](../../.github/CODEOWNERS) routes to `@SafetyMP` (team slugs are invalid until an organization exists).
+- **Semantic-release:** set repo secret `SEMANTIC_RELEASE_TOKEN` to a fine-grained PAT owned by `@SafetyMP` (Contents: write) so `@semantic-release/git` can bypass; default `GITHUB_TOKEN` cannot.
+- Release **v2.14.0** published earlier ([#100](https://github.com/SafetyMP/HR-ERP/pull/100)).
+
+Re-audit: `./scripts/github-protection-audit.sh` (expect exit 0).
 
 ## CODEOWNERS pre-flight
 
-Until [`SafetyMP` teams](../../.github/CODEOWNERS) exist, CODEOWNERS may **skip unknown owners silently**. Provision teams or temporarily replace `@SafetyMP/<team>` with concrete `@login` handles via hotfix PR.
+`SafetyMP` is a personal account — `@SafetyMP/hr-erp-*` teams cannot exist until the repo moves under an organization. Current CODEOWNERS uses `@SafetyMP`. When an org is created, restore team handles and keep require-CODEOWNERS on.
 
 ## Executable checklist (Track A1)
 
@@ -117,9 +121,9 @@ If the UI exposes parents `ci` / `qa` instead of leaves, require those parents *
 
 ### Reviews
 
-- [ ] `required_approving_review_count` **≥ 1**
-- [ ] **Require review from CODEOWNERS** = on (only after teams in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) exist — otherwise GitHub skips unknown owners)
-- [ ] Do **not** re-enable classic “Require a pull request” without a ruleset bypass for semantic-release (see GH006 section)
+- [x] `required_approving_review_count` **≥ 1** (ruleset `main-quality-gate`)
+- [x] **Require review from CODEOWNERS** = on (CODEOWNERS → `@SafetyMP`)
+- [x] Classic “Require a pull request” left off; ruleset owns the PR gate with `@SafetyMP` bypass for releases (set `SEMANTIC_RELEASE_TOKEN`)
 
 ### Audit script (read-only)
 

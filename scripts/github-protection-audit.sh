@@ -14,12 +14,25 @@ bad() { echo "  FAIL  $*"; fail=$((fail + 1)); }
 
 echo "== github-protection-audit ($REPO@$BRANCH) =="
 
-ruleset_count=$(gh api "repos/$REPO/rulesets" --jq 'length' 2>/dev/null || echo 0)
+ruleset_ids=$(gh api "repos/$REPO/rulesets" --jq '.[].id' 2>/dev/null || true)
+ruleset_count=$(echo "$ruleset_ids" | grep -c '^[0-9]' || true)
 if [[ "$ruleset_count" -gt 0 ]]; then
   ok "rulesets non-empty (count=$ruleset_count)"
 else
   bad "rulesets empty — prefer a Ruleset on $BRANCH with required checks + PR reviews"
 fi
+
+# Expand each ruleset (list endpoint omits rule parameters).
+ruleset_json='[]'
+for id in $ruleset_ids; do
+  one=$(gh api "repos/$REPO/rulesets/$id" 2>/dev/null || echo '{}')
+  ruleset_json=$(RULESET_ONE="$one" RULESETS="$ruleset_json" python3 -c '
+import json,os
+arr=json.loads(os.environ["RULESETS"])
+arr.append(json.loads(os.environ["RULESET_ONE"]))
+print(json.dumps(arr))
+')
+done
 
 prot_json=$(gh api "repos/$REPO/branches/$BRANCH/protection" 2>/dev/null || echo '{}')
 
@@ -30,19 +43,23 @@ r=d.get("required_pull_request_reviews") or {}
 print(r.get("required_approving_review_count", -1) if r else -1)
 ' 2>/dev/null || echo -1)
 
+ruleset_reviews=$(RULESETS="$ruleset_json" python3 -c '
+import json,os
+arr=json.loads(os.environ["RULESETS"])
+vals=[]
+for rs in arr:
+  for rule in rs.get("rules") or []:
+    if rule.get("type")=="pull_request":
+      vals.append((rule.get("parameters") or {}).get("required_approving_review_count") or 0)
+print(max(vals) if vals else 0)
+')
+
 if [[ "$review_count" -ge 1 ]]; then
   ok "classic required_approving_review_count=$review_count"
+elif [[ "$ruleset_reviews" -ge 1 ]]; then
+  ok "ruleset pull_request required_approving_review_count=$ruleset_reviews"
 else
-  # Rulesets may enforce reviews instead of classic protection.
-  ruleset_reviews=$(gh api "repos/$REPO/rulesets" --jq '
-    [ .[] | .rules[]? | select(.type=="pull_request")
-      | .parameters.required_approving_review_count // 0 ] | max // 0
-  ' 2>/dev/null || echo 0)
-  if [[ "$ruleset_reviews" -ge 1 ]]; then
-    ok "ruleset pull_request required_approving_review_count=$ruleset_reviews"
-  else
-    bad "required_approving_review_count < 1 (classic=$review_count ruleset_max=$ruleset_reviews)"
-  fi
+  bad "required_approving_review_count < 1 (classic=$review_count ruleset_max=$ruleset_reviews)"
 fi
 
 codeowners=$(echo "$prot_json" | python3 -c '
@@ -52,20 +69,23 @@ r=d.get("required_pull_request_reviews") or {}
 print("1" if r.get("require_code_owner_reviews") else "0")
 ' 2>/dev/null || echo 0)
 
+ruleset_co=$(RULESETS="$ruleset_json" python3 -c '
+import json,os
+arr=json.loads(os.environ["RULESETS"])
+print("true" if any(
+  (r.get("type")=="pull_request" and (r.get("parameters") or {}).get("require_code_owner_review") is True)
+  for rs in arr for r in (rs.get("rules") or [])
+) else "false")
+')
+
 if [[ "$codeowners" == "1" ]]; then
   ok "classic require_code_owner_reviews=true"
+elif [[ "$ruleset_co" == "true" ]]; then
+  ok "ruleset require_code_owner_review=true"
 else
-  ruleset_co=$(gh api "repos/$REPO/rulesets" --jq '
-    any(.[]; any(.rules[]?; .type=="pull_request" and (.parameters.require_code_owner_review == true)))
-  ' 2>/dev/null || echo false)
-  if [[ "$ruleset_co" == "true" ]]; then
-    ok "ruleset require_code_owner_review=true"
-  else
-    bad "CODEOWNERS reviews not required (provision teams in CODEOWNERS first)"
-  fi
+  bad "CODEOWNERS reviews not required (provision owners in CODEOWNERS first)"
 fi
 
-# Required checks: classic contexts or ruleset required_status_checks
 contexts=$(echo "$prot_json" | python3 -c '
 import json,sys
 d=json.load(sys.stdin)
@@ -74,8 +94,23 @@ ctxs=rsc.get("contexts") or rsc.get("checks") or []
 if ctxs and isinstance(ctxs[0], dict):
   print("\n".join(c.get("context","") for c in ctxs))
 else:
-  print("\n".join(ctxs))
+  print("\n".join(str(c) for c in ctxs))
 ' 2>/dev/null || true)
+
+ruleset_contexts=$(RULESETS="$ruleset_json" python3 -c '
+import json,os
+arr=json.loads(os.environ["RULESETS"])
+names=[]
+for rs in arr:
+  for rule in rs.get("rules") or []:
+    if rule.get("type")!="required_status_checks":
+      continue
+    for c in (rule.get("parameters") or {}).get("required_status_checks") or []:
+      names.append(c.get("context") or c.get("name") or "")
+print("\n".join(names))
+')
+
+all_contexts=$(printf '%s\n%s\n' "$contexts" "$ruleset_contexts")
 
 required_needles=(
   "ci / web"
@@ -85,24 +120,11 @@ required_needles=(
   "e2e"
 )
 
-checks_ok=1
 for needle in "${required_needles[@]}"; do
-  if echo "$contexts" | grep -qiF "$needle"; then
-    ok "classic required check mentions '$needle'"
+  if echo "$all_contexts" | grep -qiF "$needle"; then
+    ok "required check mentions '$needle'"
   else
-    # Also scan ruleset required_status_checks if present on expanded rulesets
-    found=$(gh api "repos/$REPO/rulesets" --jq --arg n "$needle" '
-      any(.[]; any(.rules[]?;
-        .type=="required_status_checks" and
-        any((.parameters.required_status_checks // [])[];
-          ((.context // .name // "") | ascii_downcase) | contains(($n | ascii_downcase)))))
-    ' 2>/dev/null || echo false)
-    if [[ "$found" == "true" ]]; then
-      ok "ruleset required check mentions '$needle'"
-    else
-      bad "missing required check covering '$needle' (classic contexts empty or mismatched)"
-      checks_ok=0
-    fi
+    bad "missing required check covering '$needle'"
   fi
 done
 
