@@ -16,10 +16,10 @@ Set in **Settings** or the gear icon next to About on the repo home. Keep it to 
 The badge row lives near the top of [`README.md`](../../README.md):
 
 - **License** and **Node.js** — static shields.io badges.
-- **Quality gate** — status of [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate.yml) (PR validation).
-- **Deploy production** — status of [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) (post-merge `main` CI gate).
-- **Release** — latest GitHub Release via shields.io.
-- **OpenSSF Scorecard** — supply-chain posture from [`.github/workflows/scorecard.yml`](../../.github/workflows/scorecard.yml); badge populates after the first published run on `main`.
+- **Quality gate** — status of [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate.yml) (PR validation). Use `?event=pull_request` — this workflow never runs on `main`, so `?branch=main` renders as “no status”.
+- **Deploy production** — status of [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) (post-merge `main` CI gate); `?branch=main` is correct here.
+- **Release** — latest GitHub Release via shields.io (`img.shields.io/github/v/release/...`).
+- **OpenSSF Scorecard** — supply-chain posture from [`.github/workflows/scorecard.yml`](../../.github/workflows/scorecard.yml) with `publish_results: true`. Image URL is the official `api.scorecard.dev/.../badge` (302 → shields). JSON at the same host confirms published scores even when the badge CDN is briefly unavailable.
 
 If a workflow file is renamed, update the matching badge URL and its link target. Badge image and link both encode the workflow filename.
 
