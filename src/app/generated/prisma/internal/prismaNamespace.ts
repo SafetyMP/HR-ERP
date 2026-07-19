@@ -6842,6 +6842,8 @@ export const DepartmentScalarFieldEnum = {
   tenantId: 'tenantId',
   name: 'name',
   code: 'code',
+  parentId: 'parentId',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -6856,6 +6858,7 @@ export const JobRoleScalarFieldEnum = {
   level: 'level',
   departmentId: 'departmentId',
   canonicalTitle: 'canonicalTitle',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -8166,6 +8169,20 @@ export type EnumHrCaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'HrCaseStatus[]'
  */
 export type ListEnumHrCaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'HrCaseStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CatalogStatus'
+ */
+export type EnumCatalogStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CatalogStatus[]'
+ */
+export type ListEnumCatalogStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CatalogStatus[]'>
     
 
 

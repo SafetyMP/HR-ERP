@@ -199,30 +199,43 @@ enum HrCaseStatus {
   RESOLVED
 }
 
+/// Soft-archive lifecycle for Core HR catalog rows (Department / JobRole). ADR 0021.
+enum CatalogStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model Department {
-  id       String  @id @default(uuid())
-  tenantId String  @map("tenant_id")
+  id       String        @id @default(uuid())
+  tenantId String        @map("tenant_id")
   name     String
-  code     String?
+  code     String
+  parentId String?       @map("parent_id")
+  status   CatalogStatus @default(ACTIVE)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  parent    Department?  @relation("DepartmentParent", fields: [parentId], references: [id], onDelete: SetNull)
+  children  Department[] @relation("DepartmentParent")
   employees Employee[]
   jobRoles  JobRole[]
 
   @@unique([tenantId, code])
+  @@unique([tenantId, name])
   @@index([tenantId])
+  @@index([tenantId, parentId])
   @@map("departments")
 }
 
 model JobRole {
-  id             String  @id @default(uuid())
-  tenantId       String  @map("tenant_id")
+  id             String        @id @default(uuid())
+  tenantId       String        @map("tenant_id")
   title          String
   level          String?
-  departmentId   String? @map("department_id")
-  canonicalTitle String? @map("canonical_title")
+  departmentId   String?       @map("department_id")
+  canonicalTitle String?       @map("canonical_title")
+  status         CatalogStatus @default(ACTIVE)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -234,8 +247,8 @@ model JobRole {
   benchmarkAlerts  BenchmarkAlert[]
   jobTitleMaps     JobTitleMap[]
 
+  @@unique([tenantId, title])
   @@index([tenantId])
-  @@index([tenantId, title])
   @@map("job_roles")
 }
 

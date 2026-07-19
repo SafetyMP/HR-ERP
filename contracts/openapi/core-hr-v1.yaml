@@ -47,6 +47,189 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: patchEmployee
+      summary: Update closed Core HR employee fields (`employees:write`).
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeePatchRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeReadEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /departments:
+    get:
+      operationId: listDepartments
+      summary: List departments (`departments:read`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createDepartment
+      summary: Create department (`departments:write`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DepartmentCreateRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /departments/{departmentId}:
+    get:
+      operationId: getDepartment
+      summary: Get department by id (`departments:read`).
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /job-roles:
+    get:
+      operationId: listJobRoles
+      summary: List job roles (`job_roles:read`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createJobRole
+      summary: Create job role (`job_roles:write`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobRoleCreateRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /job-roles/{jobRoleId}:
+    get:
+      operationId: getJobRole
+      summary: Get job role by id (`job_roles:read`).
+      parameters:
+        - name: jobRoleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /attendance/clock-in:
     post:
       operationId: clockInSelf
@@ -552,10 +735,22 @@ paths:
   /employees:
     get:
       operationId: listEmployees
-      summary: Tenant-scoped employee list (`employees:list`).
+      summary: Tenant-scoped employee list (`employees:list`); optional departmentId/jobRoleId filters; ascending id.
       parameters:
         - $ref: "#/components/parameters/AuthorizationHeader"
         - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: jobRoleId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -563,6 +758,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: createEmployee
+      summary: Create employee with ACTIVE department and job role (`employees:write`).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeCreateRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeReadEnvelope"
+        "400":
+          description: Validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -2776,6 +3000,34 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
   schemas:
+    EmployeeClosed:
+      type: object
+      required:
+        [
+          id,
+          email,
+          firstName,
+          lastName,
+          preferredName,
+          departmentId,
+          jobRoleId,
+          managerId,
+          status,
+          createdAt,
+          updatedAt,
+        ]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        firstName: { type: ["string", "null"] }
+        lastName: { type: ["string", "null"] }
+        preferredName: { type: ["string", "null"] }
+        departmentId: { type: ["string", "null"], format: uuid }
+        jobRoleId: { type: ["string", "null"], format: uuid }
+        managerId: { type: ["string", "null"], format: uuid }
+        status: { type: string, enum: [ACTIVE, ON_LEAVE, TERMINATED] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
     EmployeeReadEnvelope:
       type: object
       required: [apiVersion, data]
@@ -2788,22 +3040,50 @@ components:
           required: [employee]
           properties:
             employee:
-              type: object
-              required: [id, email, firstName, lastName, createdAt]
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                email:
-                  type: string
-                  format: email
-                firstName:
-                  type: ["string", "null"]
-                lastName:
-                  type: ["string", "null"]
-                createdAt:
-                  type: string
-                  format: date-time
+              $ref: "#/components/schemas/EmployeeClosed"
+    EmployeeCreateRequest:
+      type: object
+      additionalProperties: false
+      required: [email, departmentId, jobRoleId]
+      properties:
+        email: { type: string, format: email }
+        departmentId: { type: string, format: uuid }
+        jobRoleId: { type: string, format: uuid }
+        firstName: { type: ["string", "null"] }
+        lastName: { type: ["string", "null"] }
+        preferredName: { type: ["string", "null"] }
+        managerId: { type: ["string", "null"], format: uuid }
+        status: { type: string, enum: [ACTIVE, ON_LEAVE, TERMINATED] }
+    EmployeePatchRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email: { type: string, format: email }
+        firstName: { type: ["string", "null"] }
+        lastName: { type: ["string", "null"] }
+        preferredName: { type: ["string", "null"] }
+        departmentId: { type: string, format: uuid }
+        jobRoleId: { type: string, format: uuid }
+        managerId: { type: ["string", "null"], format: uuid }
+        status: { type: string, enum: [ACTIVE, ON_LEAVE, TERMINATED] }
+    DepartmentCreateRequest:
+      type: object
+      additionalProperties: false
+      required: [name, code]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        code: { type: string, minLength: 1, maxLength: 80 }
+        parentId: { type: ["string", "null"], format: uuid }
+        status: { type: string, enum: [ACTIVE, INACTIVE] }
+    JobRoleCreateRequest:
+      type: object
+      additionalProperties: false
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        level: { type: ["string", "null"], maxLength: 80 }
+        departmentId: { type: ["string", "null"], format: uuid }
+        status: { type: string, enum: [ACTIVE, INACTIVE] }
     ClockInEnvelope:
       type: object
       required: [apiVersion, data]
