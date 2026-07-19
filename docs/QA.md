@@ -23,6 +23,14 @@ VITEST_SEED="${GITHUB_RUN_ID:-manual}" npm run test -- --run
 DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" npx prisma migrate deploy
 DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" npm run test -- --run tests/integration
 
+# Core HR Postgres proof (corporate program R-013). Nested by ./scripts/verify.sh when
+# pre-clear DATABASE_URL (or HR_ERP_VERIFY_DATABASE_URL) is set. Do not point the suite
+# at CORE_HR_DATABASE_URL (extraction DB). Empty-URL web parity alone does not close
+# Core HR CRUD evidence. Local HS256 JWT ≠ production JWT posture.
+DATABASE_URL="postgresql://hr_erp:hr_erp_dev_password@127.0.0.1:15432/hr_erp" \
+  JWT_SECRET="ci-local-jwt-secret-change-me-32chars-minimum-xx" \
+  npm run test:core-hr
+
 # E2E — Playwright starts `npm run dev` unless CI reuse rules apply
 npm run test:e2e
 

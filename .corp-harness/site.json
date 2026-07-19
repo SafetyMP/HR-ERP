@@ -1,8 +1,8 @@
 {
   "schema": "corporate-site-site/v1",
   "site_id": "hr-erp",
-  "corporate_program": null,
-  "corporate_handoff_sha256": null,
+  "corporate_program": "core-hr",
+  "corporate_handoff_sha256": "6670263a838ba3dc2f70df8a67010b2d611964c00bf9e7c2183709209e3c705d",
   "verify_argv": [
     "./scripts/verify.sh"
   ],

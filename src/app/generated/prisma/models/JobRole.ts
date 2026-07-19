@@ -31,6 +31,7 @@ export type JobRoleMinAggregateOutputType = {
   level: string | null
   departmentId: string | null
   canonicalTitle: string | null
+  status: $Enums.CatalogStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +43,7 @@ export type JobRoleMaxAggregateOutputType = {
   level: string | null
   departmentId: string | null
   canonicalTitle: string | null
+  status: $Enums.CatalogStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,6 +55,7 @@ export type JobRoleCountAggregateOutputType = {
   level: number
   departmentId: number
   canonicalTitle: number
+  status: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -66,6 +69,7 @@ export type JobRoleMinAggregateInputType = {
   level?: true
   departmentId?: true
   canonicalTitle?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +81,7 @@ export type JobRoleMaxAggregateInputType = {
   level?: true
   departmentId?: true
   canonicalTitle?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type JobRoleCountAggregateInputType = {
   level?: true
   departmentId?: true
   canonicalTitle?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +178,7 @@ export type JobRoleGroupByOutputType = {
   level: string | null
   departmentId: string | null
   canonicalTitle: string | null
+  status: $Enums.CatalogStatus
   createdAt: Date
   updatedAt: Date
   _count: JobRoleCountAggregateOutputType | null
@@ -204,6 +211,7 @@ export type JobRoleWhereInput = {
   level?: Prisma.StringNullableFilter<"JobRole"> | string | null
   departmentId?: Prisma.StringNullableFilter<"JobRole"> | string | null
   canonicalTitle?: Prisma.StringNullableFilter<"JobRole"> | string | null
+  status?: Prisma.EnumCatalogStatusFilter<"JobRole"> | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
@@ -221,6 +229,7 @@ export type JobRoleOrderByWithRelationInput = {
   level?: Prisma.SortOrderInput | Prisma.SortOrder
   departmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   canonicalTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
@@ -233,6 +242,7 @@ export type JobRoleOrderByWithRelationInput = {
 
 export type JobRoleWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  tenantId_title?: Prisma.JobRoleTenantIdTitleCompoundUniqueInput
   AND?: Prisma.JobRoleWhereInput | Prisma.JobRoleWhereInput[]
   OR?: Prisma.JobRoleWhereInput[]
   NOT?: Prisma.JobRoleWhereInput | Prisma.JobRoleWhereInput[]
@@ -241,6 +251,7 @@ export type JobRoleWhereUniqueInput = Prisma.AtLeast<{
   level?: Prisma.StringNullableFilter<"JobRole"> | string | null
   departmentId?: Prisma.StringNullableFilter<"JobRole"> | string | null
   canonicalTitle?: Prisma.StringNullableFilter<"JobRole"> | string | null
+  status?: Prisma.EnumCatalogStatusFilter<"JobRole"> | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
@@ -249,7 +260,7 @@ export type JobRoleWhereUniqueInput = Prisma.AtLeast<{
   marketBenchmarks?: Prisma.MarketBenchmarkListRelationFilter
   benchmarkAlerts?: Prisma.BenchmarkAlertListRelationFilter
   jobTitleMaps?: Prisma.JobTitleMapListRelationFilter
-}, "id">
+}, "id" | "tenantId_title">
 
 export type JobRoleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -258,6 +269,7 @@ export type JobRoleOrderByWithAggregationInput = {
   level?: Prisma.SortOrderInput | Prisma.SortOrder
   departmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   canonicalTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.JobRoleCountOrderByAggregateInput
@@ -275,6 +287,7 @@ export type JobRoleScalarWhereWithAggregatesInput = {
   level?: Prisma.StringNullableWithAggregatesFilter<"JobRole"> | string | null
   departmentId?: Prisma.StringNullableWithAggregatesFilter<"JobRole"> | string | null
   canonicalTitle?: Prisma.StringNullableWithAggregatesFilter<"JobRole"> | string | null
+  status?: Prisma.EnumCatalogStatusWithAggregatesFilter<"JobRole"> | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"JobRole"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"JobRole"> | Date | string
 }
@@ -285,6 +298,7 @@ export type JobRoleCreateInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -302,6 +316,7 @@ export type JobRoleUncheckedCreateInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -317,6 +332,7 @@ export type JobRoleUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -334,6 +350,7 @@ export type JobRoleUncheckedUpdateInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -350,6 +367,7 @@ export type JobRoleCreateManyInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -360,6 +378,7 @@ export type JobRoleUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -371,6 +390,7 @@ export type JobRoleUncheckedUpdateManyInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -390,6 +410,11 @@ export type JobRoleOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type JobRoleTenantIdTitleCompoundUniqueInput = {
+  tenantId: string
+  title: string
+}
+
 export type JobRoleCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
@@ -397,6 +422,7 @@ export type JobRoleCountOrderByAggregateInput = {
   level?: Prisma.SortOrder
   departmentId?: Prisma.SortOrder
   canonicalTitle?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -408,6 +434,7 @@ export type JobRoleMaxOrderByAggregateInput = {
   level?: Prisma.SortOrder
   departmentId?: Prisma.SortOrder
   canonicalTitle?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -419,6 +446,7 @@ export type JobRoleMinOrderByAggregateInput = {
   level?: Prisma.SortOrder
   departmentId?: Prisma.SortOrder
   canonicalTitle?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -554,6 +582,7 @@ export type JobRoleCreateWithoutEmployeesInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -570,6 +599,7 @@ export type JobRoleUncheckedCreateWithoutEmployeesInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   roleSkillTargets?: Prisma.RoleSkillTargetUncheckedCreateNestedManyWithoutJobRoleInput
@@ -600,6 +630,7 @@ export type JobRoleUpdateWithoutEmployeesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -616,6 +647,7 @@ export type JobRoleUncheckedUpdateWithoutEmployeesInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   roleSkillTargets?: Prisma.RoleSkillTargetUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -630,6 +662,7 @@ export type JobRoleCreateWithoutDepartmentInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeCreateNestedManyWithoutJobRoleInput
@@ -645,6 +678,7 @@ export type JobRoleUncheckedCreateWithoutDepartmentInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -690,6 +724,7 @@ export type JobRoleScalarWhereInput = {
   level?: Prisma.StringNullableFilter<"JobRole"> | string | null
   departmentId?: Prisma.StringNullableFilter<"JobRole"> | string | null
   canonicalTitle?: Prisma.StringNullableFilter<"JobRole"> | string | null
+  status?: Prisma.EnumCatalogStatusFilter<"JobRole"> | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobRole"> | Date | string
 }
@@ -700,6 +735,7 @@ export type JobRoleCreateWithoutRoleSkillTargetsInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -716,6 +752,7 @@ export type JobRoleUncheckedCreateWithoutRoleSkillTargetsInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -746,6 +783,7 @@ export type JobRoleUpdateWithoutRoleSkillTargetsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -762,6 +800,7 @@ export type JobRoleUncheckedUpdateWithoutRoleSkillTargetsInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -776,6 +815,7 @@ export type JobRoleCreateWithoutMarketBenchmarksInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -792,6 +832,7 @@ export type JobRoleUncheckedCreateWithoutMarketBenchmarksInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -822,6 +863,7 @@ export type JobRoleUpdateWithoutMarketBenchmarksInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -838,6 +880,7 @@ export type JobRoleUncheckedUpdateWithoutMarketBenchmarksInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -852,6 +895,7 @@ export type JobRoleCreateWithoutBenchmarkAlertsInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -868,6 +912,7 @@ export type JobRoleUncheckedCreateWithoutBenchmarkAlertsInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -898,6 +943,7 @@ export type JobRoleUpdateWithoutBenchmarkAlertsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -914,6 +960,7 @@ export type JobRoleUncheckedUpdateWithoutBenchmarkAlertsInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -928,6 +975,7 @@ export type JobRoleCreateWithoutJobTitleMapsInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutJobRolesInput
@@ -944,6 +992,7 @@ export type JobRoleUncheckedCreateWithoutJobTitleMapsInput = {
   level?: string | null
   departmentId?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutJobRoleInput
@@ -974,6 +1023,7 @@ export type JobRoleUpdateWithoutJobTitleMapsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutJobRolesNestedInput
@@ -990,6 +1040,7 @@ export type JobRoleUncheckedUpdateWithoutJobTitleMapsInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -1004,6 +1055,7 @@ export type JobRoleCreateManyDepartmentInput = {
   title: string
   level?: string | null
   canonicalTitle?: string | null
+  status?: $Enums.CatalogStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1014,6 +1066,7 @@ export type JobRoleUpdateWithoutDepartmentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUpdateManyWithoutJobRoleNestedInput
@@ -1029,6 +1082,7 @@ export type JobRoleUncheckedUpdateWithoutDepartmentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employees?: Prisma.EmployeeUncheckedUpdateManyWithoutJobRoleNestedInput
@@ -1044,6 +1098,7 @@ export type JobRoleUncheckedUpdateManyWithoutDepartmentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   canonicalTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCatalogStatusFieldUpdateOperationsInput | $Enums.CatalogStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1122,6 +1177,7 @@ export type JobRoleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   level?: boolean
   departmentId?: boolean
   canonicalTitle?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   department?: boolean | Prisma.JobRole$departmentArgs<ExtArgs>
@@ -1140,6 +1196,7 @@ export type JobRoleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   level?: boolean
   departmentId?: boolean
   canonicalTitle?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   department?: boolean | Prisma.JobRole$departmentArgs<ExtArgs>
@@ -1152,6 +1209,7 @@ export type JobRoleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   level?: boolean
   departmentId?: boolean
   canonicalTitle?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   department?: boolean | Prisma.JobRole$departmentArgs<ExtArgs>
@@ -1164,11 +1222,12 @@ export type JobRoleSelectScalar = {
   level?: boolean
   departmentId?: boolean
   canonicalTitle?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type JobRoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "title" | "level" | "departmentId" | "canonicalTitle" | "createdAt" | "updatedAt", ExtArgs["result"]["jobRole"]>
+export type JobRoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "title" | "level" | "departmentId" | "canonicalTitle" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["jobRole"]>
 export type JobRoleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.JobRole$departmentArgs<ExtArgs>
   employees?: boolean | Prisma.JobRole$employeesArgs<ExtArgs>
@@ -1202,6 +1261,7 @@ export type $JobRolePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     level: string | null
     departmentId: string | null
     canonicalTitle: string | null
+    status: $Enums.CatalogStatus
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["jobRole"]>
@@ -1639,6 +1699,7 @@ export interface JobRoleFieldRefs {
   readonly level: Prisma.FieldRef<"JobRole", 'String'>
   readonly departmentId: Prisma.FieldRef<"JobRole", 'String'>
   readonly canonicalTitle: Prisma.FieldRef<"JobRole", 'String'>
+  readonly status: Prisma.FieldRef<"JobRole", 'CatalogStatus'>
   readonly createdAt: Prisma.FieldRef<"JobRole", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"JobRole", 'DateTime'>
 }

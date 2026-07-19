@@ -86,28 +86,55 @@ async function main() {
           tenantId: DEMO_ORG_ID,
           name: "Engineering",
           code: "ENG",
+          status: "ACTIVE",
         },
-        update: { name: "Engineering" },
+        update: { name: "Engineering", status: "ACTIVE" },
       });
 
-      const roleIc = await tx.jobRole.create({
-        data: {
+      const roleIc = await tx.jobRole.upsert({
+        where: {
+          tenantId_title: {
+            tenantId: DEMO_ORG_ID,
+            title: "Software Engineer",
+          },
+        },
+        create: {
           tenantId: DEMO_ORG_ID,
           title: "Software Engineer",
           level: "IC3",
           departmentId: dept.id,
           canonicalTitle: "Senior Rust Engineer",
+          status: "ACTIVE",
+        },
+        update: {
+          level: "IC3",
+          departmentId: dept.id,
+          canonicalTitle: "Senior Rust Engineer",
+          status: "ACTIVE",
         },
       });
       icRoleIdForDemo = roleIc.id;
 
-      const roleLead = await tx.jobRole.create({
-        data: {
+      const roleLead = await tx.jobRole.upsert({
+        where: {
+          tenantId_title: {
+            tenantId: DEMO_ORG_ID,
+            title: "Engineering Lead",
+          },
+        },
+        create: {
           tenantId: DEMO_ORG_ID,
           title: "Engineering Lead",
           level: "M1",
           departmentId: dept.id,
           canonicalTitle: "Engineering Manager — Platform",
+          status: "ACTIVE",
+        },
+        update: {
+          level: "M1",
+          departmentId: dept.id,
+          canonicalTitle: "Engineering Manager — Platform",
+          status: "ACTIVE",
         },
       });
 

@@ -1,0 +1,23 @@
+{
+  "schema": "hr-erp-site-verification-summary/v1",
+  "program_id": "core-hr",
+  "site_id": "hr-erp",
+  "revision": 1,
+  "corporate_handoff_sha256": "6670263a838ba3dc2f70df8a67010b2d611964c00bf9e7c2183709209e3c705d",
+  "adrs": [
+    "specs/alignment/decisions/0021-core-hr-catalog-schema.md",
+    "specs/alignment/decisions/0022-core-hr-catalog-apis.md",
+    "specs/alignment/decisions/0023-core-hr-employee-contract.md",
+    "specs/alignment/decisions/0024-core-hr-verification-gates.md"
+  ],
+  "migration": "prisma/migrations/20260719120000_core_hr_catalog_schema",
+  "oracles": {
+    "verify_sh": "exit 0 including nested scripts/core-hr-postgres-suite.ts",
+    "adversarial_sh": "exit 0 including hermetic Core HR probes + scripts/core-hr-adversarial-suite.ts"
+  },
+  "jwt_posture_label": "local HS256 demo — not production JWT/JWKS",
+  "notes": [
+    "HR_ERP_VERIFY_DATABASE_URL / pre-clear DATABASE_URL used for nested suites",
+    "CORE_HR_DATABASE_URL (extraction) must not be used for Core HR slice proof"
+  ]
+}

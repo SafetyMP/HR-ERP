@@ -72,6 +72,7 @@
     "test:ui": "vitest run --config vitest.config.ui.mts",
     "test:payroll": "npm run test --workspace @hr-erp/payroll-calc",
     "test:integration": "vitest run tests/integration",
+    "test:core-hr": "tsx scripts/core-hr-postgres-suite.ts",
     "test:watch": "vitest",
     "worker:integrations": "tsx scripts/integration-workers.ts",
     "worker:webhooks": "tsx scripts/webhook-delivery-worker.ts",

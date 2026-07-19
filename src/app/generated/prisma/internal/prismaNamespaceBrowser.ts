@@ -253,6 +253,8 @@ export const DepartmentScalarFieldEnum = {
   tenantId: 'tenantId',
   name: 'name',
   code: 'code',
+  parentId: 'parentId',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -267,6 +269,7 @@ export const JobRoleScalarFieldEnum = {
   level: 'level',
   departmentId: 'departmentId',
   canonicalTitle: 'canonicalTitle',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

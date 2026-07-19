@@ -37,6 +37,14 @@ export const HrCaseStatus = {
 export type HrCaseStatus = (typeof HrCaseStatus)[keyof typeof HrCaseStatus]
 
 
+export const CatalogStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type CatalogStatus = (typeof CatalogStatus)[keyof typeof CatalogStatus]
+
+
 export const PayrollPeriodStatus = {
   OPEN: 'OPEN',
   COMPUTED: 'COMPUTED',

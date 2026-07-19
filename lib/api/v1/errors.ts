@@ -46,12 +46,18 @@ export function toPublicError(err: unknown): { status: number; payload: ApiError
   }
 
   if (err instanceof ZodError) {
+    // Path + code only — never echo submitted field values (Core HR R-007).
     return {
       status: 400,
       payload: {
         code: "validation_error",
         message: "validation_failed",
-        details: err.flatten(),
+        details: {
+          issues: err.issues.map((issue) => ({
+            path: issue.path.map(String),
+            code: issue.code,
+          })),
+        },
       },
     };
   }

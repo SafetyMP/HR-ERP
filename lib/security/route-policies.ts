@@ -18,8 +18,40 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "employees:list",
     abac: { minMfa: "standard", maxDataClassification: "confidential" },
   },
+  [routeKey("POST", "/api/v1/employees")]: {
+    permission: "employees:write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
   [routeKey("GET", "/api/v1/employees/:employeeId")]: {
     permission: "employees:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("PATCH", "/api/v1/employees/:employeeId")]: {
+    permission: "employees:write",
+    abac: { minMfa: "standard", maxDataClassification: "confidential" },
+  },
+  [routeKey("GET", "/api/v1/departments")]: {
+    permission: "departments:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/departments")]: {
+    permission: "departments:write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/departments/:departmentId")]: {
+    permission: "departments:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/job-roles")]: {
+    permission: "job_roles:read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("POST", "/api/v1/job-roles")]: {
+    permission: "job_roles:write",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
+  [routeKey("GET", "/api/v1/job-roles/:jobRoleId")]: {
+    permission: "job_roles:read",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
   [routeKey("POST", "/api/v1/attendance/clock-in")]: {
@@ -408,12 +440,34 @@ export function getRoutePolicy(
   if (exact) return exact;
 
   if (
-    verb === "GET" &&
     /^\/api\/v1\/employees\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
       pathname,
     )
   ) {
-    return ROUTES[routeKey("GET", "/api/v1/employees/:employeeId")];
+    if (verb === "GET") {
+      return ROUTES[routeKey("GET", "/api/v1/employees/:employeeId")];
+    }
+    if (verb === "PATCH") {
+      return ROUTES[routeKey("PATCH", "/api/v1/employees/:employeeId")];
+    }
+  }
+
+  if (
+    verb === "GET" &&
+    /^\/api\/v1\/departments\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      pathname,
+    )
+  ) {
+    return ROUTES[routeKey("GET", "/api/v1/departments/:departmentId")];
+  }
+
+  if (
+    verb === "GET" &&
+    /^\/api\/v1\/job-roles\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      pathname,
+    )
+  ) {
+    return ROUTES[routeKey("GET", "/api/v1/job-roles/:jobRoleId")];
   }
 
   if (verb === "GET") {
