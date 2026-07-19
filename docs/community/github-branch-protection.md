@@ -80,13 +80,13 @@ After the first successful run on `main`, [`.github/workflows/scorecard.yml`](..
 As of 2026-07-18 on `SafetyMP/HR-ERP` (owner is a **user** account, not an org):
 
 - **Ruleset [`main-quality-gate`](https://github.com/SafetyMP/HR-ERP/rules/19149676)** — active on `main`/`master`:
-  - Pull request: **1** approving review + **require CODEOWNERS**
+  - Pull request: **required** (approving review count **0**, CODEOWNERS review **off** — authors cannot self-approve on a solo personal account)
   - Required checks: `ci / web`, `ci / python-pipelines`, `qa / vitest-shard (1)`, `qa / vitest-shard (2)`, `qa / integration`, `qa / e2e`
   - Bypass: user `@SafetyMP` only. GitHub Actions Integration bypass is **not** available on personal repos.
 - Classic branch protection still has `enforce_admins` + linear history; classic require-PR stays off (ruleset owns the PR gate).
-- [`.github/CODEOWNERS`](../../.github/CODEOWNERS) routes to `@SafetyMP` (team slugs are invalid until an organization exists).
+- [`.github/CODEOWNERS`](../../.github/CODEOWNERS) routes to `@SafetyMP` for routing/docs; require-CODEOWNERS stays off until an org or second reviewer exists.
 - **Semantic-release:** set repo secret `SEMANTIC_RELEASE_TOKEN` to a fine-grained PAT owned by `@SafetyMP` (Contents: write) so `@semantic-release/git` can bypass; default `GITHUB_TOKEN` cannot.
-- Release **v2.14.0** published earlier ([#100](https://github.com/SafetyMP/HR-ERP/pull/100)).
+- Release **v2.14.0** / **v2.14.1** published; protection/docs apply PR [#103](https://github.com/SafetyMP/HR-ERP/pull/103) merged after solo-owner review policy relaxation.
 
 Re-audit: `./scripts/github-protection-audit.sh` (expect exit 0).
 
@@ -119,10 +119,11 @@ From [`.github/workflows/quality-gate.yml`](../../.github/workflows/quality-gate
 
 If the UI exposes parents `ci` / `qa` instead of leaves, require those parents **or** every leaf above.
 
-### Reviews
+### Reviews (solo personal account)
 
-- [x] `required_approving_review_count` **≥ 1** (ruleset `main-quality-gate`)
-- [x] **Require review from CODEOWNERS** = on (CODEOWNERS → `@SafetyMP`)
+- [x] Ruleset **Pull request** gate on (changes must use a PR)
+- [x] `required_approving_review_count` = **0** and **Require CODEOWNERS** = off — avoids author/CODEOWNER self-review deadlock on `@SafetyMP`
+- [ ] When the repo moves under an org (or a second reviewer exists): set approving reviews **≥ 1** and turn **Require CODEOWNERS** back on
 - [x] Classic “Require a pull request” left off; ruleset owns the PR gate with `@SafetyMP` bypass for releases (set `SEMANTIC_RELEASE_TOKEN`)
 
 ### Audit script (read-only)

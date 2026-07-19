@@ -31,12 +31,12 @@ Full positioning (scope, honest demo paths, pairing with external agent-security
 
 **Under the hood:** **Next.js** (App Router) + **PostgreSQL** (Prisma), with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), and **governance** docs (compliance, AI ethics, architecture ADRs). Human contributors and Cursor-orchestrated agents share the same merge bar.
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![Node.js](https://img.shields.io/badge/node.js-22+-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License](https://badgen.net/badge/license/Apache%202.0/blue)](./LICENSE)
+[![Node.js](https://badgen.net/badge/node.js/22+/339933)](https://nodejs.org/)
 [![Quality gate](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml/badge.svg?event=pull_request)](https://github.com/SafetyMP/HR-ERP/actions/workflows/quality-gate.yml)
 [![Deploy production](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/SafetyMP/HR-ERP/actions/workflows/deploy.yml)
-[![Release](https://img.shields.io/github/v/release/SafetyMP/HR-ERP)](https://github.com/SafetyMP/HR-ERP/releases/latest)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SafetyMP/HR-ERP/badge)](https://scorecard.dev/viewer/?uri=github.com/SafetyMP/HR-ERP)
+[![Release](https://badgen.net/github/release/SafetyMP/HR-ERP)](https://github.com/SafetyMP/HR-ERP/releases/latest)
+[![OpenSSF Scorecard](https://github.com/SafetyMP/HR-ERP/actions/workflows/scorecard.yml/badge.svg?branch=main)](https://scorecard.dev/viewer/?uri=github.com/SafetyMP/HR-ERP)
 
 **Jump to:** [Demo](#demo) · [Open source positioning](#open-source-evergreen-project) · [Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Authentication](#authentication--api-access) · [Documentation](#documentation) · [Tech stack](#tech-stack) · [Security](#security-architecture) · [Containers](#releases--container-publishing) · [Contributing](#contributing) · [License](#license)
 
