@@ -46,6 +46,7 @@ Not merged into the **155** Track A denominator unless PO re-baselines. Status f
 | 026 | Benefits election change intent (W7 UX) | **Shipped** | [features-026](./completion-audits/features-026.md) |
 | 027 | COBRA notice PDF | **Blocked** (counsel gates 1–4) | [features-027](./completion-audits/features-027.md) |
 | 028 | Partner filing UX + counsel package (W3) | **Shipped** (UX; counsel signoff pending) | [features-028](./completion-audits/features-028.md) |
+| 029 | Pay transparency posting fields (July 2026) | **Shipped** (teaching surface) | [029 brief](./feature-briefs/029-pay-transparency-posting-fields.md) · [calendar](../compliance/july-2026-us-state-calendar.md) |
 
 ### Win scorecard (W1–W7)
 

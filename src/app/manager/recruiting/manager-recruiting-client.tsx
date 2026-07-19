@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 import { readApiErrorMessage } from "@/lib/api/v1/read-api-error-message";
+import { formatPayRangeLabel } from "@/lib/recruiting/pay-range-format";
 
 type Requisition = {
   id: string;
@@ -24,6 +25,10 @@ type Requisition = {
   openings: number;
   employmentType: string;
   locationCountry: string | null;
+  payRangeMin: number | null;
+  payRangeMax: number | null;
+  payRangeCurrency: string;
+  postingJurisdiction: string | null;
 };
 
 type Props = {
@@ -60,6 +65,10 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
   const [forbidden, setForbidden] = useState(false);
   const [title, setTitle] = useState("");
   const [openings, setOpenings] = useState("1");
+  const [payMin, setPayMin] = useState("");
+  const [payMax, setPayMax] = useState("");
+  const [payCurrency, setPayCurrency] = useState("USD");
+  const [postingJurisdiction, setPostingJurisdiction] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -105,6 +114,17 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
     setBusy(true);
     setMsg(null);
     try {
+      const payload: Record<string, unknown> = {
+        title: title.trim(),
+        openings: Number(openings) || 1,
+        employmentType: "FULL_TIME",
+        payRangeCurrency: payCurrency.trim() || "USD",
+      };
+      if (payMin.trim() !== "") payload.payRangeMin = Number(payMin);
+      if (payMax.trim() !== "") payload.payRangeMax = Number(payMax);
+      if (postingJurisdiction.trim() !== "") {
+        payload.postingJurisdiction = postingJurisdiction.trim();
+      }
       const res = await hrApiFetch("/api/v1/recruiting/requisitions", {
         bearerToken,
         method: "POST",
@@ -112,11 +132,7 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: title.trim(),
-          openings: Number(openings) || 1,
-          employmentType: "FULL_TIME",
-        }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         setMsg(
@@ -128,6 +144,9 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
         return;
       }
       setTitle("");
+      setPayMin("");
+      setPayMax("");
+      setPostingJurisdiction("");
       await reload();
       setMsg("Requisition created.");
     } finally {
@@ -193,6 +212,51 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
               onChange={(e) => setOpenings(e.target.value)}
             />
           </label>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <label className="text-sm font-medium text-foreground">
+              Pay range min (optional)
+              <Input
+                className="mt-1"
+                type="number"
+                min={0}
+                step="1000"
+                value={payMin}
+                onChange={(e) => setPayMin(e.target.value)}
+                placeholder="e.g. 70000"
+              />
+            </label>
+            <label className="text-sm font-medium text-foreground">
+              Pay range max (optional)
+              <Input
+                className="mt-1"
+                type="number"
+                min={0}
+                step="1000"
+                value={payMax}
+                onChange={(e) => setPayMax(e.target.value)}
+                placeholder="e.g. 90000"
+              />
+            </label>
+            <label className="text-sm font-medium text-foreground">
+              Currency
+              <Input
+                className="mt-1"
+                value={payCurrency}
+                onChange={(e) => setPayCurrency(e.target.value.toUpperCase())}
+                maxLength={3}
+                placeholder="USD"
+              />
+            </label>
+          </div>
+          <label className="text-sm font-medium text-foreground">
+            Posting jurisdiction (optional)
+            <Input
+              className="mt-1 w-40"
+              value={postingJurisdiction}
+              onChange={(e) => setPostingJurisdiction(e.target.value)}
+              placeholder="e.g. US-VA"
+            />
+          </label>
           <Button type="button" onClick={() => void createReq()} disabled={busy}>
             {busy ? "Creating…" : "Create requisition"}
           </Button>
@@ -227,7 +291,9 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
             </p>
           ) : (
             <ul className="grid gap-3 sm:grid-cols-2" role="list">
-              {rows.map((r) => (
+              {rows.map((r) => {
+                const payLabel = formatPayRangeLabel(r);
+                return (
                 <li key={r.id} className="list-none">
                   <Link
                     href={`/manager/recruiting/requisitions/${r.id}`}
@@ -237,10 +303,15 @@ export function ManagerRecruitingClient({ initialBearerToken }: Props) {
                     <p className="mt-2 text-xs text-muted-foreground">
                       {r.status} · {r.openings} opening{r.openings === 1 ? "" : "s"}
                       {r.locationCountry ? ` · ${r.locationCountry}` : ""}
+                      {payLabel ? ` · ${payLabel}` : ""}
+                      {r.postingJurisdiction
+                        ? ` · ${r.postingJurisdiction}`
+                        : ""}
                     </p>
                   </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </CardContent>

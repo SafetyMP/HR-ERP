@@ -28,10 +28,14 @@ export type AggregateJobRequisition = {
 
 export type JobRequisitionAvgAggregateOutputType = {
   openings: number | null
+  payRangeMin: runtime.Decimal | null
+  payRangeMax: runtime.Decimal | null
 }
 
 export type JobRequisitionSumAggregateOutputType = {
   openings: number | null
+  payRangeMin: runtime.Decimal | null
+  payRangeMax: runtime.Decimal | null
 }
 
 export type JobRequisitionMinAggregateOutputType = {
@@ -46,6 +50,10 @@ export type JobRequisitionMinAggregateOutputType = {
   locationCountry: string | null
   employmentType: $Enums.EmploymentType | null
   description: string | null
+  payRangeMin: runtime.Decimal | null
+  payRangeMax: runtime.Decimal | null
+  payRangeCurrency: string | null
+  postingJurisdiction: string | null
   closedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -63,6 +71,10 @@ export type JobRequisitionMaxAggregateOutputType = {
   locationCountry: string | null
   employmentType: $Enums.EmploymentType | null
   description: string | null
+  payRangeMin: runtime.Decimal | null
+  payRangeMax: runtime.Decimal | null
+  payRangeCurrency: string | null
+  postingJurisdiction: string | null
   closedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -80,6 +92,10 @@ export type JobRequisitionCountAggregateOutputType = {
   locationCountry: number
   employmentType: number
   description: number
+  payRangeMin: number
+  payRangeMax: number
+  payRangeCurrency: number
+  postingJurisdiction: number
   closedAt: number
   createdAt: number
   updatedAt: number
@@ -89,10 +105,14 @@ export type JobRequisitionCountAggregateOutputType = {
 
 export type JobRequisitionAvgAggregateInputType = {
   openings?: true
+  payRangeMin?: true
+  payRangeMax?: true
 }
 
 export type JobRequisitionSumAggregateInputType = {
   openings?: true
+  payRangeMin?: true
+  payRangeMax?: true
 }
 
 export type JobRequisitionMinAggregateInputType = {
@@ -107,6 +127,10 @@ export type JobRequisitionMinAggregateInputType = {
   locationCountry?: true
   employmentType?: true
   description?: true
+  payRangeMin?: true
+  payRangeMax?: true
+  payRangeCurrency?: true
+  postingJurisdiction?: true
   closedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -124,6 +148,10 @@ export type JobRequisitionMaxAggregateInputType = {
   locationCountry?: true
   employmentType?: true
   description?: true
+  payRangeMin?: true
+  payRangeMax?: true
+  payRangeCurrency?: true
+  postingJurisdiction?: true
   closedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -141,6 +169,10 @@ export type JobRequisitionCountAggregateInputType = {
   locationCountry?: true
   employmentType?: true
   description?: true
+  payRangeMin?: true
+  payRangeMax?: true
+  payRangeCurrency?: true
+  postingJurisdiction?: true
   closedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -245,6 +277,10 @@ export type JobRequisitionGroupByOutputType = {
   locationCountry: string | null
   employmentType: $Enums.EmploymentType
   description: string | null
+  payRangeMin: runtime.Decimal | null
+  payRangeMax: runtime.Decimal | null
+  payRangeCurrency: string
+  postingJurisdiction: string | null
   closedAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -285,6 +321,10 @@ export type JobRequisitionWhereInput = {
   locationCountry?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
   employmentType?: Prisma.EnumEmploymentTypeFilter<"JobRequisition"> | $Enums.EmploymentType
   description?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
+  payRangeMin?: Prisma.DecimalNullableFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.DecimalNullableFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFilter<"JobRequisition"> | string
+  postingJurisdiction?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
   closedAt?: Prisma.DateTimeNullableFilter<"JobRequisition"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"JobRequisition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobRequisition"> | Date | string
@@ -303,6 +343,10 @@ export type JobRequisitionOrderByWithRelationInput = {
   locationCountry?: Prisma.SortOrderInput | Prisma.SortOrder
   employmentType?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeCurrency?: Prisma.SortOrder
+  postingJurisdiction?: Prisma.SortOrderInput | Prisma.SortOrder
   closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -324,6 +368,10 @@ export type JobRequisitionWhereUniqueInput = Prisma.AtLeast<{
   locationCountry?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
   employmentType?: Prisma.EnumEmploymentTypeFilter<"JobRequisition"> | $Enums.EmploymentType
   description?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
+  payRangeMin?: Prisma.DecimalNullableFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.DecimalNullableFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFilter<"JobRequisition"> | string
+  postingJurisdiction?: Prisma.StringNullableFilter<"JobRequisition"> | string | null
   closedAt?: Prisma.DateTimeNullableFilter<"JobRequisition"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"JobRequisition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"JobRequisition"> | Date | string
@@ -342,6 +390,10 @@ export type JobRequisitionOrderByWithAggregationInput = {
   locationCountry?: Prisma.SortOrderInput | Prisma.SortOrder
   employmentType?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrderInput | Prisma.SortOrder
+  payRangeCurrency?: Prisma.SortOrder
+  postingJurisdiction?: Prisma.SortOrderInput | Prisma.SortOrder
   closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -367,6 +419,10 @@ export type JobRequisitionScalarWhereWithAggregatesInput = {
   locationCountry?: Prisma.StringNullableWithAggregatesFilter<"JobRequisition"> | string | null
   employmentType?: Prisma.EnumEmploymentTypeWithAggregatesFilter<"JobRequisition"> | $Enums.EmploymentType
   description?: Prisma.StringNullableWithAggregatesFilter<"JobRequisition"> | string | null
+  payRangeMin?: Prisma.DecimalNullableWithAggregatesFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.DecimalNullableWithAggregatesFilter<"JobRequisition"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringWithAggregatesFilter<"JobRequisition"> | string
+  postingJurisdiction?: Prisma.StringNullableWithAggregatesFilter<"JobRequisition"> | string | null
   closedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"JobRequisition"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"JobRequisition"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"JobRequisition"> | Date | string
@@ -384,6 +440,10 @@ export type JobRequisitionCreateInput = {
   locationCountry?: string | null
   employmentType?: $Enums.EmploymentType
   description?: string | null
+  payRangeMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: string
+  postingJurisdiction?: string | null
   closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -402,6 +462,10 @@ export type JobRequisitionUncheckedCreateInput = {
   locationCountry?: string | null
   employmentType?: $Enums.EmploymentType
   description?: string | null
+  payRangeMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: string
+  postingJurisdiction?: string | null
   closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -420,6 +484,10 @@ export type JobRequisitionUpdateInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +506,10 @@ export type JobRequisitionUncheckedUpdateInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,6 +528,10 @@ export type JobRequisitionCreateManyInput = {
   locationCountry?: string | null
   employmentType?: $Enums.EmploymentType
   description?: string | null
+  payRangeMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: string
+  postingJurisdiction?: string | null
   closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -473,6 +549,10 @@ export type JobRequisitionUpdateManyMutationInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -490,6 +570,10 @@ export type JobRequisitionUncheckedUpdateManyInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -507,6 +591,10 @@ export type JobRequisitionCountOrderByAggregateInput = {
   locationCountry?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrder
+  payRangeCurrency?: Prisma.SortOrder
+  postingJurisdiction?: Prisma.SortOrder
   closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -514,6 +602,8 @@ export type JobRequisitionCountOrderByAggregateInput = {
 
 export type JobRequisitionAvgOrderByAggregateInput = {
   openings?: Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrder
 }
 
 export type JobRequisitionMaxOrderByAggregateInput = {
@@ -528,6 +618,10 @@ export type JobRequisitionMaxOrderByAggregateInput = {
   locationCountry?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrder
+  payRangeCurrency?: Prisma.SortOrder
+  postingJurisdiction?: Prisma.SortOrder
   closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -545,6 +639,10 @@ export type JobRequisitionMinOrderByAggregateInput = {
   locationCountry?: Prisma.SortOrder
   employmentType?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrder
+  payRangeCurrency?: Prisma.SortOrder
+  postingJurisdiction?: Prisma.SortOrder
   closedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -552,6 +650,8 @@ export type JobRequisitionMinOrderByAggregateInput = {
 
 export type JobRequisitionSumOrderByAggregateInput = {
   openings?: Prisma.SortOrder
+  payRangeMin?: Prisma.SortOrder
+  payRangeMax?: Prisma.SortOrder
 }
 
 export type JobRequisitionScalarRelationFilter = {
@@ -593,6 +693,10 @@ export type JobRequisitionCreateWithoutApplicationsInput = {
   locationCountry?: string | null
   employmentType?: $Enums.EmploymentType
   description?: string | null
+  payRangeMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: string
+  postingJurisdiction?: string | null
   closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -610,6 +714,10 @@ export type JobRequisitionUncheckedCreateWithoutApplicationsInput = {
   locationCountry?: string | null
   employmentType?: $Enums.EmploymentType
   description?: string | null
+  payRangeMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: string
+  postingJurisdiction?: string | null
   closedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -643,6 +751,10 @@ export type JobRequisitionUpdateWithoutApplicationsInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -660,6 +772,10 @@ export type JobRequisitionUncheckedUpdateWithoutApplicationsInput = {
   locationCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payRangeMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  payRangeCurrency?: Prisma.StringFieldUpdateOperationsInput | string
+  postingJurisdiction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -708,6 +824,10 @@ export type JobRequisitionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   locationCountry?: boolean
   employmentType?: boolean
   description?: boolean
+  payRangeMin?: boolean
+  payRangeMax?: boolean
+  payRangeCurrency?: boolean
+  postingJurisdiction?: boolean
   closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -727,6 +847,10 @@ export type JobRequisitionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   locationCountry?: boolean
   employmentType?: boolean
   description?: boolean
+  payRangeMin?: boolean
+  payRangeMax?: boolean
+  payRangeCurrency?: boolean
+  postingJurisdiction?: boolean
   closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -744,6 +868,10 @@ export type JobRequisitionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   locationCountry?: boolean
   employmentType?: boolean
   description?: boolean
+  payRangeMin?: boolean
+  payRangeMax?: boolean
+  payRangeCurrency?: boolean
+  postingJurisdiction?: boolean
   closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -761,12 +889,16 @@ export type JobRequisitionSelectScalar = {
   locationCountry?: boolean
   employmentType?: boolean
   description?: boolean
+  payRangeMin?: boolean
+  payRangeMax?: boolean
+  payRangeCurrency?: boolean
+  postingJurisdiction?: boolean
   closedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type JobRequisitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "title" | "departmentId" | "jobRoleId" | "hiringManagerId" | "status" | "openings" | "locationCountry" | "employmentType" | "description" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["jobRequisition"]>
+export type JobRequisitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "title" | "departmentId" | "jobRoleId" | "hiringManagerId" | "status" | "openings" | "locationCountry" | "employmentType" | "description" | "payRangeMin" | "payRangeMax" | "payRangeCurrency" | "postingJurisdiction" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["jobRequisition"]>
 export type JobRequisitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   applications?: boolean | Prisma.JobRequisition$applicationsArgs<ExtArgs>
   _count?: boolean | Prisma.JobRequisitionCountOutputTypeDefaultArgs<ExtArgs>
@@ -797,6 +929,16 @@ export type $JobRequisitionPayload<ExtArgs extends runtime.Types.Extensions.Inte
      * Free-text job description; AI screening must operate on a redacted copy (see lib/recruiting/redact.ts).
      */
     description: string | null
+    /**
+     * Optional good-faith pay range for July 2026 pay-transparency teaching surface (brief 029).
+     */
+    payRangeMin: runtime.Decimal | null
+    payRangeMax: runtime.Decimal | null
+    payRangeCurrency: string
+    /**
+     * Jurisdiction hint for posting rules (e.g. US-VA, US-ME) — not a statutory engine.
+     */
+    postingJurisdiction: string | null
     closedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -1235,6 +1377,10 @@ export interface JobRequisitionFieldRefs {
   readonly locationCountry: Prisma.FieldRef<"JobRequisition", 'String'>
   readonly employmentType: Prisma.FieldRef<"JobRequisition", 'EmploymentType'>
   readonly description: Prisma.FieldRef<"JobRequisition", 'String'>
+  readonly payRangeMin: Prisma.FieldRef<"JobRequisition", 'Decimal'>
+  readonly payRangeMax: Prisma.FieldRef<"JobRequisition", 'Decimal'>
+  readonly payRangeCurrency: Prisma.FieldRef<"JobRequisition", 'String'>
+  readonly postingJurisdiction: Prisma.FieldRef<"JobRequisition", 'String'>
   readonly closedAt: Prisma.FieldRef<"JobRequisition", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"JobRequisition", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"JobRequisition", 'DateTime'>

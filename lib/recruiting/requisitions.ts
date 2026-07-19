@@ -2,6 +2,7 @@ import type { Prisma } from "@/app/generated/prisma/client";
 import { ApiError } from "@/lib/api/v1/errors";
 import { enqueueEvent } from "@/lib/outbox/enqueue-event";
 import { prisma } from "@/lib/prisma";
+import { normalizePayRangeFields } from "@/lib/recruiting/pay-range";
 import type { AuthContext } from "@/lib/security/auth-context";
 import { withAuthorizedTransaction } from "@/lib/security/with-authorized-transaction";
 
@@ -19,6 +20,10 @@ export interface CreateRequisitionInput {
     | "INTERN"
     | "TEMP";
   description?: string | null;
+  payRangeMin?: number | null;
+  payRangeMax?: number | null;
+  payRangeCurrency?: string | null;
+  postingJurisdiction?: string | null;
 }
 
 export async function createRequisition(
@@ -37,6 +42,8 @@ export async function createRequisition(
       message: "openings must be between 1 and 1000",
     });
   }
+
+  const payRange = normalizePayRangeFields(input);
 
   return withAuthorizedTransaction(
     prisma,
@@ -57,6 +64,10 @@ export async function createRequisition(
           locationCountry: input.locationCountry ?? null,
           employmentType: input.employmentType ?? "FULL_TIME",
           description: input.description ?? null,
+          payRangeMin: payRange.payRangeMin,
+          payRangeMax: payRange.payRangeMax,
+          payRangeCurrency: payRange.payRangeCurrency,
+          postingJurisdiction: payRange.postingJurisdiction,
           status: "DRAFT",
         },
       });
@@ -102,6 +113,29 @@ export async function listRequisitions(
         orderBy: [{ status: "asc" }, { updatedAt: "desc" }],
         take: 200,
       });
+    },
+  );
+}
+
+export async function getRequisition(auth: AuthContext, requisitionId: string) {
+  return withAuthorizedTransaction(
+    prisma,
+    auth,
+    {
+      permission: "recruiting:requisition_read",
+      resourceClassification: "internal",
+    },
+    async (tx) => {
+      const row = await tx.jobRequisition.findFirst({
+        where: { id: requisitionId, tenantId: auth.tenantId },
+      });
+      if (!row) {
+        throw new ApiError(404, {
+          code: "not_found",
+          message: "requisition_not_found",
+        });
+      }
+      return row;
     },
   );
 }

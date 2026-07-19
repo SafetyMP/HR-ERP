@@ -58,6 +58,7 @@ If workers or BullMQ are enabled in an environment, set a managed Redis URL (e.g
 ## Incident response
 
 - Application + database rollback playbook: [`production-rollback-runbook.md`](./production-rollback-runbook.md)
+- Next.js monthly security patches: [`nextjs-security-release-cadence.md`](./nextjs-security-release-cadence.md)
 
 ## GitHub Actions / deploy
 

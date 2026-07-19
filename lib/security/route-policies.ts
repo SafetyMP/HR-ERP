@@ -254,6 +254,10 @@ const ROUTES: Record<string, RoutePolicy> = {
     permission: "recruiting:requisition_write",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
   },
+  [routeKey("GET", "/api/v1/recruiting/requisitions/:id")]: {
+    permission: "recruiting:requisition_read",
+    abac: { minMfa: "standard", maxDataClassification: "internal" },
+  },
   [routeKey("PATCH", "/api/v1/recruiting/requisitions/:id")]: {
     permission: "recruiting:requisition_write",
     abac: { minMfa: "standard", maxDataClassification: "internal" },
@@ -521,6 +525,9 @@ export function getRoutePolicy(
     /^\/api\/v1\/recruiting\/requisitions\/([^/]+)$/,
   );
   if (recruitingReqMatch && UUID_PATTERN.test(recruitingReqMatch[1]!)) {
+    if (verb === "GET") {
+      return ROUTES[routeKey("GET", "/api/v1/recruiting/requisitions/:id")];
+    }
     if (verb === "PATCH") {
       return ROUTES[routeKey("PATCH", "/api/v1/recruiting/requisitions/:id")];
     }
