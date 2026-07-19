@@ -30,12 +30,23 @@ import {
 import { toast } from "sonner";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
+import { formatPayRangeLabel } from "@/lib/recruiting/pay-range-format";
 
 type Application = {
   id: string;
   stage: string;
   appliedAt: string;
   candidate: { id: string; fullName: string; sourceChannel: string | null };
+};
+
+type RequisitionSummary = {
+  id: string;
+  title: string;
+  status: string;
+  payRangeMin: number | null;
+  payRangeMax: number | null;
+  payRangeCurrency: string;
+  postingJurisdiction: string | null;
 };
 
 type Props = {
@@ -52,6 +63,9 @@ export function RequisitionPipelineClient({
   const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [apps, setApps] = useState<Application[] | undefined>(undefined);
+  const [requisition, setRequisition] = useState<RequisitionSummary | null>(
+    null,
+  );
   const [busyId, setBusyId] = useState<string | null>(null);
   const [candidateName, setCandidateName] = useState("");
   const [candidateEmail, setCandidateEmail] = useState("");
@@ -62,15 +76,29 @@ export function RequisitionPipelineClient({
   const [msg, setMsg] = useState<string | null>(null);
 
   const load = async () => {
-    const res = await hrApiFetch(
-      `/api/v1/recruiting/requisitions/${requisitionId}/applications`,
-      { bearerToken, headers: { Accept: "application/json" } },
-    );
-    if (!res.ok) {
+    const [appsRes, reqRes] = await Promise.all([
+      hrApiFetch(
+        `/api/v1/recruiting/requisitions/${requisitionId}/applications`,
+        { bearerToken, headers: { Accept: "application/json" } },
+      ),
+      hrApiFetch(`/api/v1/recruiting/requisitions/${requisitionId}`, {
+        bearerToken,
+        headers: { Accept: "application/json" },
+      }),
+    ]);
+    if (reqRes.ok) {
+      const reqBody = (await reqRes.json()) as {
+        data?: { requisition?: RequisitionSummary };
+      };
+      setRequisition(reqBody.data?.requisition ?? null);
+    } else {
+      setRequisition(null);
+    }
+    if (!appsRes.ok) {
       setApps([]);
       return;
     }
-    const body = (await res.json()) as {
+    const body = (await appsRes.json()) as {
       data?: { applications?: Application[] };
     };
     setApps(body.data?.applications ?? []);
@@ -229,11 +257,38 @@ export function RequisitionPipelineClient({
     );
   }
 
+  const payLabel = requisition ? formatPayRangeLabel(requisition) : null;
+
   return (
     <div className="flex flex-col gap-6">
+      {requisition ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>{requisition.title}</CardTitle>
+            <CardDescription>
+              {requisition.status}
+              {payLabel ? ` · ${payLabel}` : ""}
+              {requisition.postingJurisdiction
+                ? ` · ${requisition.postingJurisdiction}`
+                : ""}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              Fair Chance teaching note: do not inquire about criminal history
+              until a conditional offer. Background-check vendors are out of
+              scope for this reference app.
+            </p>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card>
         <CardHeader>
           <CardTitle>Add applicant</CardTitle>
+          <CardDescription>
+            Collect name and email only — do not ask for salary history.
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <Input

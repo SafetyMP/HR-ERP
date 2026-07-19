@@ -24,6 +24,14 @@ const CreateRequisitionSchema = z.object({
     .enum(["FULL_TIME", "PART_TIME", "CONTRACT", "INTERN", "TEMP"])
     .optional(),
   description: z.string().max(20000).nullable().optional(),
+  payRangeMin: z.number().nonnegative().nullable().optional(),
+  payRangeMax: z.number().nonnegative().nullable().optional(),
+  payRangeCurrency: z
+    .string()
+    .regex(/^[A-Za-z]{3}$/, "ISO-4217 currency")
+    .nullable()
+    .optional(),
+  postingJurisdiction: z.string().max(16).nullable().optional(),
 });
 
 export async function POST(request: Request) {
@@ -80,6 +88,10 @@ export async function GET(request: Request) {
           openings: r.openings,
           employmentType: r.employmentType,
           locationCountry: r.locationCountry,
+          payRangeMin: r.payRangeMin !== null ? Number(r.payRangeMin) : null,
+          payRangeMax: r.payRangeMax !== null ? Number(r.payRangeMax) : null,
+          payRangeCurrency: r.payRangeCurrency,
+          postingJurisdiction: r.postingJurisdiction,
           updatedAt: r.updatedAt.toISOString(),
         })),
       },

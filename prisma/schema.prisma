@@ -1384,6 +1384,12 @@ model JobRequisition {
   employmentType  EmploymentType       @default(FULL_TIME) @map("employment_type")
   /// Free-text job description; AI screening must operate on a redacted copy (see lib/recruiting/redact.ts).
   description     String?
+  /// Optional good-faith pay range for July 2026 pay-transparency teaching surface (brief 029).
+  payRangeMin         Decimal? @map("pay_range_min") @db.Decimal(14, 2)
+  payRangeMax         Decimal? @map("pay_range_max") @db.Decimal(14, 2)
+  payRangeCurrency    String   @default("USD") @map("pay_range_currency")
+  /// Jurisdiction hint for posting rules (e.g. US-VA, US-ME) — not a statutory engine.
+  postingJurisdiction String?  @map("posting_jurisdiction")
   closedAt        DateTime?            @map("closed_at")
   createdAt       DateTime             @default(now()) @map("created_at")
   updatedAt       DateTime             @updatedAt @map("updated_at")

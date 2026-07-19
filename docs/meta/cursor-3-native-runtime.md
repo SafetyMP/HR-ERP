@@ -1,8 +1,18 @@
 # Cursor 3 native runtime — HR ERP operator guide
 
-Operator guide for **Cursor 3.0–3.2** native agent runtime aligned with ADR [0011](../../specs/alignment/decisions/0011-function-lane-orchestration.md) function lanes. Process enforcement lives in [`.cursor/hooks.json`](../../.cursor/hooks.json); this doc maps **lanes → native commands**.
+Operator guide for **Cursor 3.x** (3.6+) native agent runtime aligned with ADR [0011](../../specs/alignment/decisions/0011-function-lane-orchestration.md) function lanes. Process enforcement lives in [`.cursor/hooks.json`](../../.cursor/hooks.json); this doc maps **lanes → native commands**.
 
-**Prerequisites:** Cursor 3.2+, Agents Window (`Cmd+Shift+P → Agents Window`).
+**Prerequisites:** Cursor 3.6+, Agents Window (`Cmd+Shift+P → Agents Window`), **Auto-review** as the recommended Run Mode (Settings → Agents). Prefer Auto-review over Run Everything; pair it with repo hooks and CI — see [Defense in depth](#defense-in-depth-mid-2026).
+
+## Defense in depth (mid-2026)
+
+| Layer | Control | Nature | Role |
+|-------|---------|--------|------|
+| 1 | **Auto-review** Run Mode | Probabilistic classifier + sandbox | Local autonomy with scrutiny on higher-risk shell/MCP/Fetch |
+| 2 | Repo **hooks** (`.cursor/hooks.json`) | Deterministic local | Tier gates, MCP allowlist, destructive-command guards |
+| 3 | **`npm run governance:ci`** / **`./scripts/verify.sh`** | Deterministic merge bar | Lint, handoffs, evidence, build, unit tests |
+
+Rules and skills steer; they are not a hard security boundary. Do not weaken CI because Auto-review is enabled.
 
 ## Operator loop (every T1+ session)
 

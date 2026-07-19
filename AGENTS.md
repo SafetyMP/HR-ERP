@@ -53,7 +53,7 @@ Before new capabilities, read:
 
 ### Orchestration
 
-**Native runtime:** [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md) · `/multitask`, `/worktree`, `/best-of-n`.
+**Native runtime:** [cursor-3-native-runtime.md](docs/meta/cursor-3-native-runtime.md) · prefer **Auto-review** Run Mode · `/multitask`, `/worktree`, `/best-of-n` · hooks + `governance:ci` / `./scripts/verify.sh` as the deterministic merge bar.
 
 Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-hr-erp.mdc) · [ADR 0011](specs/alignment/decisions/0011-function-lane-orchestration.md).
 

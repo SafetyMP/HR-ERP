@@ -9,6 +9,7 @@ Principal HR Legal & Compliance artifacts for **jurisdiction-aware** pay and lab
 | [v1-scope.md](v1-scope.md) | Declared v1 feature, jurisdictions, worker types, PHI/biometric scope |
 | [jurisdiction-matrix-pay-premiums.yaml](jurisdiction-matrix-pay-premiums.yaml) | Precedence-ordered matrix (CBA > employer policy > statute floor) for pay premiums |
 | [pay-premiums-constraints.md](pay-premiums-constraints.md) | Invariants, validations, state machines, retention, acceptance criteria, golden vectors |
+| [july-2026-us-state-calendar.md](july-2026-us-state-calendar.md) | Counsel-gated mid-2026 US state calendar → recruiting teaching surfaces (pay transparency / Fair Chance) |
 | [AI governance playbook](../ai-governance/README.md) | EU AI Act-oriented controls: HITL, data minimization, XAI, model cards, PR checklist |
 
 ## How other agents use this

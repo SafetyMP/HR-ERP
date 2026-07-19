@@ -1058,6 +1058,10 @@ export const JobRequisitionScalarFieldEnum = {
   locationCountry: 'locationCountry',
   employmentType: 'employmentType',
   description: 'description',
+  payRangeMin: 'payRangeMin',
+  payRangeMax: 'payRangeMax',
+  payRangeCurrency: 'payRangeCurrency',
+  postingJurisdiction: 'postingJurisdiction',
   closedAt: 'closedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

@@ -1305,6 +1305,26 @@ paths:
                   type: string
                   enum: [FULL_TIME, PART_TIME, CONTRACT, INTERN, TEMP]
                 description: { type: string, maxLength: 20000, nullable: true }
+                payRangeMin:
+                  type: number
+                  minimum: 0
+                  nullable: true
+                  description: Optional good-faith pay range minimum (brief 029).
+                payRangeMax:
+                  type: number
+                  minimum: 0
+                  nullable: true
+                  description: Optional good-faith pay range maximum (brief 029).
+                payRangeCurrency:
+                  type: string
+                  pattern: "^[A-Za-z]{3}$"
+                  nullable: true
+                  description: ISO-4217 currency; defaults to USD when omitted.
+                postingJurisdiction:
+                  type: string
+                  maxLength: 16
+                  nullable: true
+                  description: Posting jurisdiction hint (e.g. US-VA); not a statutory engine.
       responses:
         "201":
           description: Created
@@ -1323,6 +1343,35 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
   /recruiting/requisitions/{id}:
+    get:
+      operationId: getRecruitingRequisition
+      summary: Get a job requisition by id (includes optional pay range).
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationHeader"
+        - $ref: "#/components/parameters/CorrelationIdHeader"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Requisition not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
     patch:
       operationId: transitionRecruitingRequisitionStatus
       summary: Transition a requisition status (DRAFT/OPEN/ON_HOLD/CLOSED/FILLED).

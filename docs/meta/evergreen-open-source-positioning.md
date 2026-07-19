@@ -43,6 +43,7 @@ Prioritize what stays valuable across years:
 | Multi-tenant security model (RLS, auth)        | Track D / lab routes in buyer-facing materials       |
 | Feature-brief + UAC product discipline         | Inflating UAC counts without PO re-baseline          |
 | Governance harness docs + example handoffs     | Pretending harness hooks replace human counsel       |
+| Monthly Next.js security cadence + Auto-review operator posture | Treating Auto-review alone as a merge gate |
 
 **Honest demo (≤30 min):** prove **W1–W5** (one portal, native payroll math, enforceable tenancy, manager hiring) — [stakeholder value plan](../product/stakeholder-value-plan.md). Avoid deferred mock, Track D, and `/global-l10n` lab paths in “shipped product” narratives ([deferred-platform-track.md](../product/deferred-platform-track.md)).
 
