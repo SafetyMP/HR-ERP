@@ -1,0 +1,23 @@
+# Repo-root resolution for `/docs/...` style links in markdown.
+root_dir = "."
+
+# Historical / generated trees are out of scope for the merge bar.
+exclude_path = [
+  "docs/_archived",
+  "_archives",
+  "node_modules",
+  ".git",
+  "specs/governance/learning",
+]
+
+# Local demo URLs and known bot-blocked hosts.
+exclude = [
+  '^http://localhost(:[0-9]+)?(/.*)?$',
+  '^https://localhost(:[0-9]+)?(/.*)?$',
+  '^https://www\\.adp\\.com/',
+]
+
+# Bot/CDN blocks should not fail the gate.
+accept = ["200..=299", "403", "429"]
+
+max_concurrency = 8

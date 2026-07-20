@@ -1,0 +1,87 @@
+name: docs-link-check
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/docs-link-check.yml'
+      - '.github/lychee.toml'
+  push:
+    branches: [main, master]
+    paths:
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/docs-link-check.yml'
+      - '.github/lychee.toml'
+
+permissions:
+  contents: read
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect markdown inputs
+        id: inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            mapfile -t files < <(
+              git diff --name-only --diff-filter=ACMRT \
+                "${{ github.event.pull_request.base.sha }}" \
+                "${{ github.event.pull_request.head.sha }}" \
+                -- '*.md' 'docs/**' \
+                | grep -E '\.md$' \
+                || true
+            )
+          else
+            before="${{ github.event.before }}"
+            if [[ -z "$before" || "$before" =~ ^0+$ ]]; then
+              mapfile -t files < <(git ls-files '*.md' 'docs/**/*.md')
+            else
+              mapfile -t files < <(
+                git diff --name-only --diff-filter=ACMRT \
+                  "$before" "${{ github.sha }}" \
+                  -- '*.md' 'docs/**' \
+                  | grep -E '\.md$' \
+                  || true
+              )
+            fi
+          fi
+
+          filtered=()
+          for f in "${files[@]+"${files[@]}"}"; do
+            [[ -f "$f" ]] || continue
+            [[ "$f" == docs/_archived/* || "$f" == _archives/* ]] && continue
+            [[ "$f" == specs/governance/learning/* ]] && continue
+            filtered+=("$f")
+          done
+
+          if ((${#filtered[@]} == 0)); then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No in-scope markdown changes to check."
+            exit 0
+          fi
+
+          printf '%s\n' "${filtered[@]}" | tee md-files-to-check.txt
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Markdown link check
+        if: steps.inputs.outputs.skip != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="$(curl -sSfL https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)"
+          curl -sSfL \
+            "https://github.com/lycheeverse/lychee/releases/download/${tag}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz
+          mapfile -t files < md-files-to-check.txt
+          "./lychee-x86_64-unknown-linux-gnu/lychee" \
+            --config .github/lychee.toml \
+            --no-progress \
+            "${files[@]}"
