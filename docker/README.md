@@ -21,7 +21,7 @@ docker compose -f docker-compose.yml -f docker/compose.app.yml up -d --build app
 Override the image to match a GHCR semver tag:
 
 ```bash
-export HR_ERP_IMAGE="ghcr.io/myorg/hr-erp-scaffold:1.2.3"
+export HR_ERP_IMAGE="ghcr.io/safetymp/hr-erp:1.2.3"
 docker compose -f docker-compose.yml -f docker/compose.app.yml up -d app
 ```
 
