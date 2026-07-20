@@ -79,6 +79,9 @@ jobs:
           tag="$(curl -sSfL https://api.github.com/repos/lycheeverse/lychee/releases/latest | jq -r .tag_name)"
           curl -sSfL \
             "https://github.com/lycheeverse/lychee/releases/download/${tag}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar -xz lychee
+            | tar -xz
           mapfile -t files < md-files-to-check.txt
-          ./lychee --config .github/lychee.toml --no-progress "${files[@]}"
+          "./lychee-x86_64-unknown-linux-gnu/lychee" \
+            --config .github/lychee.toml \
+            --no-progress \
+            "${files[@]}"
