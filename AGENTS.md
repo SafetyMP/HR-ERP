@@ -66,4 +66,4 @@ Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-h
 
 **Safety:** Do not set `NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN` on Vercel Production. Production JWT mint scripts require `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization). Demo preview on a Production-only deploy requires `ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1` (Human authorization) in addition to `ALLOW_DEMO_PREVIEW_SIGNIN=1`.
 
-**Agent learnings (portfolio):** [Github Manager docs/ci-hardening-learnings.md](https://github.com/SafetyMP/Github-Manager/blob/main/docs/ci-hardening-learnings.md)
+**Agent learnings (portfolio):** [Github Manager docs/ci-hardening-learnings.md](docs/ci-hardening-learnings.md (Github Manager meta; local portfolio docs))
