@@ -47,7 +47,7 @@
     "governance:audit:write": "node scripts/governance-audit.mjs --write-report",
     "governance:protect-mcp": "node scripts/protect-mcp-shadow-check.mjs",
     "governance:production-safety": "node scripts/production-safety-check.mjs",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && node scripts/patch-vendored-npm-brace.mjs",
     "db:generate": "prisma generate",
     "db:push": "node scripts/db-push-guard.mjs",
     "db:migrate": "prisma migrate dev",
@@ -127,7 +127,7 @@
     "jose": "^6.2.3",
     "kafkajs": "^2.2.4",
     "lucide-react": "^1.25.0",
-    "next": "16.2.10",
+    "next": "16.2.12",
     "next-themes": "^0.4.6",
     "pg": "^8.13.1",
     "react": "^19.2.4",
@@ -173,6 +173,15 @@
   },
   "overrides": {
     "better-auth": "^1.6.23",
-    "protobufjs": "^7.6.5"
+    "protobufjs": "^7.6.5",
+    "brace-expansion": "5.0.8",
+    "minimatch": "10.2.5",
+    "fast-uri": "3.1.4",
+    "postcss": "8.5.23",
+    "sharp": "0.35.3",
+    "npm": {
+      "brace-expansion": "5.0.8",
+      "minimatch": "10.2.5"
+    }
   }
 }

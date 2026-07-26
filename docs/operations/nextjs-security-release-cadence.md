@@ -31,14 +31,12 @@ Announced targets: Next.js **16.2** and **15.5** (severity profile announced in 
 **Pre-positioned (2026-07-18):** repo pin is `next@16.2.10` (latest npm 16.2.x before the scheduled advisory). Re-run this checklist when the July 20 blog post publishes patched version numbers — do not invent versions.
 
 - [x] Pre-patch: bump to latest Active LTS minor (`16.2.10`) and typecheck/unit recruiting suite green
-- [ ] Advisory / blog post published with patched version numbers
-- [ ] Bump `next` to the published **16.2.x** security patch
-- [ ] `npm ci` / lockfile updated with npm 10 (not npm 11)
+- [x] Advisory / blog post published with patched version numbers
+- [x] Bump `next` to the published **16.2.x** security patch (`16.2.12`)
+- [x] `npm ci` / lockfile updated with npm 10 (not npm 11)
 - [ ] `./scripts/verify.sh` green
 - [ ] Preview deploy smoke OK
 - [ ] Production promote + post-deploy smoke
-
-If the advisory has not shipped yet, keep `16.2.10` (or newer non-security patch if published) and re-check on the release day.
 
 ## References
 

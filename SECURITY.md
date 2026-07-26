@@ -17,8 +17,8 @@ Older tags may receive critical fixes **at maintainers’ discretion**.
 
 Preferred options (choose one):
 
-1. **GitHub private vulnerability reporting**: open the repo on GitHub and use **Security → Report a vulnerability** if enabled for [`SafetyMP/HR-ERP`](https://github.com/SafetyMP/HR-ERP).
-2. If your organization maintains a coordinated disclosure inbox, route through that channel **and** request the maintainer to enable GitHub advisory collaboration.
+1. **GitHub private vulnerability reporting** (enabled): open [`SafetyMP/HR-ERP`](https://github.com/SafetyMP/HR-ERP) → **Security → Report a vulnerability** (or use [the advisory form](https://github.com/SafetyMP/HR-ERP/security/advisories/new)).
+2. If your organization maintains a coordinated disclosure inbox, route through that channel **and** open a private advisory on this repository so maintainers can collaborate in GitHub.
 
 Include:
 
