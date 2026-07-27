@@ -101,7 +101,7 @@
     "verify": "bash scripts/verify.sh"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.5.7",
     "@neondatabase/auth": "^0.4.1-beta",
     "@opentelemetry/sdk-node": "^0.220.0",
     "@prisma/adapter-pg": "^7.8.0",
