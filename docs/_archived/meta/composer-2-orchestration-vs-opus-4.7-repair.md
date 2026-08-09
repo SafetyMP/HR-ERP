@@ -134,7 +134,7 @@ mcp_servers:
   - prisma-remote
 </plugin_info>
 <user_query>
-Explore /Users/sagehart/Downloads/HR ERP and produce a security, identity, AI governance, and compliance maturity review ...
+Explore /Users/<redacted>/Downloads/HR ERP and produce a security, identity, AI governance, and compliance maturity review ...
 ```
 
 47 Prisma skill names, 2 hooks, 2 rules, 2 MCP server identifiers — pasted as the first ~850 tokens of context for a subagent whose actual task ("security, identity, AI governance, and compliance maturity review") will never invoke a single Prisma feature.
