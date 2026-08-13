@@ -103,7 +103,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@neondatabase/auth": "^0.4.1-beta",
-    "@opentelemetry/sdk-node": "^0.220.0",
+    "@opentelemetry/sdk-node": "^0.221.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.8.0",
     "@radix-ui/react-dialog": "^1.1.23",
