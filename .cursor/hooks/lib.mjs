@@ -2,6 +2,8 @@
  * Shared utilities for HR ERP Cursor hooks.
  * GOVERNANCE_HOOK_MODE: shadow (log only) | enforce (deny on violation)
  * Auto-enforces after `.cursor/governance/hook-mode.json` enforceAfter date unless overridden.
+ * Missing config, parse failure, or unknown mode fail closed to enforce.
+ * Only an explicit `shadow` value opts into log-only.
  */
 import { readFileSync, existsSync, mkdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
@@ -24,17 +26,27 @@ export function rolloutDateReached(rolloutKey) {
   return Date.now() >= Date.parse(`${iso}T00:00:00.000Z`);
 }
 
-export function resolveHookMode() {
-  if (process.env.GOVERNANCE_HOOK_MODE) {
-    return process.env.GOVERNANCE_HOOK_MODE;
+function normalizeHookMode(value) {
+  return value === "shadow" ? "shadow" : "enforce";
+}
+
+/**
+ * @param {{ env?: Record<string, string | undefined>, cfg?: Record<string, unknown> | null, now?: number }} [opts]
+ */
+export function resolveHookMode({
+  env = process.env,
+  cfg = loadHookModeConfig(),
+  now = Date.now(),
+} = {}) {
+  if (env.GOVERNANCE_HOOK_MODE) {
+    return normalizeHookMode(env.GOVERNANCE_HOOK_MODE);
   }
-  const cfg = loadHookModeConfig();
-  if (!cfg) return "shadow";
+  if (!cfg) return "enforce";
   const enforceAfter = cfg.enforceAfter;
-  if (enforceAfter && Date.now() >= Date.parse(`${enforceAfter}T00:00:00.000Z`)) {
+  if (enforceAfter && now >= Date.parse(`${enforceAfter}T00:00:00.000Z`)) {
     return "enforce";
   }
-  return cfg.defaultMode ?? "shadow";
+  return normalizeHookMode(cfg.defaultMode);
 }
 
 export const HOOK_MODE = resolveHookMode();
