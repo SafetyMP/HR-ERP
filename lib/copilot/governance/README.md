@@ -14,7 +14,7 @@ Stdio MCP server: [`scripts/copilot-mcp-server.ts`](../../../scripts/copilot-mcp
 COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
 
 # Shadow gateway (recommended)
-npx protect-mcp --policy lib/copilot/governance/policy.cedar -- env COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
+npx protect-mcp@^0.7.0 --policy lib/copilot/governance/policy.cedar -- env COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
 ```
 
 CI: `npm run governance:protect-mcp` validates Cedar ↔ catalog alignment.

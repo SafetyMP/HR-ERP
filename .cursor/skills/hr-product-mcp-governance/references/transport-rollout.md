@@ -9,7 +9,7 @@
 
 | Step | Mode | Action |
 |------|------|--------|
-| 1 | Shadow | `npx protect-mcp --policy lib/copilot/governance/policy.cedar -- node <mcp-server-entry>` (no `--enforce`) |
+| 1 | Shadow | `npx protect-mcp@^0.7.0 --policy lib/copilot/governance/policy.cedar -- node <mcp-server-entry>` (no `--enforce`) |
 | 2 | Review | Inspect shadow log / receipts; align Cedar with catalog tool names |
 | 3 | Enforce | Add `--enforce` in staging; red-team cross-tenant call must **fail closed** |
 | 4 | Audit | Correlate receipt `correlation_id` with [`lib/governance/audit.ts`](../../../../lib/governance/audit.ts) |
