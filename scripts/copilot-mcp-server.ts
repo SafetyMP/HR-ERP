@@ -3,7 +3,7 @@
  * Exposes COPILOT_TOOL_CATALOG tools via JSON-RPC over stdin/stdout.
  *
  * Run: COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
- * Shadow gateway: npx protect-mcp --policy lib/copilot/governance/policy.cedar -- env COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
+ * Shadow gateway: npx protect-mcp@^0.7.0 --policy lib/copilot/governance/policy.cedar -- env COPILOT_MCP_ALLOW_STDIO=1 npx tsx scripts/copilot-mcp-server.ts
  */
 import { z } from "zod";
 
