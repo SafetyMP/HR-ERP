@@ -4,13 +4,13 @@ import { resolveHookMode } from "../../../.cursor/hooks/lib.mjs";
 
 describe("resolveHookMode", () => {
   it("fails closed to enforce when config is missing", () => {
-    expect(resolveHookMode({ env: {}, cfg: null })).toBe("enforce");
+    expect(resolveHookMode({ env: { NODE_ENV: "test" }, cfg: null })).toBe("enforce");
   });
 
   it("allows explicit GOVERNANCE_HOOK_MODE=shadow", () => {
     expect(
       resolveHookMode({
-        env: { GOVERNANCE_HOOK_MODE: "shadow" },
+        env: { NODE_ENV: "test", GOVERNANCE_HOOK_MODE: "shadow" },
         cfg: null,
       }),
     ).toBe("shadow");
@@ -19,7 +19,7 @@ describe("resolveHookMode", () => {
   it("treats unknown GOVERNANCE_HOOK_MODE as enforce", () => {
     expect(
       resolveHookMode({
-        env: { GOVERNANCE_HOOK_MODE: "typo" },
+        env: { NODE_ENV: "test", GOVERNANCE_HOOK_MODE: "typo" },
         cfg: null,
       }),
     ).toBe("enforce");
@@ -28,7 +28,7 @@ describe("resolveHookMode", () => {
   it("honors enforceAfter even when defaultMode is shadow", () => {
     expect(
       resolveHookMode({
-        env: {},
+        env: { NODE_ENV: "test" },
         cfg: { defaultMode: "shadow", enforceAfter: "2020-01-01" },
         now: Date.parse("2026-08-12T00:00:00.000Z"),
       }),
@@ -38,7 +38,7 @@ describe("resolveHookMode", () => {
   it("keeps shadow before enforceAfter when defaultMode is shadow", () => {
     expect(
       resolveHookMode({
-        env: {},
+        env: { NODE_ENV: "test" },
         cfg: { defaultMode: "shadow", enforceAfter: "2099-01-01" },
         now: Date.parse("2026-08-12T00:00:00.000Z"),
       }),

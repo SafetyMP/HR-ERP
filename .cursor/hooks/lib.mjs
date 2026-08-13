@@ -30,6 +30,9 @@ function normalizeHookMode(value) {
   return value === "shadow" ? "shadow" : "enforce";
 }
 
+/**
+ * @param {{ env?: Record<string, string | undefined>, cfg?: Record<string, unknown> | null, now?: number }} [opts]
+ */
 export function resolveHookMode({
   env = process.env,
   cfg = loadHookModeConfig(),
