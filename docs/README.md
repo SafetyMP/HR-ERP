@@ -2,7 +2,7 @@
 
 Start here to navigate human-written docs. Cursor agent orchestration and skills live under [`.cursor/`](../.cursor/).
 
-**Project framing:** Evergreen **open source reference** for multi-tenant HR SaaS + in-repo agent governance — not a certified payroll product. Read [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) first if you are forking, demoing, or pairing with agent-security OSS.
+**Project framing:** **HR scaffold for testing agent governance** on a multi-tenant SaaS fixture — not a certified payroll product and not an ERPNext competitor. Read [DESIGN-PIVOT.md](./DESIGN-PIVOT.md) and [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) first if you are forking, demoing, or pairing with FidusGate.
 
 **Product status (quick map):** Track A **001–022** = **155/155 UAC** met → Phase C **023–025** met → Track B (reference exit, ESS friction, counsel) — [stakeholder-value-plan.md](./product/stakeholder-value-plan.md).
 
@@ -22,7 +22,8 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 | Doc | Purpose |
 | --- | --- |
 | [../README.md](../README.md) | Project overview, quick start, scripts, containers, license |
-| [../AGENTS.md](../AGENTS.md) | Agent orchestration, skills, merge posture |
+| [../AGENTS.md](../AGENTS.md) | Community agent contract, governance commands, verify |
+| [factory-overlay.md](./factory-overlay.md) | Corporate/site factory overlay (moved out of AGENTS.md) |
 | [DEVELOPMENT.md](./DEVELOPMENT.md) | Local environment, databases, workers, troubleshooting |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Branches, PR bar, synthetic data, migration rules |
 | [community/README.md](./community/README.md) | External contributors, bug → Orchestrator handoffs |
@@ -32,7 +33,8 @@ Dependency packages carry **their own licenses** — use npm or your SBOM toolin
 
 | Doc | Purpose |
 | --- | --- |
-| [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) | OSS scope, honest demo, pairing with agent-security reference projects |
+| [DESIGN-PIVOT.md](./DESIGN-PIVOT.md) | September 2026 — T0–T4 governance artifact, HR as fixture |
+| [meta/evergreen-open-source-positioning.md](./meta/evergreen-open-source-positioning.md) | OSS scope, honest demo, pairing with FidusGate |
 | [meta/agent-team-map.md](./meta/agent-team-map.md) | Team roster, lanes, skills |
 | [meta/cursor-3-native-runtime.md](./meta/cursor-3-native-runtime.md) | Cursor 3 operator loop (`governance:lint`, `/multitask`, `/worktree`) |
 | [../specs/templates/collaboration-plan.md](../specs/templates/collaboration-plan.md) | Harness HITL collaboration phases (ADR 0020) |

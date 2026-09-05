@@ -1,11 +1,11 @@
 # Contributing
 
-HR ERP is an **evergreen open source reference** — contributions should preserve honest scope (see [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md)): teach HR SaaS and agent-governed development patterns; do not imply certified payroll or turnkey production HRIS without explicit disclaimers.
+HR ERP is an **HR scaffold for testing agent governance**. Contributions should preserve honest scope (see [docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md) and [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md)): teach T0–T4 harness patterns on an HR **fixture**; do not imply certified payroll, turnkey production HRIS, or an ERPNext competitor.
 
 ## Community standards & security
 
 - **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** applies to Issues, discussions, reviews, and project spaces.
-- Report **undisclosed vulnerabilities** through **[`SECURITY.md`](SECURITY.md)** (private GitHub Security advisories)—not via public issues.
+- Report **undisclosed vulnerabilities** through **[`.github/SECURITY.md`](.github/SECURITY.md)** (private GitHub Security advisories)—not via public issues.
 - **License:** The project is under **[Apache License 2.0](LICENSE)** with attribution in **[`NOTICE`](NOTICE)**. Contributions are expected to be licensed under the same terms unless you explicitly state otherwise.
 
 ## Lightweight PRs (docs-only)

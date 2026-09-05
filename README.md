@@ -1,10 +1,12 @@
 # HR ERP
 
-**Evergreen open source reference** for **multi-tenant HR software** built for **agent-assisted, compliance-aware development** — a runnable scaffold you can clone, learn from, and extend. It is **not** a certified payroll vendor or turnkey HRIS replacement.
+**HR scaffold for testing agent governance.** Clone this repo to exercise **T0–T4** Cursor/agent risk tiers, hooks, handoffs, and evidence CI against a **multi-tenant SaaS fixture** with real blast radius. It is **not** a certified payroll vendor, not a turnkey HRIS, and not a competitor to ERPNext, Odoo, or OrangeHRM on people-ops features.
 
-**HR ERP** models a human resources platform for **mid-market organizations** (roughly 250–5,000 employees): one place for people operations—not a patchwork of payroll, time, benefits, and recruiting tools.
+> **Permit rule:** Agents here write software under T0–T4 evidence. They do not run HR or payroll. Same instinct: [SafetyMP](https://github.com/SafetyMP/SafetyMP).
 
-**Employees** get a single portal for pay, time and leave, benefits, profile, and learning. **Managers** run hiring through offer, team approvals, and workforce tasks without a separate ATS. **HR and payroll** operate pay runs, period lock, benefits life events, compliance-oriented workflows, and operational dashboards from the same application. Payroll math is **native and deterministic** ([`packages/payroll-calc`](packages/payroll-calc)) with auditable inputs; it is **not** certified IRS/HMRC e-filing. **Tenancy and access** are designed for SaaS: JWT, policy checks, and Postgres row-level security per tenant.
+ESS, payroll math, and benefits stay in the tree as a **fixture domain** so governance hooks protect something consequential (tenant isolation, regulated-looking writes, high-risk migrations). Do not run them as production payroll. See [docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md).
+
+**Tenancy and access** (JWT, policy checks, Postgres row-level security) and **deterministic payroll math** ([`packages/payroll-calc`](packages/payroll-calc)) exist so agents have an auditable surface — **not** certified IRS/HMRC e-filing.
 
 ## Demo
 
@@ -24,10 +26,10 @@ The **employee portal** after `npm run demo:bootstrap`: one home for pay, time, 
 
 | Layer                        | What you learn / reuse                                                                                                                                             |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **HR domain reference**      | ESS, manager recruiting, payroll runs, benefits flows, SCIM/partner connectors — [stakeholder value plan](docs/product/stakeholder-value-plan.md)                  |
 | **Agent governance harness** | Risk tiers (T0–T4), Cursor hooks, handoffs, evidence CI — [`AGENTS.md`](AGENTS.md), [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md) |
+| **HR fixture domain**        | ESS, manager recruiting, payroll runs, benefits flows, SCIM/partner connectors — blast-radius surfaces, not an HRIS product pitch — [stakeholder value plan](docs/product/stakeholder-value-plan.md) |
 
-Full positioning (scope, honest demo paths, pairing with external agent-security OSS): **[`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)**.
+Full positioning (fixture vs vendor, pairing with FidusGate): **[docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md)** · **[`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)**.
 
 **Under the hood:** **Next.js** (App Router) + **PostgreSQL** (Prisma), with defaults for **multi-tenant security**, **integrations** (Redis, optional Kafka), and **governance** docs (compliance, AI ethics, architecture ADRs). Human contributors and Cursor-orchestrated agents share the same merge bar.
 
@@ -46,14 +48,14 @@ Full positioning (scope, honest demo paths, pairing with external agent-security
 
 **Use this repo to:**
 
-- Run a **local demo** and walk **W1–W5** product paths (portal, payroll math, tenancy, hiring) in ~30 minutes — [stakeholder value plan](docs/product/stakeholder-value-plan.md)
+- Copy **agent harness** patterns: T0–T4 tiers, manifest overlay, `npm run governance:*`, Collaboration plane (Harness HITL)
+- Run a **local fixture demo** and walk **W1–W5** paths (portal, payroll math, tenancy, hiring) so those hooks have blast radius — [stakeholder value plan](docs/product/stakeholder-value-plan.md)
 - Study **regulated SaaS** patterns: RLS, contracts, payroll kernel, counsel-gated compliance docs
-- Copy **agent harness** patterns: manifest overlay, `npm run governance:*`, Collaboration plane (Harness HITL)
-- **Fork and extend** — jurisdictions, IdP, connectors, bounded-context extraction per ADRs
+- **Fork and extend** the harness or the fixture — not to out-build ERPNext
 
-**Do not use it as-is for:** production payroll compliance, legal HR advice, or “deploy tomorrow as your company HRIS” without your own counsel and SecOps review.
+**Do not use it as-is for:** production payroll compliance, legal HR advice, or “deploy tomorrow as your company HRIS.” It is **not** a certified payroll vendor.
 
-Companion **agent execution governance** OSS (policy simulation, sandboxed commands, attestation, forensic receipts) pairs naturally as an **optional runtime gateway**; HR ERP remains the **reference application + in-repo harness**. See [evergreen positioning](docs/meta/evergreen-open-source-positioning.md#pairing-with-agent-security-oss-eg-fidusgate).
+Pair **[FidusGate](https://github.com/SafetyMP/FidusGate)** for Cedar gates and runtime receipts. Do **not** duplicate Cedar in this tree. See [evergreen positioning](docs/meta/evergreen-open-source-positioning.md#pairing-with-agent-security-oss-eg-fidusgate).
 
 **Buyer / reference-customer demos:** stick to employee and HR paths in the value plan — not deferred mock, Track D, or lab routes ([`deferred-platform-track.md`](docs/product/deferred-platform-track.md)).
 
@@ -128,10 +130,12 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 
 | Resource                                                                                             | Description                                                                                  |
 | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)   | **OSS scope** — reference app vs certified vendor; harness + optional agent-security pairing |
-| [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md)                   | Active forward plan (Track A/B/C, W1–W7)                                                     |
+| [`docs/DESIGN-PIVOT.md`](docs/DESIGN-PIVOT.md)                                                       | **September 2026** — compete on T0–T4 governance, not HR features                             |
+| [`docs/meta/evergreen-open-source-positioning.md`](docs/meta/evergreen-open-source-positioning.md)   | **OSS scope** — fixture domain vs certified vendor; FidusGate pairing                        |
+| [`docs/product/stakeholder-value-plan.md`](docs/product/stakeholder-value-plan.md)                   | Fixture walk paths (Track A/B/C, W1–W7)                                                      |
 | [`docs/product/reference-customer-exit-runbook.md`](docs/product/reference-customer-exit-runbook.md) | Reference customer exit                                                                      |
-| [`AGENTS.md`](AGENTS.md)                                                                             | Cursor orchestration, skills, verify contract (`./scripts/verify.sh`)                        |
+| [`AGENTS.md`](AGENTS.md)                                                                             | Community contract, governance commands, verify (`./scripts/harness/verify.sh`)              |
+| [`docs/factory-overlay.md`](docs/factory-overlay.md)                                                 | Corporate/site factory overlay                                                               |
 | [`docs/meta/cursor-3-native-runtime.md`](docs/meta/cursor-3-native-runtime.md)                       | Operator loop (`governance:*`, `/multitask`)                                                 |
 
 ### Engineering and community
@@ -139,7 +143,7 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 | Resource                                   | Description                                  |
 | ------------------------------------------ | -------------------------------------------- |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md)       | Branches, PR bar, migrations, synthetic data |
-| [`SECURITY.md`](SECURITY.md)               | Vulnerability disclosure                     |
+| [`.github/SECURITY.md`](.github/SECURITY.md) | Vulnerability disclosure                     |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community norms                              |
 | [`CHANGELOG.md`](CHANGELOG.md)             | Release history (semantic-release)           |
 
