@@ -1,0 +1,24 @@
+# HR ERP
+
+> HR scaffold for testing T0–T4 agent governance on a multi-tenant SaaS fixture. ESS/payroll/benefits stay as a realistic blast-radius domain. Not a certified payroll vendor. Do not compete with ERPNext, Odoo, or OrangeHRM on HR features.
+
+Community and Copilot agents start at AGENTS.md. Factory/site overlay is docs/factory-overlay.md. Pair FidusGate for Cedar gates and runtime receipts — do not duplicate Cedar here.
+
+## Docs
+
+- [Design pivot](docs/DESIGN-PIVOT.md): compete on governance, not payroll
+- [AGENTS.md](AGENTS.md): community contract, governance commands, never production payroll
+- [README.md](README.md): scaffold lead, two-layer table (harness first)
+- [Evergreen positioning](docs/meta/evergreen-open-source-positioning.md): fixture domain + FidusGate pairing
+- [Factory overlay](docs/factory-overlay.md): corporate/site gates
+- [Copilot instructions](.github/copilot-instructions.md): never-do rules
+- [Security](.github/SECURITY.md): private advisories; synthetic data only
+
+## Verify
+
+- `./scripts/harness/verify.sh`
+- `npm run governance:ci`
+
+## Skills
+
+- [hr-data-custody](.github/skills/hr-data-custody/SKILL.md): Prisma/SQL and RLS-safe migrations — high-risk fixture domain, not a payroll product

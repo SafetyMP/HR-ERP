@@ -1,6 +1,6 @@
 # Community & contributor experience
 
-Thank you for investing time in this project. HR ERP is maintained as an **evergreen open source reference** for HR SaaS patterns and agent-governed development — see [evergreen-open-source-positioning.md](../meta/evergreen-open-source-positioning.md). Whether you are fixing a typo, improving onboarding docs, or tracing a tricky bug, **your contribution matters**.
+Thank you for investing time in this project. HR ERP is an **HR scaffold for testing agent governance** — see [DESIGN-PIVOT.md](../DESIGN-PIVOT.md) and [evergreen-open-source-positioning.md](../meta/evergreen-open-source-positioning.md). Whether you are fixing a typo, improving onboarding docs, or tracing a tricky bug, **your contribution matters**.
 
 Maintainers: after the first green Actions run, mirror required checks from [**`github-branch-protection.md`**](github-branch-protection.md). For the GitHub About panel, README badges, and the demo image, see [**`github-presentation.md`**](github-presentation.md).
 
@@ -12,7 +12,7 @@ Maintainers: after the first green Actions run, mirror required checks from [**`
 
 3. **Pull requests** — We follow the checklist in [`.github/pull_request_template.md`](../../.github/pull_request_template.md). Docs-only edits can use the [lightweight PR path](../../CONTRIBUTING.md#lightweight-prs-docs-only). Maintainers and automation aim for feedback that is **clear, kind, and actionable**: blocking findings are labeled as such; suggestions stay optional.
 
-4. **Agents** — Cursor and delegated tasks often use orchestrated skills documented in [`AGENTS.md`](../../AGENTS.md). That keeps security, compliance, and QA expectations consistent—**not** to replace human reviewers.
+4. **Agents** — Cursor and delegated tasks follow the community contract in [`AGENTS.md`](../../AGENTS.md). That keeps security, compliance, and QA expectations consistent—**not** to replace human reviewers.
 
 ## From natural language bug to Implementation
 

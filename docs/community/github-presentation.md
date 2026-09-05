@@ -6,10 +6,12 @@ Audience: **maintainers**. This page captures the repository's GitHub "storefron
 
 Set in **Settings** or the gear icon next to About on the repo home. Keep it to a single sentence so it reads well in search results and the sidebar:
 
-> Evergreen OSS reference for multi-tenant HR SaaS + in-repo agent governance harness. Runnable Next.js + Postgres demo — not a certified payroll vendor.
+> HR scaffold for testing T0–T4 agent governance on a multi-tenant SaaS fixture — not a certified payroll vendor.
+
+(About was shortened in September 2026 to lead with the governance scaffold, not mid-market HRIS. Keep it one sentence.)
 
 - **Website:** leave unset unless a *project-owned* public demo exists. Do not point About at a personal Vercel team URL.
-- **Topics:** confirm the set stays aligned with the niche — `hr`, `payroll`, `multi-tenant`, `saas`, `reference-architecture`, `agent-governance`, `cursor`, `nextjs`, `prisma`, `open-source`.
+- **Topics:** confirm the set stays aligned with the niche — `hr`, `payroll`, `multi-tenant`, `saas`, `reference-architecture`, `agent-governance`, `cursor`, `nextjs`, `prisma`, `open-source`. Do not retitle the storefront as an ERPNext competitor.
 
 ## README badges
 
