@@ -1,5 +1,5 @@
 /**
- * @semantic-release/npm vendors npm with bundled brace-expansion / ip-address
+ * @semantic-release/npm vendors npm with bundled brace-expansion / ip-address / tar
  * that npm overrides cannot rewrite. Copy hoisted patched copies into place
  * after install so `npm audit --audit-level=high` passes.
  */
@@ -17,7 +17,15 @@ function patchVendored(pkgName, expectedVersion) {
     return;
   }
 
-  const srcPkg = require.resolve(`${pkgName}/package.json`);
+  let srcPkg;
+  try {
+    srcPkg = require.resolve(`${pkgName}/package.json`);
+  } catch {
+    console.warn(
+      `[patch-vendored-npm-brace] hoisted ${pkgName} missing; skipping`,
+    );
+    return;
+  }
   const srcDir = path.dirname(srcPkg);
   const version = require(srcPkg).version;
 
@@ -34,3 +42,4 @@ function patchVendored(pkgName, expectedVersion) {
 
 patchVendored("brace-expansion", "5.0.9");
 patchVendored("ip-address", "10.5.0");
+patchVendored("tar", "7.5.22");

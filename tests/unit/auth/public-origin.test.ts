@@ -25,11 +25,11 @@ describe("resolvePublicOrigin", () => {
     try {
       const req = new Request("http://127.0.0.1:3000/api/auth/neon/login", {
         headers: {
-          "x-forwarded-host": "hr-erp-harts.vercel.app",
+          "x-forwarded-host": "hr-erp-demo.vercel.app",
           "x-forwarded-proto": "https",
         },
       });
-      expect(resolvePublicOrigin(req)).toBe("https://hr-erp-harts.vercel.app");
+      expect(resolvePublicOrigin(req)).toBe("https://hr-erp-demo.vercel.app");
     } finally {
       if (prevPublic === undefined) delete process.env.AUTH_PUBLIC_ORIGIN;
       else process.env.AUTH_PUBLIC_ORIGIN = prevPublic;
