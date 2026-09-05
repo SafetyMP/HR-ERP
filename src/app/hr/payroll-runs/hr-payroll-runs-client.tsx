@@ -15,14 +15,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { toast } from "sonner";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
@@ -43,7 +35,7 @@ type Props = {
 };
 
 export function HrPayrollRunsClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [runs, setRuns] = useState<RunRow[] | undefined>(undefined);
   const [forbidden, setForbidden] = useState(false);

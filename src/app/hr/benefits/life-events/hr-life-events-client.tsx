@@ -30,7 +30,7 @@ type EventRow = {
 type Props = { initialBearerToken?: string };
 
 export function HrLifeEventsClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [events, setEvents] = useState<EventRow[]>([]);
   const [hrNotes, setHrNotes] = useState<Record<string, string>>({});

@@ -1,4 +1,3 @@
-import { ApiError } from "@/lib/api/v1/errors";
 import {
   getEmployeeClosed,
   type EmployeeClosed,

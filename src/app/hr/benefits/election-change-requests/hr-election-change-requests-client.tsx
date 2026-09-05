@@ -22,25 +22,9 @@ type RequestRow = {
 type Props = { initialBearerToken?: string };
 
 export function HrElectionChangeRequestsClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [requests, setRequests] = useState<RequestRow[] | null>(null);
-
-  const load = async () => {
-    const res = await hrApiFetch(
-      "/api/v1/hr/benefits/election-change-requests",
-      {
-        bearerToken,
-        headers: { Accept: "application/json" },
-      },
-    );
-    if (!res.ok) {
-      setRequests([]);
-      return;
-    }
-    const body = (await res.json()) as { data?: { requests?: RequestRow[] } };
-    setRequests(body.data?.requests ?? []);
-  };
 
   useEffect(() => {
     if (!isAuthenticated) return;

@@ -1,5 +1,5 @@
 # Builder uses Debian Bookworm (glibc) so Prisma engines match the distroless Debian 12 runtime.
-FROM node:22-bookworm-slim AS base
+FROM node:22-bookworm-slim@sha256:83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5 AS base
 WORKDIR /app
 RUN apt-get update \
   && apt-get install -y --no-install-recommends openssl ca-certificates \
@@ -23,7 +23,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Distroless: no shell or package manager; nonroot UID/GID 65532
-FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
+FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:13593b7570658e8477de39e2f4a1dd25db2f836d68a0ba771251572d23bb4f8e AS runner
 WORKDIR /app
 # Do not bake ALLOW_HS256_IN_PRODUCTION here — production must use JWT_ISSUER_MODE=jwks|oidc
 # unless an orchestrator explicitly injects break-glass at deploy time.
