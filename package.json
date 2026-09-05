@@ -126,7 +126,7 @@
     "ioredis": "^5.4.2",
     "jose": "^6.2.8",
     "kafkajs": "^2.2.4",
-    "lucide-react": "^1.31.0",
+    "lucide-react": "^1.39.0",
     "next": "16.3.1",
     "next-themes": "^0.4.6",
     "pg": "^8.13.1",
