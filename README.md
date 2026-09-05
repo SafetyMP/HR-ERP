@@ -2,7 +2,7 @@
 
 **HR scaffold for testing agent governance.** Clone this repo to exercise **T0–T4** Cursor/agent risk tiers, hooks, handoffs, and evidence CI against a **multi-tenant SaaS fixture** with real blast radius. It is **not** a certified payroll vendor, not a turnkey HRIS, and not a competitor to ERPNext, Odoo, or OrangeHRM on people-ops features.
 
-> **In the SafetyMP thesis:** Agents here are **contributors writing software**, not agents running HR or payroll. See the [portfolio README](https://github.com/SafetyMP/SafetyMP).
+> **Permit rule:** Agents here write software under T0–T4 evidence. They do not run HR or payroll. Same instinct: [SafetyMP](https://github.com/SafetyMP/SafetyMP).
 
 ESS, payroll math, and benefits stay in the tree as a **fixture domain** so governance hooks protect something consequential (tenant isolation, regulated-looking writes, high-risk migrations). Do not run them as production payroll. See [docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md).
 
