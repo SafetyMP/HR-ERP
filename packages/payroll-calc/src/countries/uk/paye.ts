@@ -16,8 +16,6 @@ export function computeUkPayeBootstrap(input: UkPayeInput): UkPayeResult {
   }
 
   const annualAllowanceMinor = 12_570_00n;
-  const periodAllowance =
-    annualAllowanceMinor / BigInt(Math.max(1, 12 - input.payPeriodIndexInYear + 12));
   const ytdTaxable = input.priorTaxablePayYearToDateMinor + input.taxablePayPeriodMinor;
   const ytdAllowance =
     (annualAllowanceMinor * BigInt(input.payPeriodIndexInYear)) / 12n;

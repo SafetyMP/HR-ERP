@@ -1,7 +1,7 @@
 /**
  * Handoff ↔ diff path matching for governance-lint and tests.
  */
-import { dirname, relative, resolve } from "node:path";
+import { dirname, relative } from "node:path";
 
 /**
  * Simple glob: ** and * only; patterns relative to repo root.
@@ -18,7 +18,12 @@ export function matchGlob(filePath, pattern) {
     return norm.startsWith(prefix);
   }
   const re = new RegExp(
-    `^${pat.replace(/\./g, "\\.").replace(/\*\*/g, "§§").replace(/\*/g, "[^/]*").replace(/§§/g, ".*")}$`,
+    `^${pat
+      .replace(/\\/g, "\\\\")
+      .replace(/\./g, "\\.")
+      .replace(/\*\*/g, "§§")
+      .replace(/\*/g, "[^/]*")
+      .replace(/§§/g, ".*")}$`,
   );
   return re.test(norm);
 }

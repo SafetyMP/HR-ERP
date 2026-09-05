@@ -624,11 +624,15 @@ function cmdImproveDefine(args) {
   const projectsDir = join(learningRoot(), "projects");
   mkdirSync(projectsDir, { recursive: true });
   const outPath = join(projectsDir, `${args.project}-charter.md`);
-  if (existsSync(outPath) && !args.force) {
-    console.error(`charter exists: ${outPath} (use --force)`);
-    return 1;
+  try {
+    writeFileSync(outPath, body, { flag: args.force ? "w" : "wx" });
+  } catch (err) {
+    if (err && typeof err === "object" && "code" in err && err.code === "EEXIST") {
+      console.error(`charter exists: ${outPath} (use --force)`);
+      return 1;
+    }
+    throw err;
   }
-  writeFileSync(outPath, body);
   console.log(`Charter: ${outPath.replace(repoRoot() + "/", "")}`);
   if (args.ctq) {
     const resolved = resolveCtq(args.ctq);

@@ -8,7 +8,6 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { hrApiFetch } from "@/lib/auth/hr-api-fetch";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
 
 type MutationFn<TBody, TResult> = (

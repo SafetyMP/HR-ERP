@@ -11,14 +11,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { toast } from "sonner";
 import {
   Card,
@@ -97,7 +89,7 @@ function netFromLines(lines: Line[]): number {
 }
 
 export function HrPayrollPeriodClient({ periodId, initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [detail, setDetail] = useState<Detail | null | undefined>(undefined);
   const [exceptions, setExceptions] = useState<PayrollException[]>([]);
