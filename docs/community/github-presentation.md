@@ -8,7 +8,7 @@ Set in **Settings** or the gear icon next to About on the repo home. Keep it to 
 
 > Evergreen OSS reference for multi-tenant HR SaaS + in-repo agent governance harness. Runnable Next.js + Postgres demo — not a certified payroll vendor.
 
-- **Website:** the live preview URL (currently the Vercel `main` deployment).
+- **Website:** leave unset unless a *project-owned* public demo exists. Do not point About at a personal Vercel team URL.
 - **Topics:** confirm the set stays aligned with the niche — `hr`, `payroll`, `multi-tenant`, `saas`, `reference-architecture`, `agent-governance`, `cursor`, `nextjs`, `prisma`, `open-source`.
 
 ## README badges
