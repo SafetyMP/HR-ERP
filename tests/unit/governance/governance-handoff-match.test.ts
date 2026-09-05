@@ -25,4 +25,9 @@ describe("governance-handoff-match", () => {
     expect(matchGlob("lib/copilot/foo.ts", "lib/copilot/**")).toBe(true);
     expect(matchGlob("lib/auth/foo.ts", "lib/copilot/**")).toBe(false);
   });
+
+  it("matchGlob treats backslashes as literals", () => {
+    expect(matchGlob("foo.ts", "foo\\.ts")).toBe(false);
+    expect(matchGlob("foo.ts", "foo.ts")).toBe(true);
+  });
 });

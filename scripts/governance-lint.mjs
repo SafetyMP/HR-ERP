@@ -13,7 +13,7 @@
  *   node governance-lint.mjs team-map [--strict]
  */
 
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { homedir } from "node:os";
@@ -61,6 +61,15 @@ function parseArgs(argv) {
   return args;
 }
 
+const SAFE_GIT_REF = /^[A-Za-z0-9][A-Za-z0-9._/@+-]*$/;
+
+function assertSafeGitRef(ref) {
+  if (typeof ref !== "string" || !SAFE_GIT_REF.test(ref) || ref.includes("..")) {
+    throw new Error(`unsafe git ref: ${ref}`);
+  }
+  return ref;
+}
+
 function getDiffFiles(base) {
   const files = new Set();
   const add = (out) => {
@@ -70,13 +79,14 @@ function getDiffFiles(base) {
       .filter(Boolean)
       .forEach((f) => files.add(f));
   };
+  const safeBase = assertSafeGitRef(base);
   try {
-    add(execSync(`git diff --name-only ${base}...HEAD`, { encoding: "utf8" }));
+    add(execFileSync("git", ["diff", "--name-only", `${safeBase}...HEAD`], { encoding: "utf8" }));
   } catch {
     /* no merge base */
   }
   try {
-    add(execSync("git diff --name-only HEAD", { encoding: "utf8" }));
+    add(execFileSync("git", ["diff", "--name-only", "HEAD"], { encoding: "utf8" }));
   } catch {
     /* not a git repo */
   }
@@ -622,7 +632,7 @@ function loadSessionLaneState() {
   }
 }
 
-function cmdPlan(manifest, args) {
+function buildPlanPayload(manifest, args) {
   const files = getDiffFiles(args.base);
   const { suggestedTier, suggestedLanes, requiredLanes, matchedTriggers, suggestedSkills } = classifyFiles(
     files,
@@ -636,37 +646,45 @@ function cmdPlan(manifest, args) {
     matchedTriggers,
   });
 
-  const payload = {
-    riskTier: suggestedTier,
-    schema: manifest.schema,
-    runtimeProfile: manifest.runtimeProfile ?? "legacy",
-    nativeCommands: manifest.nativeCommands ?? {},
-    matchedTriggers,
-    requiredLanes,
-    suggestedLanes,
-    suggestedSkills,
-    delegatedTaskPlan: plan,
-    regulatedGraph: matchedTriggers.some((t) =>
-      ["compliance_pay_time", "ai_governance", "mlops_inference", "product_runtime_mcp", "harness_foundation"].includes(
-        t.id,
-      ),
-    ),
-    routerHintsActive: matchRouterHints(files, manifest.adaptation, suggestedTier).map((h) => ({
-      id: h.id,
-      prefer: h.prefer,
-      status: h.status,
-    })),
-    tierPreamble: {
+  return {
+    files,
+    plan,
+    payload: {
       riskTier: suggestedTier,
-      poCheckpoint:
-        suggestedTier === "T0"
-          ? "step 1 chore N/A"
-          : "Feature brief path ___ | UAC count ___ | gate Y/N | phase ADR: specs/alignment/decisions/0001-phase1-scope.md",
-      phaseAdr: "specs/alignment/decisions/0001-phase1-scope.md",
-      planModeArtifact: findPlanModeArtifact(),
+      schema: manifest.schema,
+      runtimeProfile: manifest.runtimeProfile ?? "legacy",
+      nativeCommands: manifest.nativeCommands ?? {},
+      matchedTriggers,
+      requiredLanes,
+      suggestedLanes,
+      suggestedSkills,
+      delegatedTaskPlan: plan,
+      regulatedGraph: matchedTriggers.some((t) =>
+        ["compliance_pay_time", "ai_governance", "mlops_inference", "product_runtime_mcp", "harness_foundation"].includes(
+          t.id,
+        ),
+      ),
+      routerHintsActive: matchRouterHints(files, manifest.adaptation, suggestedTier).map((h) => ({
+        id: h.id,
+        prefer: h.prefer,
+        status: h.status,
+      })),
+      tierPreamble: {
+        riskTier: suggestedTier,
+        poCheckpoint:
+          suggestedTier === "T0"
+            ? "step 1 chore N/A"
+            : "Feature brief path ___ | UAC count ___ | gate Y/N | phase ADR: specs/alignment/decisions/0001-phase1-scope.md",
+        phaseAdr: "specs/alignment/decisions/0001-phase1-scope.md",
+        planModeArtifact: findPlanModeArtifact(),
+      },
+      collaborationPlan: buildCollaborationPlanStub({ matchedTriggers }, suggestedTier),
     },
-    collaborationPlan: buildCollaborationPlanStub({ matchedTriggers }, suggestedTier),
   };
+}
+
+function cmdPlan(manifest, args) {
+  const { plan, payload } = buildPlanPayload(manifest, args);
 
   if (args.json || args.quiet) {
     console.log(JSON.stringify(payload));
@@ -674,7 +692,7 @@ function cmdPlan(manifest, args) {
     console.log(JSON.stringify(payload, null, 2));
   }
 
-  if (args.strict && suggestedTier !== "T0" && !plan.some((p) => p.function === "sentinel")) {
+  if (args.strict && payload.riskTier !== "T0" && !plan.some((p) => p.function === "sentinel")) {
     if (!args.quiet) console.error("ERROR: plan --strict requires sentinel lane for non-T0 work");
     return 1;
   }
@@ -684,12 +702,7 @@ function cmdPlan(manifest, args) {
 function generatePrBody(manifest, args) {
   const files = getDiffFiles(args.base);
   const result = classifyFiles(files, manifest);
-
-  const planOut = execSync(
-    `node "${join(process.cwd(), "scripts", "governance-lint.mjs")}" plan --json --quiet --base ${args.base}`,
-    { encoding: "utf8", cwd: process.cwd() },
-  );
-  const plan = JSON.parse(planOut);
+  const { payload: plan } = buildPlanPayload(manifest, args);
   const sessionState = loadSessionLaneState();
   const planArtifact = findPlanModeArtifact();
 

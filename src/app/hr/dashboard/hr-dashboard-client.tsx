@@ -32,10 +32,6 @@ type Summary = {
 
 type Props = { initialBearerToken?: string };
 
-function DashboardSkeleton() {
-  return <DashboardMetricsSkeleton />;
-}
-
 function HeadcountCard({ summary }: { summary: Summary }) {
   return (
     <MetricCard
@@ -92,7 +88,7 @@ function BenefitsCard({ summary }: { summary: Summary }) {
 }
 
 export function HrDashboardClient({ initialBearerToken }: Props) {
-  const { bearerToken, ready, isAuthenticated, persistBearer, signOut } =
+  const { bearerToken, ready, isAuthenticated, persistBearer } =
     useHrAccess(initialBearerToken);
   const [summary, setSummary] = useState<Summary | null | undefined>(undefined);
 

@@ -99,8 +99,5 @@ const token = await new SignJWT(payload)
   .setExpirationTime("2h")
   .sign(key);
 
-console.warn(
-  `[issue-dev-jwt] tenant=${tenantId} roles=${roles.join(",")}${omitEmployee ? "" : ` subject_employee_id=${subjectEmployeeId}`} → paste the next line into Profile (dev)`,
-);
-
-console.log(token);
+console.warn("[issue-dev-jwt] minted HS256 token — paste the next line into Profile (dev)");
+process.stdout.write(`${token}\n`);
