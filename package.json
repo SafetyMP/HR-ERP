@@ -159,7 +159,7 @@
     "eslint": "^9.39.0",
     "eslint-config-next": "16.3.1",
     "gifenc": "^1.0.3",
-    "happy-dom": "^20.11.1",
+    "happy-dom": "^20.14.5",
     "pngjs": "^7.0.0",
     "prettier": "^3.5.3",
     "prisma": "^7.9.1",
