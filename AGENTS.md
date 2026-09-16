@@ -60,3 +60,9 @@ Sequence: [`.cursor/rules/orchestrator-hr-erp.mdc`](.cursor/rules/orchestrator-h
 **Harness scripts:** `npm run governance:lint` → `npm run governance:plan` → `npm run governance:ci` (hook entrypoint archived under `_archives/harness-v4/`; shared hook libs remain under `.cursor/hooks/` for governance scripts).
 
 **Phase 2 evidence:** `npm run governance:evidence` · `npm run governance:cloud-session` · [ADR 0019](specs/alignment/decisions/0019-harness-phase2-evidence-adaptation-runtime.md)
+
+## Coding standards (September 2026)
+
+Path-specific Copilot instructions: [`.github/instructions/`](.github/instructions/).
+Repository-wide Copilot file: [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+Copilot code review skill: [`.github/skills/code-review/SKILL.md`](.github/skills/code-review/SKILL.md).

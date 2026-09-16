@@ -22,3 +22,6 @@ Community and Copilot agents start at AGENTS.md. Factory/site overlay is docs/fa
 ## Skills
 
 - [hr-data-custody](.github/skills/hr-data-custody/SKILL.md): Prisma/SQL and RLS-safe migrations — high-risk fixture domain, not a payroll product
+- [.github/copilot-instructions.md](.github/copilot-instructions.md): repository-wide Copilot coding standards
+- [.github/instructions/](.github/instructions/): path-specific Copilot coding standards (September 2026)
+- [.github/skills/code-review/SKILL.md](.github/skills/code-review/SKILL.md): Copilot code review skill
