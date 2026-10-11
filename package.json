@@ -165,6 +165,8 @@
     "prisma": "^7.9.1",
     "protect-mcp": "^0.7.0",
     "semantic-release": "^25.0.9",
+    "braces": "file:vendor/braces",
+    "npm": "file:vendor/npm-cli-stub",
     "tailwindcss": "^4",
     "tar": "7.5.22",
     "tsx": "^4.23.12",
@@ -176,13 +178,18 @@
   "overrides": {
     "better-auth": "^1.6.23",
     "protobufjs": "^7.6.5",
-    "brace-expansion": "5.0.9",
+    "brace-expansion": "5.0.12",
+    "braces": "$braces",
     "minimatch": "10.2.6",
     "fast-uri": "3.1.7",
     "js-yaml": "4.3.2",
     "ip-address": "10.5.0",
     "nanoid": "5.1.16",
     "undici": "7.29.1",
+    "handlebars": "4.7.10",
+    "proxy-addr": "2.0.8",
+    "http-cache-semantics": "4.3.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
     "source-map-js": "1.2.2",
     "@grpc/grpc-js": "1.14.5",
     "postcss": "8.5.23",
@@ -191,7 +198,7 @@
     "deepmerge-ts": "8.0.2",
     "mysql2": "3.24.3",
     "tar": "7.5.22",
-    "npm": "11.19.1",
+    "npm": "$npm",
     "@hono/node-server": "2.0.11"
   }
 }

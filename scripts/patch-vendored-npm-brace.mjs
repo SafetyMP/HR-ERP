@@ -40,7 +40,7 @@ function patchVendored(pkgName, expectedVersion) {
   cpSync(srcDir, target, { recursive: true });
 }
 
-patchVendored("brace-expansion", "5.0.9");
+patchVendored("brace-expansion", "5.0.12");
 patchVendored("ip-address", "10.5.0");
 patchVendored("tar", "7.5.22");
 patchVendored("undici", "7.29.1");

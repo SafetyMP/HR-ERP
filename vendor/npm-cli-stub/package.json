@@ -1,0 +1,7 @@
+{
+  "name": "npm",
+  "version": "11.21.0",
+  "description": "Stand-in so @semantic-release/npm does not install the npm CLI bundle. Publish steps call the npm binary on PATH.",
+  "license": "Artistic-2.0",
+  "private": true
+}
