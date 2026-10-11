@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "src/app/generated/**",
     "node_modules.bak.*/**",
+    "vendor/**",
   ]),
   {
     files: [
