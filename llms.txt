@@ -12,7 +12,7 @@ Community and Copilot agents start at AGENTS.md. Factory/site overlay is docs/fa
 - [Evergreen positioning](docs/meta/evergreen-open-source-positioning.md): fixture domain + FidusGate pairing
 - [Factory overlay](docs/factory-overlay.md): corporate/site gates
 - [Copilot instructions](.github/copilot-instructions.md): never-do rules
-- [Security](.github/SECURITY.md): private advisories; synthetic data only
+- [Security](SECURITY.md): private advisories; synthetic data only
 
 ## Verify
 

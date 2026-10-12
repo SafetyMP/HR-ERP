@@ -143,3 +143,8 @@ Index: [product/completion-audits/README.md](./product/completion-audits/README.
 | [../docker/README.md](../docker/README.md) | GHCR usage, Compose overlay for the Next.js image |
 | [../Dockerfile](../Dockerfile) | Production OCI build (distroless final stage) |
 | [../specs/alignment/decisions/0003-container-supply-chain.md](../specs/alignment/decisions/0003-container-supply-chain.md) | Supply-chain ADR (SBOM, provenance, Cosign) |
+
+
+## Canonical community files
+
+`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` are at the repository root. This repository does not keep a second copy under `.github/`, because GitHub would show that copy instead of the root file.
