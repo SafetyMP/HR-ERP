@@ -17,6 +17,9 @@ node_modules.bak.*/
 /test-results/
 /tests/generated/
 
+# prisma generate (postinstall and CI recreate this)
+/src/app/generated/
+
 # next.js
 /.next/
 /out/

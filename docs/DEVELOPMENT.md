@@ -122,7 +122,7 @@ Use the printed Bearer token in `curl` or API clients for `/api/v1/*` smoke test
 | `workers/` | Kafka outbox publisher |
 | `contracts/` · `proto/` | OpenAPI + Buf |
 
-Generated Prisma client may appear under `src/app/generated/prisma/` after `prisma generate`; treat it as build output.
+`prisma generate` writes the client to `src/app/generated/prisma/`. That directory is gitignored. `postinstall`, `npm run build`, and CI run `prisma generate`.
 
 ## 8. Common npm scripts
 
