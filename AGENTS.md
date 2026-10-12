@@ -26,6 +26,8 @@ Full e2e parity needs Postgres and demo seed — [docs/QA.md](docs/QA.md#ci-e2e-
 - Never duplicate Cedar, receipt ledgers, or sandbox runtimes here. Pair [FidusGate](https://github.com/SafetyMP/FidusGate) for runtime receipts.
 - Never set `NEXT_PUBLIC_ALLOW_DEMO_DEV_SIGNIN` on Vercel Production. Production JWT mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (human authorization). Demo preview on a Production-only deploy also needs `ALLOW_DEMO_PREVIEW_ON_PRODUCTION=1`.
 
+Cross-tenant isolation is proved by `tests/integration/security/employee-rls-cross-tenant.integration.test.ts` in the CI `integration` job. The test fails if a session bound to tenant B can read tenant A's employee by primary key. `./scripts/verify.sh` clears `DATABASE_URL` and does not run that suite.
+
 ## Agent guide (project)
 
 **Repository role:** Teaching kit / governance harness on an HR fixture. Not a certified payroll vendor — [docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md), [docs/meta/evergreen-open-source-positioning.md](docs/meta/evergreen-open-source-positioning.md).

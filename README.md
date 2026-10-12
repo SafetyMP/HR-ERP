@@ -96,6 +96,14 @@ Edit **`JWT_SECRET`** in `.env`. The default app database is exposed on host por
 
 ```bash
 npm run db:up
+npm run tenancy
+```
+
+`tenancy` reads `DATABASE_URL` from the environment or from `.env`. It proves a session bound to tenant B cannot `SELECT` tenant A's employee by primary key under row-level security. The login is not a superuser, because superusers bypass RLS.
+
+The full portal is the longer path:
+
+```bash
 npm run demo:bootstrap
 npm run dev
 ```
