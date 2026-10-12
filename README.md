@@ -143,7 +143,7 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 | Resource                                   | Description                                  |
 | ------------------------------------------ | -------------------------------------------- |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md)       | Branches, PR bar, migrations, synthetic data |
-| [`.github/SECURITY.md`](.github/SECURITY.md) | Vulnerability disclosure                     |
+| [`SECURITY.md`](SECURITY.md)             | Vulnerability disclosure                     |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community norms                              |
 | [`CHANGELOG.md`](CHANGELOG.md)             | Release history (semantic-release)           |
 

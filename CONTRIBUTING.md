@@ -5,7 +5,7 @@ HR ERP is an **HR scaffold for testing agent governance**. Contributions should 
 ## Community standards & security
 
 - **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** applies to Issues, discussions, reviews, and project spaces.
-- Report **undisclosed vulnerabilities** through **[`.github/SECURITY.md`](.github/SECURITY.md)** (private GitHub Security advisories)—not via public issues.
+- Report **undisclosed vulnerabilities** through **[`SECURITY.md`](SECURITY.md)** (private GitHub Security advisories)—not via public issues.
 - **License:** The project is under **[Apache License 2.0](LICENSE)** with attribution in **[`NOTICE`](NOTICE)**. Contributions are expected to be licensed under the same terms unless you explicitly state otherwise.
 
 ## Lightweight PRs (docs-only)
