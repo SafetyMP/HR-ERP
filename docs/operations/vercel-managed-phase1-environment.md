@@ -1,5 +1,7 @@
 # Vercel + managed data plane — Phase 1 environment contract
 
+> **Deprecated hosting path (2026-11-14):** the maintained hosted demo is now [GitHub Pages](https://safetymp.github.io/HR-ERP/). Automatic Vercel Git deployments are disabled. Retain this document as historical operational evidence; use [package and Pages delivery](package-and-pages.md) for current releases. Existing Vercel projects/deployments are not deleted by this change.
+
 Phase 1 topology is **one Next.js deployable** and **one PostgreSQL** per [ADR-0001](../../specs/alignment/decisions/0001-phase1-scope.md). Local optional services (Redis, Kafka, extra DBs) live in [docker-compose.yml](../../docker-compose.yml) only — do not point production at Docker Compose defaults.
 
 ## Vercel project

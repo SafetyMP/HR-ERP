@@ -8,6 +8,8 @@ RUN apt-get update \
 FROM base AS deps
 COPY package.json package-lock.json ./
 COPY packages/payroll-calc/package.json ./packages/payroll-calc/
+COPY vendor ./vendor
+COPY scripts/patch-vendored-npm-brace.mjs ./scripts/patch-vendored-npm-brace.mjs
 COPY prisma ./prisma
 COPY prisma.config.ts ./prisma.config.ts
 RUN npm ci
