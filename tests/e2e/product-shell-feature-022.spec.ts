@@ -13,11 +13,11 @@ test.describe("Feature 022 product shell", () => {
     await expect(
       page.getByRole("navigation", { name: /employee/i }),
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Paystub" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Pay statement", exact: true })).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Time & attendance" }),
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Benefits" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "My benefits", exact: true })).toBeVisible();
     await expect(
       page
         .locator("#main-content")
@@ -57,20 +57,20 @@ test.describe("Feature 022 product shell", () => {
     await expect(
       page.getByRole("navigation", { name: /HR operations/i }),
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Dashboard" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Pay runs" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "HR operations navigation" }).getByRole("link", { name: "HR overview", exact: true })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "HR operations navigation" }).getByRole("link", { name: "Payroll runs", exact: true })).toBeVisible();
   });
 
   test("UAC-4 anonymous home shows demo entry points not authenticated hub", async ({
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /HR ERP/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "People. Work. One place." })).toBeVisible();
     await expect(
       page.getByRole("link", { name: /Start as employee/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Welcome back" }),
+      page.getByRole("heading", { name: "A place for your workday" }),
     ).not.toBeVisible();
   });
 
@@ -118,7 +118,7 @@ test.describe("Feature 022 product shell", () => {
     }, jwt);
 
     await page.goto("/");
-    await page.getByRole("link", { name: "Paystub" }).click();
+    await page.getByRole("link", { name: "Pay statement", exact: true }).click();
     await expect(
       page
         .locator("#main-content")

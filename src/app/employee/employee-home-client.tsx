@@ -2,25 +2,18 @@
 
 import Link from "next/link";
 import {
+  ArrowRight,
   Calendar,
   Clock,
   DollarSign,
   Heart,
+  MessageCircle,
   UserRound,
 } from "lucide-react";
 
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { MetricCard } from "@/components/product/metric-card";
 import { DashboardMetricsSkeleton } from "@/components/product/page-state";
-import { StatusPill } from "@/components/product/status-pill";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useTodayAttendanceQuery } from "@/lib/attendance/use-today-attendance-query";
 import { useBenefitsSummaryQuery } from "@/lib/benefits/use-benefits-summary-query";
 import { useHrAccess } from "@/lib/auth/use-hr-access";
@@ -29,21 +22,56 @@ import { useCurrentPaystubQuery } from "@/lib/paystub/use-current-paystub-query"
 import { formatBalanceHoursDisplay } from "@/lib/pto/format-balance-hours";
 import { usePtoSummaryQuery } from "@/lib/pto/use-pto-summary-query";
 
-type Props = {
-  initialBearerToken?: string;
-};
+type Props = { initialBearerToken?: string };
+
+const EMPLOYEE_TASKS = [
+  {
+    href: "/employee/paystub",
+    label: "Pay statement",
+    detail: "See your latest earnings and deductions",
+    icon: DollarSign,
+  },
+  {
+    href: "/employee/time",
+    label: "Time & attendance",
+    detail: "Clock in, clock out, or check your hours",
+    icon: Clock,
+  },
+  {
+    href: "/employee/pto",
+    label: "Time off",
+    detail: "Check your balance and request leave",
+    icon: Calendar,
+  },
+  {
+    href: "/employee/benefits",
+    label: "My benefits",
+    detail: "Review your coverage and request changes",
+    icon: Heart,
+  },
+  {
+    href: "/employee/profile",
+    label: "My profile",
+    detail: "Update your personal and contact details",
+    icon: UserRound,
+  },
+  {
+    href: "/employee/hr-request",
+    label: "Contact HR",
+    detail: "Ask a question or follow up on a request",
+    icon: MessageCircle,
+  },
+];
 
 export function EmployeeHomeClient({ initialBearerToken }: Props) {
-  const { ready, isAuthenticated, persistBearer } = useHrAccess(initialBearerToken);
+  const { ready, isAuthenticated, persistBearer } =
+    useHrAccess(initialBearerToken);
   const paystub = useCurrentPaystubQuery();
   const pto = usePtoSummaryQuery();
   const attendance = useTodayAttendanceQuery();
   const benefits = useBenefitsSummaryQuery();
 
-  if (!ready) {
-    return <DashboardMetricsSkeleton />;
-  }
-
+  if (!ready) return <DashboardMetricsSkeleton />;
   if (!isAuthenticated) {
     return (
       <HrSignInCard
@@ -55,139 +83,157 @@ export function EmployeeHomeClient({ initialBearerToken }: Props) {
     );
   }
 
-  const loading =
-    paystub.isLoading ||
-    pto.isLoading ||
-    attendance.isLoading ||
-    benefits.isLoading;
-
-  if (loading) {
-    return <DashboardMetricsSkeleton />;
-  }
-
-  const enrollmentCount = benefits.data?.enrollments?.length ?? 0;
-  const cc = paystub.data?.currencyCode ?? "USD";
+  const enrollmentCount = benefits.data?.enrollments.length;
+  const hasSummaryError =
+    paystub.isError || pto.isError || attendance.isError || benefits.isError;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <MetricCard
-          label="Latest net pay"
-          icon={DollarSign}
-          href="/employee/paystub"
-          value={
-            paystub.data
-              ? formatMoneyMinor(paystub.data.netPayMinor, cc)
-              : "—"
-          }
-          detail={
-            paystub.data
-              ? `Pay period ${paystub.data.payPeriodStart} – ${paystub.data.payPeriodEnd}`
-              : "No earnings statement posted yet"
-          }
-        />
-        <MetricCard
-          label="Time today"
-          icon={Clock}
-          href="/employee/time"
-          accent={attendance.data?.clockedIn ? "success" : "muted"}
-          value={attendance.data?.clockedIn ? "Clocked in" : "Not clocked in"}
-          detail={
-            attendance.data
-              ? attendance.data.openShiftFromPriorDay && attendance.data.clockedIn
-                ? "Open shift from prior day — clock out on Time"
-                : `${attendance.data.punches.length} punch${attendance.data.punches.length === 1 ? "" : "es"} on ${attendance.data.calendarDate}`
-              : "View attendance"
-          }
-        />
-        <MetricCard
-          label="PTO balance"
-          icon={Calendar}
-          href="/employee/pto"
-          value={
-            pto.data?.balanceHours != null
-              ? `${formatBalanceHoursDisplay(pto.data.balanceHours)} hrs`
-              : "—"
-          }
-          detail={
-            pto.data?.balanceAsOfDate
-              ? `As of ${pto.data.balanceAsOfDate}`
-              : "Balance not posted yet"
-          }
-        />
-        <MetricCard
-          label="Benefit plans"
-          icon={Heart}
-          href="/employee/benefits"
-          value={enrollmentCount}
-          detail={
-            enrollmentCount > 0
-              ? "Active enrollments on file"
-              : "No enrollments yet — request changes in-app"
-          }
-        />
-      </div>
+    <div className="flex flex-col gap-10">
+      <section aria-labelledby="employee-tasks-title">
+        <div className="mb-4">
+          <h2
+            id="employee-tasks-title"
+            className="text-xl font-semibold tracking-tight"
+          >
+            What would you like to do?
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your everyday tasks, all within reach.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {EMPLOYEE_TASKS.map(({ href, label, detail, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group flex items-start gap-3 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-muted text-primary">
+                <Icon className="size-5" aria-hidden />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold text-foreground">
+                  {label}
+                </span>
+                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                  {detail}
+                </span>
+              </span>
+              <ArrowRight
+                className="mt-1 size-4 shrink-0 text-muted-foreground group-hover:text-primary"
+                aria-hidden
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Today at a glance</CardTitle>
-            <CardDescription>
-              Common employee tasks — each opens the full detail view.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-3 sm:grid-cols-2">
-            {[
-              { href: "/employee/paystub", label: "Earnings statement", icon: DollarSign },
-              { href: "/employee/time", label: "Clock in / out", icon: Clock },
-              { href: "/employee/pto", label: "PTO & requests", icon: Calendar },
-              { href: "/employee/profile", label: "My profile", icon: UserRound },
-            ].map(({ href, label, icon: Icon }) => (
-              <Button key={href} asChild variant="outline" className="h-auto justify-start gap-3 py-3">
-                <Link href={href}>
-                  <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                  <span>{label}</span>
-                </Link>
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Status</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-muted-foreground">Payroll</span>
-              {paystub.data ? (
-                <StatusPill variant="success">Statement available</StatusPill>
-              ) : (
-                <StatusPill variant="neutral">No statement yet</StatusPill>
-              )}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-muted-foreground">Attendance</span>
-              {attendance.data?.clockedIn ? (
-                <StatusPill variant="success">On the clock</StatusPill>
-              ) : (
-                <StatusPill variant="neutral">Off the clock</StatusPill>
-              )}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-muted-foreground">Benefits</span>
-              {enrollmentCount > 0 ? (
-                <StatusPill variant="success">{enrollmentCount} active</StatusPill>
-              ) : (
-                <StatusPill variant="warning">Review enrollments</StatusPill>
-              )}
-            </div>
-            <Button asChild size="sm" className="mt-2 w-full">
-              <Link href="/employee/benefits/election-change">Request benefit change</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <section aria-labelledby="employee-summary-title">
+        <h2
+          id="employee-summary-title"
+          className="mb-4 text-xl font-semibold tracking-tight"
+        >
+          Your overview
+        </h2>
+        {hasSummaryError ? (
+          <p className="mb-4 text-sm text-muted-foreground" role="status">
+            Some summaries could not be loaded. Open a task above to view its
+            details or try again.
+          </p>
+        ) : null}
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <MetricCard
+            label="Latest net pay"
+            icon={DollarSign}
+            value={
+              paystub.isLoading || paystub.isPending
+                ? "Loading…"
+                : paystub.isError || paystub.data === undefined
+                  ? "Unavailable"
+                  : paystub.data
+                    ? formatMoneyMinor(
+                        paystub.data.netPayMinor,
+                        paystub.data.currencyCode,
+                      )
+                    : "—"
+            }
+            detail={
+              paystub.isLoading || paystub.isPending
+                ? "Getting your pay statement"
+                : paystub.isError || paystub.data === undefined
+                  ? "Open Pay statement to try again"
+                  : paystub.data
+                    ? `Pay period ${paystub.data.payPeriodStart} – ${paystub.data.payPeriodEnd}`
+                    : "No earnings statement posted yet"
+            }
+          />
+          <MetricCard
+            label="Time today"
+            icon={Clock}
+            value={
+              attendance.isLoading || attendance.isPending
+                ? "Loading…"
+                : attendance.isError || !attendance.data
+                  ? "Unavailable"
+                  : attendance.data.clockedIn
+                    ? "Clocked in"
+                    : "Not clocked in"
+            }
+            detail={
+              attendance.isLoading || attendance.isPending
+                ? "Checking your attendance"
+                : attendance.isError || !attendance.data
+                  ? "Open Time & attendance to try again"
+                  : attendance.data.openShiftFromPriorDay &&
+                      attendance.data.clockedIn
+                    ? "Open shift from prior day — review your attendance"
+                    : `${attendance.data.punches.length} punch${attendance.data.punches.length === 1 ? "" : "es"} on ${attendance.data.calendarDate}`
+            }
+          />
+          <MetricCard
+            label="Time off balance"
+            icon={Calendar}
+            value={
+              pto.isLoading || pto.isPending
+                ? "Loading…"
+                : pto.isError || !pto.data
+                  ? "Unavailable"
+                  : pto.data.balanceHours != null
+                    ? `${formatBalanceHoursDisplay(pto.data.balanceHours)} hrs`
+                    : "—"
+            }
+            detail={
+              pto.isLoading || pto.isPending
+                ? "Getting your available hours"
+                : pto.isError || !pto.data
+                  ? "Open Time off to try again"
+                  : pto.data.balanceAsOfDate
+                    ? `As of ${pto.data.balanceAsOfDate}`
+                    : "Balance not posted yet"
+            }
+          />
+          <MetricCard
+            label="Benefit plans"
+            icon={Heart}
+            value={
+              benefits.isLoading || benefits.isPending
+                ? "Loading…"
+                : benefits.isError || enrollmentCount == null
+                  ? "Unavailable"
+                  : enrollmentCount
+            }
+            detail={
+              benefits.isLoading || benefits.isPending
+                ? "Checking your enrollments"
+                : benefits.isError || enrollmentCount == null
+                  ? "Open My benefits to try again"
+                  : enrollmentCount > 0
+                    ? "Active enrollments on file"
+                    : "No enrollments on file"
+            }
+          />
+        </div>
+      </section>
     </div>
   );
 }

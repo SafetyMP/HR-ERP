@@ -16,7 +16,7 @@ test.describe("Feature 003 benefits enrollment summary", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Benefits$/ }).click();
+    await page.getByRole("link", { name: /^My benefits$/ }).click();
     await expect(page.getByRole("heading", { name: /^Your enrollments$/ })).toBeVisible({
       timeout: 30_000,
     });

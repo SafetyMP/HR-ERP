@@ -18,7 +18,7 @@ test.describe("Feature 002 time and attendance", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Time$/ }).click();
+    await page.getByRole("link", { name: /^Time & attendance$/ }).click();
     await expect(
       page.getByRole("heading", { name: /^Time$/ }).first(),
     ).toBeVisible({

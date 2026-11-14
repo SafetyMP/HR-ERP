@@ -11,6 +11,9 @@ export default defineConfig({
     },
   },
   test: {
+    // Neon targets Next's bundler-resolved subpaths; inline it so tests use
+    // the same resolution and can supply an isolated Next request context.
+    server: { deps: { inline: ["@neondatabase/auth"] } },
     environment: "node",
     setupFiles: ["./tests/vitest.setup.ts"],
     include: ["tests/**/*.test.ts"],

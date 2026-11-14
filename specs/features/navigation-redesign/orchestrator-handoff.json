@@ -1,0 +1,119 @@
+{
+  "ticketId": "navigation-redesign",
+  "source": "User requests and subsequent dependency/full-checks/Pages release authorization in this Codex chat, 2026-11-14",
+  "summary": "Improve employee and HR navigation, remediate vulnerable dependencies with compatible authentication adapter updates, and publish the validated synthetic GitHub Pages demo.",
+  "humanReadableOriginal": "HR ERP should be redesigned for both employees and HR professionals. Navigation was the most challenging aspect. Consider hosting a version through Github pages similar to APS as a user demo. Subsequent user direction authorizes dependency fixes, full verification, and Pages release; publish the validated PR artifact through gh-pages and keep the source PR open to avoid an unrelated Vercel main deployment.",
+  "riskTier": "T2",
+  "requiresPoCheckpoint": true,
+  "poCheckpoint": "User supplied employee/HR audiences and navigation priority, then authorized dependency remediation, full checks, and Pages release. Scope and acceptance: docs/product/navigation-redesign.md. Requires clean install, zero known audit findings, full local gate, exact-commit remote CI/database/browser checks, independent review, and validated-artifact publication to gh-pages. No completion or customer acceptance claimed.",
+  "impact": "Make current HR tasks discoverable, preserve location context, keep navigation available when summaries fail, remediate known dependency findings, and release a traceable synthetic user demo without merging the source PR.",
+  "environment": {
+    "os": "darwin",
+    "nodeVersion": "22.23.2",
+    "branch": "codex/hr-navigation-redesign",
+    "commitSha": "181221e1319096dcf313c1578c60da507ee20dbc"
+  },
+  "suspectedPaths": [
+    ".github/workflows/demo-pages.yml",
+    ".gitignore",
+    "AGENTS.md",
+    "demo/README.md",
+    "demo/app/demo-client.tsx",
+    "demo/app/demo-model.ts",
+    "demo/app/demo.css",
+    "demo/app/layout.tsx",
+    "demo/app/page.tsx",
+    "demo/next.config.ts",
+    "demo/postcss.config.mjs",
+    "demo/tsconfig.json",
+    "docs/product/navigation-redesign.md",
+    "eslint.config.mjs",
+    "package.json",
+    "playwright.demo.config.ts",
+    "playwright.navigation.config.ts",
+    "scripts/serve-static-demo.mjs",
+    "src/app/employee/employee-home-client.tsx",
+    "src/app/employee/page.tsx",
+    "src/app/home-landing-client.tsx",
+    "src/app/hr/dashboard/hr-dashboard-client.tsx",
+    "src/app/hr/dashboard/page.tsx",
+    "src/components/layout/app-shell.tsx",
+    "src/components/layout/app-sidebar.tsx",
+    "src/components/layout/app-top-bar.tsx",
+    "src/components/layout/navigation-breadcrumbs.tsx",
+    "src/components/layout/page-finder.tsx",
+    "src/lib/navigation/role-nav.ts",
+    "tests/demo/static-demo.spec.ts",
+    "tests/e2e/benefits-feature-003.spec.ts",
+    "tests/e2e/ess-friction-budgets.spec.ts",
+    "tests/e2e/hr-dashboard-feature-021.spec.ts",
+    "tests/e2e/leave-requests-feature-006.spec.ts",
+    "tests/e2e/navigation-redesign.spec.ts",
+    "tests/e2e/paystub-feature-001.spec.ts",
+    "tests/e2e/product-shell-feature-022.spec.ts",
+    "tests/e2e/profile-feature-004.spec.ts",
+    "tests/e2e/pto-feature-005.spec.ts",
+    "tests/e2e/time-attendance-feature-002.spec.ts",
+    "tests/unit/components/home-navigation.test.tsx",
+    "tests/unit/navigation/role-nav.test.ts",
+    "tsconfig.json",
+    "specs/features/navigation-redesign/**",
+    "package-lock.json",
+    "scripts/patch-vendored-npm-brace.mjs",
+    "vendor/deepmerge/**",
+    "tests/unit/security/deepmerge-vendor.test.ts",
+    "tests/unit/auth/neon-sdk-compatibility.test.ts",
+    "vitest.config.mts",
+    "lib/auth/neon-auth-server.ts",
+    "src/app/api/auth/neon/complete/route.ts",
+    "tests/unit/auth/neon-complete-route.test.ts"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "scout",
+      "intent": "Native navigation_audit agent inspected current routes and friction; read-only.",
+      "riskTier": "T1",
+      "readonly": true
+    },
+    {
+      "function": "builder",
+      "intent": "Native home_redesign and static_demo agents implemented disjoint home and demo files; coordinator implemented navigation shell. Authorized follow-up adds dependency/lock updates, a narrowly patched local deepmerge fork with provenance, npm vendor compatibility, and security/Neon SDK regression tests.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "scout"
+      ]
+    },
+    {
+      "function": "sentinel",
+      "intent": "Independent security review of dependency updates, documented local deepmerge patch, exploit-regression coverage, installed consumer resolution, npm vendor patch, Neon SDK compatibility, and publication artifact boundaries. Do not self-review implementation or infer safety from audit disappearance alone.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "builder"
+      ],
+      "readonly": true
+    },
+    {
+      "function": "release_ops",
+      "intent": "After required exact-commit remote CI/database/browser checks and independent review, publish only the validated PR static artifact to gh-pages, configure Pages for that branch, and verify the live project path. Retain source/artifact/publication identity. Keep source PR open; do not merge or trigger unrelated Vercel main deployment. Completion evidence pending.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "builder",
+        "sentinel",
+        "verifier"
+      ]
+    },
+    {
+      "function": "verifier",
+      "intent": "Coordinator verifies clean install, zero known audit findings, full local gate, and exact-source-commit remote CI/database/browser results. Independent navigation/demo reviewers preserve separation from implementation. Record observed outputs and unresolved blockers; historical local results are not release completion.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "builder"
+      ],
+      "readonly": true
+    }
+  ],
+  "reproStatus": "reproduced",
+  "delegationDepth": 1,
+  "sopCycleId": "2026-11-14-navigation-redesign",
+  "valueDeliveryRecordPath": "specs/features/navigation-redesign/value-delivery-record.md"
+}

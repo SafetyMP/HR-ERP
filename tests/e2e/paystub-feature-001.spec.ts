@@ -22,7 +22,7 @@ test.describe("Feature 001 employee paystub", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Paystub$/ }).click();
+    await page.getByRole("link", { name: /^Pay statement$/ }).click();
     await expect(page.getByRole("heading", { name: /current earnings statement/i })).toBeVisible({
       timeout: 15_000,
     });

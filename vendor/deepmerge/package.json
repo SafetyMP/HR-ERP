@@ -1,0 +1,17 @@
+{
+  "name": "deepmerge",
+  "version": "4.3.1-patched.1",
+  "description": "Local deepmerge 4.3.1 fork with safe destination writes for GHSA-gcqx-w48m-w2h4; not an upstream release.",
+  "license": "MIT",
+  "main": "index.cjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.cjs",
+    "index.d.ts",
+    "license.txt",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
+}

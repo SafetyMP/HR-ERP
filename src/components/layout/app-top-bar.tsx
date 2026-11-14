@@ -12,32 +12,41 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { switchAccountRedirectTarget, useHrAccess } from "@/lib/auth/use-hr-access";
+import {
+  switchAccountRedirectTarget,
+  useHrAccess,
+} from "@/lib/auth/use-hr-access";
+import type { AppRole } from "@/lib/navigation/role-nav";
+import { SheetTrigger } from "@/components/ui/sheet";
+import { NavigationBreadcrumbs } from "./navigation-breadcrumbs";
+import { PageFinder } from "./page-finder";
 
 type Props = {
+  role: AppRole;
   breadcrumbs?: ReactNode;
-  onOpenMobileNav?: () => void;
 };
 
-export function AppTopBar({ breadcrumbs, onOpenMobileNav }: Props) {
+export function AppTopBar({ role, breadcrumbs }: Props) {
   const { theme, setTheme } = useTheme();
   const { signOut, isAuthenticated } = useHrAccess();
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      {onOpenMobileNav ? (
+    <header className="sticky top-0 z-40 flex min-h-16 shrink-0 items-center gap-2 border-b border-border bg-card/95 px-4 py-2 backdrop-blur sm:gap-4 sm:px-6 supports-[backdrop-filter]:bg-card/80">
+      <SheetTrigger asChild>
         <Button
           type="button"
           variant="ghost"
           size="icon"
           className="lg:hidden"
-          onClick={onOpenMobileNav}
           aria-label="Open menu"
         >
           <Menu className="h-5 w-5" />
         </Button>
-      ) : null}
-      <div className="min-w-0 flex-1">{breadcrumbs}</div>
+      </SheetTrigger>
+      <div className="min-w-0 flex-1">
+        {breadcrumbs ?? <NavigationBreadcrumbs role={role} />}
+      </div>
+      <PageFinder role={role} />
       <div className="flex items-center gap-1">
         <Button
           type="button"

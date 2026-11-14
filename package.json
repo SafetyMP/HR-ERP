@@ -99,11 +99,17 @@
     "qa:fixtures": "tsx scripts/qa-generate-fixture-batch.ts",
     "qa:failure-envelope": "bash scripts/qa-print-failure-envelope.sh",
     "publish:check": "bash scripts/publish-check.sh",
-    "verify": "bash scripts/verify.sh"
+    "verify": "bash scripts/verify.sh",
+    "test:navigation": "playwright test --config playwright.navigation.config.ts",
+    "demo:dev": "next dev demo --hostname 127.0.0.1 --port 3108",
+    "demo:build": "next build demo --webpack",
+    "demo:typecheck": "tsc --noEmit --project demo/tsconfig.json",
+    "demo:preview": "node scripts/serve-static-demo.mjs",
+    "demo:test": "playwright test --config playwright.demo.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.8.0",
-    "@neondatabase/auth": "^0.4.1-beta",
+    "@neondatabase/auth": "0.7.0-beta",
     "@opentelemetry/sdk-node": "^0.221.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
@@ -128,7 +134,7 @@
     "jose": "^6.2.8",
     "kafkajs": "^2.2.4",
     "lucide-react": "^1.31.0",
-    "next": "16.3.8",
+    "next": "16.4.6",
     "next-themes": "^0.4.6",
     "pg": "^8.13.1",
     "react": "^19.2.4",
@@ -137,7 +143,7 @@
     "recharts": "^3.10.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
-    "zod": "^4.4.3",
+    "zod": "^4.6.7",
     "zustand": "^5.0.4"
   },
   "devDependencies": {
@@ -158,9 +164,9 @@
     "conventional-changelog-conventionalcommits": "^9.3.1",
     "effect": "^3.22.1",
     "eslint": "^9.39.0",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.4.6",
     "gifenc": "^1.0.3",
-    "happy-dom": "^20.11.1",
+    "happy-dom": "^21.0.4",
     "pngjs": "^7.0.0",
     "prettier": "^3.5.3",
     "prisma": "^7.9.1",
@@ -173,20 +179,20 @@
     "tsx": "^4.23.12",
     "typescript": "^6",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.10",
-    "yaml": "^2.9.0"
+    "vitest": "^4.1.12",
+    "yaml": "^2.9.0",
+    "deepmerge": "file:vendor/deepmerge",
+    "vite": "^8.3.8"
   },
   "overrides": {
-    "better-auth": "^1.6.23",
+    "better-auth": "1.7.25",
     "protobufjs": "^7.6.5",
-    "brace-expansion": "5.0.12",
     "braces": "$braces",
-    "minimatch": "10.2.6",
-    "fast-uri": "3.1.7",
+    "fast-uri": "3.1.9",
     "js-yaml": "4.3.2",
-    "ip-address": "10.5.0",
+    "ip-address": "10.7.6",
     "nanoid": "5.1.16",
-    "undici": "7.29.1",
+    "undici": "7.30.2",
     "handlebars": "4.7.10",
     "proxy-addr": "2.0.8",
     "http-cache-semantics": "4.3.0",
@@ -200,6 +206,21 @@
     "mysql2": "3.24.3",
     "tar": "7.5.22",
     "npm": "$npm",
-    "@hono/node-server": "2.0.11"
+    "@hono/node-server": "2.1.8",
+    "@neondatabase/auth": {
+      "zod": "$zod"
+    },
+    "@better-auth/passkey": "1.7.25",
+    "deepmerge": "$deepmerge",
+    "minimatch@<4": "3.1.5",
+    "minimatch@>=7 <12": "11.0.8",
+    "brace-expansion@<2": "1.1.21",
+    "brace-expansion@^2.0.0": "2.1.7",
+    "brace-expansion@^5.0.0": "5.0.12",
+    "vitest": "^4.1.12",
+    "@better-auth/core": "1.7.25",
+    "@better-auth/oauth-provider": "1.7.25",
+    "better-call": "1.4.5",
+    "@better-fetch/fetch": "1.3.3"
   }
 }

@@ -2,143 +2,151 @@
 
 import Link from "next/link";
 import {
-  Calendar,
-  Clock,
-  DollarSign,
-  Heart,
+  ArrowRight,
+  BriefcaseBusiness,
+  HeartHandshake,
   UserRound,
 } from "lucide-react";
-
-import {
-  DEMO_PREVIEW_PERSONAS,
-  demoPreviewBootstrapHref,
-  type DemoPreviewPersona,
-} from "@/lib/auth/demo-preview-config";
 import { useDemoPreviewEnabled } from "@/lib/auth/use-demo-preview-enabled";
 import { HrSignInCard } from "@/components/auth/hr-sign-in-card";
 import { DemoPersonaPicker } from "@/components/demo/demo-persona-picker";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { switchAccountRedirectTarget, useHrAccess } from "@/lib/auth/use-hr-access";
+import {
+  switchAccountRedirectTarget,
+  useHrAccess,
+} from "@/lib/auth/use-hr-access";
 
-const DEMO_PREVIEW_ORDER: DemoPreviewPersona[] = ["employee", "manager", "hr"];
-
-const ESS_QUICK_LINKS = [
-  { href: "/employee/paystub", label: "Paystub", icon: DollarSign },
-  { href: "/employee/time", label: "Time", icon: Clock },
-  { href: "/employee/pto", label: "PTO", icon: Calendar },
-  { href: "/employee/benefits", label: "Benefits", icon: Heart },
-  { href: "/employee/profile", label: "Profile", icon: UserRound },
-] as const;
+const WORKSPACES = [
+  {
+    href: "/employee",
+    label: "Employee workspace",
+    description: "Your pay, time off, benefits, and support.",
+    icon: UserRound,
+  },
+  {
+    href: "/hr/dashboard",
+    label: "HR operations",
+    description: "Employee requests, payroll, and benefits administration.",
+    icon: HeartHandshake,
+  },
+  {
+    href: "/manager/team-attendance",
+    label: "Manager workspace",
+    description: "Team attendance, leave, hiring, and performance.",
+    icon: BriefcaseBusiness,
+  },
+];
+const QUICK_LINKS = [
+  { href: "/employee/paystub", label: "Pay statement" },
+  { href: "/employee/time", label: "Time & attendance" },
+  { href: "/employee/pto", label: "Time off" },
+  { href: "/employee/benefits", label: "My benefits" },
+  { href: "/employee/profile", label: "My profile" },
+];
 
 export function HomeLandingClient() {
   const { ready, isAuthenticated, persistBearer, signOut } = useHrAccess();
   const demoPreviewEnabled = useDemoPreviewEnabled();
-
-  if (!ready) {
+  if (!ready)
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-sm text-muted-foreground">Loading…</p>
-      </div>
+      <p className="p-8 text-sm text-muted-foreground">Loading workspaces…</p>
     );
-  }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="mx-auto flex max-w-3xl flex-col gap-10 px-6 py-16 lg:py-24">
-        <PageHeader
-          title="HR ERP"
-          description="Unified employee self-service, manager workforce tools, and HR payroll operations."
-        />
-
-        {demoPreviewEnabled ? (
-          <section className="space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">Try the product</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Open a live workspace as employee, manager, or HR — seeded with sample data.
-              </p>
-            </div>
-            <DemoPersonaPicker />
+  return (
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 py-12 sm:px-8 lg:py-20"
+    >
+      <PageHeader
+        eyebrow="HR ERP"
+        title={
+          isAuthenticated
+            ? "A place for your workday"
+            : "People. Work. One place."
+        }
+        description={
+          isAuthenticated
+            ? "Choose the workspace for the task ahead. Access follows your organization account."
+            : "Find what you need, take the next step, and get back to your day."
+        }
+        actions={
+          isAuthenticated ? (
+            <Button
+              variant="outline"
+              onClick={() =>
+                void signOut({ redirectTo: switchAccountRedirectTarget() })
+              }
+            >
+              Switch account
+            </Button>
+          ) : undefined
+        }
+      />
+      {isAuthenticated ? (
+        <>
+          <section
+            aria-label="Workspaces"
+            className="grid gap-4 md:grid-cols-3"
+          >
+            {WORKSPACES.map(({ href, label, description, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+              >
+                <span className="mb-7 flex size-12 items-center justify-center rounded-xl bg-primary-muted text-primary">
+                  <Icon className="size-6" aria-hidden />
+                </span>
+                <h2 className="text-lg font-semibold">{label}</h2>
+                <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted-foreground">
+                  {description}
+                </p>
+                <span className="mt-6 flex items-center gap-2 text-sm font-semibold text-primary">
+                  Open workspace
+                  <ArrowRight className="size-4" aria-hidden />
+                </span>
+              </Link>
+            ))}
           </section>
-        ) : null}
-
+          <section aria-labelledby="employee-shortcuts">
+            <h2 id="employee-shortcuts" className="mb-3 text-sm font-semibold">
+              Employee shortcuts
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {QUICK_LINKS.map((item) => (
+                <Button key={item.href} asChild variant="outline">
+                  <Link href={item.href}>{item.label}</Link>
+                </Button>
+              ))}
+            </div>
+          </section>
+        </>
+      ) : (
         <HrSignInCard
-          title={demoPreviewEnabled ? "Organization sign-in" : "Sign in"}
-          description="Use your organization account for your tenant."
+          title="Organization sign-in"
+          description="Use your organization account to open your workspace."
           returnTo="/employee"
           onDevTokenPaste={persistBearer}
           hideDemoPreview
         />
-      </div>
-    );
-  }
-
-  return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-12">
-      <PageHeader
-        title="Welcome back"
-        description="Jump to employee tasks or open a manager / HR workspace."
-        actions={
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              void signOut({ redirectTo: switchAccountRedirectTarget() });
-            }}
-          >
-            Switch account
-          </Button>
-        }
-      />
-
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Employee
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <Button asChild variant="default" className="h-auto justify-start gap-3 py-3">
-            <Link href="/employee">
-              <DollarSign className="h-4 w-4 shrink-0" aria-hidden />
-              Employee home
-            </Link>
-          </Button>
-          {ESS_QUICK_LINKS.map(({ href, label, icon: Icon }) => (
-            <Button key={href} asChild variant="outline" className="h-auto justify-start gap-3 py-3">
-              <Link href={href}>
-                <Icon className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                {label}
-              </Link>
-            </Button>
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Manager & HR
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {DEMO_PREVIEW_ORDER.filter((p) => p !== "employee").map((persona) => {
-            const spec = DEMO_PREVIEW_PERSONAS[persona];
-            return (
-              <Button key={persona} asChild variant="outline" className="h-auto flex-col gap-1 py-4">
-                <Link
-                  href={
-                    demoPreviewEnabled
-                      ? demoPreviewBootstrapHref(persona, spec.defaultReturnTo)
-                      : spec.defaultReturnTo
-                  }
-                >
-                  <span className="font-semibold">{spec.label}</span>
-                  <span className="text-xs font-normal text-muted-foreground">{spec.description}</span>
-                </Link>
-              </Button>
-            );
-          })}
-        </div>
-      </section>
-    </div>
+      )}
+      {demoPreviewEnabled ? (
+        <section
+          className="rounded-2xl border border-dashed border-border p-6"
+          aria-labelledby="demo-workspaces"
+        >
+          <h2 id="demo-workspaces" className="text-base font-semibold">
+            Explore with a demo identity
+          </h2>
+          <p className="mb-4 mt-1 text-sm text-muted-foreground">
+            Use sample data as an employee, manager, or HR professional.
+            Choosing a demo persona changes your demo session.
+          </p>
+          <DemoPersonaPicker />
+        </section>
+      ) : null}
+    </main>
   );
 }

@@ -1,0 +1,29 @@
+@import "../../src/app/globals.css";
+@source "./";
+@source "../../src/components/ui";
+
+:root {
+  --font-geist-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-geist-mono: ui-monospace, monospace;
+}
+
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+select {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+
+::selection {
+  background: var(--primary-muted);
+}

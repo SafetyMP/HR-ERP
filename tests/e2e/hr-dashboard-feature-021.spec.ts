@@ -10,7 +10,7 @@ test.describe("Feature 021 HR dashboard", () => {
     }, jwt);
 
     await page.goto("/hr/dashboard");
-    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "HR overview", exact: true })).toBeVisible();
     await expect(page.getByText(/Headcount/i)).toBeVisible();
   });
 });
