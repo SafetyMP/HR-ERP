@@ -1,7 +1,9 @@
 **/node_modules
 .next
 coverage
-.cursor
+# TypeScript checks governance tests that import shared hook source.
+.cursor/*
+!.cursor/hooks
 .idea
 .git
 .github

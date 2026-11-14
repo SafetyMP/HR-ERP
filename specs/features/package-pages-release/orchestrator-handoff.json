@@ -15,7 +15,9 @@
     "README.md",
     "docs/community/github-branch-protection.md",
     "docs/operations/**",
-    "specs/features/package-pages-release/**"
+    "specs/features/package-pages-release/**",
+    ".dockerignore",
+    ".github/workflows/reusable-ci.yml"
   ],
   "delegatedTaskPlan": [
     {
