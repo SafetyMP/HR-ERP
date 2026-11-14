@@ -5,7 +5,7 @@
 | Record ID         | navigation-redesign                                                                                              |
 | S&OP cycle ID     | 2026-11-14-navigation-redesign                                                                                   |
 | Feature brief     | [Navigation redesign](../../../docs/product/navigation-redesign.md)                                              |
-| Risk tier         | T2 (dependency remediation and Pages release)                                                                    |
+| Risk tier         | T3 (standalone payroll test dependencies; calculation source unchanged)                                                                    |
 | Product direction | User requested both employee and HR audiences and identified navigation as the main friction                     |
 | Delivery state    | Authorized dependency remediation, full verification, and Pages release in progress; completion evidence pending |
 

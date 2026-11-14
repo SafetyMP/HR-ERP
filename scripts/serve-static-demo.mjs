@@ -1,6 +1,7 @@
 /** Local preview of only the generated demo export, including a Pages subpath. */
 import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
+import { open } from "node:fs/promises";
+import { constants } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,8 +25,10 @@ if (!Number.isInteger(port) || port < 1024 || port > 65535)
   throw new Error("Invalid DEMO_PORT");
 if (base && !/^\/[A-Za-z0-9_/-]+$/.test(base))
   throw new Error("Invalid DEMO_BASE_PATH");
-await stat(path.join(root, "index.html"));
+const indexProbe = await open(path.join(root, "index.html"), "r");
+await indexProbe.close();
 createServer(async (req, res) => {
+  let file;
   try {
     if (req.method !== "GET" && req.method !== "HEAD") {
       res.writeHead(405);
@@ -46,15 +49,19 @@ createServer(async (req, res) => {
       return;
     }
     const relative = pathname.slice(base.length);
-    let filename = path.resolve(root, `.${relative}`);
+    const filename = path.resolve(
+      root,
+      `.${relative}${relative.endsWith("/") ? "index.html" : ""}`,
+    );
     if (filename !== root && !filename.startsWith(`${root}${path.sep}`)) {
       res.writeHead(404);
       res.end("Not found");
       return;
     }
-    if ((await stat(filename)).isDirectory())
-      filename = path.join(filename, "index.html");
-    const body = await readFile(filename);
+    // Inspect and read the same opened file; never stat a path then reopen it.
+    file = await open(filename, constants.O_RDONLY | constants.O_NOFOLLOW);
+    if (!(await file.stat()).isFile()) throw new Error("Not a regular file");
+    const body = await file.readFile();
     res.writeHead(200, {
       "Content-Type": `${types[path.extname(filename)] ?? "application/octet-stream"}; charset=utf-8`,
       "Cache-Control": "no-store",
@@ -64,6 +71,8 @@ createServer(async (req, res) => {
   } catch {
     res.writeHead(404);
     res.end("Not found");
+  } finally {
+    await file?.close();
   }
 }).listen(port, "127.0.0.1", () =>
   console.log(`Demo preview: http://127.0.0.1:${port}${base}/`),

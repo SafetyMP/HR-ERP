@@ -9,7 +9,12 @@ test.describe("Competitive Tier 1 route smoke", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /HR ERP/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        name: "People. Work. One place.",
+        exact: true,
+      }),
+    ).toBeVisible();
     await expect(
       page.getByRole("link", { name: /Start as employee/i }),
     ).toBeVisible();

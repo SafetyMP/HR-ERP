@@ -199,56 +199,53 @@ export function HrDashboardClient({ initialBearerToken }: Props) {
             {needsAction ? (
               <Alert>
                 <AlertTitle>Needs action</AlertTitle>
-                <AlertDescription>
-                  <ul className="mt-2 list-inside list-disc space-y-2 text-sm">
-                    {summary.openPayrollExceptions > 0 ? (
-                      <li>
-                        <Link
-                          href="/hr/payroll-runs"
-                          className="font-medium underline"
-                        >
-                          {summary.openPayrollExceptions} open payroll exception
-                          {summary.openPayrollExceptions === 1 ? "" : "s"}
-                        </Link>
-                      </li>
-                    ) : null}
-                    {summary.periodsAwaitingLock > 0 ? (
-                      <li>
-                        <Link
-                          href="/hr/payroll-runs"
-                          className="font-medium underline"
-                        >
-                          {summary.periodsAwaitingLock} pay period
-                          {summary.periodsAwaitingLock === 1 ? "" : "s"}{" "}
-                          awaiting lock
-                        </Link>
-                      </li>
-                    ) : null}
-                    {summary.openLifeEvents > 0 ? (
-                      <li>
-                        <Link
-                          href="/hr/benefits/life-events"
-                          className="font-medium underline"
-                        >
-                          {summary.openLifeEvents} pending life event
-                          {summary.openLifeEvents === 1 ? "" : "s"}
-                        </Link>
-                      </li>
-                    ) : null}
-                    {summary.pendingElectionIntents > 0 ? (
-                      <li>
-                        <Link
-                          href="/hr/benefits/election-change-requests"
-                          className="font-medium underline"
-                        >
-                          {summary.pendingElectionIntents} benefit change
-                          request
-                          {summary.pendingElectionIntents === 1 ? "" : "s"}
-                        </Link>
-                      </li>
-                    ) : null}
-                  </ul>
-                </AlertDescription>
+                <ul className="mt-2 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+                  {summary.openPayrollExceptions > 0 ? (
+                    <li>
+                      <Link
+                        href="/hr/payroll-runs"
+                        className="font-medium underline"
+                      >
+                        {summary.openPayrollExceptions} open payroll exception
+                        {summary.openPayrollExceptions === 1 ? "" : "s"}
+                      </Link>
+                    </li>
+                  ) : null}
+                  {summary.periodsAwaitingLock > 0 ? (
+                    <li>
+                      <Link
+                        href="/hr/payroll-runs"
+                        className="font-medium underline"
+                      >
+                        {summary.periodsAwaitingLock} pay period
+                        {summary.periodsAwaitingLock === 1 ? "" : "s"} awaiting
+                        lock
+                      </Link>
+                    </li>
+                  ) : null}
+                  {summary.openLifeEvents > 0 ? (
+                    <li>
+                      <Link
+                        href="/hr/benefits/life-events"
+                        className="font-medium underline"
+                      >
+                        {summary.openLifeEvents} pending life event
+                        {summary.openLifeEvents === 1 ? "" : "s"}
+                      </Link>
+                    </li>
+                  ) : null}
+                  {summary.pendingElectionIntents > 0 ? (
+                    <li>
+                      <Link
+                        href="/hr/benefits/election-change-requests"
+                        className="font-medium underline"
+                      >
+                        {summary.pendingElectionIntents} benefit change request
+                        {summary.pendingElectionIntents === 1 ? "" : "s"}
+                      </Link>
+                    </li>
+                  ) : null}
+                </ul>
               </Alert>
             ) : (
               <p className="text-sm text-muted-foreground">

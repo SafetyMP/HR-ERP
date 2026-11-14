@@ -1,0 +1,56 @@
+{
+  "handoffId": "navigation-redesign",
+  "ticketId": "navigation-redesign",
+  "principal": "Codex coordinator recording native-agent evidence, not a human approval",
+  "generatedAt": "2026-11-14T21:36:21.401012+00:00",
+  "lanes": [
+    {
+      "function": "scout",
+      "verifier": "navigation_audit",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    },
+    {
+      "function": "builder",
+      "verifier": "Codex coordinator; home_redesign; static_demo",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    },
+    {
+      "function": "sentinel",
+      "verifier": "navigation_audit",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    },
+    {
+      "function": "counsel",
+      "verifier": "home_redesign (engineering applicability only)",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    },
+    {
+      "function": "release_ops",
+      "verifier": "Codex coordinator; navigation_audit independent review",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    },
+    {
+      "function": "verifier",
+      "verifier": "Codex coordinator and independent reviewers",
+      "artifactPath": "specs/features/navigation-redesign/release-review.md",
+      "signedAt": "2026-11-14T21:36:21.401012+00:00",
+      "status": "complete",
+      "scope": "Local implementation and independent output review complete. Final remote checks and live publication remain separately gated and will be recorded on PR #237."
+    }
+  ]
+}

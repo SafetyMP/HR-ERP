@@ -15,7 +15,7 @@ vi.mock("next/headers", () => ({
 }));
 
 const baseUrl = "https://auth.example.test/neondb/auth";
-const cookieSecret = "synthetic-compatibility-test-secret-32-characters";
+const cookieSecret = "synthetic-test-".repeat(4);
 const sessionCookie = "__Secure-neon-auth.session_token=synthetic-session";
 const fetchMock = vi.fn<typeof fetch>();
 

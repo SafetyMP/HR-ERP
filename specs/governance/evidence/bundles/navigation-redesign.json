@@ -1,0 +1,12 @@
+{
+  "bundleId": "navigation-redesign",
+  "handoffPath": "specs/features/navigation-redesign/orchestrator-handoff.json",
+  "sessionLaneStateHash": null,
+  "auditLogTailHash": null,
+  "ciRunUrl": null,
+  "principal": "Codex coordinator recording user-authorized release evidence",
+  "generatedAt": "2026-11-14T21:36:21.483Z",
+  "attestationVersion": 1,
+  "laneSignoffPath": "specs/governance/evidence/lane-signoffs/navigation-redesign.json",
+  "signature": null
+}
