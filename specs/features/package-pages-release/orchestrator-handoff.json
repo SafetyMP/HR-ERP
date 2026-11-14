@@ -1,0 +1,78 @@
+{
+  "ticketId": "package-pages-release",
+  "riskTier": "T2",
+  "intent": "Repair semantic release without branch writes or protection bypasses; distribute the self-hosted application package and use GitHub Pages as the maintained synthetic demo. Retire automatic Vercel Git deployments.",
+  "suspectedPaths": [
+    ".releaserc.json",
+    ".github/workflows/semantic-release.yml",
+    ".github/workflows/publish-ghcr.yml",
+    ".github/workflows/deploy.yml",
+    ".github/workflows/demo-pages.yml",
+    "Dockerfile",
+    "vercel.json",
+    "scripts/release*",
+    "tests/**/release*",
+    "README.md",
+    "docs/community/github-branch-protection.md",
+    "docs/operations/**",
+    "specs/features/package-pages-release/**"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "scout",
+      "intent": "Read-only release and deployment investigation by release_design and navigation_audit.",
+      "riskTier": "T2",
+      "readonly": true
+    },
+    {
+      "function": "builder",
+      "intent": "Coordinator implements Pages orchestration; release_design owns semantic-release and package workflow changes.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "scout"
+      ]
+    },
+    {
+      "function": "sentinel",
+      "intent": "Independent native reviewer checks privilege, exact-commit, branch-protection, and artifact boundaries.",
+      "riskTier": "T2",
+      "readonly": true,
+      "dependsOn": [
+        "builder"
+      ]
+    },
+    {
+      "function": "release_ops",
+      "intent": "Coordinator applies only reviewed changes via PR, verifies remote main checks, Pages identity and package publishing, and compares branch-protection snapshots.",
+      "riskTier": "T2",
+      "dependsOn": [
+        "sentinel",
+        "verifier"
+      ]
+    },
+    {
+      "function": "verifier",
+      "intent": "Run the repository full local gate and inspect exact-commit remote checks and hosted browser scenarios. Implementation is not delivery proof.",
+      "riskTier": "T2",
+      "readonly": true,
+      "dependsOn": [
+        "builder"
+      ]
+    }
+  ],
+  "reproStatus": "reproduced",
+  "delegationDepth": 1,
+  "sopCycleId": "2026-11-14-package-pages-release",
+  "valueDeliveryRecordPath": "specs/features/package-pages-release/value-delivery-record.md",
+  "humanDecisionRecord": {
+    "principal": "User in this Codex chat",
+    "chosenStrategy": "Keep as a package. Depreciate the vercel demo and instead use Github Pages as demo",
+    "source": "Explicit user steering supersedes earlier request to redeploy Vercel; release fix remains authorized."
+  },
+  "collaborationPlan": {
+    "decisionOverview": "Use tags/releases and signed containers without direct branch writes. Publish only a synthetic static demo after merged-commit CI/QA. Preserve existing Vercel resources and branch protections.",
+    "outputReviewRequired": true,
+    "outputReviewPassed": true
+  },
+  "outputReviewPassed": true
+}

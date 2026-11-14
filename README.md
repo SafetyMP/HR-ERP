@@ -10,6 +10,8 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
+**[Open the employee and HR demo](https://safetymp.github.io/HR-ERP/)** — a static GitHub Pages demo with synthetic data, shared navigation, and a sample request/review journey. No login or backend service is required. The full application remains available as a self-hosted source/container package. Vercel hosting is deprecated; see [package and demo delivery](docs/operations/package-and-pages.md).
+
 <p align="center">
   <img src="docs/assets/demo.gif" alt="HR ERP employee portal — home, paystub, time and attendance, and benefits (synthetic demo data)" width="900" />
 </p>
@@ -162,9 +164,9 @@ Full index: **[`docs/README.md`](docs/README.md)**.
 | Context                   | How                                                                                                                                                                |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Local API**             | `npm run jwt:dev` (or `jwt:dev:demo-employee`, `jwt:dev:demo-manager`, `jwt:dev:demo-hr`) — signs with `JWT_SECRET` in `.env`; see [`.env.example`](.env.example). |
-| **Vercel production API** | `npm run jwt:dev:vercel` uses deployment secrets; production mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization).                                    |
+| **Legacy Vercel API (deprecated)** | `npm run jwt:dev:vercel` uses deployment secrets; production mint requires `ALLOW_PRODUCTION_JWT_MINT=1` (Human authorization).                                    |
 | **Browser sign-in**       | Neon Auth (Google) or OIDC when configured — [phase 1 production checklist](docs/operations/phase1-production-checklist.md).                                       |
-| **Demo preview**          | Automatic on Vercel Preview and local dev; Production requires explicit flags — see checklist and [`AGENTS.md`](AGENTS.md) safety notes.                           |
+| **Hosted demo**          | [GitHub Pages](https://safetymp.github.io/HR-ERP/) uses synthetic browser-local data and requires no JWT. |
 
 `/api/v1/*` expects `Authorization: Bearer <JWT>` unless a route documents session/cookie auth.
 
@@ -238,9 +240,10 @@ See [`package.json`](package.json) for the full list.
 
 ## Releases & container publishing
 
-- **Versioning:** Use [Conventional Commits](https://www.conventionalcommits.org/) on PRs merged to **`main`** / **`master`**. [`.github/workflows/semantic-release.yml`](.github/workflows/semantic-release.yml) runs **semantic-release**, updates [`package.json`](package.json), [`package-lock.json`](package-lock.json), and [`CHANGELOG.md`](CHANGELOG.md), pushes a **`chore(release): … [skip ci]`** commit, creates **`v*`** tags, and publishes a **GitHub Release** (retry via **workflow_dispatch** if needed).
-- **Docker:** Root [`Dockerfile`](Dockerfile) — [ADR `0003`](specs/alignment/decisions/0003-container-supply-chain.md) (distroless runtime, multi-arch). Local Compose overlay: [`docker/README.md`](docker/README.md), [`docker/compose.app.yml`](docker/compose.app.yml).
-- **GHCR:** A **published GitHub Release** triggers [`.github/workflows/publish-ghcr.yml`](.github/workflows/publish-ghcr.yml): multi-arch **`linux/amd64`** and **`linux/arm64`**, **SBOM**, **provenance**, push to `ghcr.io/<lowercased-owner>/<lowercased-repo>:<semver>` and **`:latest`**, **Cosign** signature on the digest. Ad hoc builds: workflow **manual dispatch** with a scratch tag.
+- **Versioning:** Conventional Commits merged to `main` / `master` drive semantic-release after the main validation and demo workflow succeeds. Git tags and [GitHub Releases](https://github.com/SafetyMP/HR-ERP/releases) hold the release version and notes; releases do not rewrite tracked manifests or push commits to protected branches. `package.json` is private and this application is not published to npm.
+- **Package:** GitHub Releases provide source archives. The root [Dockerfile](Dockerfile) packages the full application for self-hosting; [local Compose instructions](docker/README.md) cover runtime dependencies.
+- **GHCR:** The release workflow explicitly calls [container publishing](.github/workflows/publish-ghcr.yml) for the released commit: `linux/amd64` and `linux/arm64`, SBOM, provenance, versioned image and `latest`, plus a Cosign signature. It does not rely on a release event created by `GITHUB_TOKEN` triggering another workflow.
+- **Hosted demo:** [GitHub Pages](https://safetymp.github.io/HR-ERP/) receives only the tested static demo after all six main CI/QA jobs succeed. Hosted browser checks and `release.json` verify the deployed source commit. [Delivery and recovery details](docs/operations/package-and-pages.md).
 
 **Verify a pulled image** (replace `OWNER`, `REPO`, `DIGEST`):
 

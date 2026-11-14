@@ -1,51 +1,73 @@
-# Analyzes Conventional Commits on main/master, bumps root package.json + CHANGELOG,
-# commits with [skip ci], creates a Git Tag and GitHub Release — triggering publish-ghcr.yml.
-#
-# When main requires PRs (classic protection / rulesets), default GITHUB_TOKEN cannot push
-# the @semantic-release/git release commit. Set repo secret SEMANTIC_RELEASE_TOKEN to a
-# fine-grained PAT or GitHub App token whose actor is on the branch-protection bypass list.
-# See docs/community/github-branch-protection.md.
+# Release the exact protected-branch commit after main validation and the Pages demo.
+# Tags and GitHub Releases are the version authority; no release commit or bypass token.
 name: Semantic release
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  workflow_run:
+    workflows: [Main validation and demo]
+    branches: [main, master]
+    types: [completed]
   workflow_dispatch:
 
 concurrency:
-  group: semantic-release-${{ github.ref }}
+  group: semantic-release-${{ github.event.workflow_run.head_branch || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+  contents: read
 
 jobs:
   release:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.head_commit && !contains(github.event.head_commit.message, '[skip ci]')) }}
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+       (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    outputs:
+      published: ${{ steps.release.outputs.published }}
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      sha: ${{ steps.release.outputs.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
-          persist-credentials: true
-          # Prefer SEMANTIC_RELEASE_TOKEN so @semantic-release/git can push to protected main.
-          token: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
-
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: "22"
           cache: npm
-
       - run: npm ci
-      - run: npm run governance:ci
-      - run: npm test
-
-      - name: Semantic release
+      - name: Verify exact main checks and publish tag/release
+        id: release
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pass only identity fields needed by the gate, not the event payload file.
+          UPSTREAM_EVENT: ${{ github.event.workflow_run.event }}
+          UPSTREAM_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          UPSTREAM_REPOSITORY: ${{ github.event.workflow_run.head_repository.full_name }}
+          UPSTREAM_NAME: ${{ github.event.workflow_run.name }}
+          UPSTREAM_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          UPSTREAM_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: node scripts/release.mjs
+
+  container:
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: ./.github/workflows/publish-ghcr.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+      version: ${{ needs.release.outputs.version }}
+      sha: ${{ needs.release.outputs.sha }}

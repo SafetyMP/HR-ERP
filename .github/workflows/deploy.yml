@@ -1,35 +1,13 @@
-# Production CI gate.
-#
-# Deployment itself is performed by **Vercel's git integration**: every push to
-# `main` triggers a Vercel build with dashboard env (Production target). This
-# workflow runs the same CI + QA suites at the gate so a failing build keeps
-# the merge red even though Vercel has already started its own pipeline.
-#
-# The previous `promote-production` job invoked
-# `vercel pull → vercel build --prebuilt → vercel deploy --prebuilt`. That
-# chain caused `vercel pull` to write `JWT_SECRET=""` (literal empty quotes)
-# into `.vercel/.env.production.local` for any sensitive Vercel env var, which
-# `next build --output standalone` then baked into `.next/standalone/.env`,
-# which then shadowed Vercel's runtime injection inside the function — see
-# `docs/operations/vercel-managed-phase1-environment.md` for the full RCA.
-# The job has been removed; production now has a single deploy path
-# (Vercel git integration) and a single source of truth for env vars
-# (Vercel dashboard).
-#
-# If a future change needs a GitHub-built artifact for production (e.g. for
-# OIDC-only deploys or custom Docker images), reintroduce a deploy step that
-# does **not** use `--prebuilt` so Vercel rebuilds with its own runtime env,
-# or migrate to a Vercel Marketplace auth provider that removes the need for
-# `JWT_SECRET` entirely.
-
-name: Deploy production
+# Validate the packaged application, then publish only the synthetic static demo.
+# Vercel Git deployments are retired; see docs/operations/package-and-pages.md.
+name: Main validation and demo
 
 on:
   push:
     branches: [main, master]
 
 concurrency:
-  group: deploy-production-${{ github.ref }}
+  group: main-validation-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -43,3 +21,13 @@ jobs:
   qa:
     secrets: inherit
     uses: ./.github/workflows/reusable-qa.yml
+
+  demo:
+    needs: [ci, qa]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/demo-pages.yml
+    with:
+      publish: true
