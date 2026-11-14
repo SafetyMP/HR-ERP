@@ -6,7 +6,7 @@ import { redirectDevJwtToSession } from "@/lib/auth/redirect-dev-jwt";
 import { HrDashboardClient } from "./hr-dashboard-client";
 
 export const metadata: Metadata = {
-  title: "HR dashboard",
+  title: "HR overview",
   description: "HR operations summary",
 };
 
@@ -19,9 +19,9 @@ export default async function HrDashboardPage(props: Props) {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader
-        eyebrow="HR operations"
-        title="Dashboard"
-        description="Headcount, payroll exceptions, and queues that need your attention."
+        eyebrow="HR workspace"
+        title="HR overview"
+        description="Manage requests, keep payroll moving, and support your people."
       />
       <HrDashboardClient />
     </div>

@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,12 +23,25 @@
       }
     ],
     "paths": {
-      "@/lib/*": ["./lib/*", "./src/lib/*"],
-      "@/app/*": ["./src/app/*"],
-      "@/*": ["./src/*"],
-      "@/tests/*": ["./tests/*"],
-      "@hr-erp/payroll-calc": ["./packages/payroll-calc/src/index.ts"],
-      "@hr-erp/payroll-calc/*": ["./packages/payroll-calc/src/*"]
+      "@/lib/*": [
+        "./lib/*",
+        "./src/lib/*"
+      ],
+      "@/app/*": [
+        "./src/app/*"
+      ],
+      "@/*": [
+        "./src/*"
+      ],
+      "@/tests/*": [
+        "./tests/*"
+      ],
+      "@hr-erp/payroll-calc": [
+        "./packages/payroll-calc/src/index.ts"
+      ],
+      "@hr-erp/payroll-calc/*": [
+        "./packages/payroll-calc/src/*"
+      ]
     }
   },
   "include": [
@@ -35,5 +52,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "demo/.next",
+    "demo/out"
+  ]
 }

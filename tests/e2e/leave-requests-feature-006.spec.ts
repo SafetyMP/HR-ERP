@@ -21,7 +21,7 @@ test.describe("Feature 006 leave requests self-submit", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^PTO$/ }).click();
+    await page.getByRole("link", { name: /^Time off$/ }).click();
     await expect(page.getByRole("heading", { name: /^Your PTO$/ })).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole("heading", { name: /^Request time off$/ })).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole("heading", { name: /^Your submitted requests$/ })).toBeVisible({

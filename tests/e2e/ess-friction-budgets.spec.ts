@@ -15,7 +15,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("paystub: home → earnings statement ≤10s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Paystub$/ }).click();
+    await page.getByRole("link", { name: /^Pay statement$/ }).click();
     await expect(page.getByRole("heading", { name: /current earnings statement/i })).toBeVisible({
       timeout: 15_000,
     });
@@ -25,7 +25,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("time: home → clock status ≤30s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Time$/ }).click();
+    await page.getByRole("link", { name: /^Time & attendance$/ }).click();
     await expect(page.getByRole("heading", { name: /^Time$/ }).first()).toBeVisible({
       timeout: 30_000,
     });
@@ -38,7 +38,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("PTO: home → balance and recorded time off ≤30s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^PTO$/ }).click();
+    await page.getByRole("link", { name: /^Time off$/ }).click();
     await expect(page.getByRole("heading", { name: /^Your PTO$/ })).toBeVisible({
       timeout: 30_000,
     });
@@ -49,8 +49,8 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("profile: home → primary sections ≤90s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Paystub$/ }).click();
-    await page.getByRole("link", { name: /^Profile$/ }).click();
+    await page.getByRole("link", { name: /^Pay statement$/ }).click();
+    await page.getByRole("link", { name: /^My profile$/ }).click();
     await expect(page.getByRole("heading", { name: /^My profile$/ })).toBeVisible({
       timeout: 30_000,
     });
@@ -63,7 +63,7 @@ test.describe("ESS friction budgets (scorecard)", () => {
   test("benefits: home → enrollments ≤45s", async ({ page }) => {
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^Benefits$/ }).click();
+    await page.getByRole("link", { name: /^My benefits$/ }).click();
     await expect(page.getByRole("heading", { name: /^Your enrollments$/ })).toBeVisible({
       timeout: 30_000,
     });

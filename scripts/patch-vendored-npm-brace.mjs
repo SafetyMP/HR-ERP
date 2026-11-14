@@ -41,6 +41,6 @@ function patchVendored(pkgName, expectedVersion) {
 }
 
 patchVendored("brace-expansion", "5.0.12");
-patchVendored("ip-address", "10.5.0");
+patchVendored("ip-address", "10.7.6");
 patchVendored("tar", "7.5.22");
-patchVendored("undici", "7.29.1");
+patchVendored("undici", "7.30.2");

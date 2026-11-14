@@ -18,7 +18,7 @@ test.describe("Feature 005 PTO balance and recorded time off", () => {
 
     const start = Date.now();
     await page.goto("/");
-    await page.getByRole("link", { name: /^PTO$/ }).click();
+    await page.getByRole("link", { name: /^Time off$/ }).click();
     await expect(page.getByRole("heading", { name: /^Your PTO$/ })).toBeVisible(
       {
         timeout: 30_000,

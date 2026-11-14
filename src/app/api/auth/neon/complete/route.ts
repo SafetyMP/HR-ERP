@@ -50,7 +50,10 @@ function errorHtml(title: string, detail: string, returnTo: string): string {
 
 export async function GET(request: Request) {
   if (!neonAuthConfigured()) {
-    return NextResponse.json({ error: "neon_auth_not_configured" }, { status: 501 });
+    return NextResponse.json(
+      { error: "neon_auth_not_configured" },
+      { status: 501 },
+    );
   }
 
   const url = new URL(request.url);
@@ -81,11 +84,22 @@ export async function GET(request: Request) {
     if (email) {
       hrToken = await provisionHrSessionFromEmail(email);
     } else {
+      const { data: accounts, error: accountsError } =
+        await auth.listAccounts();
+      if (accountsError) {
+        throw new Error("neon_accounts_unavailable");
+      }
+      const googleAccount = accounts?.find(
+        (account) => account.providerId === "google",
+      );
+      if (!googleAccount?.id) {
+        throw new Error("neon_google_account_not_found");
+      }
       const { data: tokenData, error: tokenError } = await auth.getAccessToken({
-        providerId: "google",
+        // Better Auth expects its internal row ID, not the provider account ID.
+        accountId: googleAccount.id,
       });
-      const accessToken =
-        tokenData?.accessToken ?? tokenData?.idToken ?? session.session?.token ?? null;
+      const accessToken = tokenData?.accessToken ?? tokenData?.idToken ?? null;
       if (tokenError || !accessToken) {
         throw new Error("neon_no_access_token");
       }
@@ -98,7 +112,10 @@ export async function GET(request: Request) {
       "Set-Cookie",
       "hrerp_auth_return=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
     );
-    return NextResponse.redirect(new URL(returnTo, resolvePublicOrigin(request)), { headers });
+    return NextResponse.redirect(
+      new URL(returnTo, resolvePublicOrigin(request)),
+      { headers },
+    );
   } catch (err) {
     const code = err instanceof Error ? err.message : "neon_provision_failed";
     const detail =
