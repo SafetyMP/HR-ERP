@@ -8,6 +8,26 @@ export const RELEASE_CHECKS = [
   "qa / e2e",
 ];
 
+/** Consume only the explicitly passed workflow identity, never the full event file. */
+export function releaseTargetFromEnvironment(env) {
+  return releaseTarget(
+    env.GITHUB_EVENT_NAME,
+    {
+      workflow_run: {
+        event: env.UPSTREAM_EVENT,
+        conclusion: env.UPSTREAM_CONCLUSION,
+        head_repository: { full_name: env.UPSTREAM_REPOSITORY },
+        name: env.UPSTREAM_NAME,
+        head_branch: env.UPSTREAM_BRANCH,
+        head_sha: env.UPSTREAM_SHA,
+      },
+    },
+    env.GITHUB_REPOSITORY,
+    env.GITHUB_REF,
+    env.GITHUB_SHA,
+  );
+}
+
 export function releaseTarget(eventName, event, repository, ref, sha) {
   if (!/^[\w.-]+\/[\w.-]+$/.test(repository ?? "")) {
     throw new Error("Missing or invalid release repository");
@@ -75,10 +95,35 @@ export function validateReleaseGate(target, remoteHead, run, jobs) {
 
 export function githubClient(token, repository, fetchImpl = fetch) {
   if (!token) throw new Error("GITHUB_TOKEN is required");
+  if (
+    typeof repository !== "string" ||
+    /^[A-Za-z0-9][A-Za-z0-9-]*\/[A-Za-z0-9_.-]+$/.exec(
+      repository ?? "",
+    )?.[0] !== repository ||
+    [".", ".."].includes(repository.split("/")[1])
+  ) {
+    throw new Error("Invalid GitHub release repository");
+  }
+  // Only these read endpoints are needed by the release and container validators.
+  const paths = [
+    /^git\/ref\/heads\/(main|master)$/,
+    /^actions\/workflows\/deploy\.yml\/runs\?head_sha=[a-f0-9]{40}&event=push&per_page=100$/,
+    /^actions\/runs\/[1-9][0-9]*\/jobs\?filter=latest&per_page=100&page=[1-9][0-9]*$/,
+    /^releases\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$/,
+    /^commits\/v[0-9]+\.[0-9]+\.[0-9]+$/,
+    /^releases\/latest$/,
+  ];
   return async (path) => {
+    if (
+      typeof path !== "string" ||
+      !paths.some((pattern) => pattern.exec(path)?.[0] === path)
+    ) {
+      throw new Error("Unsupported GitHub release endpoint");
+    }
     const response = await fetchImpl(
       `https://api.github.com/repos/${repository}/${path}`,
       {
+        redirect: "error",
         headers: {
           Accept: "application/vnd.github+json",
           Authorization: `Bearer ${token}`,

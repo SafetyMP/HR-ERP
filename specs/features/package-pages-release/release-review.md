@@ -15,3 +15,7 @@ Official actionlint 1.7.12, downloaded from its GitHub release and checked again
 ## External acceptance still required
 
 Required PR and main CI/QA, hosted Pages source identity/browser checks, successful tag/release and signed container publication, and unchanged branch-protection/ruleset snapshots remain separate application milestones. The historical successful PR #237 deployment is not proof for this candidate. Record final observed identities and results in the PR and ignored `artifacts/dependency-release/` receipts.
+
+## Security follow-up before merge
+
+The first candidate's CodeQL analysis reported alert #84 (`js/file-access-to-http`): an event-file SHA reached a GitHub request URL. The follow-up removes whole-event-file ingestion, passes only six explicit workflow identity fields through the same validation, and restricts authenticated requests to fixed GitHub read endpoints with redirects refused. Independent `release_review` re-reviewed the change and ran 13 targeted tests plus URL-escape and manual-trigger probes; no blocking findings remained. Typecheck, targeted lint, actionlint, and diff checks passed. Remote CodeQL must establish that alert #84 is fixed on the replacement commit before merge; the earlier successful job status alone was insufficient.

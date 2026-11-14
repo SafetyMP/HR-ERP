@@ -1,20 +1,14 @@
 #!/usr/bin/env node
-import { appendFileSync, readFileSync } from "node:fs";
+import { appendFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import {
-  releaseTarget,
+  releaseTargetFromEnvironment,
   githubClient,
   verifyReleaseGate,
 } from "./release-gate.mjs";
 
 const env = process.env;
-const target = releaseTarget(
-  env.GITHUB_EVENT_NAME,
-  JSON.parse(readFileSync(env.GITHUB_EVENT_PATH, "utf8")),
-  env.GITHUB_REPOSITORY,
-  env.GITHUB_REF,
-  env.GITHUB_SHA,
-);
+const target = releaseTargetFromEnvironment(env);
 const get = githubClient(env.GITHUB_TOKEN, target.repository);
 const git = (...args) => execFileSync("git", args, { encoding: "utf8" }).trim();
 if (git("rev-parse", "HEAD") !== target.sha)

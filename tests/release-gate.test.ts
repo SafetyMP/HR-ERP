@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   RELEASE_CHECKS,
+  githubClient,
   releaseTarget,
+  releaseTargetFromEnvironment,
   validateReleaseGate,
   verifyReleaseGate,
 } from "../scripts/release-gate.mjs";
@@ -28,6 +30,76 @@ const jobs = RELEASE_CHECKS.map((name: string) => ({
 }));
 
 describe("protected branch release gate", () => {
+  it("accepts only explicit upstream identity fields and retains their trust checks", () => {
+    const env = {
+      GITHUB_EVENT_NAME: "workflow_run",
+      GITHUB_REPOSITORY: repository,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_SHA: "b".repeat(40),
+      UPSTREAM_EVENT: "push",
+      UPSTREAM_CONCLUSION: "success",
+      UPSTREAM_REPOSITORY: repository,
+      UPSTREAM_NAME: "Main validation and demo",
+      UPSTREAM_BRANCH: "main",
+      UPSTREAM_SHA: sha,
+      GITHUB_EVENT_PATH: "/must/not/be/read",
+    };
+    expect(releaseTargetFromEnvironment(env)).toEqual(target);
+    expect(() =>
+      releaseTargetFromEnvironment({
+        ...env,
+        UPSTREAM_REPOSITORY: "fork/HR-ERP",
+      }),
+    ).toThrow();
+    expect(() =>
+      releaseTargetFromEnvironment({ ...env, UPSTREAM_SHA: "" }),
+    ).toThrow();
+    expect(() =>
+      releaseTargetFromEnvironment({ ...env, UPSTREAM_EVENT: "pull_request" }),
+    ).toThrow();
+  });
+
+  it("allows only fixed GitHub read endpoints and refuses redirects", async () => {
+    const fetchImpl = vi.fn(
+      async () => new Response(JSON.stringify({ ok: true }), { status: 200 }),
+    );
+    const get = githubClient("test-token", repository, fetchImpl);
+    await expect(
+      get(
+        `actions/workflows/deploy.yml/runs?head_sha=${sha}&event=push&per_page=100`,
+      ),
+    ).resolves.toEqual({ ok: true });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      `https://api.github.com/repos/${repository}/actions/workflows/deploy.yml/runs?head_sha=${sha}&event=push&per_page=100`,
+      expect.objectContaining({ redirect: "error" }),
+    );
+    fetchImpl.mockClear();
+    for (const path of [
+      "https://attacker.invalid/",
+      "//attacker.invalid/",
+      "../../user",
+      "releases/latest#fragment",
+      "releases/latest\n",
+      `actions/workflows/deploy.yml/runs?head_sha=${sha}&event=push&per_page=100&extra=secret`,
+      "git/ref/heads/main/../../secrets",
+      "actions/runs/12%2f..%2f/jobs?filter=latest&per_page=100&page=1",
+    ]) {
+      await expect(get(path)).rejects.toThrow(/Unsupported/);
+    }
+    expect(fetchImpl).not.toHaveBeenCalled();
+    for (const repo of [
+      "owner/..",
+      "owner/.",
+      "owner/repo\n",
+      "owner/repo?secret=x",
+      "owner/repo/extra",
+    ]) {
+      expect(() => githubClient("test-token", repo, fetchImpl)).toThrow(
+        /repository/,
+      );
+    }
+  });
+
   it("binds workflow_run to the upstream tested SHA rather than the default branch SHA", () => {
     expect(
       releaseTarget(
