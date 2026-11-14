@@ -16,7 +16,7 @@ PR and manually dispatched demo runs validate artifacts only. Publication happen
 
 The repository's Pages source is **GitHub Actions** (`build_type: workflow`). The `github-pages` environment allows deployment from `main`; it does not need a main-branch protection bypass. Keep the historical `gh-pages` branch as publication evidence; it is no longer the publishing source.
 
-The reusable workflow builds assets under the repository path and takes the live browser target from the Pages deployment output, including its case-sensitive path. Source identity is public at [release.json](https://safetymp.github.io/HR-ERP/release.json). Record both the Actions run and matching commit before reporting a release as live.
+The reusable workflow builds assets under the repository path and takes the live browser target from the Pages deployment output, including its case-sensitive path. After the first Actions publication, source identity is public at `release.json` under the demo URL. Record both the Actions run and matching commit before reporting a release as live.
 
 ## Retired Vercel demo
 
