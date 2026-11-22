@@ -55,6 +55,8 @@ import {
   type RequestStatus,
 } from "./demo-model";
 
+import { ReleaseCase } from "./release-case";
+
 const buttonClass =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50";
 const secondaryClass =
@@ -76,7 +78,7 @@ function subscribeRoute(callback: () => void) {
   return () => window.removeEventListener("hashchange", callback);
 }
 function currentRoute() {
-  return window.location.hash.slice(1) || "/employee";
+  return window.location.hash.slice(1) || "/case";
 }
 function routeRole(route: string): DemoRole {
   return route.startsWith("/hr/") ? "hr" : "employee";
@@ -1048,7 +1050,7 @@ export function DemoClient() {
   const route = useSyncExternalStore(
     subscribeRoute,
     currentRoute,
-    () => "/employee",
+    () => "/case",
   );
   const role = routeRole(route);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -1162,6 +1164,9 @@ export function DemoClient() {
         );
     }
   }
+  if (route === "/case" || route === "/technical") {
+    return <ReleaseCase mainRef={mainRef} technical={route === "/technical"} />;
+  }
   return (
     <div className="min-h-screen bg-background text-foreground">
       <a
@@ -1232,7 +1237,8 @@ export function DemoClient() {
               <span className="mr-2 inline-block rounded border border-primary/20 bg-primary-muted px-2 py-1 font-semibold text-primary">
                 INTERACTIVE DEMO
               </span>
-              Synthetic data · Changes reset on reload
+              Synthetic data · Changes reset on reload ·{" "}
+              <a href="#/case" className="font-semibold text-primary underline">Return to release case</a>
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <label

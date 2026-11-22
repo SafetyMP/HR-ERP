@@ -150,3 +150,47 @@ test("mobile drawer and page finder work without horizontal overflow", async ({
     ),
   ).toBe(true);
 });
+
+test("release case compares revisions and opens the matching employee fixture", async ({ page }) => {
+  await page.goto(base + "/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Review Alex’s leave balance");
+  const statement = page.getByRole("region", { name: "Employee leave statement" });
+  await expect(statement.getByText("80 h", { exact: true })).toBeInViewport();
+  await expect(statement.getByText("8 h", { exact: true })).toBeInViewport();
+  await expect(page.getByRole("radio", { name: "Deduct on approval" })).toBeInViewport();
+  await expect(page.getByRole("heading", { name: "Hold the change" })).toBeVisible();
+  await page.screenshot({ path: "artifacts/navigation-redesign/demo-release-case.png" });
+  await page.getByRole("radio", { name: "Approved", exact: true }).check();
+  await expect(page.getByText("This check passes", { exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Declined", exact: true }).check();
+  await expect(page.getByRole("heading", { name: "Hold the change" })).toBeVisible();
+  await page.getByRole("radio", { name: "Deduct on approval" }).check();
+  await expect(page.getByText("80 hours available")).toBeVisible();
+  await expect(page.getByText("20 min", { exact: true })).toBeVisible();
+  await page.getByRole("region", { name: "Is the extra review worth funding?" }).screenshot({path: "artifacts/navigation-redesign/demo-release-pilot.png"});
+  await expect(page.getByRole("slider", { name: /Changes reviewed/ })).toHaveValue("24");
+  await expect(page.getByRole("slider", { name: /Pilot cost/ })).toHaveValue("600");
+  await page.getByRole("slider", { name: /Minutes saved/ }).focus();
+  await page.keyboard.press("Home");
+  await expect(page.getByText("-$600", { exact: true })).toBeVisible();
+  await page.setViewportSize({ width: 375, height: 810 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await expect(page.getByRole("figure", {name: "Trace Alex’s request"})).toContainText("HR declined");
+  await expect(page.getByRole("figure", {name: "Available hours for this request"})).toContainText("Displayed in portal80 h");
+  const funding = page.getByRole("figure", {name: "Four-week capacity value and pilot cost"});
+  await expect(funding).toContainText("Reviewer time recovered$0");
+  await page.getByRole("link", {name: "Technical guide", exact: true}).click();
+  await expect(page.getByRole("heading", { name: "Technical guide", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Request fixtures" })).toBeVisible();
+  await page.screenshot({path: "artifacts/navigation-redesign/demo-technical-mobile.png", fullPage: true});
+  await page.getByRole("link", {name: "Return to the leave review"}).click();
+  await expect(page.getByRole("radio", {name: "Declined", exact: true})).toBeChecked();
+  await expect(page.getByRole("slider", {name: /Minutes saved/})).toHaveValue("0");
+  await page.getByRole("link", {name: "Technical guide", exact: true}).click();
+  await page.reload();
+  await expect(page.getByRole("link", {name: "Open the HR review queue"})).toBeVisible();
+  await page.getByRole("link", { name: "Open Alex’s time off" }).click();
+  await expect(page.getByRole("heading", { name: "Time off", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "Return to release case" }).click();
+  await expect(page.getByRole("heading", { name: "Review the change" })).toBeVisible();
+});

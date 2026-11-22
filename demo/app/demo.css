@@ -27,3 +27,403 @@ select {
 ::selection {
   background: var(--primary-muted);
 }
+
+.release-case {
+  --ink: #312431;
+  --raspberry: #8b1e51;
+  color: var(--ink);
+  background: #ffffff;
+  font: 1rem/1.6 var(--font-geist-sans);
+  min-height: 100vh;
+}
+.release-case a {
+  color: var(--raspberry);
+  text-underline-offset: 0.2em;
+  text-decoration: underline;
+}
+.release-case :focus-visible {
+  outline: 3px solid #642984;
+  outline-offset: 3px;
+}
+.case-top,
+.case-frame {
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  padding-inline: clamp(1.2rem, 4vw, 3.5rem);
+}
+.case-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 4.5rem;
+}
+.case-top b {
+  font-size: 1.1rem;
+  letter-spacing: -0.035em;
+}
+.case-top a {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.case-intro {
+  border-block: 1px solid #e6cfda;
+  background: #fcf6f8;
+  padding-block: clamp(1.4rem, 3.5vw, 2.8rem);
+}
+.case-opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 4rem);
+}
+.case-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.case-intro .case-kicker {
+  color: var(--raspberry);
+}
+.case-intro h1 {
+  color: #501733;
+  font-family: Georgia, serif;
+  font-size: clamp(2.4rem, 4.4vw, 3.9rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  margin: 0.6rem 0;
+  max-width: 15ch;
+}
+.case-deck {
+  max-width: 53ch;
+}
+.case-statement {
+  background: #501733;
+  color: #fff;
+  border-radius: 0.35rem;
+  padding: clamp(1.2rem, 2.8vw, 2rem);
+}
+.case-statement h2 {
+  color: #ffc8dc;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+.statement-person {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid #98647e;
+}
+.statement-person strong {
+  font-size: 1.4rem;
+}
+.statement-person span {
+  color: #ffedf3;
+  font-size: 0.95rem;
+}
+.case-statement dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.case-statement dl div + div {
+  border-inline-start: 1px solid #98647e;
+  padding-inline-start: 1rem;
+}
+.case-statement dt {
+  color: #ffedf3;
+  font-size: 0.9rem;
+}
+.case-statement dd {
+  font-size: clamp(2.3rem, 4vw, 3rem);
+  font-weight: 550;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.case-statement dd span {
+  font-size: 1rem;
+  font-weight: 400;
+}
+.case-body {
+  padding-block: clamp(1.3rem, 4vw, 3rem);
+}
+.case-body h2 {
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  line-height: 1.18;
+  font-weight: 640;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.75rem;
+}
+.case-body h3 {
+  font-size: 1.12rem;
+  font-weight: 650;
+}
+.case-body p {
+  max-width: 75ch;
+}
+.case-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+}
+.case-controls fieldset {
+  margin: 1.2rem 0 0;
+}
+.case-controls legend {
+  font-weight: 650;
+  padding-bottom: 0.45rem;
+}
+.case-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.case-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #8f7582;
+  border-radius: 0.35rem;
+  background: white;
+  font-size: 0.925rem;
+}
+.case-options label:has(:checked) {
+  border-color: var(--raspberry);
+  background: #fae5ef;
+}
+.release-case input {
+  accent-color: var(--raspberry);
+}
+.case-ledger {
+  color: #4a1834;
+  background: #fbeaf0;
+  border: 1px solid #eccbd8;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 0.6rem;
+}
+.case-balance {
+  font-size: clamp(3rem, 6vw, 4.25rem);
+  line-height: 1.2;
+  margin-block: 0.5rem;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+}
+.case-balance span {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.case-statement-strip {
+  height: 0.65rem;
+  margin-block: 1rem 0.3rem;
+  background: #80556b;
+  border-radius: 0.15rem;
+  overflow: hidden;
+}
+.case-statement-strip span {
+  display: block;
+  height: 100%;
+  background: #ffd0e2;
+}
+.case-statement-share {
+  color: #ffedf3;
+  font-size: 0.85rem;
+}
+.case-bars {
+  margin-block: 1.1rem 1.4rem;
+}
+.case-bars figcaption {
+  font-size: 1rem;
+  font-weight: 650;
+}
+.case-bars dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 0.7rem;
+  margin-top: 0.45rem;
+  font-size: 0.925rem;
+}
+.case-bars dd {
+  display: contents;
+}
+.case-bars strong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.bar-track {
+  grid-column: 1 / -1;
+  display: block;
+  height: 0.55rem;
+  background: #ead7e0;
+  border-radius: 0.15rem;
+  overflow: hidden;
+}
+.bar-track > span {
+  display: block;
+  height: 100%;
+  background: #8b1e51;
+}
+.case-bars dl > div:first-child .bar-track > span {
+  background: #674761;
+}
+.case-flow figcaption {
+  font-weight: 650;
+  font-size: 1.5rem;
+}
+.case-flow ol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  list-style: none;
+  margin-top: 1rem;
+}
+.case-flow li {
+  position: relative;
+  padding-top: 0.8rem;
+  border-top: 2px solid #d5acc0;
+}
+.case-flow li::before {
+  content: "";
+  position: absolute;
+  top: -0.35rem;
+  left: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--raspberry);
+}
+.case-flow strong,
+.case-flow span {
+  display: block;
+}
+.case-flow span {
+  font-size: 0.95rem;
+}
+.case-guide {
+  padding-block: 1.2rem 2rem;
+}
+.case-guide h1 {
+  font-family: Georgia, serif;
+  color: #501733;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.case-guide h2 {
+  margin-block: 1rem 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+.case-guide p {
+  max-width: 67ch;
+}
+.case-guide .case-links {
+  margin-block: 0.75rem 1rem;
+}
+.case-proof,
+.case-pilot,
+.case-reading {
+  border-top: 1px solid #dfcbd4;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+}
+.case-links {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.release-case a.case-action {
+  color: white;
+  background: var(--raspberry);
+  border-radius: 0.35rem;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.case-pilot h3 {
+  margin: 1rem 0 0.35rem;
+}
+.case-inputs,
+.case-totals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+}
+.case-inputs label,
+.case-totals small {
+  font-size: 0.925rem;
+}
+.case-inputs label span {
+  margin-left: 0.4rem;
+  font-weight: 700;
+}
+.case-inputs input {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  min-height: 1.5rem;
+}
+.case-totals {
+  grid-template-columns: repeat(2, 1fr);
+  background: #f8e6ed;
+  border-radius: 0.4rem;
+  padding: 1.2rem;
+}
+.case-totals strong {
+  display: block;
+  font-size: 1.65rem;
+  font-variant-numeric: tabular-nums;
+}
+.case-note,
+.case-reading p + p {
+  margin-top: 1rem;
+}
+.case-note {
+  font-size: 0.95rem;
+}
+.case-skip {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  background: white;
+  padding: 0.6rem 1rem;
+}
+.case-skip:focus {
+  top: 0.5rem;
+}
+@media (max-width: 45rem) {
+  .case-flow ol {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .case-flow li {
+    padding: 0 0 1rem 1rem;
+    border-top: 0;
+    border-left: 2px solid #d5acc0;
+  }
+  .case-flow li::before {
+    top: 0.4rem;
+    left: -0.35rem;
+  }
+  .case-opening,
+  .case-workbench,
+  .case-inputs,
+  .case-totals {
+    grid-template-columns: 1fr;
+  }
+  .case-inputs,
+  .case-totals {
+    gap: 0.85rem;
+  }
+}
