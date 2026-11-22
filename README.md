@@ -10,7 +10,7 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
-[Review Alex’s leave balance](https://safetymp.github.io/HR-ERP/). Both revisions show 72 hours after an approved request. Compare other request states, record a release recommendation and weigh the cost of a four-week review pilot. Follow the selected revision into a technical inspector to match its balance with a captured browser run. [Open a pending-request trace](https://safetymp.github.io/HR-ERP/#/technical?revision=A&state=Pending&run=A-pending) · [Case sources and checks](demo/README.md).
+[Open the HR service desk case](https://safetymp.github.io/HR-ERP/). Alex is planning a day off. Help People Operations explain the balance, test a portal change against the manager’s decision and hand the release approver matching evidence. Revisit November’s payroll close to see what happens when the queue and register tell different stories. [Technical guide](https://safetymp.github.io/HR-ERP/#/technical?panel=request) · [Case sources and checks](demo/README.md).
 
 The screenshots below show the separate self-hosted employee application.
 
