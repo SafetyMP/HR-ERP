@@ -305,15 +305,15 @@ function CloseDesk({
           routes exceptions and collects evidence.
         </p>
         <p>
-          The University of Florida’s preliminary paylist guide calls out
-          employees missing a paycheck. Pittsburgh’s payroll team documents
-          which approved corrections can enter a retry before cutoff. UC Davis
-          explains why different people should perform and review key payroll
-          duties. These practices shaped the payroll lead, HR data steward and
-          finance reviewer in the exercise.
+          The University of Florida’s checklist covers exceptions, preliminary
+          pay amounts and new employees’ hours. Pittsburgh’s payroll team
+          documents which approved corrections can enter a retry before cutoff.
+          UC Davis explains why different people should perform and review key
+          payroll duties. These practices shaped the payroll lead, HR data
+          steward and finance reviewer in the exercise.
         </p>
         <p>
-          <a href="https://training.hr.ufl.edu/instructionguides/time%26labor/reviewing_preliminary_final_paylists.pdf">
+          <a href="https://www.fa.ufl.edu/wp-content/uploads/2019/04/Steps-for-Reviewing-Payroll.pdf">
             Florida paylist review
           </a>{" "}
           ·{" "}
