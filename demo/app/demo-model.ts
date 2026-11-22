@@ -1,176 +1,63 @@
-// Synthetic payroll desk. Amounts are fixed payment-instruction fixtures in USD.
-export type ExceptionStatus = "Open" | "Resolved" | "Waived";
-export type DeskAction =
-  | "tracePrior"
-  | "sourceFuture"
-  | "trace"
-  | "waiveExisting"
-  | "source"
-  | "retry"
-  | "resolveMissing"
-  | "waiveMissing"
-  | "lock"
-  | "artifact";
-export type Desk = {
-  minutes: number;
-  existing: ExceptionStatus;
-  missing: ExceptionStatus;
-  sourceAttached: boolean;
-  newInstruction: boolean;
-  locked: boolean;
-  artifact: boolean;
-  history: { minute: number; message: string }[];
-};
-export const openDesk: Desk = {
-  minutes: 0,
-  existing: "Open",
-  missing: "Open",
-  sourceAttached: false,
-  newInstruction: false,
-  locked: false,
-  artifact: false,
-  history: [],
-};
-export const cutoffMinutes = 20;
-export const usd = (amount: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(amount);
-export function clock(minute: number) {
-  const total = 14 * 60 + 40 + minute;
-  return Math.floor(total / 60) + ":" + String(total % 60).padStart(2, "0");
+import capture from "./leave-evidence.json";
+
+export const statuses = ["Pending", "Approved", "Declined"] as const;
+export type RequestStatus = (typeof statuses)[number];
+export type Revision = "A" | "B";
+export type Selection = { revision: Revision; status: RequestStatus };
+
+export const request = { dates: "Dec 14, 2026", hours: 8 } as const;
+export const evidence = capture;
+export const source = "https://github.com/SafetyMP/HR-ERP/blob";
+export const productSource = source + "/24b8bc9";
+export const historicalSource =
+  source + "/" + capture.sourceCommit + "/demo/app/release-case.tsx";
+
+export function leaveObservation(revision: Revision, status: RequestStatus) {
+  const opening = 80;
+  const expected = status === "Approved" ? opening - request.hours : opening;
+  const displayed =
+    revision === "A" || status === "Approved"
+      ? opening - request.hours
+      : opening;
+  return { status, opening, request, expected, displayed };
 }
-export function openCount(desk: Desk) {
-  return Number(desk.existing === "Open") + Number(desk.missing === "Open");
+
+export function matchingRun({ revision, status }: Selection) {
+  return revision + "-" + status.toLowerCase();
 }
-export function register(desk: Desk) {
-  return [
-    { employee: "Sam Brooks", amount: 2180, instruction: "PI-701" },
-    { employee: "Alex Morgan", amount: 1760, instruction: "PI-702" },
-    {
-      employee: "Casey Rivera",
-      amount: desk.newInstruction ? 1520 : null,
-      instruction: desk.newInstruction ? "PI-703" : null,
-    },
-  ];
+
+export function viewLink(
+  technical: boolean,
+  selection: Selection,
+  run = matchingRun(selection),
+) {
+  const params = new URLSearchParams({
+    revision: selection.revision,
+    state: selection.status,
+  });
+  if (technical) params.set("run", run);
+  return "#/" + (technical ? "technical" : "case") + "?" + params.toString();
 }
-export const actions = {
-  tracePrior: {
-    label: "Match PI-686 and resolve",
-    minutes: 5,
-    message:
-      "PI-686 belongs to the October period. Alex’s November instruction is still unverified and the exception stays open.",
-  },
-  sourceFuture: {
-    label: "Apply HR-58",
-    minutes: 12,
-    message:
-      "HR-58 takes effect November 16, after the period ended. Casey still has no eligible compensation record for this retry.",
-  },
-  trace: {
-    label: "Match PI-702 and resolve",
-    minutes: 5,
-    message:
-      "Matched PI-702 to Alex and the current period. Closed the exception. No second instruction was created.",
-  },
-  waiveExisting: {
-    label: "Waive without matching",
-    minutes: 1,
-    message:
-      "Waived Alex’s exception. PI-702 remains on the register without an independent match.",
-  },
-  source: {
-    label: "Apply HR-52",
-    minutes: 12,
-    message:
-      "HR supplied Casey’s approved compensation record, effective before this period ended.",
-  },
-  retry: {
-    label: "Rerun Casey only",
-    minutes: 4,
-    message:
-      "The targeted retry created PI-703 for Casey. Sam’s and Alex’s instructions stayed in place.",
-  },
-  resolveMissing: {
-    label: "Reconcile new instruction and resolve",
-    minutes: 1,
-    message:
-      "Matched PI-703 to Casey and marked the missing-compensation exception resolved.",
-  },
-  waiveMissing: {
-    label: "Waive missing compensation",
-    minutes: 1,
-    message:
-      "Waived Casey’s exception. Changing the exception status does not create a payment instruction.",
-  },
-  lock: {
-    label: "Lock computed period",
-    minutes: 2,
-    message:
-      "Locked the period. Further pay runs against this period are closed.",
-  },
-  artifact: {
-    label: "Prepare artifact summary",
-    minutes: 0,
-    message:
-      "Prepared a local summary of the locked instructions and open exceptions.",
-  },
-} as const;
-export function canRun(d: Desk, action: DeskAction) {
-  if (action === "artifact") return d.locked && !d.artifact;
-  if (d.locked) return false;
-  switch (action) {
-    case "tracePrior":
-    case "trace":
-    case "waiveExisting":
-      return d.existing === "Open";
-    case "sourceFuture":
-    case "source":
-      return !d.sourceAttached;
-    case "retry":
-      return d.sourceAttached && !d.newInstruction;
-    case "resolveMissing":
-      return d.newInstruction && d.missing === "Open";
-    case "waiveMissing":
-      return !d.newInstruction && d.missing === "Open";
-    case "lock":
-      return true;
-  }
+
+export function selectView(link: string) {
+  if (window.location.hash === link) return;
+  window.history.pushState(null, "", link);
+  window.dispatchEvent(new Event("hashchange"));
 }
-export function advance(d: Desk, action: DeskAction): Desk {
-  if (!canRun(d, action)) return d;
-  const next = { ...d, minutes: d.minutes + actions[action].minutes };
-  switch (action) {
-    case "trace":
-      next.existing = "Resolved";
-      break;
-    case "waiveExisting":
-      next.existing = "Waived";
-      break;
-    case "source":
-      next.sourceAttached = true;
-      break;
-    case "retry":
-      next.newInstruction = true;
-      break;
-    case "resolveMissing":
-      next.missing = "Resolved";
-      break;
-    case "waiveMissing":
-      next.missing = "Waived";
-      break;
-    case "lock":
-      next.locked = true;
-      break;
-    case "artifact":
-      next.artifact = true;
-      break;
-  }
-  next.history = [
-    ...d.history,
-    { minute: next.minutes, message: actions[action].message },
-  ];
-  return next;
+
+export function readView(hash: string) {
+  const [route, query] = hash.split("?");
+  const params = new URLSearchParams(query);
+  const revision = params.get("revision") === "B" ? "B" : "A";
+  const status =
+    statuses.find((value) => value === params.get("state")) ?? "Approved";
+  const selection: Selection = { revision, status };
+  const run =
+    evidence.records.find((record) => record.id === params.get("run")) ??
+    evidence.records.find((record) => record.id === matchingRun(selection))!;
+  return {
+    technical: /^#\/?(technical|employee|hr)(\/|$)/.test(route),
+    selection,
+    run,
+  };
 }

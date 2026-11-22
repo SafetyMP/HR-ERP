@@ -10,7 +10,7 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
-[Open the Friday payroll close desk](https://safetymp.github.io/HR-ERP/). Three employees are due pay, but only two payment instructions exist. Investigate a missing compensation record and a skipped instruction, then choose whether to lock the period before a simulated finance cutoff. Watch which employees appear in the batch and which verification work remains. [Component reference](https://safetymp.github.io/HR-ERP/#/technical) · [Case sources, assumptions and checks](demo/README.md).
+[Review Alex’s leave balance](https://safetymp.github.io/HR-ERP/). Both revisions show 72 hours after an approved request. Compare other request states, record a release recommendation and weigh the cost of a four-week review pilot. Follow the selected revision into a technical inspector to match its balance with a captured browser run. [Open a pending-request trace](https://safetymp.github.io/HR-ERP/#/technical?revision=A&state=Pending&run=A-pending) · [Case sources and checks](demo/README.md).
 
 The screenshots below show the separate self-hosted employee application.
 
