@@ -28,7 +28,15 @@ There is one exported page. Internal destinations use URL hashes such as `/HR-ER
 
 Navigation and page search deliberately show only these supported demo destinations. The full application's manager, benefits administration, profile, learning, and lifecycle workflows remain in the production app; this preview does not claim to reproduce them.
 
-## Walkthrough
+## Release review case
+
+The landing page and `#/case` open a software change review. Both revisions open with the same approved request. Choose which states to inspect, then sign off or hold a revision. The review record retains the observed and expected hours for each state you inspected in that revision. Use the four-week worksheet to vary pilot cost, review volume and minutes saved. The worksheet counts reviewer capacity at an assumed $75 per hour. The HR systems owner uses the trial to decide how to fund review of agent-written changes. A people operations reviewer defines what employees should see and a QA lead checks the same request against both revisions. Alex represents the affected employee. This teaching exercise evaluates the team's change-review practice.
+
+CIPD describes the people profession’s contribution to technology-enabled employee services. The UK Service Manual distinguishes product acceptance, service ownership and quality assurance. Those responsibilities guided the audience choice for this case. [CIPD Profession Map](https://www.cipd.org/en/the-people-profession/the-profession-map/explore-the-profession-map/core-knowledge/technology-people/) · [GOV.UK service team roles](https://www.gov.uk/service-manual/the-team/what-each-role-does-in-service-team)
+
+The separate #/technical guide explains the modeled rule and links the request fixtures, browser tests and employee and HR workspaces. Use **Leave review** to return to the case.
+
+## Employee and HR walkthrough
 
 1. In Employee, open **Time off**, choose a fixed sample date, and **Submit sample request**.
 2. Change **Demo workspace** to **HR operations** and open **Requests & corrections**.

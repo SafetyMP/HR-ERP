@@ -10,7 +10,7 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
-**[Open the employee and HR demo](https://safetymp.github.io/HR-ERP/)** — a static GitHub Pages demo with synthetic data, shared navigation, and a sample request/review journey. No login or backend service is required. The full application remains available as a self-hosted source/container package. Vercel hosting is deprecated; see [package and demo delivery](docs/operations/package-and-pages.md).
+[Review the leave-balance change](https://safetymp.github.io/HR-ERP/). You own the HR system, and an agent has changed the employee portal. Alex has 80 hours available and requests one day off. With a people operations reviewer and a QA lead, compare two portal revisions while the request is pending, approved or declined. Follow the result through the employee and HR workspaces in the [technical guide](https://safetymp.github.io/HR-ERP/#/technical) and estimate how much reviewer time a four-week governance pilot would need to save. All case data and costs are illustrative. The full app is available as a self-hosted source/container package. [Package and demo delivery](docs/operations/package-and-pages.md)
 
 <p align="center">
   <img src="docs/assets/demo.gif" alt="HR ERP employee portal — home, paystub, time and attendance, and benefits (synthetic demo data)" width="900" />

@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 import "./demo.css";
 
 export const metadata: Metadata = {
-  title: "HR ERP · Interactive demo",
+  title: "HR ERP · The leave-balance release review",
   description:
-    "Explore employee and HR workspaces with synthetic sample data. No account required.",
+    "Review two changes to an employee’s leave balance, follow the request through HR and weigh the cost of a review pilot.",
 };
 
 export default function DemoLayout({ children }: { children: ReactNode }) {
