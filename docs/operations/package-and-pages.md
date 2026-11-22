@@ -1,6 +1,6 @@
 # Package releases and the GitHub Pages demo
 
-The full application is a self-hosted source/container package. GitHub Pages is the maintained hosted demo at <https://safetymp.github.io/HR-ERP/>. Its employee and HR journeys use synthetic browser-local data, with no database, credentials, authentication service, or server API.
+The full application is a self-hosted source/container package. GitHub Pages is the maintained hosted demo at <https://safetymp.github.io/HR-ERP/>. Its leave-balance review and technical inspector use one synthetic employee request and six archived browser observations. The export runs entirely in the browser.
 
 ## Release sequence
 

@@ -1,0 +1,35 @@
+{
+  "ticketId": "leave-release-assurance",
+  "riskTier": "T1",
+  "intent": "Restore the leave-balance release review and carry each selected revision into a source-linked comparison with six recorded observations.",
+  "requiresPoCheckpoint": true,
+  "poCheckpoint": "The QA reviewer must inspect outcomes before sign-off. The sponsor weighs three options using a four-week worksheet. Acceptance flows are in the value delivery record.",
+  "suspectedPaths": [
+    "demo/**",
+    "tests/demo/**",
+    "README.md",
+    "specs/features/leave-release-assurance/**",
+    "docs/operations/package-and-pages.md"
+  ],
+  "delegatedTaskPlan": [
+    {
+      "function": "builder",
+      "intent": "Implement the isolated static exercise and its regression paths.",
+      "riskTier": "T1"
+    },
+    {
+      "function": "verifier",
+      "intent": "Exercise the case, preserved selection and recorded replay comparison on desktop and mobile; independently inspect the patch.",
+      "riskTier": "T1",
+      "readonly": true,
+      "dependsOn": [
+        "builder"
+      ]
+    }
+  ],
+  "sopCycleId": "2026-11-leave-release-assurance",
+  "valueDeliveryRecordPath": "specs/features/leave-release-assurance/value-delivery-record.md",
+  "collaborationPlan": {
+    "decisionOverview": "Restore the original release review and evidence, preserve fixed browser observations separately from live case values, and distinguish product decision records from balance snapshots. Independent review belongs to the parent task."
+  }
+}

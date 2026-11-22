@@ -1,0 +1,54 @@
+{
+  "sourceCommit": "b03073d125a1e6a7cf5af0a862ffc622a7787d7b",
+  "request": "Alex Morgan · Dec 14, 2026 · 8 h",
+  "records": [
+    {
+      "id": "A-approved",
+      "revision": "A",
+      "state": "Approved",
+      "openingHours": 80,
+      "expectedHours": 72,
+      "displayedHours": 72
+    },
+    {
+      "id": "A-pending",
+      "revision": "A",
+      "state": "Pending",
+      "openingHours": 80,
+      "expectedHours": 80,
+      "displayedHours": 72
+    },
+    {
+      "id": "A-declined",
+      "revision": "A",
+      "state": "Declined",
+      "openingHours": 80,
+      "expectedHours": 80,
+      "displayedHours": 72
+    },
+    {
+      "id": "B-approved",
+      "revision": "B",
+      "state": "Approved",
+      "openingHours": 80,
+      "expectedHours": 72,
+      "displayedHours": 72
+    },
+    {
+      "id": "B-pending",
+      "revision": "B",
+      "state": "Pending",
+      "openingHours": 80,
+      "expectedHours": 80,
+      "displayedHours": 80
+    },
+    {
+      "id": "B-declined",
+      "revision": "B",
+      "state": "Declined",
+      "openingHours": 80,
+      "expectedHours": 80,
+      "displayedHours": 80
+    }
+  ]
+}
