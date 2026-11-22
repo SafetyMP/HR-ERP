@@ -51,10 +51,9 @@ function TechnicalGuide() {
       </p>
       <h2>When the balance changes</h2>
       <p>
-        The submission revision deducts the hours as soon as Alex asks. The
-        approval revision deducts them only when HR approves. The expected
-        balance follows the approval rule. Each comparison evaluates one request
-        against the same opening balance.
+        Revision A deducts hours as soon as Alex asks. Revision B deducts them
+        only when HR approves. The expected balance follows the approval rule.
+        Each comparison evaluates one request against the same opening balance.
       </p>
       <h2>Reproduce the approval path</h2>
       <p>
@@ -101,8 +100,8 @@ function PilotWorksheet() {
       <p>
         The HR systems owner has one change budget. Keep the reviewer checklist,
         fund a balance test that runs with every change, or pilot a harness that
-        collects test evidence across changes. If early deduction is the only
-        recurring defect, start by pricing the single test.
+        collects test evidence across changes. If one balance rule accounts for
+        the only recurring defect, start by pricing the single test.
       </p>
       <h3>Four-week shadow pilot</h3>
       <p>
@@ -180,6 +179,48 @@ function PilotWorksheet() {
   );
 }
 
+type Revision = "A" | "B";
+type Disposition = "Sign off" | "Hold";
+
+function leaveObservation(revision: Revision, status: RequestStatus) {
+  const opening = 80;
+  const request = TIME_OFF_OPTIONS[0];
+  const expected = status === "Approved" ? opening - request.hours : opening;
+  const displayed =
+    revision === "A" || status === "Approved"
+      ? opening - request.hours
+      : opening;
+  return { status, opening, request, expected, displayed };
+}
+
+function reviewFeedback(
+  disposition: Disposition,
+  observations: ReturnType<typeof leaveObservation>[],
+) {
+  const mismatch = observations.find((row) => row.expected !== row.displayed);
+  if (mismatch) {
+    const evidence =
+      "The " +
+      mismatch.status.toLowerCase() +
+      " request shows " +
+      mismatch.displayed +
+      " hours. People operations expects " +
+      mismatch.expected +
+      ".";
+    return disposition === "Hold"
+      ? "Your hold has a reproducible finding. " + evidence
+      : "Reconsider sign-off. " + evidence;
+  }
+  if (observations.length < statuses.length) {
+    return disposition === "Hold"
+      ? "The checks you reviewed agree with policy. A hold buys time to gather evidence about the unexamined states."
+      : "The checks you reviewed agree with policy. The unexamined states still leave this sign-off open.";
+  }
+  return disposition === "Hold"
+    ? "All three modeled states match. A continued hold would need a separate concern, such as a failure in the actual portal."
+    : "Your sign-off is supported for this fixture. All three modeled balances match. The application still needs its normal release checks.";
+}
+
 export function ReleaseCase({
   mainRef,
   technical,
@@ -187,16 +228,34 @@ export function ReleaseCase({
   mainRef: RefObject<HTMLElement | null>;
   technical: boolean;
 }) {
-  const [revision, setRevision] = useState("submission");
-  const [status, setStatus] = useState<RequestStatus>("Pending");
-  const opening = 80;
-  const request = TIME_OFF_OPTIONS[0];
-  const expected = status === "Approved" ? opening - request.hours : opening;
-  const displayed =
-    revision === "submission" || status === "Approved"
-      ? opening - request.hours
-      : opening;
-  const matches = displayed === expected;
+  const [revision, setRevision] = useState<Revision>("A");
+  const [status, setStatus] = useState<RequestStatus>("Approved");
+  const [reviewed, setReviewed] = useState<Record<Revision, RequestStatus[]>>({
+    A: ["Approved"],
+    B: ["Approved"],
+  });
+  const [disposition, setDisposition] = useState<Disposition | null>(null);
+  const { opening, request, expected, displayed } = leaveObservation(
+    revision,
+    status,
+  );
+  const observations = reviewed[revision].map((value) =>
+    leaveObservation(revision, value),
+  );
+
+  function inspect(nextRevision: Revision, nextStatus: RequestStatus) {
+    setRevision(nextRevision);
+    setStatus(nextStatus);
+    setDisposition(null);
+    setReviewed((previous) =>
+      previous[nextRevision].includes(nextStatus)
+        ? previous
+        : {
+            ...previous,
+            [nextRevision]: [...previous[nextRevision], nextStatus],
+          },
+    );
+  }
 
   return (
     <div className="release-case">
@@ -231,9 +290,9 @@ export function ReleaseCase({
                 </p>
                 <h1>Review Alex’s leave balance</h1>
                 <p className="case-deck">
-                  An agent changed how the portal deducts time off. You own the
-                  HR system. Before accepting the change, check what Alex sees
-                  when a request is still pending.
+                  An agent changed how the portal deducts time off. Your QA
+                  handoff shows 72 hours after approval in both revisions. Would
+                  you sign off on either one?
                 </p>
               </div>
               <section
@@ -281,31 +340,24 @@ export function ReleaseCase({
               <div className="case-controls">
                 <h2>Review the change</h2>
                 <p>
-                  People operations defines when leave is spent. As the QA lead,
-                  compare each portal revision against the expected balance for
-                  the same HR decision.
+                  People operations charges leave when HR approves it. Inspect
+                  the portal and its expected balance for any request state.
+                  Your review record starts with the two approved examples.
                 </p>
                 <fieldset>
                   <legend>Portal revision</legend>
                   <div className="case-options">
-                    <label>
-                      <input
-                        type="radio"
-                        name="revision"
-                        checked={revision === "submission"}
-                        onChange={() => setRevision("submission")}
-                      />
-                      Deduct on submission
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="revision"
-                        checked={revision === "approval"}
-                        onChange={() => setRevision("approval")}
-                      />
-                      Deduct on approval
-                    </label>
+                    {(["A", "B"] as const).map((value) => (
+                      <label key={value}>
+                        <input
+                          type="radio"
+                          name="revision"
+                          checked={revision === value}
+                          onChange={() => inspect(value, status)}
+                        />
+                        Revision {value}
+                      </label>
+                    ))}
                   </div>
                 </fieldset>
                 <fieldset>
@@ -317,7 +369,7 @@ export function ReleaseCase({
                           type="radio"
                           name="decision"
                           checked={status === value}
-                          onChange={() => setStatus(value)}
+                          onChange={() => inspect(revision, value)}
                         />
                         {value}
                       </label>
@@ -349,14 +401,54 @@ export function ReleaseCase({
                   ]}
                   format={(value) => value + " h"}
                 />
-                <h3>{matches ? "This check passes" : "Hold the change"}</h3>
-                <p>
-                  {!matches
-                    ? "The portal deducted eight hours without an approval. Return this revision to its author."
-                    : revision === "submission"
-                      ? "Both revisions agree after approval. Check pending and declined requests before signing off."
-                      : "This result matches the fixture rule. Check the other decisions and run the repository tests before release."}
-                </p>
+              </div>
+            </section>
+            <section
+              className="case-review-record"
+              aria-labelledby="record-title"
+            >
+              <h2 id="record-title">Your release recommendation</h2>
+              <p>
+                Revision {revision} · {observations.length} of {statuses.length}{" "}
+                request states reviewed
+              </p>
+              <table>
+                <caption className="sr-only">
+                  Review record for revision {revision}
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Request state</th>
+                    <th scope="col">Expected</th>
+                    <th scope="col">Portal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {observations.map((row) => (
+                    <tr key={row.status}>
+                      <th scope="row">{row.status}</th>
+                      <td>{row.expected} h</td>
+                      <td>{row.displayed} h</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="case-review-actions">
+                {(["Sign off", "Hold"] as const).map((value) => (
+                  <button
+                    type="button"
+                    key={value}
+                    aria-pressed={disposition === value}
+                    onClick={() => setDisposition(value)}
+                  >
+                    {value} revision {revision}
+                  </button>
+                ))}
+              </div>
+              <div role="status">
+                {disposition && (
+                  <p>{reviewFeedback(disposition, observations)}</p>
+                )}
               </div>
             </section>
             <figure className="case-proof case-flow">
