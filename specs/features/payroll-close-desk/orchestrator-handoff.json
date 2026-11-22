@@ -1,0 +1,15 @@
+{
+  "ticketId": "payroll-close-desk",
+  "riskTier": "T1",
+  "intent": "Replace the public navigation and code-review demos with a synthetic payroll reconciliation exercise and compact source reference.",
+  "requiresPoCheckpoint": true,
+  "poCheckpoint": "The payroll lead must reconcile instruction coverage and deadline exposure. Acceptance paths and sources are in demo/README.md and the linked value record.",
+  "suspectedPaths": ["demo/**", "tests/demo/**", "README.md", "specs/features/payroll-close-desk/**"],
+  "delegatedTaskPlan": [
+    {"function": "builder", "intent": "Implement the isolated static exercise and its regression paths.", "riskTier": "T1"},
+    {"function": "verifier", "intent": "Exercise the payroll decisions on desktop and mobile and inspect the integrated patch.", "riskTier": "T1", "readonly": true, "dependsOn": ["builder"]}
+  ],
+  "sopCycleId": "2026-11-payroll-close-desk",
+  "valueDeliveryRecordPath": "specs/features/payroll-close-desk/value-delivery-record.md",
+  "collaborationPlan": {"decisionOverview": "Use source-backed payroll exceptions and period locking. Keep all calculations, clock and employee amounts bounded to the local exercise. Independent review belongs to the parent task."}
+}

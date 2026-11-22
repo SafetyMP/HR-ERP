@@ -10,7 +10,9 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
-[Review the leave-balance change](https://safetymp.github.io/HR-ERP/). You own the HR system, and an agent has changed the employee portal. Alex has 80 hours available and requests one day off. With a people operations reviewer and a QA lead, compare two portal revisions while the request is pending, approved or declined. Follow the result through the employee and HR workspaces in the [technical guide](https://safetymp.github.io/HR-ERP/#/technical) and estimate how much reviewer time a four-week governance pilot would need to save. All case data and costs are illustrative. The full app is available as a self-hosted source/container package. [Package and demo delivery](docs/operations/package-and-pages.md)
+[Open the Friday payroll close desk](https://safetymp.github.io/HR-ERP/). Three employees are due pay, but only two payment instructions exist. Investigate a missing compensation record and a skipped instruction, then choose whether to lock the period before a simulated finance cutoff. Watch which employees appear in the batch and which verification work remains. [Component reference](https://safetymp.github.io/HR-ERP/#/technical) · [Case sources, assumptions and checks](demo/README.md).
+
+The screenshots below show the separate self-hosted employee application.
 
 <p align="center">
   <img src="docs/assets/demo.gif" alt="HR ERP employee portal — home, paystub, time and attendance, and benefits (synthetic demo data)" width="900" />
