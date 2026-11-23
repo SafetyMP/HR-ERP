@@ -4,7 +4,7 @@ import capture from "../../demo/app/leave-evidence.json";
 const base = process.env.DEMO_BASE_PATH ?? "/HR-ERP";
 const origin = process.env.DEMO_ORIGIN ?? "http://127.0.0.1:3109";
 const home = base + "/";
-const title = "Review Alex’s leave balance";
+const title = "Can Alex count on those hours?";
 const inspector = "Trace the leave calculation";
 
 test("the primary case loads from Pages, offers the original release choices and keeps a funded pilot separate", async ({
@@ -23,8 +23,13 @@ test("the primary case loads from Pages, offers the original release choices and
   await page.goto(home);
   await expect(page.getByRole("heading", { name: title })).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Employee leave statement" }),
+    page.getByRole("heading", { name: "One day off, three views" }),
   ).toBeVisible();
+  await expect(page.locator(".case-balance")).toHaveCount(0);
+  await page
+    .getByRole("link", { name: "Open Alex’s leave file" })
+    .press("Enter");
+  await expect(page.locator("#file-heading")).toBeFocused();
   await expect(page.locator(".case-balance")).toContainText("72");
   await page.screenshot({
     path: "artifacts/navigation-redesign/leave-release-desktop.png",
@@ -37,6 +42,12 @@ test("the primary case loads from Pages, offers the original release choices and
   ).toBeVisible();
   await page.getByRole("button", { name: "Hold revision A" }).click();
   await expect(page.getByRole("status")).toContainText("reproducible finding");
+  await page
+    .getByText("Would the HR systems owner fund a four-week pilot?", {
+      exact: true,
+    })
+    .click();
+  await page.getByText("Adjust pilot assumptions", { exact: true }).click();
   await expect(page.locator(".case-totals")).toContainText("-$150");
   const minutes = page.getByRole("slider", {
     name: /Minutes saved per change/,
@@ -59,7 +70,7 @@ test("the primary case loads from Pages, offers the original release choices and
   await expect(page.locator(".trace-receipt")).toContainText(
     "Different review conditions",
   );
-  await expect(page.locator(".trace-stages")).toContainText("72 h displayed");
+  await expect(page.locator(".case-guide")).toContainText("72 h displayed");
   await page
     .getByRole("link", { name: "Return to revision A · Pending" })
     .click();
@@ -100,7 +111,7 @@ test("the six archived observations reconcile with the selected model; bookmarks
   await page.getByRole("combobox").selectOption("A-declined");
   await page.reload();
   await expect(page.getByRole("combobox")).toHaveValue("A-declined");
-  await expect(page.locator(".trace-stages")).toContainText("80 h displayed");
+  await expect(page.locator(".case-guide")).toContainText("80 h displayed");
   await expect(page.locator(".trace-receipt")).toContainText(
     "Different review conditions",
   );
@@ -149,6 +160,7 @@ test("phone opens both current views and retired workspace bookmarks resolve to 
       () => document.documentElement.scrollWidth <= window.innerWidth,
     );
   expect(await fits()).toBe(true);
+  await page.getByRole("link", { name: "Open Alex’s leave file" }).click();
   await page.getByRole("radio", { name: "Declined" }).check();
   await page
     .getByRole("link", { name: "Inspect this balance calculation" })
@@ -170,4 +182,53 @@ test("phone opens both current views and retired workspace bookmarks resolve to 
       page.locator('a[href^="#/employee"], a[href^="#/hr"]'),
     ).toHaveCount(0);
   }
+});
+
+test("the prior close reconciles dated records and keeps waiver distinct from coverage", async ({
+  page,
+}) => {
+  await page.goto(home + "#/case?revision=A&state=Pending");
+  await page
+    .getByText("Reopen the November payroll handoff", { exact: true })
+    .click();
+  const button = (name: string) =>
+    page.getByRole("button", { name, exact: true });
+  await button("PI-686 · Oct 16–31").click();
+  await expect(page.locator(".desk-feedback")).toContainText("October");
+  await button("HR-58 · effective Nov 16").click();
+  await expect(page.locator(".desk-feedback")).toContainText(
+    "after the period",
+  );
+  await button("PI-702 · Nov 1–15").click();
+  await button("Waive Casey’s check").click();
+  await expect(page.locator(".close-strip")).toContainText("0 open");
+  await button("Lock this register for Finance").click();
+  await button("Prepare artifact summary").click();
+  await expect(page.locator(".close-case")).toContainText(
+    "2 instructions · $3,940",
+  );
+  await page.getByRole("link", { name: "Trace this payroll handoff" }).click();
+  await expect(page.locator(".tech-panel")).toContainText(
+    "separate correction",
+  );
+  await page.getByRole("link", { name: "Change review", exact: true }).click();
+  await page.getByLabel("Changed component").selectOption("migration");
+  await expect(page.locator(".tech-panel .trace-receipt")).toContainText("T2");
+  await page.getByLabel("Changed component").selectOption("kernel");
+  await expect(page.locator(".tech-panel .trace-receipt")).toContainText("T3");
+  await page.getByRole("link", { name: /Return to revision/ }).click();
+  await button("Restart the close").click();
+  for (const name of [
+    "PI-702 · Nov 1–15",
+    "HR-52 · effective Nov 1",
+    "Rerun Casey only",
+    "Reconcile new instruction and resolve",
+    "Lock this register for Finance",
+    "Prepare artifact summary",
+  ])
+    await button(name).click();
+  await expect(page.locator(".close-case")).toContainText(
+    "3 instructions · $5,460",
+  );
+  await expect(page.locator(".close-case")).toContainText("after cutoff");
 });

@@ -10,7 +10,13 @@ ESS, payroll math, and benefits stay in the tree as a **fixture domain** so gove
 
 ## Demo
 
-[Review Alex’s leave balance](https://safetymp.github.io/HR-ERP/). Both revisions show 72 hours after an approved request. Compare other request states, record a release recommendation and weigh the cost of a four-week review pilot. Follow the selected revision into a technical inspector to match its balance with a captured browser run. [Open a pending-request trace](https://safetymp.github.io/HR-ERP/#/technical?revision=A&state=Pending&run=A-pending) · [Case sources and checks](demo/README.md).
+[Open the HR service desk case](https://safetymp.github.io/HR-ERP/). Alex is planning a day off. Help People Operations explain the balance, test a portal change against the manager’s decision and hand the release approver matching evidence. Revisit November’s payroll close to see what happens when the queue and register tell different stories. [Technical guide](https://safetymp.github.io/HR-ERP/#/technical?panel=request) · [Case sources and checks](demo/README.md).
+
+### Trace the release evidence
+
+- **Reproduce Alex’s balance.** Choose a revision and request state in the case. The guide compares that selection with a recorded browser run. In the application, the manager’s service records the decision and the employee’s balance reader loads the latest dated balance under a tenant-scoped transaction. [Case inspector](demo/app/leave-inspector.tsx) · [Manager decision](lib/leave/manager-team-time-off-service.ts) · [Employee balance](lib/pto/get-pto-summary.ts)
+- **Follow a payroll exception.** The November exercise lets you retry one missing instruction and compare the resulting register with the handoff to Finance. The exercise runs in browser memory. The separate application implements payroll runs and period locking. [Browser register model](demo/app/payroll-close-model.ts) · [Payroll run](lib/payroll/run-payroll.ts) · [Period lifecycle](lib/payroll/payroll-period-lifecycle.ts)
+- **Decide who reviews a change.** The guide illustrates how changing a manager service, a migration or the payroll kernel calls for different reviewers. Repository checks classify the actual changed paths and apply the governance requirements before merge. HR and the release approver supply the judgment. [Interactive change review](https://safetymp.github.io/HR-ERP/#/technical?panel=governance) · [Governance manifest](scripts/governance-manifest.mjs) · [Change classification and handoff checks](scripts/governance-lint.mjs)
 
 The screenshots below show the separate self-hosted employee application.
 

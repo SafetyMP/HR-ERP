@@ -26,16 +26,27 @@ export function matchingRun({ revision, status }: Selection) {
   return revision + "-" + status.toLowerCase();
 }
 
+export const guidePanels = [
+  "request",
+  "evidence",
+  "payroll",
+  "governance",
+] as const;
+export type GuidePanel = (typeof guidePanels)[number];
 export function viewLink(
   technical: boolean,
   selection: Selection,
   run = matchingRun(selection),
+  panel: GuidePanel = "evidence",
 ) {
   const params = new URLSearchParams({
     revision: selection.revision,
     state: selection.status,
   });
-  if (technical) params.set("run", run);
+  if (technical) {
+    params.set("run", run);
+    params.set("panel", panel);
+  }
   return "#/" + (technical ? "technical" : "case") + "?" + params.toString();
 }
 
@@ -56,6 +67,9 @@ export function readView(hash: string) {
     evidence.records.find((record) => record.id === params.get("run")) ??
     evidence.records.find((record) => record.id === matchingRun(selection))!;
   return {
+    opened: route === "#/case" || params.has("revision") || params.has("state"),
+    panel:
+      guidePanels.find((panel) => panel === params.get("panel")) ?? "evidence",
     technical: /^#\/?(technical|employee|hr)(\/|$)/.test(route),
     selection,
     run,
