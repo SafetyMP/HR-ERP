@@ -1,16 +1,14 @@
 # HR ERP
 
-**HR scaffold for testing agent governance.** Clone this repo to exercise **T0–T4** Cursor/agent risk tiers, hooks, handoffs, and evidence CI against a **multi-tenant SaaS fixture** with real blast radius. It is **not** a certified payroll vendor, not a turnkey HRIS, and not a competitor to ERPNext, Odoo, or OrangeHRM on people-ops features.
+Alex asks for eight hours off. The manager needs to plan coverage, and Alex needs to know how much leave is still available. A software change affects what the portal displays. People Operations must tell the release approver which revision it checked, what the manager had decided, and what balance the employee saw. [Open Alex’s leave case](https://safetymp.github.io/HR-ERP/)
 
-> **Permit rule:** Agents here write software under T0–T4 evidence. They do not run HR or payroll. Same instinct: [SafetyMP](https://github.com/SafetyMP/SafetyMP).
+HR ERP is a multi-tenant HR application used to test how teams govern agent-written software. Its repository checks classify changed files by risk (T0–T4) and identify the reviewers and evidence required. QA can replay a particular request state and give the approver a reproducible discrepancy or an observed result to sign off. Employee leave decisions and software release approval stay with the people responsible for each. [Trace the release evidence](#trace-the-release-evidence)
 
-ESS, payroll math, and benefits stay in the tree as a **fixture domain** so governance hooks protect something consequential (tenant isolation, regulated-looking writes, high-risk migrations). Do not run them as production payroll. See [docs/DESIGN-PIVOT.md](docs/DESIGN-PIVOT.md).
-
-**Tenancy and access** (JWT, policy checks, Postgres row-level security) and **deterministic payroll math** ([`packages/payroll-calc`](packages/payroll-calc)) exist so agents have an auditable surface — **not** certified IRS/HMRC e-filing.
+The HR systems owner can compare the existing checklist, a single automated balance test and a four-week pilot of the broader evidence process. Time comparable reviews and ask People Operations which balance errors slipped through each one. That lets the owner judge whether any additional review capacity covers the pilot cost. [Project scope](docs/DESIGN-PIVOT.md) · [Portfolio](https://github.com/SafetyMP/SafetyMP)
 
 ## Demo
 
-[Open the HR service desk case](https://safetymp.github.io/HR-ERP/). Alex is planning a day off. Help People Operations explain the balance, test a portal change against the manager’s decision and hand the release approver matching evidence. Revisit November’s payroll close to see what happens when the queue and register tell different stories. [Technical guide](https://safetymp.github.io/HR-ERP/#/technical?panel=request) · [Case sources and checks](demo/README.md).
+Try the same eight-hour request in two revisions before you recommend release. For a second handoff, revisit November’s payroll close and see what Finance receives after a targeted retry. Both cases use synthetic records. The separate application implements employee self-service, access controls and payroll calculations for testing and education. [Technical guide](https://safetymp.github.io/HR-ERP/#/technical?panel=request) · [Case sources and checks](demo/README.md)
 
 ### Trace the release evidence
 
